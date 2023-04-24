@@ -1,3 +1,4 @@
+import 'package:base_project/views/login/register_main_page.dart';
 import 'package:base_project/views/main_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -12,6 +13,7 @@ class AppRoutes {
   static Map<String, WidgetBuilder> define() {
     return {
       "/AppMain": (context) => const MainScreen(),
+      "/AppRegister":(context)=>const RegisterMainPage(),
       "/AppLogin": (context) => const LoginMainPage(),
     };
   }
@@ -35,6 +37,10 @@ class AppRoutes {
 
   static pushRemoveMain(BuildContext context) {
     _checkRoutePath(context, "/AppMain",removeUntil: true);
+  }
+
+  static pushRegister(BuildContext context, {bool removeUntil = true}) {
+    _checkRoutePath(context, "/AppRegister", removeUntil: removeUntil);
   }
 
   static pushLogin(BuildContext context, {bool removeUntil = true}) {

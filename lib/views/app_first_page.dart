@@ -22,17 +22,34 @@ class _AppFirstPageState extends State<AppFirstPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Center(
+        body: Container(
+          width: UIDefine.getWidth(),
+          decoration: BoxDecoration(color: Colors.black),
             child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        GestureDetector(
-            onTap: () => AppRoutes.pushLogin(context, removeUntil: false),
-            child: Text("login", style: AppTextStyle.getBaseStyle())),
-        TextButtonWidget(
-            btnText: "showMain",
-            onPressed: () => AppRoutes.pushRemoveMain(context))
-      ],
-    )));
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(height: UIDefine.getHeight()*0.5,),
+                Text('Mygram',style: AppTextStyle.getBaseStyle(fontSize: UIDefine.getPixelWidth(30),fontWeight: FontWeight.w500),),
+                SizedBox(height: UIDefine.getHeight()*0.07),
+                GestureDetector(
+                    onTap: () => AppRoutes.pushRegister(context, removeUntil: false),
+                    child: Text("使用電子郵件或手機號碼註冊", style: AppTextStyle.getGradientStyle())),
+                SizedBox(height: UIDefine.getHeight()*0.25),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                  Text('已經有帳號？',style: AppTextStyle.getBaseStyle(),),
+                  GestureDetector(
+                      onTap: () => AppRoutes.pushLogin(context, removeUntil: false),
+                      child: Text("登入", style: AppTextStyle.getGradientStyle())),
+                ],)
+
+
+                // TextButtonWidget(
+                //     btnText: "showMain",
+                //     onPressed: () => AppRoutes.pushRemoveMain(context))
+              ],
+            ))
+      );
   }
 }

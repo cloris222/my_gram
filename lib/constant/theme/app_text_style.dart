@@ -55,4 +55,34 @@ class AppTextStyle {
       decoration: textDecoration,
     );
   }
+
+  //建立漸層樣式
+  static TextStyle getGradientStyle(
+      {List<Color>? colors,
+        double? fontSize,
+        FontWeight? fontWeight,
+        AppTextFamily? fontFamily,
+        FontStyle? fontStyle,
+        double? height,
+        TextDecoration? textDecoration}) {
+    Gradient gradient = LinearGradient(
+      begin: Alignment(-1, 0),
+      end: Alignment(1, 0),
+      colors: colors ?? [
+        Color.fromRGBO(255, 255, 0, 6),
+        Color.fromRGBO(255, 255, 255, 0.9),
+        Color.fromRGBO(255, 255, 0, 6),
+      ],);
+    Shader shader = gradient.createShader(Rect.fromLTWH(0,0,400,1920));
+    return TextStyle(
+      foreground: Paint()
+        ..shader = shader,
+      fontSize: fontSize ?? UIDefine.fontSize12,
+      fontFamily: fontFamily?.name,
+      fontWeight: getFontWeight(fontWeight),
+      fontStyle: fontStyle,
+      height: height,
+      decoration: textDecoration,
+    );
+  }
 }
