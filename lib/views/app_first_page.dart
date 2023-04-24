@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../constant/theme/app_routes.dart';
@@ -33,15 +34,15 @@ class _AppFirstPageState extends State<AppFirstPage> {
                 SizedBox(height: UIDefine.getHeight()*0.07),
                 GestureDetector(
                     onTap: () => AppRoutes.pushRegister(context, removeUntil: false),
-                    child: Text("使用電子郵件或手機號碼註冊", style: AppTextStyle.getGradientStyle())),
+                    child: Text(tr('registerHint'), style: AppTextStyle.getGradientStyle())),
                 SizedBox(height: UIDefine.getHeight()*0.25),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                  Text('已經有帳號？',style: AppTextStyle.getBaseStyle(),),
+                  Text(tr('haveAccount'),style: AppTextStyle.getBaseStyle(),),
                   GestureDetector(
                       onTap: () => AppRoutes.pushLogin(context, removeUntil: false),
-                      child: Text("登入", style: AppTextStyle.getGradientStyle())),
+                      child: Text(tr("login"), style: AppTextStyle.getGradientStyle())),
                 ],)
 
 

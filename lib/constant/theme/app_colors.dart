@@ -13,8 +13,8 @@ class AppColors {
   static const Color bolderGrey = Color(0xFFE6E5EA);
 
   ///MARK:主題色彩
-  static const Color mainThemeButton = Color(0xFF3B82F6);
-  static const Color subThemePurple = Color(0xFF9657D7);
+  static const Color mainThemeButton = Color(0xFF766733);
+  static const Color subThemePurple = Color(0xFFCEBB8B);
 
   ///MARK: 漸層
   static const List<Color> gradientBaseColorBg = [

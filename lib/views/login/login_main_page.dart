@@ -1,4 +1,5 @@
 import 'package:base_project/constant/theme/app_text_style.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../../constant/theme/ui_define.dart';
@@ -20,6 +21,6 @@ class _LoginMainPageState extends State<LoginMainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Center(child: Text("login", style: AppTextStyle.getBaseStyle())));
+        body: Center(child: Text(tr("login"), style: AppTextStyle.getBaseStyle())));
   }
 }

@@ -69,9 +69,9 @@ class AppTextStyle {
       begin: Alignment(-1, 0),
       end: Alignment(1, 0),
       colors: colors ?? [
-        Color.fromRGBO(255, 255, 0, 6),
-        Color.fromRGBO(255, 255, 255, 0.9),
-        Color.fromRGBO(255, 255, 0, 6),
+        Color(0xFF766733),
+        Color(0xFFCEBB8B),
+        Color(0xFF766733),
       ],);
     Shader shader = gradient.createShader(Rect.fromLTWH(0,0,400,1920));
     return TextStyle(
