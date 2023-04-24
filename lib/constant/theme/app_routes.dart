@@ -34,7 +34,7 @@ class AppRoutes {
   }
 
   static pushRemoveMain(BuildContext context) {
-    _checkRoutePath(context, "/AppMain");
+    _checkRoutePath(context, "/AppMain",removeUntil: true);
   }
 
   static pushLogin(BuildContext context, {bool removeUntil = true}) {

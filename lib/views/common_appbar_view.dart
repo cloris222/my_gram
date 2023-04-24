@@ -1,9 +1,7 @@
-import 'package:base_project/views/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../constant/enum/app_param_enum.dart';
-import '../constant/theme/app_routes.dart';
 import '../constant/theme/global_data.dart';
 import '../constant/theme/ui_define.dart';
 import '../view_models/base_view_model.dart';
@@ -38,11 +36,7 @@ class CommonAppbarView extends ConsumerWidget {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: backgroundColor,
-        appBar: needAppBar
-            ? CustomAppBar.mainAppBar(
-
-              )
-            : null,
+        appBar: needAppBar ? CustomAppBar.mainAppBar(context) : null,
         body: GestureDetector(
           onTap: () => BaseViewModel().clearAllFocus(),
           child: Stack(children: [
@@ -67,5 +61,4 @@ class CommonAppbarView extends ConsumerWidget {
         ),
         extendBody: true);
   }
-
 }

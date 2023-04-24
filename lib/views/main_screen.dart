@@ -44,16 +44,19 @@ class _MainScreenState extends ConsumerState<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.black,
-        appBar: CustomAppBar.mainAppBar(),
+        appBar: CustomAppBar.mainAppBar(context),
         bottomNavigationBar: AppBottomNavigationBar(
           initType: widget.type,
           bottomFunction: _changePage,
         ),
-        body: PageView(
-          controller: controller,
-          physics: const NeverScrollableScrollPhysics(),
-          children: List<Widget>.generate(AppNavigationBarType.values.length,
-              (index) => AppNavigationBarType.values[index].typePage),
+        body: GestureDetector(
+          onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+          child: PageView(
+            controller: controller,
+            physics: const NeverScrollableScrollPhysics(),
+            children: List<Widget>.generate(AppNavigationBarType.values.length,
+                (index) => AppNavigationBarType.values[index].typePage),
+          ),
         ));
   }
 

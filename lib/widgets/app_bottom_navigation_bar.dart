@@ -1,10 +1,7 @@
-import 'package:base_project/constant/theme/app_text_style.dart';
 import 'package:base_project/views/main_screen.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:format/format.dart';
 import '../constant/enum/app_param_enum.dart';
-import '../constant/theme/app_colors.dart';
 import '../constant/theme/app_image_path.dart';
 import '../constant/theme/global_data.dart';
 import '../constant/theme/ui_define.dart';
@@ -76,13 +73,10 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar>
   }
 
   Widget _barBuilder(BuildContext context) {
-    return Card(
-        elevation: 6,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(36)),
-        color: AppColors.textWhite,
-        margin: EdgeInsets.symmetric(
-            horizontal: UIDefine.getPixelWidth(40),
-            vertical: UIDefine.getPixelHeight(20)),
+    return Container(
+        padding: EdgeInsets.symmetric(
+            horizontal: UIDefine.getPixelWidth(10),
+            vertical: UIDefine.getPixelWidth(5)),
         child: Row(
           children: [
             buildButton(AppNavigationBarType.typeDynamic),
@@ -122,12 +116,7 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar>
         children: [
           Icon(type.icon,
               size: UIDefine.getPixelWidth(25),
-              color: isSelect ? Colors.blue : Colors.grey),
-          Text(
-            tr(type.label),
-            style: AppTextStyle.getBaseStyle(
-                color: isSelect ? Colors.blue : Colors.grey),
-          )
+              color: isSelect ? Colors.yellow : Colors.grey)
         ],
       ),
     );

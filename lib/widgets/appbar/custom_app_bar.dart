@@ -1,3 +1,5 @@
+import 'package:base_project/constant/theme/app_text_style.dart';
+import 'package:base_project/constant/theme/ui_define.dart';
 import 'package:flutter/material.dart';
 
 class CustomAppBar {
@@ -18,7 +20,7 @@ class CustomAppBar {
         toolbarHeight: appBarHeight,
         shape: shape,
         actions: <Widget>[
-          Flexible(
+          Expanded(
               child: Container(
                   margin: margin,
                   color: fillColor,
@@ -32,10 +34,16 @@ class CustomAppBar {
     return _getCustomAppBar(actions: actions);
   }
 
-  static AppBar mainAppBar() {
-    var space = const SizedBox(width: 8);
-    double iconSize = 28;
-    return _getCustomAppBar(
-        margin: const EdgeInsets.symmetric(horizontal: 10), actions: []);
+  static AppBar mainAppBar(BuildContext context) {
+    return AppBar(
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.black,
+        centerTitle: true,
+        title: Text("MyGram",
+            style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize36)),
+        actions: <Widget>[
+          IconButton(onPressed: () {}, icon: const Icon(Icons.store_mall_directory))
+        ]);
   }
 }
