@@ -51,7 +51,7 @@ class _SwipeImageViewState extends State<SwipeImageView> {
           bottom: 0,
           child: Transform.rotate(
             alignment: _left > 0 ? Alignment.topRight : Alignment.topLeft,
-            angle: math.pi * _left / UIDefine.getWidth()/-2,
+            angle: math.pi * _left / UIDefine.getWidth() / -2,
             child: GestureDetector(
               /// 判斷左右滑動，並更新畫面
               onHorizontalDragUpdate: _onHorizontalUpdate,
@@ -65,10 +65,13 @@ class _SwipeImageViewState extends State<SwipeImageView> {
               child: Stack(
                 children: [
                   ///MARK:圖片本體
-                  Image.network(data.images[currentIndex],
-                      width: UIDefine.getWidth(),
-                      height: UIDefine.getViewHeight(),
-                      fit: BoxFit.cover),
+                  Container(
+                    width: UIDefine.getWidth(),
+                    height: UIDefine.getViewHeight(),
+                    color: Colors.black,
+                    child: Image.network(data.images[currentIndex],
+                        fit: BoxFit.cover),
+                  ),
                   Positioned(left: 0, right: 0, child: _buildImageIndex()),
 
                   ///不喜歡的icon顯示
