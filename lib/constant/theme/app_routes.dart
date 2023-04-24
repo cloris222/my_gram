@@ -1,7 +1,7 @@
+import 'package:base_project/views/main_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../views/login/login_main_page.dart';
-import '../../views/web_recaptcha_page.dart';
 import 'global_data.dart';
 
 @immutable //不可變物件
@@ -11,7 +11,7 @@ class AppRoutes {
   /// MARK: 靜態Router
   static Map<String, WidgetBuilder> define() {
     return {
-      "/WebRecaptchaPage": (context) => const WebRecaptchaPage(),
+      "/AppMain": (context) => const MainScreen(),
       "/AppLogin": (context) => const LoginMainPage(),
     };
   }
@@ -33,13 +33,11 @@ class AppRoutes {
     }
   }
 
-  ///推到WebRecaptchaPage
-  static pushWebRecaptchaPage(BuildContext context) {
-    _checkRoutePath(context, "/WebRecaptchaPage");
+  static pushRemoveMain(BuildContext context) {
+    _checkRoutePath(context, "/AppMain");
   }
 
-  /// 設定頁面
-  static pushRemoveLogin(BuildContext context) {
-    _checkRoutePath(context, "/AppLogin",removeUntil: true);
+  static pushLogin(BuildContext context, {bool removeUntil = true}) {
+    _checkRoutePath(context, "/AppLogin", removeUntil: removeUntil);
   }
 }

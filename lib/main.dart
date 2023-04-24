@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:base_project/views/app_first_page.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -36,19 +37,22 @@ Future<void> initApp() async {
   await LanguageUtil.init();
 
   ///MARK: 自動登入
+  bool isLogin = false;
   try {
     if (await AppSharedPreferences.getLogIn()) {
       GlobalData.userToken = await AppSharedPreferences.getToken();
       GlobalData.userMemberId = await AppSharedPreferences.getMemberID();
       if (GlobalData.userToken.isNotEmpty &&
           GlobalData.userMemberId.isNotEmpty) {
+        isLogin = true;
+
         ///MARK: 更新使用者登入相關
         ///baseViewModel.uploadPersonalInfo().....
         ///baseViewModel.startUserListener();
       }
     }
   } catch (e) {}
-  runApp(ProviderScope(child: localizations(const MyApp())));
+  runApp(ProviderScope(child: localizations(MyApp(isLogin: isLogin))));
 }
 
 Widget localizations(Widget app) {
@@ -63,7 +67,8 @@ Widget localizations(Widget app) {
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({Key? key, required this.isLogin}) : super(key: key);
+  final bool isLogin;
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -98,7 +103,7 @@ class _MyAppState extends State<MyApp> {
       title: 'base_project',
       builder: AppTextStyle.setMainTextBuilder(),
       // home: const DemoPage(),
-      home: const MainScreen(),
+      home: widget.isLogin ? const MainScreen() : const AppFirstPage(),
     );
   }
 }

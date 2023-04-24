@@ -1,4 +1,3 @@
-import 'package:base_project/constant/theme/app_routes.dart';
 import 'package:base_project/constant/theme/global_data.dart';
 import 'package:base_project/widgets/app_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';

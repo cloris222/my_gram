@@ -1,11 +1,9 @@
 import 'package:base_project/constant/theme/app_routes.dart';
-import 'package:base_project/views/main_screen.dart';
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import '../../utils/language_util.dart';
 import '../../utils/rsa_util.dart';
-import '../constant/enum/app_param_enum.dart';
 import '../constant/theme/global_data.dart';
 import '../view_models/base_view_model.dart';
 import '../view_models/call_back_function.dart';
@@ -62,7 +60,7 @@ class HttpManager {
     } else if ((result.code.compareTo("G_0201") == 0) ||
         (result.code.compareTo("G_0202") == 0)) {
       BaseViewModel().clearUserLoginInfo();
-      AppRoutes.pushRemoveLogin(BaseViewModel().getGlobalContext());
+      AppRoutes.pushLogin(BaseViewModel().getGlobalContext());
     }
 
     ///MARK: 檢查結果 有異常時 直接拋出錯誤
