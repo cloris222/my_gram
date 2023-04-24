@@ -125,4 +125,8 @@ class UIDefine {
   static double getHeight() {
     return _screenHeight;
   }
+  /// get screen height
+  static double getViewHeight() {
+    return _screenHeight - _statusBarHeight - _navigationBarHeight;
+  }
 }

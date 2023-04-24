@@ -5,7 +5,7 @@ class AppColors {
   const AppColors._();
 
   ///MARK:基本文字顏色
-  static const Color textWhite = Color(0xFFFFFFFF);
+  static const Color textWhite = Color(0xFFFDFDFD);
   static const Color textRed = Color(0xFFEC6898);
   static const Color textBlack = Color(0xFF000000);
   static const Color textHintWhite = Color(0xFFAEAEAE);
@@ -15,6 +15,9 @@ class AppColors {
   ///MARK:主題色彩
   static const Color mainThemeButton = Color(0xFF3B82F6);
   static const Color subThemePurple = Color(0xFF9657D7);
+
+  static const Color buttonLike = Color(0xFF3CDBA7);
+  static const Color buttonDisLike = Color(0xFFF24C65);
 
   ///MARK: 漸層
   static const List<Color> gradientBaseColorBg = [

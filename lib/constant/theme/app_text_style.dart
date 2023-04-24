@@ -37,22 +37,40 @@ class AppTextStyle {
     return fontWeight;
   }
 
-  static TextStyle getBaseStyle(
-      {Color color = AppColors.textWhite,
-      double? fontSize,
-      FontWeight? fontWeight,
-      AppTextFamily? fontFamily,
-      FontStyle? fontStyle,
-      double? height,
-      TextDecoration? textDecoration}) {
+  static TextStyle getBaseStyle({
+    Color color = AppColors.textWhite,
+    double? fontSize,
+    FontWeight? fontWeight,
+    AppTextFamily? fontFamily,
+    FontStyle? fontStyle,
+    double? height,
+    TextDecoration? textDecoration,
+    AppTextShadows shadowsType = AppTextShadows.none,
+  }) {
     return TextStyle(
-      color: color,
-      fontSize: fontSize ?? UIDefine.fontSize12,
-      fontFamily: fontFamily?.name,
-      fontWeight: getFontWeight(fontWeight),
-      fontStyle: fontStyle,
-      height: height,
-      decoration: textDecoration,
-    );
+        color: color,
+        fontSize: fontSize ?? UIDefine.fontSize12,
+        fontFamily: fontFamily?.name,
+        fontWeight: getFontWeight(fontWeight),
+        fontStyle: fontStyle,
+        height: height,
+        decoration: textDecoration,
+        shadows: getTextShadow(shadowsType));
+  }
+
+  static List<BoxShadow>? getTextShadow(AppTextShadows type) {
+    switch(type){
+      case AppTextShadows.none:
+        return null;
+      case AppTextShadows.common:
+        return [
+          BoxShadow(
+              color: Colors.black.withOpacity(0.31),
+              offset: Offset(3.8, 3.8), //陰影y軸偏移量
+              blurRadius: 4.81, //陰影模糊程度
+              spreadRadius: 0 //陰影擴散程度
+          )
+        ];
+    }
   }
 }
