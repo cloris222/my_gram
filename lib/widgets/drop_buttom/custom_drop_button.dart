@@ -7,6 +7,7 @@ import '../../constant/theme/app_style.dart';
 import '../../constant/theme/app_text_style.dart';
 import '../../constant/theme/ui_define.dart';
 
+
 class CustomDropButton extends StatefulWidget {
   const CustomDropButton(
       {Key? key,
@@ -23,9 +24,7 @@ class CustomDropButton extends StatefulWidget {
         this.padding,
         this.hintSelect,
         this.dropdownWidth,
-        this.needShowEmpty = true,
-        this.dropdownDecoration,
-        this.itemHeight})
+        this.needShowEmpty = true, this. needArrow=true,this.textColor,this.selectTextColor,this.offsetX,this.offsetY})
       : super(key: key);
   final int listLength;
   final int? initIndex;
@@ -42,8 +41,11 @@ class CustomDropButton extends StatefulWidget {
   final double? dropdownWidth;
   final Widget Function()? buildCustomSelectHintItem;
   final bool needShowEmpty;
-  final BoxDecoration? dropdownDecoration;
-  final double? itemHeight;
+  final bool needArrow;
+  final Color? textColor;
+  final Color? selectTextColor;
+  final double? offsetX;
+  final double? offsetY;
 
   @override
   State<CustomDropButton> createState() => _CustomDropButtonState();
@@ -51,16 +53,6 @@ class CustomDropButton extends StatefulWidget {
 
 class _CustomDropButtonState extends State<CustomDropButton> {
   int? currentIndex;
-
-  @override
-  void didUpdateWidget(covariant CustomDropButton oldWidget) {
-    if (widget.initIndex != null) {
-      setState(() {
-        currentIndex = widget.initIndex;
-      });
-    }
-    super.didUpdateWidget(oldWidget);
-  }
 
   @override
   void initState() {
@@ -77,15 +69,20 @@ class _CustomDropButtonState extends State<CustomDropButton> {
     return Container(
       decoration: widget.needBorderBackground
           ? AppStyle().styleColorBorderBackground(
-          color: AppColors.bolderGrey, radius: 8, borderLine: 1)
+          color: AppColors.bolderGrey,
+          backgroundColor: AppColors.textFieldBackground,
+          radius: 8,
+          borderLine: 1)
           : null,
-      padding: EdgeInsets.symmetric(
-          horizontal: UIDefine.getPixelWidth(10),
-          vertical: UIDefine.getPixelWidth(3)),
+      alignment: Alignment.centerLeft,
       child: DropdownButtonHideUnderline(
           child: DropdownButton2(
-            dropdownDecoration: widget.dropdownDecoration,
-            offset: Offset(0, -UIDefine.getPixelWidth(20)),
+            offset: Offset(widget.offsetX??0, widget.offsetX??-UIDefine.getPixelWidth(10)),
+            dropdownDecoration: AppStyle().styleColorBorderBackground(
+                color: AppColors.textFieldBackground,
+                backgroundColor: AppColors.textFieldBackground,
+                radius: 0,
+                borderLine: 1),
             customButton: widget.buildCustomDropCurrentItem != null
                 ? widget.buildCustomDropCurrentItem!(currentIndex)
                 : currentIndex != null
@@ -108,7 +105,8 @@ class _CustomDropButtonState extends State<CustomDropButton> {
               }
             },
             dropdownWidth: widget.dropdownWidth,
-            itemHeight: widget.itemHeight ?? UIDefine.getPixelWidth(40),
+            itemHeight: UIDefine.getPixelWidth(40),
+
           )),
     );
   }
@@ -119,7 +117,6 @@ class _CustomDropButtonState extends State<CustomDropButton> {
     }
 
     return _buildItem(
-        textColor: Colors.grey,
         context: widget.hintSelect ?? tr('hintSelect'),
         index: -1,
         needGradientText: false,
@@ -147,8 +144,7 @@ class _CustomDropButtonState extends State<CustomDropButton> {
       {String? context,
         required int index,
         required bool needGradientText,
-        required bool needArrow,
-        Color? textColor}) {
+        required bool needArrow}) {
     bool isCurrent = (currentIndex == index);
     String itemContext = '';
     if (context != null) {
@@ -161,12 +157,12 @@ class _CustomDropButtonState extends State<CustomDropButton> {
     return Container(
       alignment: Alignment.centerLeft,
       height: widget.height ?? UIDefine.getPixelWidth(40),
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      padding: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(8)),
+      // color: AppColors.textFieldBackground,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          ///MARK: 未選擇時 index=-1
-          widget.itemIcon != null && widget.listLength > 0 && index >= 0
+          widget.itemIcon != null && index >= 0
               ? Padding(
               padding: EdgeInsets.symmetric(
                   horizontal: UIDefine.getPixelWidth(5)),
@@ -175,21 +171,28 @@ class _CustomDropButtonState extends State<CustomDropButton> {
           Expanded(
             child: Container(
               alignment: Alignment.centerLeft,
-              child: Text(
+              child: isCurrent && needGradientText
+                  ? Text(
                 itemContext,
                 maxLines: needArrow ? 1 : null,
                 overflow: TextOverflow.ellipsis,
                 style: AppTextStyle.getBaseStyle(
                     fontSize: UIDefine.fontSize14,
-                    color: isCurrent
-                        ? AppColors.mainThemeButton
-                        : AppColors.textBlack),
+                    color: widget.selectTextColor??AppColors.mainThemeButton),
+              )
+                  : Text(
+                itemContext,
+                maxLines: needArrow ? 1 : null,
+                overflow: TextOverflow.ellipsis,
+                style: AppTextStyle.getBaseStyle(
+                    color:widget.textColor??AppColors.textWhite,
+                    fontSize: UIDefine.fontSize14),
               ),
             ),
           ),
           Visibility(
-              visible: needArrow,
-              child: const Icon(Icons.arrow_drop_down,color: Colors.grey))
+              visible: needArrow&&widget.needArrow,
+              child: const Icon(Icons.arrow_drop_down,color: Colors.grey,))
         ],
       ),
     );

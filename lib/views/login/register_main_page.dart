@@ -1,11 +1,16 @@
 import 'package:base_project/constant/theme/app_text_style.dart';
+import 'package:base_project/view_models/base_view_model.dart';
+import 'package:base_project/views/login/register_data_page.dart';
 import 'package:base_project/views/login/register_tab_bar.dart';
 import 'package:base_project/views/login/register_type_page.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
+import '../../constant/theme/app_colors.dart';
+import '../../constant/theme/app_routes.dart';
 import '../../constant/theme/ui_define.dart';
 import '../../widgets/appbar/custom_app_bar.dart';
+import '../../widgets/button/text_button_widget.dart';
 class RegisterMainPage extends StatefulWidget {
   const RegisterMainPage({Key? key}) : super(key: key);
 
@@ -29,30 +34,46 @@ class _RegisterMainPageState extends State<RegisterMainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar.mainAppBar(context),
-        body: Container(
-          width: UIDefine.getWidth(),
-          decoration: BoxDecoration(color: Colors.black),
-            child: Center(child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(height: UIDefine.getPixelWidth(10),),
-            Text(tr("register"), style: AppTextStyle.getBaseStyle(fontSize: UIDefine.getPixelWidth(24))),
-            RegisterTabBar().getRegisterButtons(
-                currentRegisterType:currentRegisterType,
-                dataList: dataList,
-                changePage: (String value) {
-                  print(value);
-                }
-            ),
-            SizedBox(height: UIDefine.getPixelWidth(20),),
-            Flexible(
-                child: PageView(
-                  controller: pageController,
-                  onPageChanged: _onPageChange,
-                  children: pages,
-                ))
-
-          ],))
+        body: GestureDetector(
+          onTap:()=>BaseViewModel().clearAllFocus(),
+          child: SingleChildScrollView(child:
+          Container(
+            height: UIDefine.getHeight(),
+              width: UIDefine.getWidth(),
+              decoration: BoxDecoration(color: Colors.black),
+              child:
+              Center(
+                  child: Column(
+                children: [
+                  Text(tr('register'),style: AppTextStyle.getBaseStyle(fontSize: UIDefine.getPixelWidth(30)),),
+                  SizedBox(height: UIDefine.getPixelWidth(20),),
+                  RegisterDataView(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextButtonWidget(
+                        setWidth: UIDefine.getPixelWidth(100),
+                        radius: 4,
+                        textColor: AppColors.textBlack,
+                        isFillWidth: false,
+                        isGradient: true,
+                        btnText: tr('next'),
+                        onPressed: (){},
+                      )
+                    ],),
+                  SizedBox(height: UIDefine.getPixelWidth(20),),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(tr('haveAccount'),style: AppTextStyle.getBaseStyle(),),
+                      GestureDetector(
+                          onTap: () => AppRoutes.pushLogin(context, removeUntil: false),
+                          child: Text(tr("login"), style: AppTextStyle.getGradientStyle())),
+                    ],)
+                ],
+              )
+              )
+          ))
         ));
   }
 
@@ -68,7 +89,6 @@ class _RegisterMainPageState extends State<RegisterMainPage> {
         (index) => RegisterTypePage(
             currentType: dataList[index],
             ));
-   print(pages.length);
   }
 
 
@@ -94,6 +114,7 @@ class _RegisterMainPageState extends State<RegisterMainPage> {
     }
     return -1;
   }
+
 
 
 }

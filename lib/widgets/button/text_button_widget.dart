@@ -15,6 +15,7 @@ class TextButtonWidget extends StatefulWidget {
     this.setSubColor = AppColors.textWhite,
     this.setTransColor = Colors.transparent,
     this.setHeight,
+    this.setWidth,
     this.fontSize,
     this.fontWeight,
     this.margin,
@@ -27,6 +28,8 @@ class TextButtonWidget extends StatefulWidget {
     this.backgroundVertical,
     this.borderSize = 2,
     this.needTimes = 1,
+    this.isGradient = false,
+    this.textColor
   });
 
   final String btnText;
@@ -35,6 +38,7 @@ class TextButtonWidget extends StatefulWidget {
   final Color setSubColor; //子色
   final Color setTransColor; //取代透明色,用於倒數框
   final double? setHeight;
+  final double? setWidth;
   final double? fontSize;
   final FontWeight? fontWeight;
   final bool isBorderStyle; //false 時 為填滿顏色 true 為 只有框線色
@@ -49,6 +53,8 @@ class TextButtonWidget extends StatefulWidget {
   final double borderSize;
 
   final int needTimes;
+  final bool isGradient;
+  final Color? textColor;
 
   @override
   State<TextButtonWidget> createState() => _TextButtonWidgetState();
@@ -75,21 +81,40 @@ class _TextButtonWidgetState extends State<TextButtonWidget>
     var actionButton = GestureDetector(
         onTap: () => intervalClick(widget.needTimes, widget.onPressed),
         child: Container(
+          width: widget.setWidth,
+          height: widget.setHeight,
             padding: EdgeInsets.symmetric(
                 vertical:
                     widget.backgroundVertical ?? UIDefine.getPixelHeight(5),
                 horizontal:
                     widget.backgroundHorizontal ?? UIDefine.getPixelWidth(10)),
-            decoration: AppStyle().styleColorBorderBackground(
+            decoration: widget.isGradient?
+            BoxDecoration(
+                border: Border.all(
+                    color: borderColor,
+                    width: widget.borderSize
+                ),
+                borderRadius:BorderRadius.circular(widget.radius),
+                gradient: LinearGradient(
+                  begin: Alignment(-1, 0),
+                  end: Alignment(1, 0),
+                  colors: [
+                    Color(0xFF766733),
+                    Color(0xFFCEBB8B),
+                    Color(0xFF766733),
+                  ],)
+            ):
+            AppStyle().styleColorBorderBackground(
                 borderLine: widget.borderSize,
                 radius: widget.radius,
                 color: borderColor,
-                backgroundColor: primaryColor),
+                backgroundColor: primaryColor)
+            ,
             child: Text(
               widget.btnText,
               textAlign: TextAlign.center,
               style: AppTextStyle.getBaseStyle(
-                  color: textColor,
+                  color: widget.textColor??AppColors.textWhite,
                   fontSize: widget.fontSize ?? UIDefine.fontSize16),
             )));
 

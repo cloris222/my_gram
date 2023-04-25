@@ -1,4 +1,4 @@
-import 'package:base_project/views/login/register_by_email_view.dart';
+import 'package:base_project/views/login/register_data_page.dart';
 import 'package:base_project/views/login/register_by_phone_view.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -20,14 +20,15 @@ class _RegisterTypePage extends State<RegisterTypePage> {
 
   @override
   Widget build(BuildContext context) {
-    return _initView();
+    // return _initView();
+    return Container();
   }
 
-  Widget _initView() {
-    if (currentType == 'Phone') {
-      return RegisterByPhoneView();
-    } else {
-      return RegisterByEmailView();
-    }
-  }
+  // Widget _initView() {
+  //   if (currentType == 'Phone') {
+  //     return RegisterByPhoneView();
+  //   } else {
+  //     return RegisterByEmailView();
+  //   }
+  // }
 }

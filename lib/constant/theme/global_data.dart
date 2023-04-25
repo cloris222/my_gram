@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import '../../models/http_setting.dart';
+import '../../models/parameter/country_phone_data.dart';
 import '../enum/app_param_enum.dart';
 
 class GlobalData {
@@ -9,7 +10,7 @@ class GlobalData {
 
   static GlobalKey<NavigatorState> globalKey = GlobalKey();
   static bool firstLaunch = true;
-
+  static List<CountryPhoneData> country = [];
   static AppNavigationBarType mainBottomType = AppNavigationBarType.typePair;
 
   /// USER

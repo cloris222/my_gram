@@ -20,7 +20,9 @@ class CountdownButtonWidget extends StatefulWidget {
       this.margin = const EdgeInsets.only(left: 5, top: 10),
       this.padding,
       this.isFillWidth = false,
-      this.onPressVerification})
+      this.onPressVerification,
+      this.isGradient = false,
+      this.radius})
       : super(key: key);
   final int countdownSecond; //倒數秒數
   final String btnText; //一開始顯示文字
@@ -32,6 +34,8 @@ class CountdownButtonWidget extends StatefulWidget {
   final bool isFillWidth;
   final EdgeInsetsGeometry margin;
   final EdgeInsetsGeometry? padding;
+  final bool isGradient;
+  final double? radius;
 
   ///檢查資料是否正確可按
   final PressVerification? onPressVerification;
@@ -45,6 +49,7 @@ class _CountdownButtonWidgetState extends State<CountdownButtonWidget> {
   late String _currentText;
   bool _enableButton = false;
   late Timer _countdownTimer;
+  bool haveClicked = false;
 
   @override
   void initState() {
@@ -56,7 +61,7 @@ class _CountdownButtonWidgetState extends State<CountdownButtonWidget> {
       //自動觸發
       _currentSecond = widget.countdownSecond;
       updateStatus();
-      countdownFunction();
+      // countdownFunction();
     }
   }
 
@@ -70,9 +75,13 @@ class _CountdownButtonWidgetState extends State<CountdownButtonWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return TextButtonWidget(
+    return _enableButton? TextButtonWidget(
+      isGradient: widget.isGradient,
+        setHeight: widget.setHeight,
+        radius: widget.radius??10,
         btnText: _currentText,
         onPressed: () {
+          haveClicked = true;
           _onPressed();
         },
         setMainColor: _enableButton ? AppColors.mainThemeButton : Colors.grey,
@@ -82,7 +91,22 @@ class _CountdownButtonWidgetState extends State<CountdownButtonWidget> {
         margin: widget.margin,
         padding: widget.padding,
         isBorderStyle: _enableButton,
-        isFillWidth: widget.isFillWidth);
+        isFillWidth: widget.isFillWidth):
+    TextButtonWidget(
+        radius: widget.radius??10,
+        setHeight: widget.setHeight,
+        btnText: _currentText,
+        onPressed: () {
+        },
+        setMainColor: _enableButton ? AppColors.mainThemeButton : Colors.grey,
+        setSubColor: _enableButton ? Colors.transparent : AppColors.textWhite,
+        setTransColor: Colors.transparent ,
+        fontSize: widget.fontSize ?? UIDefine.fontSize16,
+        margin: widget.margin,
+        padding: widget.padding,
+        isBorderStyle: _enableButton,
+        isFillWidth: widget.isFillWidth)
+    ;
   }
 
   Future<void> _onPressed() async {
@@ -120,7 +144,11 @@ class _CountdownButtonWidgetState extends State<CountdownButtonWidget> {
   }
 
   void updateStatus() {
-    if (_currentSecond != 0) {
+    if(_currentSecond != 0&&!haveClicked){
+      _enableButton = false;
+      _currentText = getBtnText();
+    }
+    else if (_currentSecond != 0&&haveClicked) {
       _enableButton = false;
       _currentText = widget.showCountdownText
           ? '${getBtnText()}($_currentSecond)'
