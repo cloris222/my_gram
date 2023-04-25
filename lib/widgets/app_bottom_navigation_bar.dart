@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:base_project/views/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:format/format.dart';
@@ -74,9 +76,12 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar>
 
   Widget _barBuilder(BuildContext context) {
     return Container(
-        padding: EdgeInsets.symmetric(
-            horizontal: UIDefine.getPixelWidth(10),
-            vertical: UIDefine.getPixelWidth(5)),
+        color: Colors.black,
+        padding: EdgeInsets.only(
+            right: UIDefine.getPixelWidth(10),
+            left: UIDefine.getPixelWidth(10),
+            top: UIDefine.getPixelWidth(5),
+            bottom: UIDefine.getPixelWidth(Platform.isIOS ? 15 : 5)),
         child: Row(
           children: [
             buildButton(AppNavigationBarType.typeDynamic),

@@ -94,7 +94,7 @@ class _SwipeImageViewState extends State<SwipeImageView> {
 
                   ///自介
                   Positioned(
-                      bottom: UIDefine.getPixelWidth(230),
+                      bottom: UIDefine.getPixelWidth(100),
                       left: UIDefine.getPixelWidth(15),
                       right: UIDefine.getPixelWidth(15),
                       child: Column(
@@ -229,7 +229,7 @@ class _SwipeImageViewState extends State<SwipeImageView> {
       status = isLike ? GramSetStatus.like : GramSetStatus.disLike;
       int count = (widget.toggleRate ~/ 0.01);
       while (count >= 0) {
-        await Future.delayed(const Duration(microseconds: 500));
+        await Future.delayed(const Duration(milliseconds: 2));
         setState(() {
           _left += (UIDefine.getWidth() * 0.01 * (isLike ? 1 : -1));
         });
