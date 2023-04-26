@@ -11,6 +11,7 @@ class AppColors {
   static const Color textHintWhite = Color(0xFFAEAEAE);
 
   static const Color bolderGrey = Color(0xFFE6E5EA);
+  static const Color commentUnlike =Color(0xFF979797);
 
   ///MARK:主題色彩
   static const Color mainThemeButton = Color(0xFF3B82F6);
