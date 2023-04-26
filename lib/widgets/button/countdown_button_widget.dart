@@ -15,6 +15,7 @@ class CountdownButtonWidget extends StatefulWidget {
       this.countdownSecond = 180,
       this.showCountdownText = false,
       this.initEnable = true,
+        this.setWidth,
       this.setHeight,
       this.fontSize,
       this.margin = const EdgeInsets.only(left: 5, top: 10),
@@ -30,6 +31,7 @@ class CountdownButtonWidget extends StatefulWidget {
   final bool showCountdownText; //倒數時是否顯示文字
   final VoidCallback onPress;
   final double? setHeight;
+  final double? setWidth;
   final double? fontSize;
   final bool isFillWidth;
   final EdgeInsetsGeometry margin;
@@ -49,7 +51,6 @@ class _CountdownButtonWidgetState extends State<CountdownButtonWidget> {
   late String _currentText;
   bool _enableButton = false;
   late Timer _countdownTimer;
-  bool haveClicked = false;
 
   @override
   void initState() {
@@ -61,7 +62,7 @@ class _CountdownButtonWidgetState extends State<CountdownButtonWidget> {
       //自動觸發
       _currentSecond = widget.countdownSecond;
       updateStatus();
-      // countdownFunction();
+      countdownFunction();
     }
   }
 
@@ -75,57 +76,43 @@ class _CountdownButtonWidgetState extends State<CountdownButtonWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return _enableButton? TextButtonWidget(
-      isGradient: widget.isGradient,
-        setHeight: widget.setHeight,
+    setState(() {
+      updateStatus();
+    });
+    return
+    TextButtonWidget(
+      isGradient: _enableButton ?widget.isGradient:false,
         radius: widget.radius??10,
+        setWidth: widget.setWidth,
+        setHeight: widget.setHeight,
         btnText: _currentText,
         onPressed: () {
-          haveClicked = true;
           _onPressed();
         },
-        setMainColor: _enableButton ? AppColors.mainThemeButton : Colors.grey,
-        setSubColor: _enableButton ? Colors.transparent : AppColors.textWhite,
-        setTransColor: _enableButton ? Colors.transparent : AppColors.textWhite,
-        fontSize: widget.fontSize ?? UIDefine.fontSize16,
-        margin: widget.margin,
-        padding: widget.padding,
-        isBorderStyle: _enableButton,
-        isFillWidth: widget.isFillWidth):
-    TextButtonWidget(
-        radius: widget.radius??10,
-        setHeight: widget.setHeight,
-        btnText: _currentText,
-        onPressed: () {
-        },
-        setMainColor: _enableButton ? AppColors.mainThemeButton : Colors.grey,
-        setSubColor: _enableButton ? Colors.transparent : AppColors.textWhite,
+        setMainColor: _enableButton ? AppColors.mainThemeButton:Colors.grey,
+        setSubColor: _enableButton ? Colors.transparent:AppColors.textWhite ,
         setTransColor: Colors.transparent ,
         fontSize: widget.fontSize ?? UIDefine.fontSize16,
         margin: widget.margin,
         padding: widget.padding,
-        isBorderStyle: _enableButton,
-        isFillWidth: widget.isFillWidth)
+        isBorderStyle: false,
+        isFillWidth: widget.isFillWidth,)
     ;
   }
 
   Future<void> _onPressed() async {
-    bool press = true;
+     bool press = true;
     if (widget.onPressVerification != null) {
       press = await widget.onPressVerification!();
     }
-    if (press) {
-      if (widget.initEnable && _enableButton) {
-        _enableButton = false;
-        setState(() {
-          _currentSecond = widget.countdownSecond;
-          updateStatus();
-        });
-        countdownFunction();
-        widget.onPress();
-      } else if (!widget.initEnable && _enableButton) {
-        widget.onPress();
-      }
+    if(press && _enableButton){
+      _enableButton = false;
+      setState(() {
+        _currentSecond = widget.countdownSecond;
+        updateStatus();
+      });
+      countdownFunction();
+      widget.onPress();
     }
   }
 
@@ -144,25 +131,26 @@ class _CountdownButtonWidgetState extends State<CountdownButtonWidget> {
   }
 
   void updateStatus() {
-    if(_currentSecond != 0&&!haveClicked){
-      _enableButton = false;
-      _currentText = getBtnText();
-    }
-    else if (_currentSecond != 0&&haveClicked) {
+    //初始不能按且輸入欄為空
+    if(_currentSecond != 0){
       _enableButton = false;
       _currentText = widget.showCountdownText
           ? '${getBtnText()}($_currentSecond)'
           : '$_currentSecond';
-    } else {
+
+    } else{
       _enableButton = true;
       _currentText = getBtnText();
     }
   }
 
   String getBtnText() {
+    String text;
     if (widget.btnText.isEmpty) {
-      return tr('send');
+      text =  tr('send');
     }
-    return widget.btnText;
+    text =  widget.btnText;
+    print(text);
+    return text;
   }
 }

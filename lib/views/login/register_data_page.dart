@@ -45,6 +45,10 @@ class _RegisterDataViewState extends ConsumerState<RegisterDataView> {
 
   @override
   Widget build(BuildContext context) {
+    ref.watch(globalValidateDataProvider(viewModel.tagPhone));
+    ref.watch(
+        globalValidateDataProvider(viewModel.tagAcceptProtocol));
+    ref.watch(globalBoolProvider(viewModel.tagAcceptProtocol));
     Widget space = SizedBox(height: UIDefine.getPixelWidth(5));
     return Container(
       width: UIDefine.getWidth(),
@@ -73,8 +77,8 @@ class _RegisterDataViewState extends ConsumerState<RegisterDataView> {
                 child: LoginParamView(
                   keyboardType: TextInputType.phone,
                     hindTitle: true,
-                    titleText: tr('phone'),
-                    hintText: tr("phone"),
+                    titleText: tr('phone_placeHolder'),
+                    hintText: tr("phone_placeHolder"),
                     controller: viewModel.phoneController,
                     data: ref.watch(
                         globalValidateDataProvider(viewModel.tagPhone)),
@@ -88,38 +92,47 @@ class _RegisterDataViewState extends ConsumerState<RegisterDataView> {
           ///驗證碼
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
             ///輸入驗證碼
               Expanded(
                 child: LoginParamView(
                   keyboardType: TextInputType.number,
                   hindTitle: true,
-                  titleText: tr('validateHint'),
-                  hintText: tr("validateHint"),
+                  titleText: tr('validateHint_placeHolder'),
+                  hintText: tr("validateHint_placeHolder"),
                   controller: viewModel.validateController,
                   data: ref.watch(
                       globalValidateDataProvider(viewModel.tagValidate)),
                 ),),
             SizedBox(width: UIDefine.getPixelWidth(10),),
             ///獲取驗證碼btn
+              viewModel.phoneController.text.isNotEmpty?
               CountdownButtonWidget(
-                radius: 4,
+                setWidth: UIDefine.getPixelWidth(100),
                 setHeight: UIDefine.getPixelWidth(36),
                 isGradient: true,
-                initEnable: false,
+                initEnable: true,
                 btnText: tr('getValidate'),
-                onPress: (){},
+                onPress: () {},
+              ):
+              TextButtonWidget(
+                setMainColor: Colors.grey,
+                setWidth: UIDefine.getPixelWidth(100),
+                setHeight: UIDefine.getPixelWidth(36),
+                isFillWidth: false,
+                btnText: tr('getValidate'),
+                onPressed: (){},
               )
-          ],),
+            ],),
           space,
           ///密碼
           Text(tr('password'),style: AppTextStyle.getBaseStyle(fontSize: UIDefine.getPixelWidth(16)),),
           space,
           LoginParamView(
               hindTitle: true,
-              titleText: tr('password'),
-              hintText: tr("password"),
+              titleText: tr('password_placeHolder'),
+              hintText: tr("password_placeHolder"),
               controller: viewModel.passwordController,
               data: ref.watch(
                   globalValidateDataProvider(viewModel.tagPassword)),
@@ -131,8 +144,8 @@ class _RegisterDataViewState extends ConsumerState<RegisterDataView> {
           space,
           LoginParamView(
             hindTitle: true,
-            titleText: tr('confirmPW'),
-            hintText: tr("confirmPW"),
+            titleText: tr('confirmPW_placeHolder'),
+            hintText: tr("confirmPW_placeHolder"),
             controller: viewModel.rePasswordController,
             data: ref.watch(
               globalValidateDataProvider(viewModel.tagRePassword)),
@@ -146,8 +159,6 @@ class _RegisterDataViewState extends ConsumerState<RegisterDataView> {
   }
 
   Widget _buildAcceptProtocol() {
-    ref.watch(
-        globalValidateDataProvider(viewModel.tagAcceptProtocol));
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -195,11 +206,14 @@ class _RegisterDataViewState extends ConsumerState<RegisterDataView> {
   }
 
   void _onAcceptPress() {
-    ref
-        .read(globalBoolProvider(viewModel.tagAcceptProtocol)
-        .notifier)
-        .update((state) => !isAcceptProtocol);
-    print('isAcceptProtocol$isAcceptProtocol');
+    setState(() {
+      ref
+          .read(globalBoolProvider(viewModel.tagAcceptProtocol)
+          .notifier)
+          .update((state) => !isAcceptProtocol);
+      print(isAcceptProtocol);
+    });
+
   }
 
 }
