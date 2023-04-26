@@ -27,8 +27,8 @@ class PostCommentData {
   final String avatarUrl;
   final String userName;
   final String commentContext;
-  final int likes;
-  final bool isLike;
+  int likes;
+  bool isLike;
   List<PostCommentData>? subCommentList;
 
   factory PostCommentData.fromJson(Map<String, dynamic> json) =>
@@ -51,4 +51,15 @@ class PostCommentData {
         "likes": likes,
         "isLike": isLike,
       };
+
+  /// 當無回應id時 代表為第一層
+  bool isMainComment() {
+    return replyId.isEmpty;
+  }
+
+  void onToggleLike() {
+    /// 如果喜歡的話一定會有個愛心
+    likes = likes + (isLike ? -1 : 1);
+    isLike = !isLike;
+  }
 }

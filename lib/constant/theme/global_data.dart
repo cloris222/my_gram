@@ -42,13 +42,13 @@ class GlobalData {
     "https://images.unsplash.com/photo-1623411963493-e958d623cee0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80",
   ];
 
-  static List<PostCommentData> generateCommentData(
-      int page, int size, bool isMain) {
+  static List<PostCommentData> generateCommentData(int page, int size,
+      {required bool isMain, String replyId = ""}) {
     return List<PostCommentData>.generate(size, (index) {
       int random = Random().nextInt(3);
       return PostCommentData(
         commentId: '${(page - 1) * 10 + index + 1}',
-        replyId: isMain ? "" : "sub",
+        replyId: replyId,
         avatarUrl: isMain ? photos[random] : photos2[random],
         userName: "${isMain ? "main" : "sub"}_$random",
         commentContext: isMain ? photos[random] : photos2[random],
