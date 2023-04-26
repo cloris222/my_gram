@@ -62,60 +62,70 @@ class _SwipeImageViewState extends State<SwipeImageView> {
               /// 判斷觸碰點，是否要切換上下分頁
               onTapUp: _onTapUp,
 
-              child: Stack(
-                children: [
-                  ///MARK:圖片本體
-                  Container(
-                    width: UIDefine.getWidth(),
-                    height: UIDefine.getViewHeight(),
-                    color: Colors.black,
-                    child: Image.network(data.images[currentIndex],
-                        fit: BoxFit.cover),
+              child: Container(
+                margin: EdgeInsets.all(UIDefine.getPixelWidth(5)),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Stack(
+                    children: [
+                      ///MARK:圖片本體
+                      Container(
+                        width: UIDefine.getWidth(),
+                        height: UIDefine.getViewHeight(),
+                        color: Colors.black,
+                        child: Image.network(data.images[currentIndex],
+                            fit: BoxFit.cover),
+                      ),
+                      Positioned(
+                          left: UIDefine.getPixelWidth(5),
+                          right: UIDefine.getPixelWidth(5),
+                          top: UIDefine.getPixelWidth(5),
+                          child: _buildImageIndex()),
+
+                      ///不喜歡的icon顯示
+                      Positioned(
+                          top: UIDefine.getPixelWidth(15),
+                          right: 0,
+                          child: Visibility(
+                              visible: status == GramSetStatus.disLike,
+                              child: Icon(Icons.close,
+                                  size: UIDefine.getPixelWidth(30)))),
+
+                      ///喜歡的icon顯示
+                      Positioned(
+                          top: UIDefine.getPixelWidth(15),
+                          left: 0,
+                          child: Visibility(
+                              visible: status == GramSetStatus.like,
+                              child: Icon(Icons.favorite,
+                                  size: UIDefine.getPixelWidth(30)))),
+
+                      ///自介
+                      Positioned(
+                          bottom: UIDefine.getPixelWidth(100),
+                          left: UIDefine.getPixelWidth(15),
+                          right: UIDefine.getPixelWidth(15),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(data.name,
+                                  style: AppTextStyle.getBaseStyle(
+                                    fontSize: UIDefine.fontSize36,
+                                    fontWeight: FontWeight.w700,
+                                    shadowsType: AppTextShadows.common,
+                                  )),
+                              Text(data.context,
+                                  style: AppTextStyle.getBaseStyle(
+                                    fontSize: UIDefine.fontSize18,
+                                    fontWeight: FontWeight.w400,
+                                    shadowsType: AppTextShadows.common,
+                                  )),
+                            ],
+                          )),
+                    ],
                   ),
-                  Positioned(left: 0, right: 0, child: _buildImageIndex()),
-
-                  ///不喜歡的icon顯示
-                  Positioned(
-                      top: UIDefine.getPixelWidth(10),
-                      right: 0,
-                      child: Visibility(
-                          visible: status == GramSetStatus.disLike,
-                          child: Icon(Icons.close,
-                              size: UIDefine.getPixelWidth(30)))),
-
-                  ///喜歡的icon顯示
-                  Positioned(
-                      top: UIDefine.getPixelWidth(10),
-                      left: 0,
-                      child: Visibility(
-                          visible: status == GramSetStatus.like,
-                          child: Icon(Icons.favorite,
-                              size: UIDefine.getPixelWidth(30)))),
-
-                  ///自介
-                  Positioned(
-                      bottom: UIDefine.getPixelWidth(100),
-                      left: UIDefine.getPixelWidth(15),
-                      right: UIDefine.getPixelWidth(15),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(data.name,
-                              style: AppTextStyle.getBaseStyle(
-                                fontSize: UIDefine.fontSize36,
-                                fontWeight: FontWeight.w700,
-                                shadowsType: AppTextShadows.common,
-                              )),
-                          Text(data.context,
-                              style: AppTextStyle.getBaseStyle(
-                                fontSize: UIDefine.fontSize18,
-                                fontWeight: FontWeight.w400,
-                                shadowsType: AppTextShadows.common,
-                              )),
-                        ],
-                      )),
-                ],
+                ),
               ),
             ),
           ),
