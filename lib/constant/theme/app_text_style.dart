@@ -43,7 +43,7 @@ class AppTextStyle {
     FontWeight? fontWeight,
     AppTextFamily? fontFamily,
     FontStyle? fontStyle,
-    double? height,
+    double height = 1.1,
     TextDecoration? textDecoration,
     AppTextShadows shadowsType = AppTextShadows.none,
   }) {
@@ -59,7 +59,7 @@ class AppTextStyle {
   }
 
   static List<BoxShadow>? getTextShadow(AppTextShadows type) {
-    switch(type){
+    switch (type) {
       case AppTextShadows.none:
         return null;
       case AppTextShadows.common:
@@ -69,7 +69,7 @@ class AppTextStyle {
               offset: Offset(3.8, 3.8), //陰影y軸偏移量
               blurRadius: 4.81, //陰影模糊程度
               spreadRadius: 0 //陰影擴散程度
-          )
+              )
         ];
     }
   }
