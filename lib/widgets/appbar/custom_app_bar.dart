@@ -34,6 +34,19 @@ class CustomAppBar {
     return _getCustomAppBar(actions: actions);
   }
 
+  static AppBar registerAppBar(BuildContext context) {
+    return AppBar(
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.black,
+        centerTitle: true,
+        title: Text("MyGram",
+            style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize36)),
+        actions: <Widget>[
+          IconButton(onPressed: () {}, icon: const Icon(Icons.language))
+        ]);
+  }
+
   static AppBar mainAppBar(BuildContext context) {
     return AppBar(
         elevation: 0,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../constant/enum/border_style_type.dart';
 import '../../constant/theme/app_colors.dart';
 import '../../constant/theme/app_style.dart';
 import '../../constant/theme/app_text_style.dart';
@@ -29,7 +30,9 @@ class TextButtonWidget extends StatefulWidget {
     this.borderSize = 2,
     this.needTimes = 1,
     this.isGradient = false,
-    this.textColor
+    this.textColor,
+    this.isTextGradient = false,
+    this.isBorderGradient = false
   });
 
   final String btnText;
@@ -55,6 +58,8 @@ class TextButtonWidget extends StatefulWidget {
   final int needTimes;
   final bool isGradient;
   final Color? textColor;
+  final bool isTextGradient;
+  final bool isBorderGradient;
 
   @override
   State<TextButtonWidget> createState() => _TextButtonWidgetState();
@@ -62,6 +67,14 @@ class TextButtonWidget extends StatefulWidget {
 
 class _TextButtonWidgetState extends State<TextButtonWidget>
     with IntervalClick {
+  @override
+  void didUpdateWidget(covariant TextButtonWidget oldWidget) {
+    setState(() {
+
+    });
+    super.didUpdateWidget(oldWidget);
+
+  }
   @override
   Widget build(BuildContext context) {
     return createButton(context);
@@ -89,7 +102,13 @@ class _TextButtonWidgetState extends State<TextButtonWidget>
                 horizontal:
                     widget.backgroundHorizontal ?? UIDefine.getPixelWidth(10)),
             decoration: widget.isGradient?
-            BoxDecoration(
+                widget.isBorderStyle?
+                AppStyle().buildGradientBorderWithGradientColor(type: GradientBorderType.common,colors: [
+                  Color(0xFF766733),
+                  Color(0xFFCEBB8B),
+                  Color(0xFF766733),
+                ]):
+          BoxDecoration(
                 border: Border.all(
                     color: borderColor,
                     width: widget.borderSize
@@ -113,9 +132,11 @@ class _TextButtonWidgetState extends State<TextButtonWidget>
             child: Text(
               widget.btnText,
               textAlign: TextAlign.center,
-              style: AppTextStyle.getBaseStyle(
+              style: widget.isTextGradient?AppTextStyle.getGradientStyle():
+              AppTextStyle.getBaseStyle(
                   color: widget.textColor??AppColors.textWhite,
-                  fontSize: widget.fontSize ?? UIDefine.fontSize16),
+                  fontSize: widget.fontSize ?? UIDefine.fontSize16)
+              ,
             )));
 
     return widget.isFillWidth

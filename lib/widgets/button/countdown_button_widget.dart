@@ -23,7 +23,8 @@ class CountdownButtonWidget extends StatefulWidget {
       this.isFillWidth = false,
       this.onPressVerification,
       this.isGradient = false,
-      this.radius})
+      this.radius,
+      this.textColor})
       : super(key: key);
   final int countdownSecond; //倒數秒數
   final String btnText; //一開始顯示文字
@@ -38,6 +39,7 @@ class CountdownButtonWidget extends StatefulWidget {
   final EdgeInsetsGeometry? padding;
   final bool isGradient;
   final double? radius;
+  final Color? textColor;
 
   ///檢查資料是否正確可按
   final PressVerification? onPressVerification;
@@ -81,6 +83,7 @@ class _CountdownButtonWidgetState extends State<CountdownButtonWidget> {
     });
     return
     TextButtonWidget(
+      textColor: widget.textColor??AppColors.textBlack,
       isGradient: _enableButton ?widget.isGradient:false,
         radius: widget.radius??10,
         setWidth: widget.setWidth,

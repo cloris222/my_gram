@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../widgets/label/gradient_border_type.dart';
+import '../enum/border_style_type.dart';
 import 'app_colors.dart';
 
 ///MARK: 放會重複用到的Style
@@ -38,6 +40,113 @@ class AppStyle {
         borderRadius: BorderRadius.all(Radius.circular(radius)),
         border: Border.all(color: Colors.transparent, width: borderWith),
         gradient: LinearGradient(colors: colors));
+  }
+
+  BoxDecoration buildGradientBorderWithGradientColor(
+      {double radius = 8,
+        double borderWidth = 1,
+        required GradientBorderType type,
+        required List<Color> colors}) {
+    return BoxDecoration(
+        border: GradientBoxBorder(
+          gradient: getBroderType(type),
+          width: borderWidth,
+        ),
+        gradient: LinearGradient(colors: colors),
+        borderRadius: BorderRadius.circular(radius));
+  }
+
+  Gradient getBroderType(GradientBorderType type) {
+    switch (type) {
+      case GradientBorderType.base:
+        return const LinearGradient(
+            begin: Alignment.bottomLeft,
+            end: Alignment.topRight,
+            tileMode: TileMode.decal,
+            colors: [AppColors.mainThemeButton, AppColors.subThemePurple]);
+      case GradientBorderType.common:
+        return const LinearGradient(
+            begin: Alignment.bottomLeft,
+            end: Alignment.topRight,
+            tileMode: TileMode.decal,
+            colors: [
+              Color(0xFF766733),
+              Color(0xFFCEBB8B),
+              Color(0xFF766733),
+            ]);
+      case GradientBorderType.error:
+        return const LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            tileMode: TileMode.decal,
+            colors: [
+              Color(0xFFF84343),
+              Color(0xFFFC0000),
+              Color(0xFF5A0101),
+              Color(0xFFF60000),
+            ]);
+      case GradientBorderType.homeArtsRecord:
+        return LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            tileMode: TileMode.decal,
+            colors: [
+              const Color(0xFF72C096).withOpacity(0.1),
+              const Color(0xFFDB85FA).withOpacity(0.36),
+              const Color(0xFF85CFA7).withOpacity(0.5),
+            ]);
+      case GradientBorderType.homeMint:
+        return const LinearGradient(
+            begin: Alignment.centerRight,
+            end: Alignment.centerLeft,
+            tileMode: TileMode.decal,
+            colors: [
+              Color(0xFF86CCA1),
+              Color(0xFF60AB7A),
+            ]);
+      case GradientBorderType.tradeDivision:
+        return const LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            tileMode: TileMode.decal,
+            colors: [
+              Color(0xFF334F94),
+              Color(0xFF8DFFC2),
+              Color(0xFF202D4D),
+            ]);
+      case GradientBorderType.buttonGrey:
+        return const LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            tileMode: TileMode.decal,
+            colors: [
+              Color(0xFF606060),
+              Color(0xFF2A3758),
+            ]);
+      case GradientBorderType.buttonMain:
+        return const LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            tileMode: TileMode.decal,
+            colors: [
+              AppColors.mainThemeButton,
+              AppColors.mainThemeButton,
+            ]);
+      case GradientBorderType.none:
+        return const LinearGradient(colors: [
+          Colors.transparent,
+          Colors.transparent,
+        ]);
+      case GradientBorderType.test:
+        return const LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            tileMode: TileMode.decal,
+            colors: [
+              Colors.red,
+              Colors.blue,
+            ]);
+    }
   }
 
   BoxDecoration styleColorBorderBackground({
@@ -86,6 +195,31 @@ class AppStyle {
             hasBottomRight ? Radius.circular(radius) : const Radius.circular(0),
       ),
       color: color,
+    );
+  }
+
+  BoxDecoration styleLinearRadiusBackground({
+    List<Color>? colors,
+    double radius = 15,
+    bool hasTopLeft = true,
+    bool hasTopRight = true,
+    bool hasBottomLef = true,
+    bool hasBottomRight = true,
+  }) {
+    return BoxDecoration(
+      borderRadius: BorderRadius.only(
+        topLeft:
+        hasTopLeft ? Radius.circular(radius) : const Radius.circular(0),
+        topRight:
+        hasTopRight ? Radius.circular(radius) : const Radius.circular(0),
+        bottomLeft:
+        hasBottomLef ? Radius.circular(radius) : const Radius.circular(0),
+        bottomRight:
+        hasBottomRight ? Radius.circular(radius) : const Radius.circular(0),
+      ),
+      gradient: LinearGradient(colors: colors??[Color(0xFF766733),
+        Color(0xFFCEBB8B),
+        Color(0xFF766733),])
     );
   }
 

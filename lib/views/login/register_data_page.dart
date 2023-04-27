@@ -1,17 +1,20 @@
 import 'package:base_project/constant/theme/app_colors.dart';
 import 'package:base_project/constant/theme/app_text_style.dart';
 import 'package:base_project/constant/theme/ui_define.dart';
+import 'package:base_project/views/login/register_preference_choose_main_page.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../constant/theme/app_image_path.dart';
+import '../../models/data/validate_result_data.dart';
 import '../../view_models/gobal_provider/global_tag_controller_provider.dart';
 import '../../view_models/login/register_main_view_model.dart';
 import '../../widgets/button/countdown_button_widget.dart';
 import '../../widgets/button/text_button_widget.dart';
 import '../../widgets/drop_buttom/custom_drop_button.dart';
+import '../../widgets/label/error_text_widget.dart';
 import '../../widgets/label/login_param_view.dart';
 
 class RegisterDataView extends ConsumerStatefulWidget {
@@ -46,8 +49,7 @@ class _RegisterDataViewState extends ConsumerState<RegisterDataView> {
   @override
   Widget build(BuildContext context) {
     ref.watch(globalValidateDataProvider(viewModel.tagPhone));
-    ref.watch(
-        globalValidateDataProvider(viewModel.tagAcceptProtocol));
+
     ref.watch(globalBoolProvider(viewModel.tagAcceptProtocol));
     Widget space = SizedBox(height: UIDefine.getPixelWidth(5));
     return Container(
@@ -152,8 +154,24 @@ class _RegisterDataViewState extends ConsumerState<RegisterDataView> {
               isSecure: true,
               onChanged: viewModel.onPasswordChanged),
           space,
-          Center(child: _buildAcceptProtocol())
-
+          Center(child: _buildAcceptProtocol()),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextButtonWidget(
+                setWidth: UIDefine.getPixelWidth(100),
+                radius: 4,
+                textColor: AppColors.textBlack,
+                isFillWidth: false,
+                isGradient: true,
+                btnText: tr('next'),
+                onPressed: (){
+                  if(viewModel.checkNotEmpty() && viewModel.checkSendRequest()){
+                    viewModel.pushPage(context,const registerPreferenceChooseMainPage());
+                  }
+                },
+              )
+            ],),
         ],
       ));
   }
@@ -177,8 +195,8 @@ class _RegisterDataViewState extends ConsumerState<RegisterDataView> {
                     width: UIDefine.getPixelWidth(20),
                     height: UIDefine.getPixelWidth(20),
                     child:Image.asset(isAcceptProtocol
-                      ? AppImagePath.unCheckedIcon
-                      : AppImagePath.checkedIcon),)
+                      ? AppImagePath.checkedIcon:AppImagePath.unCheckedIcon
+                    ),)
                 )),
             GestureDetector(
               onTap: _onAcceptPress,
@@ -198,21 +216,24 @@ class _RegisterDataViewState extends ConsumerState<RegisterDataView> {
                     style: AppTextStyle.getGradientStyle()),
               ),
             ),
-            SizedBox(width: UIDefine.getPixelWidth(10)),
           ],
         ),
+        SizedBox(height: UIDefine.getPixelWidth(1)),
+        ErrorTextWidget(data:ref.watch(
+            globalValidateDataProvider(viewModel.tagAcceptProtocol)), alignment: Alignment.center),
       ],
     );
   }
 
   void _onAcceptPress() {
-    setState(() {
+      ref.read(
+          globalValidateDataProvider(viewModel.tagAcceptProtocol)
+      .notifier)
+      .update((state) =>ValidateResultData());
       ref
           .read(globalBoolProvider(viewModel.tagAcceptProtocol)
           .notifier)
           .update((state) => !isAcceptProtocol);
-      print(isAcceptProtocol);
-    });
 
   }
 
