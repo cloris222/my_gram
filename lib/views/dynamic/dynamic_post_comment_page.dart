@@ -17,6 +17,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../constant/theme/app_colors.dart';
 import '../../constant/theme/app_style.dart';
 import '../../models/parameter/post_comment_data.dart';
+import '../../widgets/label/avatar_icon_widget.dart';
 
 class DynamicPostCommentPage extends StatefulWidget {
   const DynamicPostCommentPage({
@@ -139,14 +140,7 @@ class _DynamicPostCommentPageState extends State<DynamicPostCommentPage>
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Container(
-                decoration: AppStyle().styleColorsRadiusBackground(radius: 5),
-                width: UIDefine.getPixelWidth(40),
-                height: UIDefine.getPixelWidth(40),
-                child: Image.network(
-                  GlobalData.photos.first,
-                  fit: BoxFit.cover,
-                )),
+            AvatarIconWidget(imageUrl: GlobalData.photos.first),
             SizedBox(width: UIDefine.getPixelWidth(5)),
             Expanded(child: _buildCommentEdit())
           ],
@@ -267,6 +261,7 @@ class _DynamicPostCommentPageState extends State<DynamicPostCommentPage>
                 needInsert = true;
               }
             }
+
             ///TODO: 底下的insert 應該要打api 取得第一頁第一筆資料
             if (needInsert) {
               element.subCommentList?.insert(

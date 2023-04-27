@@ -9,6 +9,8 @@ import '../../constant/theme/app_colors.dart';
 import '../../models/parameter/pair_image_data.dart';
 import 'dart:math' as math;
 
+import '../../widgets/label/common_network_image.dart';
+
 class SwipeImageView extends StatefulWidget {
   const SwipeImageView({
     Key? key,
@@ -69,13 +71,12 @@ class _SwipeImageViewState extends State<SwipeImageView> {
                   child: Stack(
                     children: [
                       ///MARK:圖片本體
-                      Container(
-                        width: UIDefine.getWidth(),
-                        height: UIDefine.getViewHeight(),
-                        color: Colors.black,
-                        child: Image.network(data.images[currentIndex],
-                            fit: BoxFit.cover),
-                      ),
+                      CommonNetworkImage(
+                          imageUrl: data.images[currentIndex],
+                          width: UIDefine.getWidth(),
+                          height: UIDefine.getViewHeight(),
+                          fit: BoxFit.cover),
+
                       Positioned(
                           left: UIDefine.getPixelWidth(5),
                           right: UIDefine.getPixelWidth(5),

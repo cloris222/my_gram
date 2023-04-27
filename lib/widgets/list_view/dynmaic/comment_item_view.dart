@@ -6,6 +6,7 @@ import 'package:base_project/constant/theme/app_text_style.dart';
 import 'package:base_project/constant/theme/global_data.dart';
 import 'package:base_project/constant/theme/ui_define.dart';
 import 'package:base_project/view_models/dynmaic/reply_comment_provider.dart';
+import 'package:base_project/widgets/label/avatar_icon_widget.dart';
 import 'package:base_project/widgets/list_view/base_list_interface.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -94,14 +95,7 @@ class _CommentItemViewState extends State<CommentItemView>
   }
 
   Widget _buildAvatar() {
-    return Container(
-        decoration: AppStyle().styleColorsRadiusBackground(radius: 5),
-        height: UIDefine.getPixelWidth(40),
-        width: UIDefine.getPixelWidth(40),
-        child: Image.network(
-          data.avatarUrl,
-          fit: BoxFit.cover,
-        ));
+    return AvatarIconWidget(imageUrl: data.avatarUrl);
   }
 
   Widget _buildCommentName() {
