@@ -1,6 +1,7 @@
 import 'package:base_project/constant/enum/pair_enum.dart';
 import 'package:base_project/constant/theme/global_data.dart';
 import 'package:flutter/material.dart';
+import '../../constant/theme/ui_define.dart';
 import '../../models/parameter/pair_image_data.dart';
 import 'swipe_image_view.dart';
 
@@ -17,9 +18,13 @@ class _PairMainPageState extends State<PairMainPage> {
   @override
   void initState() {
     list.add(PairImageData(
-        images: GlobalData.photos, name: "cat1", context: "catcatcatcatcatcat"));
+        images: GlobalData.photos,
+        name: "cat1",
+        context: "catcatcatcatcatcat"));
     list.add(PairImageData(
-        images: GlobalData.photos2, name: "cat2", context: "cutecutecutecutecutecute"));
+        images: GlobalData.photos2,
+        name: "cat2",
+        context: "cutecutecutecutecutecute"));
 
     super.initState();
   }
@@ -31,14 +36,23 @@ class _PairMainPageState extends State<PairMainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-        children: List.generate(
-            list.length,
-            (index) => SwipeImageView(
-                  key: UniqueKey(),
-                  data: list[index],
-                  onRemove: _onRemove,
-                )));
+    List<Widget> widgetList = List.generate(
+        list.length,
+        (index) => SwipeImageView(
+              key: UniqueKey(),
+              data: list[index],
+              onRemove: _onRemove,
+            ));
+    /// MARK: 加入避免重複觸碰
+    if (widgetList.isNotEmpty) {
+      widgetList.insert(
+          widgetList.length - 1,
+          Container(
+              color: Colors.transparent,
+              width: UIDefine.getWidth(),
+              height: UIDefine.getViewHeight()));
+    }
+    return Stack(children: widgetList);
   }
 
   void _onRemove(PairImageData data, GramSetStatus status) {
