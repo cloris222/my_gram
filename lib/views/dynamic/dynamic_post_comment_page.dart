@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:base_project/constant/theme/app_text_style.dart';
 import 'package:base_project/constant/theme/global_data.dart';
@@ -239,7 +240,7 @@ class _DynamicPostCommentPageState extends State<DynamicPostCommentPage>
               0,
               PostCommentData(
                   replyId: "",
-                  commentId: '',
+                  commentId: 'add_${Random().nextInt(999)}',
                   commentContext: controller.text,
                   avatarUrl: GlobalData.photos.first,
                   userName: 'user',
@@ -275,6 +276,7 @@ class _DynamicPostCommentPageState extends State<DynamicPostCommentPage>
                       userName: 'user',
                       likes: 0,
                       isLike: false));
+              return;
             }
           }
         }
