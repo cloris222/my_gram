@@ -10,12 +10,15 @@ class CustomLinearProgress extends StatelessWidget {
   const CustomLinearProgress({
     Key? key,
     required this.percentage,
+    this.isGradient = false,
     this.backgroundColor = Colors.white,
     this.valueColor = AppColors.mainThemeButton,
     this.height = 10,
     this.radius = 15,
     this.needShowPercentage = false,
     this.needShowFinishIcon = true,
+    this.colors,
+    this.setWidth
   }) : super(key: key);
   final double percentage;
   final Color backgroundColor;
@@ -24,6 +27,9 @@ class CustomLinearProgress extends StatelessWidget {
   final double radius;
   final bool needShowPercentage;
   final bool needShowFinishIcon;
+  final bool isGradient;
+  final List<Color>? colors;
+  final double? setWidth;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +48,7 @@ class CustomLinearProgress extends StatelessWidget {
           Container(
               decoration: AppStyle().styleColorsRadiusBackground(
                   color: backgroundColor, radius: radius),
-              width: UIDefine.getWidth(),
+              width: setWidth??UIDefine.getWidth(),
               height: height),
           Row(
             children: [
@@ -51,7 +57,11 @@ class CustomLinearProgress extends StatelessWidget {
                   : Flexible(
                       flex: flex,
                       child: Container(
-                          decoration: AppStyle().styleColorsRadiusBackground(
+                          decoration: isGradient?
+                          AppStyle().styleLinearRadiusBackground(colors: [Color(0xFF766733),
+                              Color(0xFFCEBB8B),
+                              Color(0xFF766733),]):
+                          AppStyle().styleColorsRadiusBackground(
                               color: valueColor, radius: radius),
                           width: UIDefine.getWidth(),
                           height: height),

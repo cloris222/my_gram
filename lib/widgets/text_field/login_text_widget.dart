@@ -132,13 +132,13 @@ class _LoginTextWidgetState extends State<LoginTextWidget> {
                 left: widget.contentPaddingLeft ?? UIDefine.getPixelWidth(20),
                 right: widget.contentPaddingRight ?? UIDefine.getPixelWidth(0)),
             disabledBorder: AppTheme.style.styleTextEditBorderBackground(
-                color: widget.enabledColor, radius: widget.radius),
+                color: widget.enabledColor, radius: widget.radius,width: 1),
             enabledBorder: AppTheme.style.styleTextEditBorderBackground(
-                color: widget.enabledColor, radius: widget.radius),
+                color: widget.enabledColor, radius: widget.radius,width: 1),
             focusedBorder: AppTheme.style.styleTextEditBorderBackground(
-                color: widget.focusedColor, radius: widget.radius),
+                color: widget.focusedColor, radius: widget.radius,width: 1),
             border: AppTheme.style.styleTextEditBorderBackground(
-                color: widget.initColor, radius: widget.radius),
+                color: widget.initColor, radius: widget.radius,width: 1),
             suffixIcon: widget.suffixIconAsset.isNotEmpty
                 ? Image.asset(widget.suffixIconAsset)
                 : widget.isSecure

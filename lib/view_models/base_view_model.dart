@@ -57,6 +57,7 @@ class BaseViewModel {
     // ConfirmDialog(context, mainText: message, callOkFunction: () {}).show();
   }
 
+
   ///MARK: 推頁面 偷懶用
   void popPage(BuildContext context) {
     Navigator.pop(context);

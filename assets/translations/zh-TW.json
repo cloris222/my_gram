@@ -1,3 +1,16 @@
 {
+  "json":"tw",
+  "lang":"中文",
+  "lang_en":"English",
+  "lang_tw":"繁體中文",
+  "lang_kr":"한국어",
+  "lang_cn":"简体中文",
+  "lang_jp":"日本語",
 
+  "login":"登入",
+  "register":"註冊",
+  "registerHint":"使用電子郵件或手機號碼註冊",
+  "haveAccount":"已經有帳號？",
+  "phone":"電話號碼",
+  "email":"電子郵件地址"
 }

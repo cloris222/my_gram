@@ -14,6 +14,7 @@ class RegularExpressionUtil {
     return false;
   }
 
+
   ///MARK: 檢查是使用者暱稱
   bool checkFormatNickName(String value) {
     if (value.isNotEmpty) {

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../constant/theme/app_routes.dart';
@@ -22,17 +23,34 @@ class _AppFirstPageState extends State<AppFirstPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Center(
+        body: Container(
+          width: UIDefine.getWidth(),
+          decoration: BoxDecoration(color: Colors.black),
             child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        GestureDetector(
-            onTap: () => AppRoutes.pushLogin(context, removeUntil: false),
-            child: Text("login", style: AppTextStyle.getBaseStyle())),
-        TextButtonWidget(
-            btnText: "showMain",
-            onPressed: () => AppRoutes.pushRemoveMain(context))
-      ],
-    )));
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(height: UIDefine.getHeight()*0.5,),
+                Text('Mygram',style: AppTextStyle.getBaseStyle(fontSize: UIDefine.getPixelWidth(30),fontWeight: FontWeight.w500),),
+                SizedBox(height: UIDefine.getHeight()*0.07),
+                GestureDetector(
+                    onTap: () => AppRoutes.pushRegister(context, removeUntil: false),
+                    child: Text(tr('registerHint'), style: AppTextStyle.getGradientStyle())),
+                SizedBox(height: UIDefine.getHeight()*0.25),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                  Text(tr('haveAccount'),style: AppTextStyle.getBaseStyle(),),
+                  GestureDetector(
+                      onTap: () => AppRoutes.pushLogin(context, removeUntil: false),
+                      child: Text(tr("login"), style: AppTextStyle.getGradientStyle())),
+                ],)
+
+
+                // TextButtonWidget(
+                //     btnText: "showMain",
+                //     onPressed: () => AppRoutes.pushRemoveMain(context))
+              ],
+            ))
+      );
   }
 }

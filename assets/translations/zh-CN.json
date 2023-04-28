@@ -1,3 +1,16 @@
 {
+  "json":"cn",
+  "lang":"简体中文",
+  "lang_en":"English",
+  "lang_tw":"繁體中文",
+  "lang_kr":"한국어",
+  "lang_cn":"简体中文",
+  "lang_jp":"日本語",
 
+  "login":"登入",
+  "register":"注册",
+  "registerHint":"使用电子邮件或手机号码注册",
+  "haveAccount":"已经有帐号？",
+  "phone":"电话号码",
+  "email":"电子邮件地址"
 }
