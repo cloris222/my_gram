@@ -45,6 +45,7 @@ class AppStyle {
   BoxDecoration buildGradientBorderWithGradientColor(
       {double radius = 8,
         double borderWidth = 1,
+        bool isGradient = false,
         required GradientBorderType type,
         required List<Color> colors}) {
     return BoxDecoration(
@@ -52,7 +53,7 @@ class AppStyle {
           gradient: getBroderType(type),
           width: borderWidth,
         ),
-        gradient: LinearGradient(colors: colors),
+        gradient: isGradient?LinearGradient(colors: colors):null,
         borderRadius: BorderRadius.circular(radius));
   }
 

@@ -102,12 +102,6 @@ class _TextButtonWidgetState extends State<TextButtonWidget>
                 horizontal:
                     widget.backgroundHorizontal ?? UIDefine.getPixelWidth(10)),
             decoration: widget.isGradient?
-                widget.isBorderStyle?
-                AppStyle().buildGradientBorderWithGradientColor(type: GradientBorderType.common,colors: [
-                  Color(0xFF766733),
-                  Color(0xFFCEBB8B),
-                  Color(0xFF766733),
-                ]):
           BoxDecoration(
                 border: Border.all(
                     color: borderColor,
@@ -122,17 +116,20 @@ class _TextButtonWidgetState extends State<TextButtonWidget>
                     Color(0xFFCEBB8B),
                     Color(0xFF766733),
                   ],)
+            ):widget.isBorderGradient?AppStyle().buildGradientBorderWithGradientColor(
+                type: GradientBorderType.common,
+                colors: [Color(0xFF766733), Color(0xFFCEBB8B), Color(0xFF766733),],
             ):
             AppStyle().styleColorBorderBackground(
                 borderLine: widget.borderSize,
                 radius: widget.radius,
                 color: borderColor,
-                backgroundColor: primaryColor)
-            ,
+                backgroundColor: primaryColor),
             child: Text(
               widget.btnText,
               textAlign: TextAlign.center,
-              style: widget.isTextGradient?AppTextStyle.getGradientStyle():
+              style: widget.isTextGradient?
+              AppTextStyle.getGradientStyle(fontSize: widget.fontSize ?? UIDefine.fontSize16):
               AppTextStyle.getBaseStyle(
                   color: widget.textColor??AppColors.textWhite,
                   fontSize: widget.fontSize ?? UIDefine.fontSize16)

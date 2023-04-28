@@ -1,6 +1,7 @@
 import 'package:base_project/constant/theme/app_colors.dart';
 import 'package:base_project/constant/theme/app_text_style.dart';
 import 'package:base_project/constant/theme/ui_define.dart';
+import 'package:base_project/views/login/register_choose_gender_page.dart';
 import 'package:base_project/views/login/register_preference_choose_main_page.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -167,7 +168,7 @@ class _RegisterDataViewState extends ConsumerState<RegisterDataView> {
                 btnText: tr('next'),
                 onPressed: (){
                   if(viewModel.checkNotEmpty() && viewModel.checkSendRequest()){
-                    viewModel.pushPage(context,const registerPreferenceChooseMainPage());
+                    viewModel.pushPage(context,const registerChooseGenderPage());
                   }
                 },
               )
