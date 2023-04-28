@@ -65,60 +65,70 @@ class _registerChooseSexPageState extends ConsumerState<registerChooseSexPage> {
           SizedBox(height: UIDefine.getPixelWidth(10),)
         ],));
     }
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        SizedBox(height: UIDefine.getHeight()*0.1,),
-        CustomLinearProgress(
-          percentage: 0.66,
-          isGradient: true,
-          height: UIDefine.getPixelWidth(3),
-        ),
-        SizedBox(height: UIDefine.getHeight()*0.01,),
-        Row(
-          children: [
-            Expanded(child: TextButton(
-              child: Icon(Icons.arrow_back,color: Colors.white,),
-              onPressed: (){
-                viewModel.popPage(context);
-              },
-            ),),
-            SizedBox(width: UIDefine.getWidth()*0.9,)
-          ],
-        ),
-        SizedBox(height: UIDefine.getHeight()*0.05,),
-        Column(
-          children: [
-            Text(tr('sexChooseTitle'),style: AppTextStyle.getBaseStyle(fontSize: UIDefine.getPixelWidth(20),fontWeight: FontWeight.w500),),
-            SizedBox(height: UIDefine.getHeight()*0.08,),
-            Column(
-              children: buttons,
+    return Scaffold(body:
+    Container(
+      color: Colors.black,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(height: UIDefine.getHeight()*0.1,),
+          Container(
+            width: UIDefine.getWidth()*0.9,
+            child: Center(
+              child: CustomLinearProgress(
+                percentage: 0.66,
+                isGradient: true,
+                height: UIDefine.getPixelWidth(3),
+              ),
             ),
-            SizedBox(height: UIDefine.getHeight()*0.1,),
-          ],
-    ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextButtonWidget(
-              fontSize: UIDefine.fontSize18,
-              radius: 4,
-              isGradient: sexSection!='',
-              setMainColor: sexSection==''?Colors.grey:Colors.transparent,
-              textColor:sexSection==''?AppColors.textWhite:AppColors.textBlack,
-              isFillWidth: false,
-              backgroundVertical: UIDefine.getPixelWidth(8),
-              setHeight: UIDefine.getPixelWidth(44),
-              setWidth: UIDefine.getWidth()*0.4,
-              btnText: tr('next'),
-              onPressed:(){
-                if(sexSection=='')return;
-                viewModel.pushPage(context, const registerChooseCountryPage());
-              } ,
-            ),
-          ],)
-      ],
-    );
+          ),
+          SizedBox(height: UIDefine.getHeight()*0.01,),
+          Row(
+            children: [
+              Expanded(child: TextButton(
+                child: Icon(Icons.chevron_left,color: Colors.white,size: UIDefine.getPixelWidth(35),),
+                onPressed: (){
+                  viewModel.popPage(context);
+                },
+              ),),
+              SizedBox(width: UIDefine.getWidth()*0.9,)
+            ],
+          ),
+          SizedBox(height: UIDefine.getHeight()*0.05,),
+          Column(
+            children: [
+              Text(tr('sexChooseTitle'),style: AppTextStyle.getBaseStyle(fontSize: UIDefine.getPixelWidth(20),fontWeight: FontWeight.w500),),
+              SizedBox(height: UIDefine.getHeight()*0.08,),
+              Column(
+                children: buttons,
+              ),
+              SizedBox(height: UIDefine.getHeight()*0.1,),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextButtonWidget(
+                fontSize: UIDefine.fontSize18,
+                radius: 4,
+                isGradient: sexSection!='',
+                setMainColor: sexSection==''?Colors.grey:Colors.transparent,
+                textColor:sexSection==''?AppColors.textWhite:AppColors.textBlack,
+                isFillWidth: false,
+                backgroundVertical: UIDefine.getPixelWidth(8),
+                setHeight: UIDefine.getPixelWidth(44),
+                setWidth: UIDefine.getWidth()*0.4,
+                btnText: tr('next'),
+                onPressed:(){
+                  if(sexSection=='')return;
+                  viewModel.pushPage(context, const registerChooseCountryPage());
+                } ,
+              ),
+            ],)
+        ],
+      ),
+    ));
+
   }
 }
 

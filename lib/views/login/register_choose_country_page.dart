@@ -2,6 +2,7 @@ import 'package:base_project/constant/enum/country_enum.dart';
 import 'package:base_project/constant/theme/app_text_style.dart';
 import 'package:base_project/constant/theme/ui_define.dart';
 import 'package:base_project/view_models/base_view_model.dart';
+import 'package:base_project/views/login/register_finish_page.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -42,16 +43,21 @@ class _registerChooseCountryPageState extends ConsumerState<registerChooseCountr
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(height: UIDefine.getHeight()*0.1,),
-          CustomLinearProgress(
-            percentage: 1,
-            isGradient: true,
-            height: UIDefine.getPixelWidth(3),
+          Container(
+            width: UIDefine.getWidth()*0.9,
+            child: Center(
+              child: CustomLinearProgress(
+                percentage: 1,
+                isGradient: true,
+                height: UIDefine.getPixelWidth(3),
+              ),
+            ),
           ),
           SizedBox(height: UIDefine.getHeight()*0.01,),
           Row(
             children: [
               Expanded(child: TextButton(
-                child: Icon(Icons.arrow_back,color: Colors.white,),
+                child: Icon(Icons.chevron_left,color: Colors.white,size: UIDefine.getPixelWidth(35),),
                 onPressed: (){
                   viewModel.popPage(context);
                 },
@@ -72,6 +78,7 @@ class _registerChooseCountryPageState extends ConsumerState<registerChooseCountr
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextButtonWidget(
+                fontWeight: FontWeight.w500,
                 fontSize: UIDefine.fontSize18,
                 radius: 4,
                 isGradient: countrySection!='',
@@ -83,7 +90,8 @@ class _registerChooseCountryPageState extends ConsumerState<registerChooseCountr
                 setWidth: UIDefine.getWidth()*0.4,
                 btnText: tr('next'),
                 onPressed:(){
-
+                  if(countrySection=='')return;
+                  viewModel.pushPage(context, registerFinishPage());
                 } ,
               ),
             ],)
@@ -97,7 +105,7 @@ class _registerChooseCountryPageState extends ConsumerState<registerChooseCountr
       width: UIDefine.getWidth()*0.8,
       child: Column(mainAxisSize: MainAxisSize.min, children: [
         CustomDropButton(
-          hintSelect: tr('chooseCountryHint'),
+          hintSelect: countrySection==''?tr('chooseCountryHint'):countrySection,
           listLength:countryList.length ,
           itemString: (int index, bool needArrow){
             return countryList[index].getcountryTypeValue();

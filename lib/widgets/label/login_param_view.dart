@@ -48,7 +48,7 @@ class LoginParamView extends StatelessWidget {
       hindTitle ? const SizedBox() : _buildTextTitle(titleText),
       subTitleText != null ? _buildSubTitle(subTitleText!) : const SizedBox(),
       LoginTextWidget(
-        hintColor: AppColors.textWhite,
+        hintColor: AppColors.textGrey,
         fillColor: AppColors.textFieldBackground,
         keyboardType: keyboardType,
         hintText: hintText,

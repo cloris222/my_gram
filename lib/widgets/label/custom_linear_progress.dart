@@ -46,11 +46,8 @@ class CustomLinearProgress extends StatelessWidget {
         Flexible(
             child: Stack(alignment: Alignment.centerLeft, children: [
           Container(
-              decoration: isGradient?
-              AppStyle().styleColorsRadiusBackground(
-                  color: backgroundColor, radius: radius):
-              AppStyle().styleLinearRadiusBackground(
-                  colors: colors, radius: radius),
+              decoration: AppStyle().styleColorsRadiusBackground(
+                  color: backgroundColor, radius: radius),
               width: setWidth??UIDefine.getWidth(),
               height: height),
           Row(
@@ -60,7 +57,11 @@ class CustomLinearProgress extends StatelessWidget {
                   : Flexible(
                       flex: flex,
                       child: Container(
-                          decoration: AppStyle().styleColorsRadiusBackground(
+                          decoration: isGradient?
+                          AppStyle().styleLinearRadiusBackground(colors: [Color(0xFF766733),
+                              Color(0xFFCEBB8B),
+                              Color(0xFF766733),]):
+                          AppStyle().styleColorsRadiusBackground(
                               color: valueColor, radius: radius),
                           width: UIDefine.getWidth(),
                           height: height),

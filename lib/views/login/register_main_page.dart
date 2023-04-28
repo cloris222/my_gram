@@ -36,6 +36,7 @@ class _RegisterMainPageState extends State<RegisterMainPage> {
           onTap:()=>BaseViewModel().clearAllFocus(),
           child: SingleChildScrollView(child:
           Container(
+            padding: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(7)),
             height: UIDefine.getHeight(),
               width: UIDefine.getWidth(),
               decoration: BoxDecoration(color: Colors.black),
@@ -43,8 +44,8 @@ class _RegisterMainPageState extends State<RegisterMainPage> {
               Center(
                   child: Column(
                 children: [
-                  Text(tr('register'),style: AppTextStyle.getBaseStyle(fontSize: UIDefine.getPixelWidth(30)),),
-                  SizedBox(height: UIDefine.getPixelWidth(20),),
+                  Text(tr('register'),style: AppTextStyle.getBaseStyle(fontSize: UIDefine.getPixelWidth(25)),),
+                  SizedBox(height: UIDefine.getHeight()*0.02,),
                   RegisterDataView(),
                   SizedBox(height: UIDefine.getPixelWidth(20),),
                   Row(

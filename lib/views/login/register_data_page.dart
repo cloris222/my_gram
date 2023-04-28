@@ -52,7 +52,7 @@ class _RegisterDataViewState extends ConsumerState<RegisterDataView> {
     ref.watch(globalValidateDataProvider(viewModel.tagPhone));
 
     ref.watch(globalBoolProvider(viewModel.tagAcceptProtocol));
-    Widget space = SizedBox(height: UIDefine.getPixelWidth(5));
+    Widget space = SizedBox(height: UIDefine.getPixelWidth(10));
     return Container(
       width: UIDefine.getWidth(),
       child: Column(
