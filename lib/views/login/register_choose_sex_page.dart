@@ -43,22 +43,22 @@ class _registerChooseSexPageState extends ConsumerState<registerChooseSexPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextButtonWidget(
-                isTextGradient: sexSection!=sexList[i].getsexTypeValue(),
+                isTextGradient: sexSection!=sexList[i].name,
                 fontSize: UIDefine.fontSize18,
                 radius: 4,
-                isGradient: sexSection==sexList[i].getsexTypeValue(),
-                textColor:sexSection==sexList[i].getsexTypeValue()?AppColors.textBlack:AppColors.mainThemeButton,
+                isGradient: sexSection==sexList[i].name,
+                textColor:sexSection==sexList[i].name?AppColors.textBlack:AppColors.mainThemeButton,
                 isFillWidth: false,
-                isBorderStyle: sexSection!=sexList[i].getsexTypeValue(),
+                isBorderStyle: sexSection!=sexList[i].name,
                 isBorderGradient: true,
                 setMainColor: AppColors.mainThemeButton,
                 setSubColor: Colors.transparent,
                 backgroundVertical: UIDefine.getPixelWidth(8),
                 setHeight: UIDefine.getPixelWidth(44),
                 setWidth: UIDefine.getWidth()*0.4,
-                btnText: sexList[i].getsexTypeValue(),
+                btnText: sexList[i].name,
                 onPressed:(){
-                  ref.read(registerPreferenceChooseProvider.notifier).updateSexSection(sexList[i].getsexTypeValue());
+                  ref.read(registerPreferenceChooseProvider.notifier).updateSexSection(sexList[i].name);
                 } ,
               ),],
           ),
@@ -128,34 +128,21 @@ class _registerChooseSexPageState extends ConsumerState<registerChooseSexPage> {
         ],
       ),
     ));
-
   }
-}
 
-sexType getSexType(String sex) {
-  switch (sex) {
-    case "male":
-      return sexType.male;
-    case "female":
-      return sexType.female;
-    case "other":
-      return sexType.other;
-    default:
-      return sexType.other;
-  }
-}
-
-extension sexTypeExtension on sexType {
-  String getsexTypeValue() {
-    switch (this) {
-      case sexType.male:
-        return "male";
-      case sexType.female:
-        return "female";
-      case sexType.other:
-        return "other";
+  sexType getSexType(String sex) {
+    switch (sex) {
+      case "male":
+        return sexType.male;
+      case "female":
+        return sexType.female;
+      case "other":
+        return sexType.other;
       default:
-        return "other";
+        return sexType.other;
     }
   }
 }
+
+
+

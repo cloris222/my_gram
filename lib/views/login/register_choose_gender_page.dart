@@ -44,22 +44,22 @@ class _registerChooseGenderPageState extends ConsumerState<registerChooseGenderP
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextButtonWidget(
-                isTextGradient: genderSection!=genderList[i].getgenderTypeValue(),
+                isTextGradient: genderSection!=genderList[i].name,
                 fontSize: UIDefine.fontSize18,
                 radius: 4,
-                isGradient: genderSection==genderList[i].getgenderTypeValue(),
-                textColor:genderSection==genderList[i].getgenderTypeValue()?AppColors.textBlack:AppColors.mainThemeButton,
+                isGradient: genderSection==genderList[i].name,
+                textColor:genderSection==genderList[i].name?AppColors.textBlack:AppColors.mainThemeButton,
                 isFillWidth: false,
-                isBorderStyle: genderSection!=genderList[i].getgenderTypeValue(),
+                isBorderStyle: genderSection!=genderList[i].name,
                 isBorderGradient: true,
                 setMainColor: AppColors.mainThemeButton,
                 setSubColor: Colors.transparent,
                 backgroundVertical: UIDefine.getPixelWidth(8),
                 setHeight: UIDefine.getPixelWidth(44),
                 setWidth: UIDefine.getWidth()*0.4,
-                btnText: genderList[i].getgenderTypeValue(),
+                btnText: genderList[i].name,
                 onPressed:(){
-                  ref.read(registerPreferenceChooseProvider.notifier).updategenderSection(genderList[i].getgenderTypeValue());
+                  ref.read(registerPreferenceChooseProvider.notifier).updategenderSection(genderList[i].name);
                 } ,
               ),],
           ),
@@ -130,34 +130,21 @@ class _registerChooseGenderPageState extends ConsumerState<registerChooseGenderP
         ),
       )
     );
-
   }
-}
 
-genderType getgenderType(String gender) {
-  switch (gender) {
-    case "male":
-      return genderType.male;
-    case "female":
-      return genderType.female;
-    case "other":
-      return genderType.other;
-    default:
-      return genderType.other;
-  }
-}
-
-extension genderTypeExtension on genderType {
-  String getgenderTypeValue() {
-    switch (this) {
-      case genderType.male:
-        return "male";
-      case genderType.female:
-        return "female";
-      case genderType.other:
-        return "other";
+  genderType getgenderType(String gender) {
+    switch (gender) {
+      case "male":
+        return genderType.male;
+      case "female":
+        return genderType.female;
+      case "other":
+        return genderType.other;
       default:
-        return "other";
+        return genderType.other;
     }
   }
 }
+
+
+

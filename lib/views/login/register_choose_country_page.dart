@@ -1,4 +1,5 @@
 import 'package:base_project/constant/enum/country_enum.dart';
+import 'package:base_project/constant/enum/demo_enum.dart';
 import 'package:base_project/constant/theme/app_text_style.dart';
 import 'package:base_project/constant/theme/ui_define.dart';
 import 'package:base_project/view_models/base_view_model.dart';
@@ -108,47 +109,30 @@ class _registerChooseCountryPageState extends ConsumerState<registerChooseCountr
           hintSelect: countrySection==''?tr('chooseCountryHint'):countrySection,
           listLength:countryList.length ,
           itemString: (int index, bool needArrow){
-            return countryList[index].getcountryTypeValue();
+            return countryList[index].name;
           },
           onChanged: (int index){
-            ref.read(registerPreferenceChooseProvider.notifier).updatecountrySection(countryList[index].getcountryTypeValue());
+            ref.read(registerPreferenceChooseProvider.notifier).updatecountrySection(countryList[index].name);
           },
         ),
       ])
     );
   }
-}
 
-
-
-countryType getcountryType(String country) {
-  switch (country) {
-    case "Taiwan":
-      return countryType.Taiwan;
-    case "China":
-      return countryType.China;
-    case "Japan":
-      return countryType.Japan;
-    case "Korea":
-      return countryType.Korea;
-    default:
-      return countryType.other;
-  }
-}
-
-extension CountryTypeExtension on countryType {
-  String getcountryTypeValue() {
-    switch (this) {
-      case countryType.Taiwan:
-        return "Taiwan";
-      case countryType.China:
-        return "China";
-      case countryType.Japan:
-        return "Japan";
-      case countryType.Korea:
-        return "Korea";
+  countryType getcountryType(String country) {
+    switch (country) {
+      case "Taiwan":
+        return countryType.Taiwan;
+      case "China":
+        return countryType.China;
+      case "Japan":
+        return countryType.Japan;
+      case "Korea":
+        return countryType.Korea;
       default:
-        return "other";
+        return countryType.other;
     }
   }
 }
+
+
