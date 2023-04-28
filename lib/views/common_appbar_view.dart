@@ -42,7 +42,8 @@ class CommonAppbarView extends ConsumerWidget {
           child: Stack(children: [
             Container(
                 color: backgroundColor,
-                height: UIDefine.getHeight(),
+                height: UIDefine.getViewHeight(
+                    needAppBar: needAppBar, needAppNavBar: false),
                 width: UIDefine.getWidth(),
                 padding: EdgeInsets.only(
                     bottom: MediaQuery.of(context).viewInsets.bottom +

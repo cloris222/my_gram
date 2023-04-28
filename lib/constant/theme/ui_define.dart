@@ -125,4 +125,12 @@ class UIDefine {
   static double getHeight() {
     return _screenHeight;
   }
+
+  /// get screen height
+  static double getViewHeight(
+      {bool needAppBar = true, bool needAppNavBar = true}) {
+    return _screenHeight -
+        (needAppBar ? _statusBarHeight : 0) -
+        (needAppNavBar ? _navigationBarHeight : 0);
+  }
 }

@@ -1,5 +1,6 @@
 import 'package:base_project/constant/theme/app_text_style.dart';
 import 'package:base_project/constant/theme/ui_define.dart';
+import 'package:base_project/view_models/call_back_function.dart';
 import 'package:flutter/material.dart';
 
 class CustomAppBar {
@@ -56,7 +57,29 @@ class CustomAppBar {
         title: Text("MyGram",
             style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize36)),
         actions: <Widget>[
-          IconButton(onPressed: () {}, icon: const Icon(Icons.store_mall_directory))
+          IconButton(
+              onPressed: () {}, icon: const Icon(Icons.store_mall_directory))
         ]);
+  }
+
+  static AppBar titleAppBar(BuildContext context,
+      {required String title, onClickFunction? onPressBack}) {
+    return AppBar(
+      elevation: 0,
+      automaticallyImplyLeading: false,
+      backgroundColor: Colors.black,
+      centerTitle: true,
+      leading: IconButton(
+          onPressed: () {
+            if (onPressBack == null) {
+              Navigator.pop(context);
+            } else {
+              onPressBack();
+            }
+          },
+          icon: const Icon(Icons.arrow_back_ios)),
+      title: Text(title,
+          style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize36)),
+    );
   }
 }

@@ -34,6 +34,7 @@ class LoginTextWidget extends StatefulWidget {
     this.bFocusedGradientBolder = false,
     this.margin,
     this.radius = 10,
+    this.maxLines = 1,
   }) : super(key: key);
   final String hintText;
   final double? fontSize;
@@ -71,6 +72,9 @@ class LoginTextWidget extends StatefulWidget {
   final EdgeInsetsGeometry? margin;
   final double radius;
 
+  /// 限制行數
+  final int ?maxLines;
+
   @override
   State<LoginTextWidget> createState() => _LoginTextWidgetState();
 }
@@ -89,6 +93,7 @@ class _LoginTextWidgetState extends State<LoginTextWidget> {
 
   Widget _buildEdit() {
     return TextField(
+        maxLines: widget.maxLines,
         cursorColor: Colors.white,
         controller: widget.controller,
         inputFormatters: widget.bLimitDecimalLength
