@@ -100,7 +100,7 @@ class _MyAppState extends State<MyApp> {
       supportedLocales: context.supportedLocales,
       locale: LanguageUtil.getAppLocale(),
       navigatorKey: GlobalData.globalKey,
-      title: 'base_project',
+      title: 'MyGram',
       builder: AppTextStyle.setMainTextBuilder(),
       // home: const DemoPage(),
       home: widget.isLogin ? const MainScreen() : const AppFirstPage(),
