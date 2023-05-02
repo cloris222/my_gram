@@ -30,4 +30,11 @@ class registerPreferenceChooseNotifier extends StateNotifier<RegisterPreferenceC
     data['countrySection'] = value;
     state = RegisterPreferenceChooseData(data: data);
   }
+
+  void reset(){
+    final data = {'genderSection':'',
+      'sexSection':'',
+      'countrySection':''};
+    state = RegisterPreferenceChooseData(data: data);
+  }
 }

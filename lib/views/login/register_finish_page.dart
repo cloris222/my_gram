@@ -2,20 +2,24 @@ import 'package:base_project/view_models/base_view_model.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../constant/theme/app_colors.dart';
 import '../../constant/theme/app_image_path.dart';
 import '../../constant/theme/ui_define.dart';
+import '../../view_models/login/register_preference_choose_provider.dart';
 import '../../widgets/button/text_button_widget.dart';
 import '../../widgets/label/custom_linear_progress.dart';
 import '../main_screen.dart';
 
-class registerFinishPage extends StatelessWidget {
+class registerFinishPage extends ConsumerWidget {
   final BaseViewModel viewModel = BaseViewModel();
-  registerFinishPage({Key? key}) : super(key: key);
+  registerFinishPage({
+    Key? key,
+  }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
         body: Container(
           color: Colors.black,
@@ -33,18 +37,18 @@ class registerFinishPage extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: UIDefine.getHeight()*0.01,),
-              Row(
-                children: [
-                  Expanded(child: TextButton(
-                    child: Icon(Icons.chevron_left,color: Colors.white,size: UIDefine.getPixelWidth(35),),
-                    onPressed: (){
-                      viewModel.popPage(context);
-                    },
-                  ),),
-                  SizedBox(width: UIDefine.getWidth()*0.9,)
-                ],
-              ),
+              SizedBox(height: UIDefine.getHeight()*0.1,),
+              // Row(
+              //   children: [
+              //     Expanded(child: TextButton(
+              //       child: Icon(Icons.chevron_left,color: Colors.white,size: UIDefine.getPixelWidth(35),),
+              //       onPressed: (){
+              //         viewModel.popPage(context);
+              //       },
+              //     ),),
+              //     SizedBox(width: UIDefine.getWidth()*0.9,)
+              //   ],
+              // ),
               Container(
                 decoration: BoxDecoration(border: Border.all(color: Colors.white,width: 3)),
                 width: UIDefine.getPixelWidth(250),
@@ -86,7 +90,8 @@ class registerFinishPage extends StatelessWidget {
                         setWidth: UIDefine.getWidth()*0.4,
                         btnText: tr('use'),
                         onPressed:(){
-                          viewModel.pushPage(context, const MainScreen());
+                          ref.read(registerPreferenceChooseProvider.notifier).reset();
+                          viewModel.pushAndRemoveUntil(context, const MainScreen());
                         } ,
                       ),
                     ],),
@@ -105,7 +110,8 @@ class registerFinishPage extends StatelessWidget {
                         setWidth: UIDefine.getWidth()*0.4,
                         btnText: tr('createPersonal'),
                         onPressed:(){
-                          viewModel.pushPage(context, const MainScreen());
+                          ref.read(registerPreferenceChooseProvider.notifier).reset();
+                          viewModel.pushAndRemoveUntil(context, const MainScreen());
                         } ,
                       ),
                     ],)
@@ -118,3 +124,4 @@ class registerFinishPage extends StatelessWidget {
     );
   }
 }
+
