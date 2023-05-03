@@ -1,7 +1,9 @@
+import 'package:base_project/constant/theme/app_style.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import '../../constant/enum/border_style_type.dart';
 import '../../constant/theme/app_colors.dart';
 
 ///MARK: 漸進式讀取圖片
@@ -18,7 +20,8 @@ class CommonNetworkImage extends StatelessWidget {
       this.child,
       this.childAlignment,
       this.childPadding,
-      this.imageWidgetBuilder})
+      this.imageWidgetBuilder,
+      this.radius = 8})
       : super(key: key);
   final String imageUrl;
   final double? width;
@@ -27,6 +30,8 @@ class CommonNetworkImage extends StatelessWidget {
   final Widget? errorWidget;
   final Widget? loadWidget;
   final int? cacheWidth;
+  final double radius;
+
 
   /// Optional builder to further customize the display of the image.
   /// 供Container背景用
@@ -64,7 +69,7 @@ class CommonNetworkImage extends StatelessWidget {
     }
 
     return Container(
-      color: Colors.black,
+      decoration: BoxDecoration(color: Colors.black,borderRadius: BorderRadius.all(Radius.circular(radius))),
       child: CachedNetworkImage(
         width: width,
         height: height,

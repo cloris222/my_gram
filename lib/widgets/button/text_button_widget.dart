@@ -94,6 +94,7 @@ class _TextButtonWidgetState extends State<TextButtonWidget>
     var actionButton = GestureDetector(
         onTap: () => intervalClick(widget.needTimes, widget.onPressed),
         child: Container(
+          alignment: Alignment.center,
           width: widget.setWidth,
           height: widget.setHeight,
             padding: EdgeInsets.symmetric(
@@ -138,6 +139,7 @@ class _TextButtonWidgetState extends State<TextButtonWidget>
 
     return widget.isFillWidth
         ? Container(
+            alignment: Alignment.center,
             width: MediaQuery.of(context).size.width,
             margin: widget.margin ??
                 EdgeInsets.symmetric(vertical: UIDefine.getPixelWidth(5)),
