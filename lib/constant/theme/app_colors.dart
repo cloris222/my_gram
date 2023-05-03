@@ -12,7 +12,7 @@ class AppColors {
   static const Color textHintWhite = Color(0xFFAEAEAE);
   static const Color bolderGrey = Color.fromRGBO(255, 255, 255, 0.3);
 
-  static const Color commentUnlike =Color(0xFF979797);
+  static const Color commentUnlike = Color(0xFF979797);
 
   ///MARK:主題色彩
   static const Color mainThemeButton = Color(0xFF766733);
@@ -35,9 +35,10 @@ class AppColors {
     subThemePurple,
   ];
 
-  static const List<Color> gradientColors =[
+  static const List<Color> gradientColors = [
     Color(0xFF766733),
     Color(0xFFCEBB8B),
-    Color(0xFF766733),];
+    Color(0xFF766733),
+  ];
 
-
+}
