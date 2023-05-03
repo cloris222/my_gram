@@ -4,7 +4,7 @@ import 'package:base_project/view_models/base_view_model.dart';
 import 'package:base_project/view_models/call_back_function.dart';
 import 'package:base_project/views/login/login_main_page.dart';
 import 'package:base_project/views/login/register_main_page.dart';
-import 'package:base_project/views/login/register_with_phone_page.dart';
+import 'package:base_project/views/login/register_with_email_page.dart';
 import 'package:flutter/material.dart';
 
 class CustomAppBar {

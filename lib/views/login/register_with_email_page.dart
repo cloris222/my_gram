@@ -18,16 +18,16 @@ import '../../widgets/drop_buttom/custom_drop_button.dart';
 import '../../widgets/label/error_text_widget.dart';
 import '../../widgets/label/login_param_view.dart';
 
-class RegisterWithPhoneView extends ConsumerStatefulWidget {
-  const RegisterWithPhoneView({
+class RegisterWithEmailView extends ConsumerStatefulWidget {
+  const RegisterWithEmailView({
     Key? key,
   }) : super(key: key);
 
   @override
-  ConsumerState createState() => _RegisterWithPhoneViewState();
+  ConsumerState createState() => _RegisterWithEmailViewState();
 }
 
-class _RegisterWithPhoneViewState extends ConsumerState<RegisterWithPhoneView> {
+class _RegisterWithEmailViewState extends ConsumerState<RegisterWithEmailView> {
   int currentAreaNumber = 0;
   late RegisterMainViewModel viewModel;
 
@@ -60,7 +60,7 @@ class _RegisterWithPhoneViewState extends ConsumerState<RegisterWithPhoneView> {
         children: [
           Text(tr('emailAddress'),style: AppTextStyle.getBaseStyle(fontSize: UIDefine.getPixelWidth(16)),),
           space,
-          ///手機號碼
+          ///email
           LoginParamView(
               keyboardType: TextInputType.emailAddress,
               hindTitle: true,
