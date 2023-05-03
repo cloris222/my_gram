@@ -83,7 +83,7 @@ class _CountdownButtonWidgetState extends State<CountdownButtonWidget> {
     });
     return
     TextButtonWidget(
-      textColor: widget.textColor??AppColors.textBlack,
+      textColor: widget.textColor ?? (_enableButton?AppColors.textBlack:AppColors.textWhite),
       isGradient: _enableButton ?widget.isGradient:false,
         radius: widget.radius??10,
         setWidth: widget.setWidth,
@@ -139,7 +139,7 @@ class _CountdownButtonWidgetState extends State<CountdownButtonWidget> {
       _enableButton = false;
       _currentText = widget.showCountdownText
           ? '${getBtnText()}($_currentSecond)'
-          : '$_currentSecond';
+          : '${_currentSecond}s';
 
     } else{
       _enableButton = true;

@@ -1,6 +1,10 @@
 import 'package:base_project/constant/theme/app_text_style.dart';
 import 'package:base_project/constant/theme/ui_define.dart';
+import 'package:base_project/view_models/base_view_model.dart';
 import 'package:base_project/view_models/call_back_function.dart';
+import 'package:base_project/views/login/login_main_page.dart';
+import 'package:base_project/views/login/register_main_page.dart';
+import 'package:base_project/views/login/register_with_phone_page.dart';
 import 'package:flutter/material.dart';
 
 class CustomAppBar {
@@ -58,7 +62,9 @@ class CustomAppBar {
             style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize36)),
         actions: <Widget>[
           IconButton(
-              onPressed: () {}, icon: const Icon(Icons.store_mall_directory))
+              onPressed: () {
+                BaseViewModel().pushPage(context, RegisterMainPage());
+              }, icon: const Icon(Icons.store_mall_directory))
         ]);
   }
 

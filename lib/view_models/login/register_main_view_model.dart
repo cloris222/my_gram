@@ -10,13 +10,13 @@ import '../gobal_provider/global_tag_controller_provider.dart';
 class RegisterMainViewModel extends CheckTextEditorViewModel {
   RegisterMainViewModel(super.ref);
 
-  TextEditingController phoneController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
   TextEditingController validateController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController rePasswordController = TextEditingController();
 
   ///MARK:checkTagList
-  final String tagPhone = "phone";
+  final String tagEmail = "email";
   final String tagValidate = "validate";
   final String tagPassword = "password";
   final String tagRePassword = "rePassword";
@@ -30,7 +30,7 @@ class RegisterMainViewModel extends CheckTextEditorViewModel {
   GlobalData.country.isNotEmpty ? GlobalData.country.first.country : '';
 
   void dispose() {
-    phoneController.dispose();
+    emailController.dispose();
     validateController.dispose();
     passwordController.dispose();
     rePasswordController.dispose();
@@ -38,13 +38,13 @@ class RegisterMainViewModel extends CheckTextEditorViewModel {
 
   ///MARK: 判斷是否有未輸入
   bool checkNotEmpty() {
-    checkEmptyController(tagPhone, phoneController);
+    checkEmptyController(tagEmail, emailController);
     checkEmptyController(tagValidate, validateController);
     checkEmptyController(tagPassword, passwordController);
     checkEmptyController(tagRePassword, rePasswordController);
 
 
-    return checkValidateResult(tagPhone) &&
+    return checkValidateResult(tagEmail) &&
         checkValidateResult(tagValidate) &&
         checkValidateResult(tagPassword) &&
         checkValidateResult(tagRePassword);
@@ -132,9 +132,9 @@ class RegisterMainViewModel extends CheckTextEditorViewModel {
 
   }
 
-  void onPhoneChanged(value){
+  void onEmailChanged(value){
     if(value.isNotEmpty){
-      ref.read(globalValidateDataProvider(tagPhone).notifier)
+      ref.read(globalValidateDataProvider(tagEmail).notifier)
           .update((state) => ValidateResultData());
     }
   }
