@@ -35,7 +35,9 @@ class AppColors {
     subThemePurple,
   ];
 
-  static const List<Color> gradientColors = [Color(0xFF766733),
+  static const List<Color> gradientColors =[
+    Color(0xFF766733),
     Color(0xFFCEBB8B),
     Color(0xFF766733),];
-}
+
+
