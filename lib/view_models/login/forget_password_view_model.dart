@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../../constant/theme/global_data.dart';
 import '../../models/data/validate_result_data.dart';
+import '../../views/login/reset_password_finish_page.dart';
 import '../../views/login/reset_password_page.dart';
 import '../check_texteditor_view_model.dart';
 import '../gobal_provider/global_tag_controller_provider.dart';
@@ -37,31 +38,18 @@ class ForgetPasswordViewModel extends CheckTextEditorViewModel {
   }
 
   ///MARK: 判斷是否有未輸入
-  bool checkNotEmpty() {
-    checkEmptyController(tagEmail, emailController);
-    checkEmptyController(tagValidate, validateController);
-    checkEmptyController(tagPassword, passwordController);
-    checkEmptyController(tagRePassword, rePasswordController);
-
-
-    return checkValidateResult(tagEmail) &&
-        checkValidateResult(tagValidate) &&
-        checkValidateResult(tagPassword) &&
-        checkValidateResult(tagRePassword);
-  }
-
-  ///MARK: 檢查其他規範
-  bool checkSendRequest() {
-    ///MARK: 檢查密碼是否相符
-    checkPassword();
-
-    return checkValidateResult(tagRePassword);
-  }
-
-  bool checkPress() {
-    // return checkEmail;
-    return true;
-  }
+  // bool checkNotEmpty() {
+  //   checkEmptyController(tagEmail, emailController);
+  //   checkEmptyController(tagValidate, validateController);
+  //   checkEmptyController(tagPassword, passwordController);
+  //   checkEmptyController(tagRePassword, rePasswordController);
+  //
+  //
+  //   return checkValidateResult(tagEmail) &&
+  //       checkValidateResult(tagValidate) &&
+  //       checkValidateResult(tagPassword) &&
+  //       checkValidateResult(tagRePassword);
+  // }
 
   void checkPassword() {
     if (passwordController.text.isNotEmpty &&
@@ -84,17 +72,21 @@ class ForgetPasswordViewModel extends CheckTextEditorViewModel {
     checkEmptyController(tagValidate, validateController);
     
     if(!checkValidateResult(tagEmail) || !checkValidateResult(tagValidate)) return;
-    pushPage(context, const ResetPasswordPage());
+    print('onpressnext${emailController.text}${validateController.text}');
+    pushPage(context, ResetPasswordPage(
+      emailAddress: emailController.text,
+      validate: validateController.text,
+    ));
          
   }
 
 
   ///重設密碼
-  void onPressReset(BuildContext context) {
+  void onPressReset(BuildContext context,email,validate) {
     ///MARK: 檢查是否有欄位未填
-    if (!checkNotEmpty()) {
-      return;
-    }
+    checkEmptyController(tagPassword, passwordController);
+    checkEmptyController(tagRePassword, rePasswordController);
+    if(!checkValidateResult(tagPassword) && !checkValidateResult(tagRePassword)) return;
 
       // ///MARK: 如果檢查有部分錯誤時
       // if (!checkSendRequest()) {
@@ -121,13 +113,7 @@ class ForgetPasswordViewModel extends CheckTextEditorViewModel {
     //         ));
     //   });
     // }
-
-
-
-    ///MARK: 切換到登入頁面
-    void onPressLogin(BuildContext context) {
-      popPage(context);
-    }
+    pushAndRemoveUntil(context, const ResetPasswordFinishPage());
   }
 
 
