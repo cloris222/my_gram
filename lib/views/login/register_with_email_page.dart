@@ -36,8 +36,13 @@ class _RegisterWithEmailViewState extends ConsumerState<RegisterWithEmailView> {
 
   @override
   void initState() {
-    super.initState();
     viewModel = RegisterMainViewModel(ref);
+    viewModel.emailController.addListener(() {
+      setState(() {
+
+      });
+    });
+    super.initState();
   }
 
   @override
@@ -89,7 +94,7 @@ class _RegisterWithEmailViewState extends ConsumerState<RegisterWithEmailView> {
                   data: ref.watch(
                       globalValidateDataProvider(viewModel.tagValidate)),
                 ),),
-            space,
+            SizedBox(width: UIDefine.getPixelWidth(10),),
             ///獲取驗證碼btn
               viewModel.emailController.text.isNotEmpty?
               CountdownButtonWidget(

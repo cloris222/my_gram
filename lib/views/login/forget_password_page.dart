@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../constant/theme/app_routes.dart';
 import '../../view_models/gobal_provider/global_tag_controller_provider.dart';
 import '../../view_models/login/forget_password_view_model.dart';
 import '../../widgets/button/countdown_button_widget.dart';
@@ -44,8 +45,8 @@ class _ForgetPasswordPageState extends ConsumerState<ForgetPasswordPage> {
 
   @override
   void dispose() {
-    super.dispose();
     viewModel.dispose();
+    super.dispose();
   }
 
   @override
@@ -169,7 +170,16 @@ class _ForgetPasswordPageState extends ConsumerState<ForgetPasswordPage> {
                       btnText: tr('next'),
                       onPressed: (){})
                 ],
-              )
+              ),
+              SizedBox(height: UIDefine.getHeight()*0.1,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(tr('haveAccount'),style: AppTextStyle.getBaseStyle(),),
+                  GestureDetector(
+                      onTap: () => AppRoutes.pushLogin(context, removeUntil: false),
+                      child: Text(tr("login"), style: AppTextStyle.getGradientStyle())),
+                ],)
             ],
           ),
         ),)
