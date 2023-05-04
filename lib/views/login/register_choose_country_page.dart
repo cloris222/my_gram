@@ -69,7 +69,7 @@ class _registerChooseCountryPageState extends ConsumerState<registerChooseCountr
           SizedBox(height: UIDefine.getHeight()*0.05,),
           Column(
             children: [
-              Text(tr('sexChooseTitle'),style: AppTextStyle.getBaseStyle(fontSize: UIDefine.getPixelWidth(20),fontWeight: FontWeight.w500),),
+              Text(tr('countryChooseTitle'),style: AppTextStyle.getBaseStyle(fontSize: UIDefine.getPixelWidth(20),fontWeight: FontWeight.w500),),
               SizedBox(height: UIDefine.getHeight()*0.08,),
               _buildCountrySectionDropDownBar(),
             ],
