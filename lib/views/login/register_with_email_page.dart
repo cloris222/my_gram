@@ -49,7 +49,6 @@ class _RegisterWithEmailViewState extends ConsumerState<RegisterWithEmailView> {
   @override
   Widget build(BuildContext context) {
     ref.watch(globalValidateDataProvider(viewModel.tagEmail));
-
     ref.watch(globalBoolProvider(viewModel.tagAcceptProtocol));
     Widget space = SizedBox(height: UIDefine.getPixelWidth(10));
     return Container(
@@ -90,7 +89,7 @@ class _RegisterWithEmailViewState extends ConsumerState<RegisterWithEmailView> {
                   data: ref.watch(
                       globalValidateDataProvider(viewModel.tagValidate)),
                 ),),
-            SizedBox(width: UIDefine.getPixelWidth(10),),
+            space,
             ///獲取驗證碼btn
               viewModel.emailController.text.isNotEmpty?
               CountdownButtonWidget(
