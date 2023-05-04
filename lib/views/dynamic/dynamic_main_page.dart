@@ -5,6 +5,7 @@ import 'package:base_project/constant/theme/app_text_style.dart';
 import 'package:base_project/constant/theme/ui_define.dart';
 import 'package:base_project/models/data/dynamic_info_data.dart';
 import 'package:base_project/view_models/base_view_model.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -25,6 +26,7 @@ class _DynamicMainPageState extends State<DynamicMainPage> {
   int clickLikeTimes = 1;
   bool bDownloading = true;
   BaseViewModel viewModel = BaseViewModel();
+  List<String> options = ['2','4','6','3','9','5'];
 
 
   @override
@@ -101,6 +103,9 @@ class _DynamicMainPageState extends State<DynamicMainPage> {
                      onLike: (index){
                        _onlike(index);
                      },
+                     onStore: (index){
+                       _showCustomModalBottomSheet(context,options);
+                     },
                      showFullContext: (index){
                        _showMore(index);
                      },
@@ -173,6 +178,62 @@ class _DynamicMainPageState extends State<DynamicMainPage> {
             comments: 20000),
       ]);
     });
+  }
+
+  _showCustomModalBottomSheet(context, List<String> options) async {
+    return showModalBottomSheet<int>(
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          clipBehavior: Clip.antiAlias,
+          decoration: BoxDecoration(
+            color: Colors.black,
+            borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(20.0),
+              topRight: const Radius.circular(20.0),
+            ),
+          ),
+          height: UIDefine.getHeight()*0.4,
+          child: Column(children: [
+            Container(
+              height: 50,
+              color: Color(0xff333333),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                 Icon(Icons.bookmark,color: AppColors.textWhite,),
+                  Text(tr('chooseStorePlace'),style: AppTextStyle.getBaseStyle(
+                    fontSize: UIDefine.fontSize16,
+                      color: AppColors.textWhite
+                  ),),
+                  GestureDetector(
+                    onTap: (){},
+                    child: Text(tr('add'),style: AppTextStyle.getBaseStyle(
+                        fontSize: UIDefine.fontSize16,
+                        color: AppColors.textWhite),),
+                  )
+                ],
+              ),
+            ),
+            Divider(height: 1.0),
+            Expanded(
+              child: ListView.builder(
+                itemBuilder: (BuildContext context, int index) {
+                  return ListTile(
+                      title: Text(options[index]),
+                      onTap: () {
+                        Navigator.of(context).pop(index);
+                      });
+                },
+                itemCount: options.length,
+              ),
+            ),
+          ]),
+        );
+      },
+    );
   }
 
 
