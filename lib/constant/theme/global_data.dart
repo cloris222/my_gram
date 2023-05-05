@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:base_project/models/data/dynamic_info_data.dart';
+import 'package:base_project/models/data/store_info_data.dart';
 import 'package:flutter/cupertino.dart';
 import '../../models/http_setting.dart';
 import '../../models/parameter/country_phone_data.dart';
@@ -55,6 +57,32 @@ class GlobalData {
         commentContext: isMain ? photos[random] : photos2[random],
         isLike: index % 2 != 0,
         likes: index * 500,
+      );
+    });
+  }
+
+  static List<DynamicInfoData> generateDynamicData(int length) {
+    return List<DynamicInfoData>.generate(length, (index) {
+      int random = Random().nextInt(3);
+      return DynamicInfoData(
+        avatar: photos2[random],
+        name: 'user$index',
+        context: 'text',
+        comments: 30*index,
+        images: photos,
+        likes: 100*index,
+        time: '2023-04-01'
+      );
+    });
+  }
+
+  static List<StoreInfoData> generateStoreData(int length) {
+    return List<StoreInfoData>.generate(length, (index) {
+      int random = Random().nextInt(3);
+      return StoreInfoData(
+        avatar: photos[random],
+        name: 'store$random',
+        list: generateDynamicData(10)
       );
     });
   }

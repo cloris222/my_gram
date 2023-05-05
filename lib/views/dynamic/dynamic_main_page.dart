@@ -5,10 +5,13 @@ import 'package:base_project/constant/theme/app_text_style.dart';
 import 'package:base_project/constant/theme/ui_define.dart';
 import 'package:base_project/models/data/dynamic_info_data.dart';
 import 'package:base_project/view_models/base_view_model.dart';
+import 'package:base_project/widgets/label/common_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../constant/theme/global_data.dart';
+import '../../models/data/store_info_data.dart';
 import '../../widgets/label/custom_gradient_icon.dart';
 import 'dynamic_info_view.dart';
 import 'dynamic_post_comment_page.dart';
@@ -25,6 +28,8 @@ class _DynamicMainPageState extends State<DynamicMainPage> {
   int clickLikeTimes = 1;
   bool bDownloading = true;
   BaseViewModel viewModel = BaseViewModel();
+  List<StoreInfoData> stores = GlobalData.generateStoreData(10);
+  TextEditingController controller = TextEditingController();
 
 
   @override
@@ -101,6 +106,9 @@ class _DynamicMainPageState extends State<DynamicMainPage> {
                      onLike: (index){
                        _onlike(index);
                      },
+                     onStore: (index){
+                       _showCustomModalBottomSheet(context,stores);
+                     },
                      showFullContext: (index){
                        _showMore(index);
                      },
@@ -173,6 +181,169 @@ class _DynamicMainPageState extends State<DynamicMainPage> {
             comments: 20000),
       ]);
     });
+  }
+
+  _showCustomModalBottomSheet(context, List<StoreInfoData> stores) async {
+    return showModalBottomSheet<int>(
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder:(BuildContext context, StateSetter setState)=> Container(
+            clipBehavior: Clip.antiAlias,
+            decoration: BoxDecoration(
+              color: Colors.black,
+              borderRadius: BorderRadius.only(
+                topLeft: const Radius.circular(20.0),
+                topRight: const Radius.circular(20.0),
+              ),
+            ),
+            height: UIDefine.getHeight()*0.4,
+            child: Column(children: [
+              Container(
+                height: 50,
+                color: Color(0xff333333),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                   Icon(Icons.bookmark,color: AppColors.textWhite,),
+                    Text(tr('chooseStorePlace'),style: AppTextStyle.getBaseStyle(
+                      fontSize: UIDefine.fontSize16,
+                        color: AppColors.textWhite
+                    ),),
+                    GestureDetector(
+                      onTap: (){
+                        // Navigator.of(context).pop();
+                        _addStore(context).then((value) => setState((){}));
+                      },
+                      child: Text(tr('add'),style: AppTextStyle.getBaseStyle(
+                          fontSize: UIDefine.fontSize16,
+                          color: AppColors.textWhite),),
+                    )
+                  ],
+                ),
+              ),
+              Divider(height: 1.0),
+              Expanded(
+                child: ListView.builder(
+                  itemBuilder: (BuildContext context, int index) {
+                    return Container(
+                      margin: EdgeInsets.all(UIDefine.getPixelWidth(10)),
+                      width: UIDefine.getWidth()*0.5,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              ClipRRect(
+                                child: CommonNetworkImage(
+                                  width: UIDefine.getPixelWidth(60),
+                                  height: UIDefine.getPixelWidth(60),
+                                  imageUrl: stores[index].avatar,
+                                ),
+                              ),
+                              SizedBox(width: UIDefine.getPixelWidth(5),),
+                              Text(stores[index].name,style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize16),)
+                            ],
+                          ),
+                          GestureDetector(
+                            onTap: (){
+
+                            },
+                            child: Icon(Icons.add,color: AppColors.textWhite,),
+                          )
+                        ],
+                      ),
+                    );
+                  },
+                  itemCount: stores.length,
+                ),
+              ),
+            ]),
+          ),
+        );
+      },
+    );
+  }
+  
+  Future<void>_addStore(BuildContext context)async{
+    await showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return Dialog(
+            shape: RoundedRectangleBorder(
+                borderRadius:
+                BorderRadius.circular(15.0)), //this right here
+            child:
+            Container(
+              clipBehavior: Clip.antiAlias,
+              decoration: BoxDecoration(
+                color: Color(0xff333333),
+                borderRadius: BorderRadius.circular(15.0),
+              ),
+              width: UIDefine.getPixelWidth(300),
+              height: UIDefine.getPixelWidth(120),
+              child: Column(children: [
+                Container(
+                  height: 50,
+                  color: Color(0xff333333),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      GestureDetector(
+                        onTap: (){
+                          controller.text = '';
+                          Navigator.of(context).pop();
+                        },
+                        child: Text(tr('cancel')),
+                      ),
+                      Text(tr('addStorePlace'),style: AppTextStyle.getBaseStyle(
+                          fontSize: UIDefine.fontSize16,
+                          color: AppColors.textWhite
+                      ),),
+                      GestureDetector(
+                        onTap: (){
+                          if(controller.text == '')return;
+                          stores.add(
+                              StoreInfoData(
+                                name:controller.text,
+                                avatar: GlobalData.photos[0],
+                                list: []
+                              )
+                          );
+                          controller.text = '';
+                          Navigator.of(context).pop();
+                          setState(() {
+
+                          });
+                        },
+                        child: Text(tr('save'),style: AppTextStyle.getBaseStyle(
+                            fontSize: UIDefine.fontSize16,
+                            color: AppColors.textWhite),),
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(height: UIDefine.getPixelWidth(5),),
+                Container(
+                  width: UIDefine.getPixelWidth(200),
+                  height: UIDefine.getPixelWidth(40),
+                  child: TextField(
+                    controller: controller,
+                    decoration: InputDecoration(
+                        filled: true,
+                        border: InputBorder.none,
+                        fillColor: Color(0xff1F1F1F),
+                        hintText: tr('inputStoreName')
+                    ),
+                  )
+                )
+              ]),
+            )
+          );
+        });
   }
 
 

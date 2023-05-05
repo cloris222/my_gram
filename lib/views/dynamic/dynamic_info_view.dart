@@ -24,6 +24,7 @@ class DynamicInfoView extends StatefulWidget {
     required this.showFullContext,
     required this.onLike,
     required this.onComment,
+    required this.onStore
   }) : super(key: key);
 final DynamicInfoData data;
 final int index;
@@ -31,6 +32,7 @@ final onGetIntFunction showFullContext;
 final onGetIntFunction onFollowing;
 final onGetIntFunction onLike;
 final onGetIntFunction onComment;
+final onGetIntFunction onStore;
   @override
   State<DynamicInfoView> createState() => _DynamicInfoViewState();
 }
@@ -213,7 +215,7 @@ class _DynamicInfoViewState extends State<DynamicInfoView> {
                     ),
                     foregroundColor: AppColors.mainThemeButton,
                   ),
-                  onPressed: ()=>widget.onLike(widget.index),
+                  onPressed: ()=>widget.onStore(widget.index),
                   child: Container(
                     alignment: Alignment.center,
                     width: UIDefine.getPixelWidth(65),
