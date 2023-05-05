@@ -75,8 +75,9 @@ class _LoginMainPageState extends ConsumerState<LoginMainPage> {
                             data: ref.watch(
                                 globalValidateDataProvider(viewModel.tagEmail)),
                             onChanged: (String value) {
-                              value = viewModel.emailController.text;
-                              viewModel.onEmailChanged(value);
+                              setState(() {
+                                viewModel.onEmailChanged(value);
+                              });
                             }
                         ),
                         SizedBox(height: UIDefine.getPixelWidth(5),),
