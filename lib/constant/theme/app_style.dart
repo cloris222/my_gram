@@ -3,9 +3,26 @@ import 'package:flutter/material.dart';
 import '../../widgets/label/gradient_border_type.dart';
 import '../enum/border_style_type.dart';
 import 'app_colors.dart';
+import 'app_text_style.dart';
 
 ///MARK: 放會重複用到的Style
 class AppStyle {
+  Widget styleFillText(String text,
+      {TextStyle? style,
+        double minHeight = 20,
+        EdgeInsetsGeometry margin = EdgeInsets.zero,
+        AlignmentGeometry alignment = Alignment.centerLeft,
+        GlobalKey? key}) {
+    return Container(
+        key: key,
+        alignment: alignment,
+        margin: margin,
+        constraints: BoxConstraints(minHeight: minHeight),
+        child: Text(
+          text,
+          style: style ?? AppTextStyle.getBaseStyle(),
+        ));
+  }
 
   /// 漸層色藍紫色
   BoxDecoration baseGradient(

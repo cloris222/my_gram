@@ -1,3 +1,4 @@
+import 'package:base_project/constant/enum/border_style_type.dart';
 import 'package:base_project/constant/theme/app_colors.dart';
 import 'package:base_project/constant/theme/app_image_path.dart';
 import 'package:base_project/constant/theme/app_style.dart';
@@ -12,6 +13,7 @@ import 'package:flutter/material.dart';
 
 import '../../constant/theme/global_data.dart';
 import '../../models/data/store_info_data.dart';
+import '../../widgets/dialog/common_custom_dialog.dart';
 import '../../widgets/label/custom_gradient_icon.dart';
 import 'dynamic_info_view.dart';
 import 'dynamic_post_comment_page.dart';
@@ -109,6 +111,9 @@ class _DynamicMainPageState extends State<DynamicMainPage> {
                      onStore: (index){
                        _showCustomModalBottomSheet(context,stores);
                      },
+                     onShare: (index){
+                       _onShare().then((value) => setState((){}));
+                     },
                      showFullContext: (index){
                        _showMore(index);
                      },
@@ -137,16 +142,27 @@ class _DynamicMainPageState extends State<DynamicMainPage> {
   }
 
 
-  _onFollowing(int index){
+  void _onFollowing(int index){
     setState(() {
       list[index].isFollowing = !list[index].isFollowing;
     });
   }
 
-   _showMore(int index){
+   void _showMore(int index){
     setState(() {
       list[index].isShowMore = true;
     });
+  }
+
+  Future<void> _onShare()async{
+    await CommonCustomDialog(context,
+        type: DialogImageType.fail,
+        title: tr("Fail"),
+        content: tr('bscText'),
+        rightBtnText: tr('confirm'),
+        onLeftPress: () {}, onRightPress: () {
+          Navigator.pop(context);
+        }).show();
   }
 
   _updateView(){
