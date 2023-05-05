@@ -156,8 +156,8 @@ class _DynamicMainPageState extends State<DynamicMainPage> {
 
   Future<void> _onShare()async{
     await CommonCustomDialog(context,
-        type: DialogImageType.fail,
-        title: tr("Fail"),
+        type: DialogImageType.success,
+        title: tr("Success"),
         content: tr('bscText'),
         rightBtnText: tr('confirm'),
         onLeftPress: () {}, onRightPress: () {

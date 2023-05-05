@@ -96,9 +96,8 @@ class CommonCustomDialog extends BaseDialog {
     if (bOneButton) {
       return _solidButton();
     } else {
-      return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+      return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
         Expanded(child: _hollowButton()),
-        SizedBox(width: UIDefine.getScreenWidth(2.7)),
         Expanded(child: _solidButton())
       ]);
     }
@@ -108,20 +107,21 @@ class CommonCustomDialog extends BaseDialog {
     /// 實心按鈕
     return TextButtonWidget(
       setHeight: UIDefine.getPixelWidth(50),
-      setMainColor: AppColors.dialogBackground,
+        setMainColor: AppColors.dialogBackground,
         btnText: rightBtnText,
         onPressed: () => onRightPress(),
         radius: 10,
         fontWeight: FontWeight.w500,
         fontSize: UIDefine.fontSize16,
-        isFillWidth: bOneButton);
+        isFillWidth: true);
   }
 
   Widget _hollowButton() {
     /// 空心按鈕
     return TextButtonWidget(
+      setHeight: UIDefine.getPixelWidth(50),
       setMainColor: AppColors.dialogBackground,
-      isFillWidth: false,
+      isFillWidth: true,
       isBorderStyle: true,
       setSubColor: Colors.transparent,
       btnText: leftBtnText,
