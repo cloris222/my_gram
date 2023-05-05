@@ -30,22 +30,16 @@ class _ForgetPasswordPageState extends ConsumerState<ForgetPasswordPage> {
   @override
   void initState() {
     viewModel = ForgetPasswordViewModel(ref);
-    viewModel.emailController.addListener(() {
-      setState(() {
-
-      });
-      viewModel.validateController.addListener(() {
-        setState(() {
-
-        });
-      });
-    });
+    viewModel.validateController.addListener(_onListener);
     super.initState();
   }
 
+  void _onListener() {
+  }
   @override
   void dispose() {
     viewModel.dispose();
+    viewModel.validateController.removeListener(_onListener);
     super.dispose();
   }
 
@@ -103,8 +97,9 @@ class _ForgetPasswordPageState extends ConsumerState<ForgetPasswordPage> {
                         data: ref.watch(
                             globalValidateDataProvider(viewModel.tagEmail)),
                         onChanged: (String value) {
-                          value = viewModel.emailController.text;
-                          viewModel.onEmailChanged(value);
+                          setState(() {
+                            viewModel.onEmailChanged(value);
+                          });
                         }
                     ),
                     ///驗證碼
