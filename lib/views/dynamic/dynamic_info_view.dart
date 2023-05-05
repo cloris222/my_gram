@@ -12,6 +12,7 @@ import '../../models/data/dynamic_info_data.dart';
 import '../../view_models/call_back_function.dart';
 import '../../widgets/label/common_network_image.dart';
 import '../../widgets/label/custom_gradient_icon.dart';
+import '../personal/personal_home_page.dart';
 import '../personal/personal_main_page.dart';
 
 class DynamicInfoView extends StatefulWidget {
@@ -59,7 +60,7 @@ class _DynamicInfoViewState extends State<DynamicInfoView> {
                 children: [
                   GestureDetector(
                     onTap:(){
-                      viewModel.pushPage(context, const PersonalMainPage());
+                      viewModel.pushPage(context, const PersonalHomePage());
                     },
                     child: CommonNetworkImage(
                         imageUrl: widget.data.avatar,
@@ -73,7 +74,7 @@ class _DynamicInfoViewState extends State<DynamicInfoView> {
                     children: [
                       GestureDetector(
                         onTap:(){
-                          viewModel.pushPage(context, const PersonalMainPage());
+                          viewModel.pushPage(context, const PersonalHomePage());
                         },
                         child: Text(widget.data.name,style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize14),),
                       ),

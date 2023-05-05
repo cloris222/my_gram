@@ -153,7 +153,6 @@ class _CountdownButtonWidgetState extends State<CountdownButtonWidget> {
       text =  tr('send');
     }
     text =  widget.btnText;
-    print(text);
     return text;
   }
 }

@@ -130,10 +130,14 @@ class _TextButtonWidgetState extends State<TextButtonWidget>
               widget.btnText,
               textAlign: TextAlign.center,
               style: widget.isTextGradient?
-              AppTextStyle.getGradientStyle(fontSize: widget.fontSize ?? UIDefine.fontSize16):
+              AppTextStyle.getGradientStyle(
+                  fontSize: widget.fontSize ?? UIDefine.fontSize16,
+                  fontWeight: widget.fontWeight??FontWeight.w500
+              ):
               AppTextStyle.getBaseStyle(
                   color: widget.textColor??AppColors.textWhite,
-                  fontSize: widget.fontSize ?? UIDefine.fontSize16)
+                  fontSize: widget.fontSize ?? UIDefine.fontSize16,
+                  fontWeight: widget.fontWeight??FontWeight.w500)
               ,
             )));
 

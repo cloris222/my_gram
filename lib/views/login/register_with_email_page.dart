@@ -18,16 +18,16 @@ import '../../widgets/drop_buttom/custom_drop_button.dart';
 import '../../widgets/label/error_text_widget.dart';
 import '../../widgets/label/login_param_view.dart';
 
-class RegisterWithPhoneView extends ConsumerStatefulWidget {
-  const RegisterWithPhoneView({
+class RegisterWithEmailView extends ConsumerStatefulWidget {
+  const RegisterWithEmailView({
     Key? key,
   }) : super(key: key);
 
   @override
-  ConsumerState createState() => _RegisterWithPhoneViewState();
+  ConsumerState createState() => _RegisterWithEmailViewState();
 }
 
-class _RegisterWithPhoneViewState extends ConsumerState<RegisterWithPhoneView> {
+class _RegisterWithEmailViewState extends ConsumerState<RegisterWithEmailView> {
   int currentAreaNumber = 0;
   late RegisterMainViewModel viewModel;
 
@@ -36,8 +36,8 @@ class _RegisterWithPhoneViewState extends ConsumerState<RegisterWithPhoneView> {
 
   @override
   void initState() {
-    super.initState();
     viewModel = RegisterMainViewModel(ref);
+    super.initState();
   }
 
   @override
@@ -49,7 +49,6 @@ class _RegisterWithPhoneViewState extends ConsumerState<RegisterWithPhoneView> {
   @override
   Widget build(BuildContext context) {
     ref.watch(globalValidateDataProvider(viewModel.tagEmail));
-
     ref.watch(globalBoolProvider(viewModel.tagAcceptProtocol));
     Widget space = SizedBox(height: UIDefine.getPixelWidth(10));
     return Container(
@@ -60,7 +59,7 @@ class _RegisterWithPhoneViewState extends ConsumerState<RegisterWithPhoneView> {
         children: [
           Text(tr('emailAddress'),style: AppTextStyle.getBaseStyle(fontSize: UIDefine.getPixelWidth(16)),),
           space,
-          ///手機號碼
+          ///email
           LoginParamView(
               keyboardType: TextInputType.emailAddress,
               hindTitle: true,
@@ -70,8 +69,9 @@ class _RegisterWithPhoneViewState extends ConsumerState<RegisterWithPhoneView> {
               data: ref.watch(
                   globalValidateDataProvider(viewModel.tagEmail)),
               onChanged: (String value) {
-                value = viewModel.emailController.text;
-                viewModel.onEmailChanged(value);
+                setState(() {
+                  viewModel.onEmailChanged(value);
+                });
               }
           ),
           ///驗證碼
