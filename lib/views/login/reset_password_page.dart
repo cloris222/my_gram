@@ -33,16 +33,6 @@ class _ResetPasswordPageState extends ConsumerState<ResetPasswordPage> {
   @override
   void initState() {
     viewModel = ForgetPasswordViewModel(ref);
-    viewModel.passwordController.addListener(() {
-      setState(() {
-
-      });
-      viewModel.rePasswordController.addListener(() {
-        setState(() {
-
-        });
-      });
-    });
     super.initState();
   }
 
@@ -103,7 +93,12 @@ class _ResetPasswordPageState extends ConsumerState<ResetPasswordPage> {
                             data: ref.watch(
                                 globalValidateDataProvider(viewModel.tagPassword)),
                             isSecure: true,
-                            onChanged: viewModel.onPasswordChanged),
+                            onChanged: (String value){
+                              setState(() {
+                                viewModel.onPasswordChanged(value);
+                              });
+                            }
+                            ),
                         ///確認密碼
                         SizedBox(height: UIDefine.getPixelWidth(5),),
                         Text(tr('confirmPW'),style: AppTextStyle.getBaseStyle(fontSize: UIDefine.getPixelWidth(16)),),
@@ -116,7 +111,11 @@ class _ResetPasswordPageState extends ConsumerState<ResetPasswordPage> {
                             data: ref.watch(
                                 globalValidateDataProvider(viewModel.tagRePassword)),
                             isSecure: true,
-                            onChanged: viewModel.onPasswordChanged),
+                            onChanged: (String value){
+                              setState(() {
+                                viewModel.onPasswordChanged(value);
+                              });
+                            }),
                       ],
                     ),
                   ),

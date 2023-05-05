@@ -35,6 +35,9 @@ class _ForgetPasswordPageState extends ConsumerState<ForgetPasswordPage> {
   }
 
   void _onListener() {
+    setState(() {
+
+    });
   }
   @override
   void dispose() {

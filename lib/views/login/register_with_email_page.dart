@@ -37,11 +37,6 @@ class _RegisterWithEmailViewState extends ConsumerState<RegisterWithEmailView> {
   @override
   void initState() {
     viewModel = RegisterMainViewModel(ref);
-    viewModel.emailController.addListener(() {
-      setState(() {
-
-      });
-    });
     super.initState();
   }
 
@@ -74,8 +69,9 @@ class _RegisterWithEmailViewState extends ConsumerState<RegisterWithEmailView> {
               data: ref.watch(
                   globalValidateDataProvider(viewModel.tagEmail)),
               onChanged: (String value) {
-                value = viewModel.emailController.text;
-                viewModel.onEmailChanged(value);
+                setState(() {
+                  viewModel.onEmailChanged(value);
+                });
               }
           ),
           ///驗證碼
