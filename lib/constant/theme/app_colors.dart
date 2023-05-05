@@ -11,6 +11,9 @@ class AppColors {
   static const Color textBlack = Color(0xFF000000);
   static const Color textHintWhite = Color(0xFFAEAEAE);
   static const Color bolderGrey = Color.fromRGBO(255, 255, 255, 0.3);
+  static const Color textSuccess = Color(0xFFDCAC4E);
+  static const Color textFail = Color(0xFFF24C65);
+  static const Color textWarning = Color(0xFFFFD600);
 
   static const Color commentUnlike = Color(0xFF979797);
 
@@ -20,6 +23,8 @@ class AppColors {
 
   ///背景顏色
   static const Color textFieldBackground = Color(0xFF1F1F1F);
+  static const Color dialogBackground = Color(0xFF333333);
+  static const Color opacityBackground = Color(0xC6000000);
 
   static const Color buttonLike = Color(0xFF3CDBA7);
   static const Color buttonDisLike = Color(0xFFF24C65);

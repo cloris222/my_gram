@@ -15,8 +15,8 @@ class AppImagePath {
   ///Icons
   static const String checkedIcon = '$iconPath/icon_checked_03.png';
   static const String unCheckedIcon = '$iconPath/icon_cross_01.png';
+  static const String btnCancel = '$iconPath/icon_cross_01.png';
 
   static const String demoImage = '$imgPath/img_check_01.png';
-
 
 }
