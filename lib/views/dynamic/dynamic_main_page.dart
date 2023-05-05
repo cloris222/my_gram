@@ -189,84 +189,86 @@ class _DynamicMainPageState extends State<DynamicMainPage> {
       isScrollControlled: true,
       context: context,
       builder: (BuildContext context) {
-        return Container(
-          clipBehavior: Clip.antiAlias,
-          decoration: BoxDecoration(
-            color: Colors.black,
-            borderRadius: BorderRadius.only(
-              topLeft: const Radius.circular(20.0),
-              topRight: const Radius.circular(20.0),
-            ),
-          ),
-          height: UIDefine.getHeight()*0.4,
-          child: Column(children: [
-            Container(
-              height: 50,
-              color: Color(0xff333333),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                 Icon(Icons.bookmark,color: AppColors.textWhite,),
-                  Text(tr('chooseStorePlace'),style: AppTextStyle.getBaseStyle(
-                    fontSize: UIDefine.fontSize16,
-                      color: AppColors.textWhite
-                  ),),
-                  GestureDetector(
-                    onTap: (){
-                      // Navigator.of(context).pop();
-                      _addStore(context);
-                    },
-                    child: Text(tr('add'),style: AppTextStyle.getBaseStyle(
-                        fontSize: UIDefine.fontSize16,
-                        color: AppColors.textWhite),),
-                  )
-                ],
+        return StatefulBuilder(
+          builder:(BuildContext context, StateSetter setState)=> Container(
+            clipBehavior: Clip.antiAlias,
+            decoration: BoxDecoration(
+              color: Colors.black,
+              borderRadius: BorderRadius.only(
+                topLeft: const Radius.circular(20.0),
+                topRight: const Radius.circular(20.0),
               ),
             ),
-            Divider(height: 1.0),
-            Expanded(
-              child: ListView.builder(
-                itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    margin: EdgeInsets.all(UIDefine.getPixelWidth(10)),
-                    width: UIDefine.getWidth()*0.5,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            ClipRRect(
-                              child: CommonNetworkImage(
-                                width: UIDefine.getPixelWidth(60),
-                                height: UIDefine.getPixelWidth(60),
-                                imageUrl: stores[index].avatar,
+            height: UIDefine.getHeight()*0.4,
+            child: Column(children: [
+              Container(
+                height: 50,
+                color: Color(0xff333333),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                   Icon(Icons.bookmark,color: AppColors.textWhite,),
+                    Text(tr('chooseStorePlace'),style: AppTextStyle.getBaseStyle(
+                      fontSize: UIDefine.fontSize16,
+                        color: AppColors.textWhite
+                    ),),
+                    GestureDetector(
+                      onTap: (){
+                        // Navigator.of(context).pop();
+                        _addStore(context).then((value) => setState((){}));
+                      },
+                      child: Text(tr('add'),style: AppTextStyle.getBaseStyle(
+                          fontSize: UIDefine.fontSize16,
+                          color: AppColors.textWhite),),
+                    )
+                  ],
+                ),
+              ),
+              Divider(height: 1.0),
+              Expanded(
+                child: ListView.builder(
+                  itemBuilder: (BuildContext context, int index) {
+                    return Container(
+                      margin: EdgeInsets.all(UIDefine.getPixelWidth(10)),
+                      width: UIDefine.getWidth()*0.5,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              ClipRRect(
+                                child: CommonNetworkImage(
+                                  width: UIDefine.getPixelWidth(60),
+                                  height: UIDefine.getPixelWidth(60),
+                                  imageUrl: stores[index].avatar,
+                                ),
                               ),
-                            ),
-                            SizedBox(width: UIDefine.getPixelWidth(5),),
-                            Text(stores[index].name,style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize16),)
-                          ],
-                        ),
-                        GestureDetector(
-                          onTap: (){
+                              SizedBox(width: UIDefine.getPixelWidth(5),),
+                              Text(stores[index].name,style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize16),)
+                            ],
+                          ),
+                          GestureDetector(
+                            onTap: (){
 
-                          },
-                          child: Icon(Icons.add,color: AppColors.textWhite,),
-                        )
-                      ],
-                    ),
-                  );
-                },
-                itemCount: stores.length,
+                            },
+                            child: Icon(Icons.add,color: AppColors.textWhite,),
+                          )
+                        ],
+                      ),
+                    );
+                  },
+                  itemCount: stores.length,
+                ),
               ),
-            ),
-          ]),
+            ]),
+          ),
         );
       },
     );
   }
   
-  _addStore(BuildContext context){
-    showDialog(
+  Future<void>_addStore(BuildContext context)async{
+    await showDialog(
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
