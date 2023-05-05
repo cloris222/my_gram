@@ -1,8 +1,10 @@
 import 'dart:math';
 
 import 'package:base_project/models/data/dynamic_info_data.dart';
+import 'package:base_project/models/data/message_info_data.dart';
 import 'package:base_project/models/data/store_info_data.dart';
 import 'package:flutter/cupertino.dart';
+import '../../models/data/user_friends_data.dart';
 import '../../models/http_setting.dart';
 import '../../models/parameter/country_phone_data.dart';
 import '../../models/parameter/post_comment_data.dart';
@@ -83,6 +85,29 @@ class GlobalData {
         avatar: photos[random],
         name: 'store$random',
         list: generateDynamicData(10)
+      );
+    });
+  }
+
+  static List<MessageInfoData> generateMessageInfoData(int length){
+    String text = 'text';
+    int random = Random().nextInt(3);
+    return List<MessageInfoData>.generate(length, (index){
+      return MessageInfoData(
+          context: List<String>.generate(10, (index) => text*index*random),
+        time: index%2==0?'2023-0$random-05 12:00':'2023-05-05 1$random:00'
+      );
+    });
+  }
+
+  static List<UserFriensData> generateUserFriendsData(int length){
+    return List<UserFriensData>.generate(length, (index) {
+      int random = Random().nextInt(3);
+      return UserFriensData(
+        avatar: photos[random],
+        name: 'store$random',
+        isPin: index % 3 == 0,
+        messageData: generateMessageInfoData(20)
       );
     });
   }

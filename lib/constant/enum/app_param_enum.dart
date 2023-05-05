@@ -10,7 +10,7 @@ enum AppNavigationBarType {
   typeDynamic(label: "dynamic",icon: Icons.star, typePage: DynamicMainPage()),
   typeExplore(label: "explore",icon: Icons.search, typePage:ExploreMainPage()),
   typePair(label: "pair",icon: Icons.local_activity, typePage: PairMainPage()),
-  typeMessage(label: "message",icon: Icons.question_answer_rounded, typePage:MessageMainPage()),
+  typeMessage(label: "message",icon: Icons.question_answer_rounded, typePage: MessageMainPage()),
   typePersonal(label: "personal",icon: Icons.account_circle_outlined, typePage: PersonalMainPage());
 
   /// 名稱
