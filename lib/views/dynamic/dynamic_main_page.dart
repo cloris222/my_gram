@@ -219,7 +219,7 @@ class _DynamicMainPageState extends State<DynamicMainPage> {
             child: Column(children: [
               Container(
                 height: 50,
-                color: Color(0xff333333),
+                color: AppColors.dialogBackground,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -304,7 +304,7 @@ class _DynamicMainPageState extends State<DynamicMainPage> {
               child: Column(children: [
                 Container(
                   height: 50,
-                  color: Color(0xff333333),
+                  color: AppColors.dialogBackground,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
