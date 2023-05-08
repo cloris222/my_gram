@@ -57,8 +57,7 @@ class _MessageMainPageState extends State<MessageMainPage> {
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Container(
-                  height: UIDefine.getPixelWidth(100),
-                  padding: EdgeInsets.only(left: UIDefine.getPixelWidth(5)),
+                  height: UIDefine.getPixelWidth(110),
                   child: NewsNavbar(friendsList: _sortData(list),),
                 ),
               ),

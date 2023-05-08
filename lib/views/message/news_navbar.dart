@@ -32,44 +32,47 @@ class _NewsNavbarState extends State<NewsNavbar> {
         itemBuilder: (context,index){
           return Column(
             children: [
-            Stack(
-            alignment: Alignment.center,
-            children: [
-              widget.friendsList[index].isPin?
               Container(
-                margin: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(5)),
-                width: UIDefine.getPixelWidth(70),
-                height: UIDefine.getPixelWidth(70),
-                decoration: AppStyle().buildGradientBorderWithGradientColor(
-                    borderWidth: 3,
-                    type: GradientBorderType.common,
-                    colors: AppColors.gradientColors,
-                    radius:15,
+                height: UIDefine.getPixelWidth(80),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    widget.friendsList[index].isPin?
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(5)),
+                      width: UIDefine.getPixelWidth(70),
+                      height: UIDefine.getPixelWidth(70),
+                      decoration: AppStyle().buildGradientBorderWithGradientColor(
+                        borderWidth: 3,
+                        type: GradientBorderType.common,
+                        colors: AppColors.gradientColors,
+                        radius:15,
+                      ),
+                    ):
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(5)),
+                      width: UIDefine.getPixelWidth(70),
+                      height: UIDefine.getPixelWidth(70),
+                    ),
+                    ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child: CommonNetworkImage(
+                            fit: BoxFit.cover,
+                            width: UIDefine.getPixelWidth(66),
+                            height: UIDefine.getPixelWidth(66),
+                            imageUrl: widget.friendsList[index].avatar)
+                    ),
+                    Visibility(
+                        visible: widget.friendsList[index].isPin==true,
+                        child: Positioned(
+                            right: 0,
+                            bottom: 0,
+                            width: UIDefine.getPixelWidth(25),
+                            height: UIDefine.getPixelWidth(25),
+                            child: Image.asset(AppImagePath.demoImage)))
+                  ],
                 ),
-              ):
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(5)),
-                width: UIDefine.getPixelWidth(70),
-                height: UIDefine.getPixelWidth(70),
               ),
-              ClipRRect(
-                  borderRadius: BorderRadius.circular(15),
-                  child: CommonNetworkImage(
-                      fit: BoxFit.cover,
-                      width: UIDefine.getPixelWidth(66),
-                      height: UIDefine.getPixelWidth(66),
-                      imageUrl: widget.friendsList[index].avatar)
-              ),
-              Visibility(
-                  visible: widget.friendsList[index].isPin==true,
-                  child: Positioned(
-                      right: -3,
-                      bottom: -5,
-                      width: UIDefine.getPixelWidth(25),
-                      height: UIDefine.getPixelWidth(25),
-                      child: Image.asset(AppImagePath.demoImage)))
-            ],
-          ),
               SizedBox(height: UIDefine.getPixelWidth(5),),
               widget.friendsList[index].isPin?
                   Text(widget.friendsList[index].name,style: AppTextStyle.getGradientStyle(),):

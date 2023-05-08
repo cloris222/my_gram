@@ -104,7 +104,7 @@ class _MessageListViewState extends State<MessageListView> {
               child: Container(
                   color: Colors.black,
                   width: UIDefine.getWidth(),
-                  padding: EdgeInsets.fromLTRB(UIDefine.getPixelWidth(10), UIDefine.getPixelWidth(5),UIDefine.getPixelWidth(5), UIDefine.getPixelWidth(5)),
+                  padding: EdgeInsets.all(UIDefine.getPixelWidth(5)),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -119,7 +119,7 @@ class _MessageListViewState extends State<MessageListView> {
                               imageUrl: widget.list[index].avatar,
                             ),
                           ),
-                          SizedBox(width: UIDefine.getPixelWidth(5),),
+                          SizedBox(width: UIDefine.getPixelWidth(10),),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
