@@ -59,7 +59,7 @@ class _MessageMainPageState extends State<MessageMainPage> {
               ),
               SizedBox(height: UIDefine.getPixelWidth(10),),
               Text(tr('message'),style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize16),),
-              SizedBox(height: UIDefine.getPixelWidth(10),),
+              SizedBox(height: UIDefine.getPixelWidth(20),),
               Container(
                 width: UIDefine.getWidth(),
                 child: MessageListView(),

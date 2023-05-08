@@ -4,6 +4,7 @@ import 'package:base_project/constant/theme/global_data.dart';
 import 'package:base_project/constant/theme/ui_define.dart';
 import 'package:base_project/widgets/label/common_network_image.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import '../../models/data/user_friends_data.dart';
 
@@ -30,39 +31,54 @@ class _MessageListViewState extends State<MessageListView> {
       physics: NeverScrollableScrollPhysics(),
       itemCount: list.length,
         itemBuilder: (context,index){
+        int finalRecordIndex = list[index].messageData.length-1;
           return Container(
             margin: EdgeInsets.symmetric(vertical: UIDefine.getPixelWidth(5)),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: CommonNetworkImage(
-                    fit: BoxFit.cover,
-                    width: UIDefine.getPixelWidth(60),
-                    height: UIDefine.getPixelWidth(60),
-                    imageUrl: list[index].avatar,
-                  ),
-                ),
-                SizedBox(width: UIDefine.getPixelWidth(5),),
-                Column(
+                Row(
                   children: [
-                    Row(
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: CommonNetworkImage(
+                        fit: BoxFit.cover,
+                        width: UIDefine.getPixelWidth(60),
+                        height: UIDefine.getPixelWidth(60),
+                        imageUrl: list[index].avatar,
+                      ),
+                    ),
+                    SizedBox(width: UIDefine.getPixelWidth(5),),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(list[index].name,style: AppTextStyle.getBaseStyle(),),
-                        Text(_getTime(list[index].messageData[list[index].messageData.length-1].time),
-                          style: AppTextStyle.getBaseStyle(
-                            fontSize: UIDefine.fontSize12,
-                            color: AppColors.textGrey,
-                          ),)
+                        Row(
+                          children: [
+                            Text(list[index].name,style: AppTextStyle.getBaseStyle(),),
+                            SizedBox(width: UIDefine.getPixelWidth(10),),
+                            Text(_getTime(list[index].messageData[finalRecordIndex].time),
+                              style: AppTextStyle.getBaseStyle(
+                                fontSize: UIDefine.fontSize12,
+                                color: AppColors.textGrey,
+                              ),)
+                          ],
+                        ),
+                        SizedBox(height: UIDefine.getPixelWidth(5),),
+                        Text(list[index].messageData[finalRecordIndex].context[list[index].messageData[finalRecordIndex].context.length-1],
+                            style:
+                            AppTextStyle.getBaseStyle(
+                              fontSize: UIDefine.fontSize14,
+                              fontWeight: list[index].messageData[finalRecordIndex].isRead?FontWeight.w500:FontWeight.w700,
+                              color: list[index].messageData[finalRecordIndex].isRead?AppColors.textGrey:AppColors.textWhite,
+                            )
+                        )
                       ],
                     ),
-                    Text(list[index].messageData[0].context[0],
-                        style: AppTextStyle.getBaseStyle(
-                          fontSize: UIDefine.fontSize12,
-                          color: AppColors.textGrey,
-                        ))
                   ],
-                )
+                ),
+                Visibility(
+                  visible: list[index].messageData[finalRecordIndex].isRead == false,
+                    child:Icon(Icons.fiber_manual_record,color: AppColors.mainThemeButton,size: UIDefine.getPixelWidth(15),))
               ],
             )
           );

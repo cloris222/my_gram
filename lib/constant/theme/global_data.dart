@@ -91,11 +91,12 @@ class GlobalData {
 
   static List<MessageInfoData> generateMessageInfoData(int length){
     String text = 'text';
-    int random = Random().nextInt(3);
+    int random = Random().nextInt(4)+1;
     return List<MessageInfoData>.generate(length, (index){
       return MessageInfoData(
-          context: List<String>.generate(10, (index) => text*index*random),
-        time: index%2==0?'2023-0$random-05 12:00':'2023-05-05 1$random:00'
+          context: List<String>.generate(10, (index) => text * random),
+        time: random%2!=0?'2023-0$random-05 12:00':'2023-05-08 0${random+5}:00',
+          isRead: random%4==0
       );
     });
   }
