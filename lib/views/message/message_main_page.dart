@@ -58,17 +58,33 @@ class _MessageMainPageState extends State<MessageMainPage> {
                 scrollDirection: Axis.horizontal,
                 child: Container(
                   height: UIDefine.getPixelWidth(100),
+                  padding: EdgeInsets.only(left: UIDefine.getPixelWidth(5)),
                   child: NewsNavbar(friendsList: _sortData(list),),
                 ),
               ),
               SizedBox(height: UIDefine.getPixelWidth(10),),
-              Text(tr('message'),style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize16),),
+              Container(
+                padding: EdgeInsets.only(left: UIDefine.getPixelWidth(5)),
+                child: Text(tr('message'),style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize16),),
+              ),
               SizedBox(height: UIDefine.getPixelWidth(20),),
               ///訊息列
               Container(
                 width: UIDefine.getWidth(),
                 child: MessageListView(
                   list: list,
+                  onDelete: (index){
+                    setState(() {
+                      _deleteChat(index);
+                    });
+                  },
+                  onMarkRead: (index){
+                    _markRead(index);
+                  },
+                  onMute: (index){},
+                  onPin: (index){
+                    _pinChat(index);
+                  },
                   onLongPress:(index){
                     print('onLongPress');
                      _onLongPress(context,index).then((value) => setState((){}));
@@ -116,12 +132,18 @@ class _MessageMainPageState extends State<MessageMainPage> {
                   MoreActionBar(
                     icon: Icons.push_pin,
                     title: tr('pinChat'),
-                    onClick: (){},
+                    onClick: (){
+                      _pinChat(index);
+                      Navigator.pop(context);
+                    },
                   ),
                   MoreActionBar(
                     icon: Icons.visibility,
                     title: tr('markAsRead'),
-                    onClick: (){},),
+                    onClick: (){
+                      _markRead(index);
+                      Navigator.pop(context);
+                    },),
                   MoreActionBar(
                     icon: Icons.delete,
                     iconColor: Colors.red,
@@ -191,10 +213,11 @@ class _MessageMainPageState extends State<MessageMainPage> {
                       TextButton(
                           onPressed: (){
                             setState(() {
-                              list.removeAt(index);
-                              Navigator.pop(context);///關掉dialog
-                              Navigator.pop(context);///關掉menu
+                              _deleteChat(index);
+                              Navigator.pop(context);
+                              Navigator.pop(context);
                             });
+
                           },
                           child: Text(tr('ok'),
                             style: AppTextStyle.getBaseStyle(
@@ -216,6 +239,22 @@ class _MessageMainPageState extends State<MessageMainPage> {
               )
           );
         });
+  }
+
+  _deleteChat(int index){
+    list.removeAt(index);
+  }
+
+  _markRead(int index){
+    setState(() {
+      list[index].messageData[list[index].messageData.length-1].isRead = true;
+    });
+  }
+
+  _pinChat(int index){
+    setState(() {
+      list[index].isPin = true;
+    });
   }
 }
 
