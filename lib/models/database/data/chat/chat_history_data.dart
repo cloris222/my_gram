@@ -111,15 +111,15 @@ class ChatHistoryData {
 
   Map<String, Object?> toJson() => {
         ChatHistoryTable.contentId: contentId,
-        ChatHistoryTable.action: action,
-        ChatHistoryTable.type: type,
+        ChatHistoryTable.action: action.name,
+        ChatHistoryTable.type: type.name,
         ChatHistoryTable.roomId: roomId,
         ChatHistoryTable.uid: uid,
         ChatHistoryTable.nickName: nickName,
         ChatHistoryTable.memberId: memberId,
         ChatHistoryTable.memberAvatar: memberAvatar,
         ChatHistoryTable.otherSideMemberId: otherSideMemberId,
-        ChatHistoryTable.msgType: msgType,
+        ChatHistoryTable.msgType: msgType.name,
         ChatHistoryTable.content: content,
         ChatHistoryTable.hasRead: hasRead ? 1 : 0,
         ChatHistoryTable.recall: recall ? 1 : 0,

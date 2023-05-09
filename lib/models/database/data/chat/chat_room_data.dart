@@ -48,7 +48,7 @@ class ChatRoomData {
         ChatRoomTable.roomId: roomId,
         ChatRoomTable.memberId: memberId,
         ChatRoomTable.content: content,
-        ChatRoomTable.msgType: msgType,
+        ChatRoomTable.msgType: msgType.name,
         ChatRoomTable.muteStatus: muteStatus,
         ChatRoomTable.unreadCount: unreadCount,
         ChatRoomTable.time: time,
