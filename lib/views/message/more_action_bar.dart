@@ -22,7 +22,10 @@ class MoreActionBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onClick,
+      onTap: (){
+        Navigator.pop(context);
+        onClick();
+    },
       child: Container(
           margin: EdgeInsets.symmetric(vertical: UIDefine.getPixelWidth(5)),
           width: UIDefine.getWidth()*0.8,

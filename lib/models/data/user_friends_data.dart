@@ -1,28 +1,33 @@
 import 'message_info_data.dart';
 
-class UserFriensData {
-  UserFriensData({
+class UserFriendsData {
+  UserFriendsData({
+    this.isPin = false,
     required this.avatar,
     required this.name,
     required this.messageData,
-    this.isPin = false,
+    required this.userId,
   });
   String avatar;
   String name;
   bool isPin;
   List<MessageInfoData> messageData;
+  int userId;
 
 
-  factory UserFriensData.fromJson(Map<String, dynamic> json) => UserFriensData(
+  factory UserFriendsData.fromJson(Map<String, dynamic> json) => UserFriendsData(
     avatar:json["avatar"]??"",
     name: json["name"] ?? "",
     isPin: json["isPin"]??false,
     messageData: json["messageData"]?List<MessageInfoData>.from(json["messageData"].map((x)=>x)):[],
+    userId: json["avatar"]??"",
   );
 
   Map<String, dynamic> toJson() => {
     "avatar":avatar,
     "name": name,
-    "isPin":isPin
+    "isPin":isPin,
+    "messageData":List<dynamic>.from(messageData.map((x)=>x)),
+    "userId":userId
   };
 }

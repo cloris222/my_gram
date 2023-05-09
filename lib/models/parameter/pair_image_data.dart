@@ -14,11 +14,13 @@ class PairImageData {
     required this.images,
     required this.name,
     required this.context,
+    this.isMyGF = false
   });
 
   List<String> images;
   String name;
   String context;
+  bool isMyGF;
 
   factory PairImageData.fromJson(Map<String, dynamic> json) => PairImageData(
         images: json["images"]

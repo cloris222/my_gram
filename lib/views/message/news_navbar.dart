@@ -8,13 +8,16 @@ import 'package:base_project/widgets/label/common_network_image.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../models/data/user_friends_data.dart';
+import '../../models/parameter/pair_image_data.dart';
 
 class NewsNavbar extends StatefulWidget {
-  List<UserFriensData> friendsList;
+  List<PairImageData> pairList;
+  bool haveCeateGF;
 
   NewsNavbar({
     Key? key,
-    required this.friendsList
+    required this.pairList,
+    required this.haveCeateGF
   }) : super(key: key);
 
   @override
@@ -28,7 +31,7 @@ class _NewsNavbarState extends State<NewsNavbar> {
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       scrollDirection: Axis.horizontal,
-        itemCount: widget.friendsList.length,
+        itemCount: widget.pairList.length,
         itemBuilder: (context,index){
           return Column(
             children: [
@@ -37,7 +40,7 @@ class _NewsNavbarState extends State<NewsNavbar> {
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
-                    widget.friendsList[index].isPin?
+                    widget.pairList[index].isMyGF?
                     Container(
                       margin: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(5)),
                       width: UIDefine.getPixelWidth(70),
@@ -60,10 +63,10 @@ class _NewsNavbarState extends State<NewsNavbar> {
                             fit: BoxFit.cover,
                             width: UIDefine.getPixelWidth(66),
                             height: UIDefine.getPixelWidth(66),
-                            imageUrl: widget.friendsList[index].avatar)
+                            imageUrl: widget.pairList[index].images[0])
                     ),
                     Visibility(
-                        visible: widget.friendsList[index].isPin==true,
+                        visible: widget.pairList[index].isMyGF==true&&widget.haveCeateGF==true,
                         child: Positioned(
                             right: 0,
                             bottom: 0,
@@ -74,9 +77,9 @@ class _NewsNavbarState extends State<NewsNavbar> {
                 ),
               ),
               SizedBox(height: UIDefine.getPixelWidth(5),),
-              widget.friendsList[index].isPin?
-                  Text(widget.friendsList[index].name,style: AppTextStyle.getGradientStyle(),):
-                  Text(widget.friendsList[index].name,style: AppTextStyle.getBaseStyle(),)
+              widget.pairList[index].isMyGF?
+                  Text(widget.pairList[index].name,style: AppTextStyle.getGradientStyle(),):
+                  Text(widget.pairList[index].name,style: AppTextStyle.getBaseStyle(),)
             ],
           );
         });

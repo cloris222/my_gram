@@ -2,23 +2,23 @@ class MessageInfoData {
   MessageInfoData({
     required this.context,
     this.time = '',
-    this.isRead = true
+    this.isRead = false,
+    this.beRead = false
   });
-  List<String> context;
+  String context;
   String time;
+  bool beRead;
   bool isRead;
 
 
   factory MessageInfoData.fromJson(Map<String, dynamic> json) => MessageInfoData(
-    context:json["context"]
-        ? List<String>.from(json["context"].map((x) => x))
-        : [],
+    context:json["context"]??"",
     time: json["name"] ?? "",
-    isRead:json["isRead"] ?? true,
+    isRead:json["isRead"] ?? false,
   );
 
   Map<String, dynamic> toJson() => {
-    "context":List<dynamic>.from(context.map((x) => x)),
+    "context":context,
     "time": time,
     "isRead": isRead,
   };

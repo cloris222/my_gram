@@ -1,11 +1,13 @@
 import 'package:base_project/constant/theme/app_colors.dart';
 import 'package:base_project/constant/theme/global_data.dart';
 import 'package:base_project/constant/theme/ui_define.dart';
+import 'package:base_project/models/data/message_info_data.dart';
 import 'package:base_project/views/message/more_action_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../../constant/theme/app_text_style.dart';
 import '../../models/data/user_friends_data.dart';
+import '../../models/parameter/pair_image_data.dart';
 import 'message_list_view.dart';
 import 'news_navbar.dart';
 
@@ -18,13 +20,26 @@ class MessageMainPage extends StatefulWidget {
 
 class _MessageMainPageState extends State<MessageMainPage> {
   bool bDownloading = true;
-  List<UserFriensData> list = [];
+  List<PairImageData> pairList = [];
+  List<UserFriendsData> list = [];
+  bool haveCreateGF = false;
 
   @override
   void initState() {
     list = [];
-    list.addAll(GlobalData.generateUserFriendsData(10));
+    pairList = [];
+    list.addAll(GlobalData.generateUserFriendsData(5));
+    pairList.addAll(GlobalData.generatePairImageData(10));
+    _insertMyGF(haveCreateGF);
     super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant MessageMainPage oldWidget) {
+    setState(() {
+
+    });
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
@@ -53,12 +68,15 @@ class _MessageMainPageState extends State<MessageMainPage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               SizedBox(height: UIDefine.getPixelWidth(5),),
-              ///限時動態
+              ///配對到尚未聊天
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Container(
                   height: UIDefine.getPixelWidth(110),
-                  child: NewsNavbar(friendsList: _sortData(list),),
+                  child: NewsNavbar(
+                    pairList: pairList,
+                    haveCeateGF: haveCreateGF,
+                  ),
                 ),
               ),
               SizedBox(height: UIDefine.getPixelWidth(10),),
@@ -71,11 +89,10 @@ class _MessageMainPageState extends State<MessageMainPage> {
               Container(
                 width: UIDefine.getWidth(),
                 child: MessageListView(
-                  list: list,
+                  list: _sortChat(list),
+                  haveCreateGF: haveCreateGF,
                   onDelete: (index){
-                    setState(() {
-                      _deleteChat(index);
-                    });
+                    _onDeleteChat(context,index);
                   },
                   onMarkRead: (index){
                     _markRead(index);
@@ -96,11 +113,6 @@ class _MessageMainPageState extends State<MessageMainPage> {
     );
   }
 
-  List<UserFriensData> _sortData(List<UserFriensData> list){
-    List<UserFriensData> pinData = list.where((el) => el.isPin).toList();
-    List<UserFriensData> unPinData = list.where((el) => !el.isPin).toList();
-    return [...pinData, ...unPinData];
-  }
 
   _onLongPress(BuildContext context, int index) async {
     return showModalBottomSheet<int>(
@@ -133,7 +145,6 @@ class _MessageMainPageState extends State<MessageMainPage> {
                     title: tr('pinChat'),
                     onClick: (){
                       _pinChat(index);
-                      Navigator.pop(context);
                     },
                   ),
                   MoreActionBar(
@@ -141,7 +152,6 @@ class _MessageMainPageState extends State<MessageMainPage> {
                     title: tr('markAsRead'),
                     onClick: (){
                       _markRead(index);
-                      Navigator.pop(context);
                     },),
                   MoreActionBar(
                     icon: Icons.delete,
@@ -149,7 +159,7 @@ class _MessageMainPageState extends State<MessageMainPage> {
                     title: tr('deleteChat'),
                     titleColor: Colors.red,
                     onClick: (){
-                      _onDeleteChat(context,index).then((value) => setState((){}));
+                      _onDeleteChat(context,index);
                     },
                   ),
                 ]),
@@ -211,12 +221,8 @@ class _MessageMainPageState extends State<MessageMainPage> {
                       SizedBox(height: UIDefine.getPixelWidth(10),),
                       TextButton(
                           onPressed: (){
-                            setState(() {
-                              _deleteChat(index);
-                              Navigator.pop(context);
-                              Navigator.pop(context);
-                            });
-
+                            _deleteChat(index);
+                            Navigator.pop(context);///關掉dialog
                           },
                           child: Text(tr('ok'),
                             style: AppTextStyle.getBaseStyle(
@@ -227,7 +233,6 @@ class _MessageMainPageState extends State<MessageMainPage> {
                       TextButton(
                           onPressed: (){
                             Navigator.pop(context);///關掉dialog
-                            Navigator.pop(context);///關掉menu
                           },
                           child: Text(tr('cancel'),
                             style: AppTextStyle.getBaseStyle(
@@ -240,8 +245,18 @@ class _MessageMainPageState extends State<MessageMainPage> {
         });
   }
 
-  _deleteChat(int index){
-    list.removeAt(index);
+  List<UserFriendsData> _sortChat(List<UserFriendsData> list){
+    list.sort((a,b)=>(b.messageData[b.messageData.length-1].time).compareTo(a.messageData[a.messageData.length-1].time));
+    List<UserFriendsData> pinChat = list.where((el) => el.isPin == true).toList();
+    List<UserFriendsData> unpPinChat = list.where((el) => el.isPin != true).toList();
+    this.list =  [...pinChat,...unpPinChat];
+    return this.list;
+  }
+
+   _deleteChat(int index){
+    setState(() {
+      list.removeAt(index);
+    });
   }
 
   _markRead(int index){
@@ -250,11 +265,31 @@ class _MessageMainPageState extends State<MessageMainPage> {
     });
   }
 
-  _pinChat(int index){
+  void _pinChat(int index){
     setState(() {
-      list[index].isPin = true;
+      list[index].isPin = !list[index].isPin;
     });
   }
+
+  void _insertMyGF(bool haveCreateGF){
+    if(!haveCreateGF){
+      pairList.insert(0,PairImageData(
+        images: GlobalData.photos,
+        name: 'createMyGF',
+        context: 'createMyGF',
+        isMyGF: true,
+      ));
+    }
+    else{
+      pairList.insert(0,PairImageData(
+        images: GlobalData.photos2,
+        name: 'myGF',
+        context: 'myGF',
+        isMyGF: true,
+      ));
+    }
+  }
+
 }
 
 

@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import '../../models/data/user_friends_data.dart';
 import '../../models/http_setting.dart';
 import '../../models/parameter/country_phone_data.dart';
+import '../../models/parameter/pair_image_data.dart';
 import '../../models/parameter/post_comment_data.dart';
 import '../enum/app_param_enum.dart';
 
@@ -94,21 +95,34 @@ class GlobalData {
     int random = Random().nextInt(4)+1;
     return List<MessageInfoData>.generate(length, (index){
       return MessageInfoData(
-          context: List<String>.generate(10, (index) => text * random),
-        time: random%2!=0?'2023-0$random-05 12:00':'2023-05-08 0${random+5}:00',
-          isRead: random%4==0
+          context: text * random * random,
+          time: random%2!=0?'2023-0$random-05 12:00':'2023-05-09 0${random+5}:00',
+          isRead: random % 4 == 0,
+          beRead:  random % 3 ==0
       );
     });
   }
 
-  static List<UserFriensData> generateUserFriendsData(int length){
-    return List<UserFriensData>.generate(length, (index) {
+  static List<UserFriendsData> generateUserFriendsData(int length){
+    return List<UserFriendsData>.generate(length, (index) {
       int random = Random().nextInt(3);
-      return UserFriensData(
+      return UserFriendsData(
         avatar: photos[random],
         name: 'store$random',
         isPin: index % 3 == 0,
-        messageData: generateMessageInfoData(20)
+        messageData: generateMessageInfoData(20),
+        userId: index
+      );
+    });
+  }
+
+  static List<PairImageData> generatePairImageData(int length){
+    return List<PairImageData>.generate(length, (index) {
+      int random = Random().nextInt(3);
+      return PairImageData(
+          images: photos,
+        name: 'user$random',
+        context: 'user$random',
       );
     });
   }
