@@ -73,9 +73,8 @@ $replyByMsg TEXT,
 $replyById TEXT,
 $replyByNickName TEXT,
 $replyByUid TEXT,
-$replyByAvatar TEXT,
+$replyByAvatar TEXT
   )
 ''');
   }
-
 }

@@ -2,7 +2,7 @@ import 'package:sqflite/sqflite.dart';
 
 import '../base_table.dart';
 
-/// 範例用
+/// 聊天對象清單
 class ChatMemberTable extends BaseTable {
   static const String tableName = 'chatMemberInfo';
   static const String memberId = 'memberId';
@@ -36,7 +36,7 @@ $nickName TEXT,
 $oldNickName TEXT,
 $uid TEXT,
 $oldUid TEXT,
-$time TEXT,
+$time TEXT
   )
 ''');
   }

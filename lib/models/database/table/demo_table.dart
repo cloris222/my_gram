@@ -17,7 +17,7 @@ class DemoTable extends BaseTable {
   Future createTable(Database db, int version) async {
     await db.execute('''
 CREATE TABLE $tableName ( 
- $id INTEGER PRIMARY KEY AUTOINCREMENT,
+ $id INTEGER PRIMARY KEY AUTOINCREMENT
   )
 ''');
   }
