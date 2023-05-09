@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'package:base_project/models/database/table/chat/chat_history_table.dart';
 import 'package:base_project/models/database/table/chat/chat_member_table.dart';
+import 'package:base_project/models/database/table/chat/chat_room_table.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../../constant/theme/global_data.dart';
+
 /*
 * 對應資料表
 * https://docs.google.com/spreadsheets/d/1Cfj8wFrtOEu6S-gnZiiFceWA2CE2Eo_LqP3kNUr0M4k/edit?usp=sharing
@@ -37,6 +39,7 @@ class ChatHistoryDataBase {
     // version: 1
     ChatHistoryTable().createTable(db, version);
     ChatMemberTable().createTable(db, version);
+    ChatRoomTable().createTable(db, version);
   }
 
   /// 資料庫舊版升級新版用
