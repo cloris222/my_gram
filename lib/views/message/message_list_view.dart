@@ -9,11 +9,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import '../../models/data/chat_room_data.dart';
 import '../../models/data/user_friends_data.dart';
 
 class MessageListView extends StatefulWidget {
   final onGetIntFunction onLongPress;
-  final List<UserFriendsData> list;
+  final onGetIntFunction onTap;
+  final List<ChatRoomData> list;
   final onGetIntFunction onPin;
   final onGetIntFunction onDelete;
   final onGetIntFunction onMute;
@@ -23,6 +25,7 @@ class MessageListView extends StatefulWidget {
     Key? key,
     required this.list,
     required this.onLongPress,
+    required this.onTap,
     required this.onPin,
     required this.onDelete,
     required this.onMute,
@@ -51,13 +54,12 @@ class _MessageListViewState extends State<MessageListView> {
         physics: NeverScrollableScrollPhysics(),
         itemCount: widget.list.length,
         itemBuilder: (context,index){
-          int finalRecordIndex = widget.list[index].messageData.length-1;
           return GestureDetector(
               onLongPress: (){
                 widget.onLongPress(index);
               },
               onTap: (){
-                BaseViewModel().pushPage(context, PrivateMessagePage());
+                widget.onTap(index);
               },
               child: Slidable(
                 key: const ValueKey(0),
@@ -134,9 +136,9 @@ class _MessageListViewState extends State<MessageListView> {
                                   height: UIDefine.getPixelWidth(20),
                                   child: Row(
                                     children: [
-                                      Text(widget.list[index].name,style: AppTextStyle.getBaseStyle(),),
+                                      Text(widget.list[index].nickName,style: AppTextStyle.getBaseStyle(),),
                                       SizedBox(width: UIDefine.getPixelWidth(10),),
-                                      Text(_getTime(widget.list[index].messageData[finalRecordIndex].time),
+                                      Text(_getTime(widget.list[index].time),
                                         style: AppTextStyle.getBaseStyle(
                                           fontSize: UIDefine.fontSize12,
                                           color: AppColors.textGrey,
@@ -147,17 +149,17 @@ class _MessageListViewState extends State<MessageListView> {
                                 SizedBox(height: UIDefine.getPixelWidth(5),),
                                 Row(children: [
                                   Visibility(
-                                      visible: widget.list[index].messageData[finalRecordIndex].beRead == true,
+                                      visible: widget.list[index].beRead == true,
                                       child: Icon(Icons.reply,color: AppColors.textGrey,size: UIDefine.getPixelWidth(10),)),
                                   Container(
                                     width: UIDefine.getPixelWidth(200),
-                                    child: Text(widget.list[index].messageData[finalRecordIndex].context,
+                                    child: Text(widget.list[index].content,
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 1,
                                         style: AppTextStyle.getBaseStyle(
                                           fontSize: UIDefine.fontSize14,
-                                          fontWeight: (widget.list[index].messageData[finalRecordIndex].isRead || widget.list[index].messageData[finalRecordIndex].beRead)?FontWeight.w500:FontWeight.w700,
-                                          color: (widget.list[index].messageData[finalRecordIndex].isRead || widget.list[index].messageData[finalRecordIndex].beRead)?AppColors.textGrey:AppColors.textWhite,
+                                          fontWeight: (widget.list[index].isRead || widget.list[index].beRead)?FontWeight.w500:FontWeight.w700,
+                                          color: (widget.list[index].isRead || widget.list[index].beRead)?AppColors.textGrey:AppColors.textWhite,
                                         )
                                     ),
                                   ),
@@ -167,7 +169,7 @@ class _MessageListViewState extends State<MessageListView> {
                           ],
                         ),
                         Visibility(
-                            visible: widget.list[index].messageData[finalRecordIndex].isRead == false && widget.list[index].messageData[finalRecordIndex].beRead == false,
+                            visible: widget.list[index].isRead == false && widget.list[index].beRead == false,
                             child:Icon(Icons.fiber_manual_record,color: AppColors.mainThemeButton,size: UIDefine.getPixelWidth(15),))
                       ],
                     )

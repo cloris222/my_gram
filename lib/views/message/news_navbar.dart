@@ -11,15 +11,18 @@ import 'package:flutter/cupertino.dart';
 import '../../models/data/user_friends_data.dart';
 import '../../models/parameter/pair_image_data.dart';
 import '../../view_models/base_view_model.dart';
+import '../../view_models/call_back_function.dart';
 
 class NewsNavbar extends StatefulWidget {
   List<PairImageData> pairList;
   bool haveCeateGF;
+  final onGetIntFunction onTap;
 
   NewsNavbar({
     Key? key,
     required this.pairList,
-    required this.haveCeateGF
+    required this.haveCeateGF,
+    required this.onTap
   }) : super(key: key);
 
   @override
@@ -37,7 +40,7 @@ class _NewsNavbarState extends State<NewsNavbar> {
         itemBuilder: (context,index){
           return GestureDetector(
               onTap: (){
-                BaseViewModel().pushPage(context, PrivateMessagePage());
+                widget.onTap;
               },
             child: Column(
               children: [

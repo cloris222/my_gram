@@ -4,6 +4,7 @@ import 'package:base_project/models/data/dynamic_info_data.dart';
 import 'package:base_project/models/data/message_info_data.dart';
 import 'package:base_project/models/data/store_info_data.dart';
 import 'package:flutter/cupertino.dart';
+import '../../models/data/chat_room_data.dart';
 import '../../models/data/user_friends_data.dart';
 import '../../models/http_setting.dart';
 import '../../models/parameter/country_phone_data.dart';
@@ -90,31 +91,33 @@ class GlobalData {
     });
   }
 
-  static List<MessageInfoData> generateMessageInfoData(int length){
+  static List<ChatRoomData> generateChatRoomData(int length){
     String text = 'text';
-    int random = Random().nextInt(4)+1;
-    return List<MessageInfoData>.generate(length, (index){
-      return MessageInfoData(
-          context: text * random * random,
-          time: random%2!=0?'2023-0$random-05 12:00':'2023-05-09 0${random+5}:00',
-          isRead: random % 4 == 0,
-          beRead:  random % 3 ==0
+    int random = Random().nextInt(3);
+    return List<ChatRoomData>.generate(length, (index){
+      return ChatRoomData(
+          nickName: 'user$random',
+          avatar:photos[random],
+          content: text * random + text,
+          time: index % 2==0?'2023-0$random-05 12:00':'2023-05-10 0${random+5}:00',
+          isRead: index % 2 == 0,
+          beRead:  index % 3 ==0
       );
     });
   }
 
-  static List<UserFriendsData> generateUserFriendsData(int length){
-    return List<UserFriendsData>.generate(length, (index) {
-      int random = Random().nextInt(3);
-      return UserFriendsData(
-        avatar: photos[random],
-        name: 'store$random',
-        isPin: index % 3 == 0,
-        messageData: generateMessageInfoData(20),
-        userId: index
-      );
-    });
-  }
+  // static List<UserFriendsData> generateUserFriendsData(int length){
+  //   return List<UserFriendsData>.generate(length, (index) {
+  //     int random = Random().nextInt(3);
+  //     return UserFriendsData(
+  //       avatar: photos[random],
+  //       name: 'store$random',
+  //       isPin: index % 3 == 0,
+  //       messageData: generateMessageInfoData(20),
+  //       userId: index
+  //     );
+  //   });
+  // }
 
   static List<PairImageData> generatePairImageData(int length){
     return List<PairImageData>.generate(length, (index) {

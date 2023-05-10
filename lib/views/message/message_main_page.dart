@@ -2,12 +2,16 @@ import 'package:base_project/constant/theme/app_colors.dart';
 import 'package:base_project/constant/theme/global_data.dart';
 import 'package:base_project/constant/theme/ui_define.dart';
 import 'package:base_project/models/data/message_info_data.dart';
+import 'package:base_project/view_models/base_view_model.dart';
 import 'package:base_project/views/message/more_action_bar.dart';
+import 'package:base_project/views/message/private_message_page.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../../constant/theme/app_text_style.dart';
+import '../../models/data/chat_room_data.dart';
 import '../../models/data/user_friends_data.dart';
 import '../../models/parameter/pair_image_data.dart';
+import '../../utils/date_format_util.dart';
 import 'message_list_view.dart';
 import 'news_navbar.dart';
 
@@ -21,14 +25,14 @@ class MessageMainPage extends StatefulWidget {
 class _MessageMainPageState extends State<MessageMainPage> {
   bool bDownloading = true;
   List<PairImageData> pairList = [];
-  List<UserFriendsData> list = [];
+  List<ChatRoomData> list = [];
   bool haveCreateGF = false;
 
   @override
   void initState() {
     list = [];
     pairList = [];
-    list.addAll(GlobalData.generateUserFriendsData(5));
+    list.addAll(GlobalData.generateChatRoomData(5));
     pairList.addAll(GlobalData.generatePairImageData(10));
     _insertMyGF(haveCreateGF);
     super.initState();
@@ -76,6 +80,7 @@ class _MessageMainPageState extends State<MessageMainPage> {
                   child: NewsNavbar(
                     pairList: pairList,
                     haveCeateGF: haveCreateGF,
+                    onTap: (index){},
                   ),
                 ),
               ),
@@ -104,6 +109,9 @@ class _MessageMainPageState extends State<MessageMainPage> {
                   onLongPress:(index){
                     print('onLongPress');
                      _onLongPress(context,index).then((value) => setState((){}));
+                  },
+                  onTap: (index){
+                    _getDataToChatRoom(context,index);
                   },
                 ),
               )
@@ -245,10 +253,10 @@ class _MessageMainPageState extends State<MessageMainPage> {
         });
   }
 
-  List<UserFriendsData> _sortChat(List<UserFriendsData> list){
-    list.sort((a,b)=>(b.messageData[b.messageData.length-1].time).compareTo(a.messageData[a.messageData.length-1].time));
-    List<UserFriendsData> pinChat = list.where((el) => el.isPin == true).toList();
-    List<UserFriendsData> unpPinChat = list.where((el) => el.isPin != true).toList();
+  List<ChatRoomData> _sortChat(List<ChatRoomData> list){
+    list.sort((a,b)=>(b.time).compareTo(a.time));
+    List<ChatRoomData> pinChat = list.where((el) => el.isPin == true).toList();
+    List<ChatRoomData> unpPinChat = list.where((el) => el.isPin != true).toList();
     this.list =  [...pinChat,...unpPinChat];
     return this.list;
   }
@@ -261,7 +269,7 @@ class _MessageMainPageState extends State<MessageMainPage> {
 
   _markRead(int index){
     setState(() {
-      list[index].messageData[list[index].messageData.length-1].isRead = true;
+      list[index].isRead = true;
     });
   }
 
@@ -290,6 +298,9 @@ class _MessageMainPageState extends State<MessageMainPage> {
     }
   }
 
+  _getDataToChatRoom(BuildContext context,int index){
+    BaseViewModel().pushPage(context, PrivateMessagePage(data:list[index]));
+  }
 }
 
 
