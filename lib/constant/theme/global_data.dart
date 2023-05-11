@@ -101,7 +101,7 @@ class GlobalData {
           content: text * random + text,
           time: index % 2==0?'2023-0$random-05 12:00':'2023-05-10 0${random+5}:00',
           isRead: index % 2 == 0,
-          beRead:  index % 3 ==0
+          beRead:  index % 3 ==0, imageList: []
       );
     });
   }

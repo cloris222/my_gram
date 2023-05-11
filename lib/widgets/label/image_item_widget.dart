@@ -1,3 +1,4 @@
+import 'package:base_project/view_models/call_back_function.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
 
@@ -10,7 +11,7 @@ class ImageItemWidget extends StatefulWidget {
 
   final AssetEntity entity;
   final ThumbnailOption option;
-  final GestureTapCallback? onTap;
+  final  onClickFunction onTap;
   @override
   State<ImageItemWidget> createState() => _ImageItemWidgetState();
 }
@@ -107,16 +108,15 @@ class _ImageItemWidgetState extends State<ImageItemWidget> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      behavior: HitTestBehavior.opaque,
       onTap: (){
         _onTap();},
       child: buildContent(context),
     );
   }
   _onTap(){
+    widget.onTap();
     setState((){
       beSelect = !beSelect;
     });
-    widget.onTap;
   }
 }

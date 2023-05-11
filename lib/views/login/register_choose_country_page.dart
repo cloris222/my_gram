@@ -11,6 +11,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../constant/theme/app_colors.dart';
 import '../../view_models/login/register_preference_choose_provider.dart';
+import '../../view_models/message/chat_room_provider.dart';
 import '../../widgets/button/text_button_widget.dart';
 import '../../widgets/drop_buttom/custom_drop_button.dart';
 import '../../widgets/label/custom_linear_progress.dart';
@@ -29,6 +30,7 @@ class _registerChooseCountryPageState extends ConsumerState<registerChooseCountr
   List<countryType> countryList = [countryType.Taiwan,countryType.China,countryType.Japan,countryType.Korea,countryType.other];
   String? get countrySection=>ref.read(registerPreferenceChooseProvider).data['countrySection'];
   BaseViewModel viewModel = BaseViewModel();
+
 
   @override
   void initState() {

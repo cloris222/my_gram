@@ -1,3 +1,6 @@
+import 'package:flutter/foundation.dart';
+import 'package:photo_manager/photo_manager.dart';
+
 class ChatRoomData {
   ChatRoomData(
       {this.roomId = '',
@@ -17,7 +20,8 @@ class ChatRoomData {
         this.isBlock = false,
         this.isRead = false,
         this.beRead = false,
-        this.isPin = false
+        this.isPin = false,
+        required this.imageList
       });
 
   String roomId; // 鍵值 聊天室編號
@@ -37,7 +41,30 @@ class ChatRoomData {
   bool  isBlock; // 封鎖狀態
   bool beRead; //被已讀
   bool isRead; //已讀
-  bool isPin;
+  bool isPin;//釘選
+  List<AssetEntity> imageList;//傳送的圖片（最多4張）
+
+  factory ChatRoomData.fromJson(Map<String,dynamic> json) => ChatRoomData(
+    roomId: json["roomId"] ?? '',
+    uId: json["uId"] ?? '',
+    nickName: json["nickName"] ?? '',
+    avatar: json["avatar"] ?? '',
+    memberId: json["memberId"] ?? '',
+    myMemberId: json["myMemberId"] ?? '',
+    content: json["content"] ?? '',
+    contentId: json["contentId"] ?? '',
+    unreadCount: json["unreadCount"] ?? '',
+    pushStatus: json["pushStatus"] ?? '',
+    time: json["time"] ?? '',
+    readTimeStatus: json["readTimeStatus"] ?? '',
+    isFollowing: json["isFollowing"] ?? true,
+    isImage: json["isImage"] ?? false,
+    isBlock: json["isBlock"] ?? false,
+    beRead: json["beRead"] ?? false,
+    isRead: json["isRead"] ?? false,
+    isPin: json["isPin"] ?? false,
+    imageList: json["imageList"] ? List<AssetEntity>.from(json["imageList"].map((x) => x)) : [],
+  );
 
   Map<String, dynamic> toJson() {
     return {
@@ -58,7 +85,8 @@ class ChatRoomData {
       "isBlock": isBlock,
       "isRead": isRead,
       "beRead":beRead,
-      "isPin":isPin
+      "isPin":isPin,
+      "imageList":List<dynamic>.from(imageList.map((x)=>x)),
     };
   }
 }

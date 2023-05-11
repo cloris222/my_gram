@@ -5,25 +5,25 @@ import 'package:base_project/widgets/dialog/common_custom_dialog.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:photo_manager/photo_manager.dart';
 
+import '../../view_models/message/chat_room_provider.dart';
 import '../../widgets/label/image_item_widget.dart';
 
-class GalleryView extends StatefulWidget {
+class GalleryView extends ConsumerStatefulWidget {
   final PermissionState ps;
-  final onGetIntFunction onClickImage;
   const GalleryView({
     Key? key,
     required this.ps,
-    required this.onClickImage
   }) : super(key: key);
 
   @override
-  State<GalleryView> createState() => _GalleryViewState();
+  ConsumerState createState() => _GalleryViewState();
 }
 
-class _GalleryViewState extends State<GalleryView> {
-
+class _GalleryViewState extends ConsumerState<GalleryView> {
+  List<AssetEntity>? get imageList => ref.read(chatRoomProvider.notifier).state.imageList;
   @override
   void initState() {
     _requestAssets();
@@ -44,7 +44,7 @@ class _GalleryViewState extends State<GalleryView> {
       sizeConstraint: SizeConstraint(ignoreSize: true),
     ),
   );
-  final int _sizePerPage = 8;
+  final int _sizePerPage = 20;
 
   AssetPathEntity? _path;
   List<AssetEntity>? _entities;
@@ -163,7 +163,7 @@ class _GalleryViewState extends State<GalleryView> {
             key: ValueKey<int>(index),
             entity: entity,
             onTap: (){
-              widget.onClickImage(index);
+              ref.read(chatRoomProvider.notifier).updateImageSelection(entity);
             },
             option: const ThumbnailOption(size: ThumbnailSize.square(200)),
           );
@@ -182,6 +182,7 @@ class _GalleryViewState extends State<GalleryView> {
 
   @override
   Widget build(BuildContext context) {
+    ref.watch(chatRoomProvider);
     return Container(
       color: Colors.black,
       width: UIDefine.getWidth(),

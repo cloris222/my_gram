@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:base_project/constant/theme/app_colors.dart';
 import 'package:base_project/constant/theme/app_text_style.dart';
 import 'package:base_project/view_models/base_view_model.dart';
@@ -11,6 +13,7 @@ import 'package:photo_manager/photo_manager.dart';
 
 import '../../constant/theme/ui_define.dart';
 import '../../models/data/chat_room_data.dart';
+import '../../view_models/message/chat_room_provider.dart';
 import 'gallery_view.dart';
 
 class PrivateMessagePage extends ConsumerStatefulWidget {
@@ -26,8 +29,10 @@ class PrivateMessagePage extends ConsumerStatefulWidget {
 
 class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
   bool showGallery = false;
+  bool sendImage = false;
   late PermissionState ps = PermissionState.notDetermined;
   final TextEditingController _textController = TextEditingController();
+  List<AssetEntity> get imageList => ref.read(chatRoomProvider).imageList;
 
   @override
   void didUpdateWidget(covariant PrivateMessagePage oldWidget) {
@@ -39,6 +44,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
 
   @override
   Widget build(BuildContext context) {
+    ref.watch(chatRoomProvider);
     return GestureDetector(
       onTap: (){
         BaseViewModel().clearAllFocus();
@@ -55,7 +61,16 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                 ),
                 Column(
                   children: [
-                    Expanded(child: SizedBox(height: UIDefine.getHeight()*0.8,)),
+                    Expanded(
+                      child: Visibility(
+                          visible: imageList.isNotEmpty,
+                          child: imageList.isNotEmpty?
+                      AssetEntityImage(
+                          imageList.last,
+                      ):
+                          Container()
+                      ),
+                    ),
                     _getBottomNavigationBar()
                   ],
                 ),
@@ -125,7 +140,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                         ),
                         SizedBox(width: UIDefine.getPixelWidth(10)),
                         ///輸入框
-                        Expanded(
+                        Flexible(
                             child: Container(
                               padding: EdgeInsets.only(bottom: UIDefine.getPixelWidth(2)),
                               child: TextField(
@@ -151,7 +166,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                     padding: EdgeInsets.only(top:UIDefine.getPixelWidth(5)),
                     child: InkWell(
                         onTap: () {
-
+                          _sendMessage(_textController.text);
                         },
                         child: Icon(Icons.send)
                     ),
@@ -159,25 +174,20 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                 ],
               ),
             ),
-    Flexible(
-      child: Visibility(
-      visible: showGallery,
-      child: Column(children: [
-      Divider(height: 1.0,),
-      Expanded(
-        child: Container(
-        width: UIDefine.getWidth(),
-        child: GalleryView(
-            ps:ps,
-            onClickImage: (int index){
-              _printImageInfo(index);
-            },
-        )
-        ),
-      )
-      ],)
-      ),
-    )
+            Flexible(
+              child: Visibility(
+              visible: showGallery,
+                child: Column(children: [
+                        Divider(height: 1.0,),
+                        Expanded(
+                          child: Container(
+                            width: UIDefine.getWidth(),
+                              child: GalleryView(ps:ps,)
+                                  ),
+                                )
+                            ],)
+                          ),
+                )
           ],
         )
       )
@@ -196,7 +206,17 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
     return ps;
   }
 
-  _printImageInfo(int index){
+  _saveImageInfo(int index){
     print(index);
+  }
+
+  _sendMessage(String text){
+    if(imageList==null) return;
+    setState(() {
+      if(text == ''){
+        sendImage = true;
+        print(imageList!.length);
+      }
+    });
   }
 }
