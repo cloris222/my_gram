@@ -1,22 +1,28 @@
 import 'package:base_project/view_models/call_back_function.dart';
+import 'package:base_project/view_models/message/chat_room_provider.dart';
+import 'package:base_project/widgets/label/select_number_icon.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:photo_manager/photo_manager.dart';
 
-class ImageItemWidget extends StatefulWidget {
+class ImageItemWidget extends ConsumerStatefulWidget {
   const ImageItemWidget({
     Key? key,
     required this.entity,
     required this.option,
-    required this.onTap,}) : super(key: key);
+    required this.onTap,
+  }) : super(key: key);
 
   final AssetEntity entity;
   final ThumbnailOption option;
   final  onClickFunction onTap;
+
   @override
-  State<ImageItemWidget> createState() => _ImageItemWidgetState();
+  ConsumerState createState() => _ImageItemWidgetState();
 }
 
-class _ImageItemWidgetState extends State<ImageItemWidget> {
+class _ImageItemWidgetState extends ConsumerState<ImageItemWidget> {
+  List<AssetEntity> get imageList => ref.read(chatRoomProvider).imageList;
   bool beSelect = false;
   Widget buildContent(BuildContext context) {
     if (widget.entity.type == AssetType.audio) {
@@ -66,10 +72,12 @@ class _ImageItemWidgetState extends State<ImageItemWidget> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
+                    _getNumber(entity)>0?
+                    SelectNumberIcon(number:_getNumber(entity)):
                     Icon(
-                      beSelect?Icons.radio_button_checked:Icons.radio_button_unchecked,
+                      Icons.radio_button_unchecked,
                       color: Colors.white,
-                      size: 16,
+                      size: 25,
                     ),
                     // if (entity.isLivePhoto)
                     //   Container(
@@ -107,6 +115,7 @@ class _ImageItemWidgetState extends State<ImageItemWidget> {
 
   @override
   Widget build(BuildContext context) {
+    ref.watch(chatRoomProvider);
     return GestureDetector(
       onTap: (){
         _onTap();},
@@ -116,7 +125,12 @@ class _ImageItemWidgetState extends State<ImageItemWidget> {
   _onTap(){
     widget.onTap();
     setState((){
-      beSelect = !beSelect;
+      _getNumber(widget.entity);
     });
+  }
+
+  int _getNumber(AssetEntity entity){
+    int number = imageList.indexWhere((el) => entity.id == el.id);
+    return number+1;
   }
 }

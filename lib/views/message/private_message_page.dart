@@ -33,6 +33,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
   late PermissionState ps = PermissionState.notDetermined;
   final TextEditingController _textController = TextEditingController();
   List<AssetEntity> get imageList => ref.read(chatRoomProvider).imageList;
+  List<AssetEntity> showImageList = [];
 
   @override
   void didUpdateWidget(covariant PrivateMessagePage oldWidget) {
@@ -62,14 +63,19 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                 Column(
                   children: [
                     Expanded(
-                      child: Visibility(
-                          visible: imageList.isNotEmpty,
-                          child: imageList.isNotEmpty?
-                      AssetEntityImage(
-                          imageList.last,
-                      ):
+                      child: showImageList.isNotEmpty?
+                          ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: showImageList.length,
+                              itemBuilder: (context,index){
+                                return AssetEntityImage(
+                                  showImageList[index],
+                                  width: UIDefine.getPixelWidth(200),
+                                  height: UIDefine.getPixelWidth(200),
+                                );
+
+                          }):
                           Container()
-                      ),
                     ),
                     _getBottomNavigationBar()
                   ],
@@ -166,7 +172,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                     padding: EdgeInsets.only(top:UIDefine.getPixelWidth(5)),
                     child: InkWell(
                         onTap: () {
-                          _sendMessage(_textController.text);
+                          _sendMessage();
                         },
                         child: Icon(Icons.send)
                     ),
@@ -206,17 +212,17 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
     return ps;
   }
 
-  _saveImageInfo(int index){
-    print(index);
+  _sendMessage(){
+    if(imageList==[]) return;
+    setState(() {
+      _sendImage().then((value) => ref.read(chatRoomProvider.notifier).clearImageList());
+      sendImage = false;
+    });
   }
 
-  _sendMessage(String text){
-    if(imageList==null) return;
+  Future<void>_sendImage()async{
     setState(() {
-      if(text == ''){
-        sendImage = true;
-        print(imageList!.length);
-      }
+      showImageList.addAll(imageList);
     });
   }
 }

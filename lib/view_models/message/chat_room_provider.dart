@@ -14,9 +14,15 @@ class chatRoomProviderNotifier extends StateNotifier<ChatRoomData> {
   chatRoomProviderNotifier() : super(ChatRoomData(imageList: []));
 
   void updateImageSelection(AssetEntity value) {
+    if(state.imageList.length>=4)return;
     final data = state;
     data.imageList.add(value);
-    GlobalData.printLog('clickprovider');
     state = data; // 更新state
+  }
+
+  void clearImageList(){
+    final data = state;
+    data.imageList = [];
+    state = data;
   }
 }
