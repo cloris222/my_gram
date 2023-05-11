@@ -40,7 +40,7 @@ class _NewsNavbarState extends State<NewsNavbar> {
         itemBuilder: (context,index){
           return GestureDetector(
               onTap: (){
-                widget.onTap;
+                widget.onTap(index);
               },
             child: Column(
               children: [
