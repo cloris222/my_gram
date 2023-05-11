@@ -22,7 +22,7 @@ class ImageItemWidget extends ConsumerStatefulWidget {
 }
 
 class _ImageItemWidgetState extends ConsumerState<ImageItemWidget> {
-  List<AssetEntity> get imageList => ref.read(chatRoomProvider).imageList;
+  List<AssetEntity> get imageList => ref.read(chatRoomProvider);
   bool beSelect = false;
   Widget buildContent(BuildContext context) {
     if (widget.entity.type == AssetType.audio) {
@@ -73,7 +73,12 @@ class _ImageItemWidgetState extends ConsumerState<ImageItemWidget> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     _getNumber(entity)>0?
-                    SelectNumberIcon(number:_getNumber(entity)):
+                    Consumer(
+                      builder: (context, ref, child) {
+                        ref.watch(chatRoomProvider);
+                        return SelectNumberIcon(number:_getNumber(entity));
+                      },
+                    )  :
                     Icon(
                       Icons.radio_button_unchecked,
                       color: Colors.white,
@@ -115,17 +120,26 @@ class _ImageItemWidgetState extends ConsumerState<ImageItemWidget> {
 
   @override
   Widget build(BuildContext context) {
-    ref.watch(chatRoomProvider);
+
     return GestureDetector(
       onTap: (){
         _onTap();},
       child: buildContent(context),
     );
   }
-  _onTap(){
-    widget.onTap();
+ void _onTap(){
+    int number = _getNumber(widget.entity);
+    //有編號代表要取消選取
+    if(number>0){
+      ref.read(chatRoomProvider.notifier).delImageSelection(widget.entity);
+      setState(() {
+
+      });
+    }else{
+      widget.onTap();
+    }
     setState((){
-      _getNumber(widget.entity);
+
     });
   }
 

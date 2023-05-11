@@ -32,7 +32,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
   bool sendImage = false;
   late PermissionState ps = PermissionState.notDetermined;
   final TextEditingController _textController = TextEditingController();
-  List<AssetEntity> get imageList => ref.read(chatRoomProvider).imageList;
+  List<AssetEntity> get imageList => ref.read(chatRoomProvider);
   List<AssetEntity> showImageList = [];
 
   @override
@@ -45,7 +45,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
 
   @override
   Widget build(BuildContext context) {
-    ref.watch(chatRoomProvider);
+
     return GestureDetector(
       onTap: (){
         BaseViewModel().clearAllFocus();
@@ -62,21 +62,27 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                 ),
                 Column(
                   children: [
-                    Expanded(
-                      child: showImageList.isNotEmpty?
-                          ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: showImageList.length,
-                              itemBuilder: (context,index){
-                                return AssetEntityImage(
-                                  showImageList[index],
-                                  width: UIDefine.getPixelWidth(200),
-                                  height: UIDefine.getPixelWidth(200),
-                                );
+                    Consumer(
+                      builder: (context, ref, child) {
+                        ref.watch(chatRoomProvider);
+                        return Expanded(
+                            child: showImageList.isNotEmpty?
+                            ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: showImageList.length,
+                                itemBuilder: (context,index){
+                                  return AssetEntityImage(
+                                    showImageList[index],
+                                    width: UIDefine.getPixelWidth(200),
+                                    height: UIDefine.getPixelWidth(200),
+                                  );
 
-                          }):
-                          Container()
-                    ),
+                                }):
+                            Container()
+                        );
+                      },
+                    )
+                    ,
                     _getBottomNavigationBar()
                   ],
                 ),
@@ -217,6 +223,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
     setState(() {
       _sendImage().then((value) => ref.read(chatRoomProvider.notifier).clearImageList());
       sendImage = false;
+      showGallery = false;
     });
   }
 

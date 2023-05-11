@@ -23,7 +23,7 @@ class GalleryView extends ConsumerStatefulWidget {
 }
 
 class _GalleryViewState extends ConsumerState<GalleryView> {
-  List<AssetEntity>? get imageList => ref.read(chatRoomProvider.notifier).state.imageList;
+  List<AssetEntity>? get imageList => ref.read(chatRoomProvider);
   @override
   void initState() {
     _requestAssets();
@@ -182,7 +182,7 @@ class _GalleryViewState extends ConsumerState<GalleryView> {
 
   @override
   Widget build(BuildContext context) {
-    ref.watch(chatRoomProvider);
+    // ref.watch(chatRoomProvider);
     return Container(
       color: Colors.black,
       width: UIDefine.getWidth(),
