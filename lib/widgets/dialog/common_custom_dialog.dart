@@ -104,7 +104,7 @@ class CommonCustomDialog extends BaseDialog {
   }
 
   Widget _solidButton() {
-    /// 實心按鈕
+    /// 單顆or兩顆（右）按鈕
     return TextButtonWidget(
       setHeight: UIDefine.getPixelWidth(50),
         setMainColor: AppColors.dialogBackground,
@@ -117,7 +117,7 @@ class CommonCustomDialog extends BaseDialog {
   }
 
   Widget _hollowButton() {
-    /// 空心按鈕
+    /// 兩顆（左）按鈕
     return TextButtonWidget(
       setHeight: UIDefine.getPixelWidth(50),
       setMainColor: AppColors.dialogBackground,

@@ -12,5 +12,7 @@
   "registerHint":"register",
   "haveAccount":"Have Account?",
   "phone":"phone",
-  "email":"email"
+  "email":"email",
+  "deleteAlert": "Deletion\nConfirmation",
+  "deleteAlertInfo": "Deleted chats can’t be recovered. Are you sure you want to continue? "
 }

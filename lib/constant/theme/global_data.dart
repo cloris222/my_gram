@@ -1,10 +1,14 @@
 import 'dart:math';
 
 import 'package:base_project/models/data/dynamic_info_data.dart';
+import 'package:base_project/models/data/message_info_data.dart';
 import 'package:base_project/models/data/store_info_data.dart';
 import 'package:flutter/cupertino.dart';
+import '../../models/data/chat_room_data.dart';
+import '../../models/data/user_friends_data.dart';
 import '../../models/http_setting.dart';
 import '../../models/parameter/country_phone_data.dart';
+import '../../models/parameter/pair_image_data.dart';
 import '../../models/parameter/post_comment_data.dart';
 import '../enum/app_param_enum.dart';
 
@@ -83,6 +87,45 @@ class GlobalData {
         avatar: photos[random],
         name: 'store$random',
         list: generateDynamicData(10)
+      );
+    });
+  }
+
+  static List<ChatRoomData> generateChatRoomData(int length){
+    String text = 'text';
+    int random = Random().nextInt(3);
+    return List<ChatRoomData>.generate(length, (index){
+      return ChatRoomData(
+          nickName: 'user$random',
+          avatar:photos[random],
+          content: text * random + text,
+          time: index % 2==0?'2023-0$random-05 12:00':'2023-05-10 0${random+5}:00',
+          isRead: index % 2 == 0,
+          beRead:  index % 3 ==0, imageList: []
+      );
+    });
+  }
+
+  // static List<UserFriendsData> generateUserFriendsData(int length){
+  //   return List<UserFriendsData>.generate(length, (index) {
+  //     int random = Random().nextInt(3);
+  //     return UserFriendsData(
+  //       avatar: photos[random],
+  //       name: 'store$random',
+  //       isPin: index % 3 == 0,
+  //       messageData: generateMessageInfoData(20),
+  //       userId: index
+  //     );
+  //   });
+  // }
+
+  static List<PairImageData> generatePairImageData(int length){
+    return List<PairImageData>.generate(length, (index) {
+      int random = Random().nextInt(3);
+      return PairImageData(
+          images: photos,
+        name: 'user$random',
+        context: 'user$random',
       );
     });
   }

@@ -24,7 +24,9 @@ class AppColors {
   ///背景顏色
   static const Color textFieldBackground = Color(0xFF1F1F1F);
   static const Color dialogBackground = Color(0xFF333333);
+  static const Color moreActionBarBackground = Color(0xFF464646);
   static const Color opacityBackground = Color(0xC6000000);
+  static const Color chatBubbleColor = Color(0xFFFFD600);
 
   static const Color buttonLike = Color(0xFF3CDBA7);
   static const Color buttonDisLike = Color(0xFFF24C65);
