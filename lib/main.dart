@@ -11,6 +11,7 @@ import 'constant/theme/app_text_style.dart';
 import 'constant/theme/app_theme.dart';
 import 'constant/theme/global_data.dart';
 import 'models/app_shared_preferences.dart';
+import 'models/database/chat_history_database.dart';
 import 'utils/language_util.dart';
 import 'view_models/base_view_model.dart';
 import 'views/main_screen.dart';
@@ -35,6 +36,9 @@ Future<void> initApp() async {
   BaseViewModel baseViewModel = BaseViewModel();
   // await baseViewModel.getCountry();
   await LanguageUtil.init();
+
+  /// 資料庫初始化
+  ChatHistoryDataBase.instance.database;
 
   ///MARK: 自動登入
   bool isLogin = false;
