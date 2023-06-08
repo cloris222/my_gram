@@ -5,15 +5,13 @@ import 'package:base_project/constant/theme/ui_define.dart';
 import 'package:base_project/view_models/base_view_model.dart';
 import 'package:base_project/widgets/button/text_button_widget.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import '../../constant/theme/app_gradient_colors.dart';
 import '../../models/data/dynamic_info_data.dart';
 import '../../view_models/call_back_function.dart';
 import '../../widgets/label/common_network_image.dart';
 import '../../widgets/label/custom_gradient_icon.dart';
 import '../personal/personal_home_page.dart';
-import '../personal/personal_main_page.dart';
 
 class DynamicInfoView extends StatefulWidget {
   DynamicInfoView({
@@ -82,7 +80,7 @@ class _DynamicInfoViewState extends State<DynamicInfoView> {
                         },
                         child: Text(widget.data.name,style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize14),),
                       ),
-                      Text(_getTime(widget.data.time),style: AppTextStyle.getBaseStyle(color: AppColors.textGrey,fontSize: UIDefine.fontSize12),),
+                      Text(_getTime(widget.data.time),style: AppTextStyle.getBaseStyle(color: AppColors.textSubInfo,fontSize: UIDefine.fontSize12),),
                     ],
                   ),
                 ],
@@ -91,7 +89,7 @@ class _DynamicInfoViewState extends State<DynamicInfoView> {
               isFillWidth: false,
               setWidth: UIDefine.getPixelWidth(100),
               radius: 50,
-                setMainColor: Colors.grey,
+                setMainColor: AppColors.buttonUnable,
                 btnText: widget.data.isFollowing?tr('following'):tr('follow'),
                 onPressed: (){
                   widget.onFollowing(widget.index);
@@ -135,7 +133,7 @@ class _DynamicInfoViewState extends State<DynamicInfoView> {
               },
               child: Visibility(
               visible: !widget.data.isShowMore,
-              child: Text(tr('showMore'),style: AppTextStyle.getBaseStyle(color: AppColors.textGrey),),
+              child: Text(tr('showMore'),style: AppTextStyle.getBaseStyle(color: AppColors.textSubInfo),),
             ),
           )
             ],
@@ -161,9 +159,9 @@ class _DynamicInfoViewState extends State<DynamicInfoView> {
                 style: TextButton.styleFrom(
                   shape:RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20.0),
-                      side: BorderSide(color: AppColors.mainThemeButton)
+                      side: BorderSide(color: AppColors.mainThemeButton.getColor())
                   ),
-                  foregroundColor: AppColors.mainThemeButton,
+                  foregroundColor: AppColors.mainThemeButton.getColor(),
                 ),
                   onPressed: ()=>widget.onLike(widget.index),
                   child: Container(
@@ -175,7 +173,7 @@ class _DynamicInfoViewState extends State<DynamicInfoView> {
                       children: [
                       CustomGradientIcon(
                         icon: Icon(Icons.favorite),
-                        colors: AppColors.gradientColors,
+                        colors: AppGradientColors.gradientColors.getColors(),
                       ),
                       SizedBox(width: UIDefine.getPixelWidth(5),),
                       Text((widget.data.likes).numberCompatFormat())
@@ -187,9 +185,9 @@ class _DynamicInfoViewState extends State<DynamicInfoView> {
                   style: TextButton.styleFrom(
                     shape:RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0),
-                        side: BorderSide(color: AppColors.mainThemeButton)
+                        side: BorderSide(color: AppColors.mainThemeButton.getColor())
                     ),
-                    foregroundColor: AppColors.mainThemeButton,
+                    foregroundColor: AppColors.mainThemeButton.getColor(),
                   ),
                   onPressed: ()=>widget.onComment(widget.index),
                   child: Container(
@@ -201,7 +199,7 @@ class _DynamicInfoViewState extends State<DynamicInfoView> {
                       children: [
                         CustomGradientIcon(
                           icon: Icon(Icons.sms_outlined),
-                          colors: AppColors.gradientColors,
+                          colors: AppGradientColors.gradientColors.getColors(),
                         ),
                         SizedBox(width: UIDefine.getPixelWidth(5),),
                         Text((widget.data.comments).numberCompatFormat())
@@ -213,9 +211,9 @@ class _DynamicInfoViewState extends State<DynamicInfoView> {
                   style: TextButton.styleFrom(
                     shape:RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0),
-                        side: BorderSide(color: AppColors.mainThemeButton)
+                        side: BorderSide(color: AppColors.mainThemeButton.getColor())
                     ),
-                    foregroundColor: AppColors.mainThemeButton,
+                    foregroundColor: AppColors.mainThemeButton.getColor(),
                   ),
                   onPressed: ()=>widget.onStore(widget.index),
                   child: Container(
@@ -227,7 +225,7 @@ class _DynamicInfoViewState extends State<DynamicInfoView> {
                       children: [
                         CustomGradientIcon(
                           icon: Icon(Icons.bookmark),
-                          colors: AppColors.gradientColors,
+                          colors: AppGradientColors.gradientColors.getColors(),
                         ),
                       ],),
                   )),
@@ -237,9 +235,9 @@ class _DynamicInfoViewState extends State<DynamicInfoView> {
                   style: TextButton.styleFrom(
                     shape:RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0),
-                        side: BorderSide(color: AppColors.mainThemeButton)
+                        side: BorderSide(color: AppColors.mainThemeButton.getColor())
                     ),
-                    foregroundColor: AppColors.mainThemeButton,
+                    foregroundColor: AppColors.mainThemeButton.getColor(),
                   ),
                   onPressed: (){
                     widget.onShare(widget.index);},
@@ -252,7 +250,7 @@ class _DynamicInfoViewState extends State<DynamicInfoView> {
                       children: [
                         CustomGradientIcon(
                           icon: Icon(Icons.share),
-                          colors: AppColors.gradientColors,
+                          colors: AppGradientColors.gradientColors.getColors(),
                         ),
                       ],),
                   )),

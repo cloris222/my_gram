@@ -144,13 +144,13 @@ class _SwipeImageViewState extends State<SwipeImageView> {
                     onTap: () => _buttonAnimate(false),
                     child: Container(
                       decoration: AppStyle().styleColorBorderBackground(
-                          color: AppColors.buttonDisLike,
+                          color: AppColors.buttonDisLike.getColor(),
                           radius: 10,
                           backgroundColor: Colors.transparent,
                           borderLine: 4),
                       padding: EdgeInsets.all(UIDefine.getPixelWidth(15)),
-                      child: const Icon(Icons.close,
-                          color: AppColors.buttonDisLike),
+                      child:  Icon(Icons.close,
+                          color: AppColors.buttonDisLike.getColor()),
                     ),
                   ),
                 ),
@@ -160,13 +160,13 @@ class _SwipeImageViewState extends State<SwipeImageView> {
                     onTap: () => _buttonAnimate(true),
                     child: Container(
                       decoration: AppStyle().styleColorBorderBackground(
-                          color: AppColors.buttonLike,
+                          color: AppColors.buttonLike.getColor(),
                           radius: 10,
                           backgroundColor: Colors.transparent,
                           borderLine: 4),
                       padding: EdgeInsets.all(UIDefine.getPixelWidth(15)),
-                      child: const Icon(Icons.favorite,
-                          color: AppColors.buttonLike),
+                      child:  Icon(Icons.favorite,
+                          color: AppColors.buttonLike.getColor()),
                     ),
                   ),
                 ),

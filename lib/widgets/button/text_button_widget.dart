@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../constant/enum/border_style_type.dart';
 import '../../constant/theme/app_colors.dart';
+import '../../constant/theme/app_gradient_colors.dart';
 import '../../constant/theme/app_style.dart';
 import '../../constant/theme/app_text_style.dart';
 import '../../constant/theme/ui_define.dart';
@@ -13,8 +14,8 @@ class TextButtonWidget extends StatefulWidget {
     required this.btnText,
     required this.onPressed,
     this.setMainColor = AppColors.mainThemeButton,
-    this.setSubColor = AppColors.textWhite,
-    this.setTransColor = Colors.transparent,
+    this.setSubColor = AppColors.textPrimary,
+    this.setTransColor = AppColors.transparent,
     this.setHeight,
     this.setWidth,
     this.fontSize,
@@ -37,9 +38,9 @@ class TextButtonWidget extends StatefulWidget {
 
   final String btnText;
   final VoidCallback onPressed;
-  final Color setMainColor; //主色
-  final Color setSubColor; //子色
-  final Color setTransColor; //取代透明色,用於倒數框
+  final AppColors setMainColor; //主色
+  final AppColors setSubColor; //子色
+  final AppColors setTransColor; //取代透明色,用於倒數框
   final double? setHeight;
   final double? setWidth;
   final double? fontSize;
@@ -57,7 +58,7 @@ class TextButtonWidget extends StatefulWidget {
 
   final int needTimes;
   final bool isGradient;
-  final Color? textColor;
+  final AppColors? textColor;
   final bool isTextGradient;
   final bool isBorderGradient;
 
@@ -83,13 +84,13 @@ class _TextButtonWidgetState extends State<TextButtonWidget>
   Widget createButton(BuildContext context) {
     Color primaryColor, borderColor, textColor;
     if (widget.isBorderStyle) {
-      primaryColor = widget.setSubColor;
-      borderColor = widget.setMainColor;
-      textColor = widget.setMainColor;
+      primaryColor = widget.setSubColor.getColor();
+      borderColor = widget.setMainColor.getColor();
+      textColor = widget.setMainColor.getColor();
     } else {
-      primaryColor = widget.setMainColor;
-      borderColor = widget.setTransColor;
-      textColor = widget.setSubColor;
+      primaryColor = widget.setMainColor.getColor();
+      borderColor = widget.setTransColor.getColor();
+      textColor = widget.setSubColor.getColor();
     }
     var actionButton = GestureDetector(
         onTap: () => intervalClick(widget.needTimes, widget.onPressed),
@@ -110,16 +111,12 @@ class _TextButtonWidgetState extends State<TextButtonWidget>
                 ),
                 borderRadius:BorderRadius.circular(widget.radius),
                 gradient: LinearGradient(
-                  begin: Alignment(-1, 0),
-                  end: Alignment(1, 0),
-                  colors: [
-                    Color(0xFF766733),
-                    Color(0xFFCEBB8B),
-                    Color(0xFF766733),
-                  ],)
+                  begin: const Alignment(-1, 0),
+                  end: const Alignment(1, 0),
+                  colors: AppGradientColors.gradientColors.getColors(),)
             ):widget.isBorderGradient?AppStyle().buildGradientBorderWithGradientColor(
                 type: GradientBorderType.common,
-                colors: [Color(0xFF766733), Color(0xFFCEBB8B), Color(0xFF766733),],
+                colors: AppGradientColors.gradientColors.getColors(),
             ):
             AppStyle().styleColorBorderBackground(
                 borderLine: widget.borderSize,
@@ -135,7 +132,7 @@ class _TextButtonWidgetState extends State<TextButtonWidget>
                   fontWeight: widget.fontWeight??FontWeight.w500
               ):
               AppTextStyle.getBaseStyle(
-                  color: widget.textColor??AppColors.textWhite,
+                  color: widget.textColor??AppColors.textPrimary,
                   fontSize: widget.fontSize ?? UIDefine.fontSize16,
                   fontWeight: widget.fontWeight??FontWeight.w500)
               ,

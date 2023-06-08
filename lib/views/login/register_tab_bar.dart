@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../../../../constant/theme/app_colors.dart';
+import '../../constant/theme/app_gradient_colors.dart';
 import '../../constant/theme/app_text_style.dart';
 import '../../constant/theme/ui_define.dart';
 
@@ -29,7 +30,7 @@ class RegisterTabBar {
                       padding: EdgeInsets.fromLTRB(UIDefine.getScreenWidth(4.5), 0, UIDefine.getScreenWidth(3), 0),
                       child: Text(
                         _getTabTitle(dataList[i]),
-                        style: isCurrent?AppTextStyle.getGradientStyle(fontSize: UIDefine.fontSize16):AppTextStyle.getBaseStyle(color: AppColors.textWhite,fontSize: UIDefine.getPixelWidth(18)),
+                        style: isCurrent?AppTextStyle.getGradientStyle(fontSize: UIDefine.fontSize16):AppTextStyle.getBaseStyle(color: AppColors.textPrimary,fontSize: UIDefine.getPixelWidth(18)),
                         textAlign: TextAlign.center,),
                     ),
                   ),
@@ -68,12 +69,12 @@ class RegisterTabBar {
   }
 
   List<Color> _getLineColor(bool isCurrent) {
-    if (isCurrent) return AppColors.gradientBaseColorBg;
+    if (isCurrent) return AppGradientColors.gradientBaseColorBg.getColors();
     return [Colors.white,Colors.white];
   }
 
   List<Color> _getButtonColor(bool isCurrent) {
-    if (isCurrent) return AppColors.gradientBaseColorBg;
+    if (isCurrent) return AppGradientColors.gradientBaseColorBg.getColors();
     return [Colors.grey];
   }
 

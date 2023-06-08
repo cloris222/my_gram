@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../widgets/label/gradient_border_type.dart';
 import '../enum/border_style_type.dart';
+import 'app_gradient_colors.dart';
 import 'app_colors.dart';
 import 'app_text_style.dart';
 
@@ -9,10 +10,10 @@ import 'app_text_style.dart';
 class AppStyle {
   Widget styleFillText(String text,
       {TextStyle? style,
-        double minHeight = 20,
-        EdgeInsetsGeometry margin = EdgeInsets.zero,
-        AlignmentGeometry alignment = Alignment.centerLeft,
-        GlobalKey? key}) {
+      double minHeight = 20,
+      EdgeInsetsGeometry margin = EdgeInsets.zero,
+      AlignmentGeometry alignment = Alignment.centerLeft,
+      GlobalKey? key}) {
     return Container(
         key: key,
         alignment: alignment,
@@ -32,7 +33,8 @@ class AppStyle {
     return BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(radius)),
         border: Border.all(color: borderColor, width: borderWith),
-        gradient:  LinearGradient(colors: AppColors.gradientBaseColorBg));
+        gradient: LinearGradient(
+            colors: AppGradientColors.gradientBaseColorBg.getColors()));
   }
 
   /// 漸層色紫藍色(反轉)
@@ -43,8 +45,8 @@ class AppStyle {
     return BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(radius)),
         border: Border.all(color: borderColor, width: borderWith),
-        gradient:
-            const LinearGradient(colors: AppColors.gradientBaseFlipColorBg));
+        gradient: LinearGradient(
+            colors: AppGradientColors.gradientBaseFlipColorBg.getColors()));
   }
 
   /// 自定義漸層
@@ -61,95 +63,34 @@ class AppStyle {
 
   BoxDecoration buildGradientBorderWithGradientColor(
       {double radius = 8,
-        double borderWidth = 1,
-        bool isGradient = false,
-        required GradientBorderType type,
-        required List<Color> colors}) {
+      double borderWidth = 1,
+      bool isGradient = false,
+      required GradientBorderType type,
+      required List<Color> colors}) {
     return BoxDecoration(
         border: GradientBoxBorder(
           gradient: getBroderType(type),
           width: borderWidth,
         ),
-        gradient: isGradient?LinearGradient(colors: colors):null,
+        gradient: isGradient ? LinearGradient(colors: colors) : null,
         borderRadius: BorderRadius.circular(radius));
   }
 
   Gradient getBroderType(GradientBorderType type) {
     switch (type) {
       case GradientBorderType.base:
-        return const LinearGradient(
-            begin: Alignment.bottomLeft,
-            end: Alignment.topRight,
-            tileMode: TileMode.decal,
-            colors: [AppColors.mainThemeButton, AppColors.subThemePurple]);
-      case GradientBorderType.common:
-        return const LinearGradient(
-            begin: Alignment.bottomLeft,
-            end: Alignment.topRight,
-            tileMode: TileMode.decal,
-            colors: [
-              Color(0xFF766733),
-              Color(0xFFCEBB8B),
-              Color(0xFF766733),
-            ]);
-      case GradientBorderType.error:
-        return const LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            tileMode: TileMode.decal,
-            colors: [
-              Color(0xFFF84343),
-              Color(0xFFFC0000),
-              Color(0xFF5A0101),
-              Color(0xFFF60000),
-            ]);
-      case GradientBorderType.homeArtsRecord:
         return LinearGradient(
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
+          begin: Alignment.bottomLeft,
+          end: Alignment.topRight,
+          tileMode: TileMode.decal,
+          colors: AppGradientColors.gradientBaseColorBg.getColors(),
+        );
+      case GradientBorderType.common:
+        return LinearGradient(
+            begin: Alignment.bottomLeft,
+            end: Alignment.topRight,
             tileMode: TileMode.decal,
-            colors: [
-              const Color(0xFF72C096).withOpacity(0.1),
-              const Color(0xFFDB85FA).withOpacity(0.36),
-              const Color(0xFF85CFA7).withOpacity(0.5),
-            ]);
-      case GradientBorderType.homeMint:
-        return const LinearGradient(
-            begin: Alignment.centerRight,
-            end: Alignment.centerLeft,
-            tileMode: TileMode.decal,
-            colors: [
-              Color(0xFF86CCA1),
-              Color(0xFF60AB7A),
-            ]);
-      case GradientBorderType.tradeDivision:
-        return const LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            tileMode: TileMode.decal,
-            colors: [
-              Color(0xFF334F94),
-              Color(0xFF8DFFC2),
-              Color(0xFF202D4D),
-            ]);
-      case GradientBorderType.buttonGrey:
-        return const LinearGradient(
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-            tileMode: TileMode.decal,
-            colors: [
-              Color(0xFF606060),
-              Color(0xFF2A3758),
-            ]);
-      case GradientBorderType.buttonMain:
-        return const LinearGradient(
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-            tileMode: TileMode.decal,
-            colors: [
-              AppColors.mainThemeButton,
-              AppColors.mainThemeButton,
-            ]);
+            colors: AppGradientColors.gradientColors.getColors());
       case GradientBorderType.none:
         return const LinearGradient(colors: [
           Colors.transparent,
@@ -180,13 +121,13 @@ class AppStyle {
     return BoxDecoration(
       borderRadius: BorderRadius.only(
         topLeft:
-        hasTopLeft ? Radius.circular(radius) : const Radius.circular(0),
+            hasTopLeft ? Radius.circular(radius) : const Radius.circular(0),
         topRight:
-        hasTopRight ? Radius.circular(radius) : const Radius.circular(0),
+            hasTopRight ? Radius.circular(radius) : const Radius.circular(0),
         bottomLeft:
-        hasBottomLef ? Radius.circular(radius) : const Radius.circular(0),
+            hasBottomLef ? Radius.circular(radius) : const Radius.circular(0),
         bottomRight:
-        hasBottomRight ? Radius.circular(radius) : const Radius.circular(0),
+            hasBottomRight ? Radius.circular(radius) : const Radius.circular(0),
       ),
       color: backgroundColor,
       border: Border.all(color: color, width: borderLine),
@@ -225,20 +166,19 @@ class AppStyle {
     bool hasBottomRight = true,
   }) {
     return BoxDecoration(
-      borderRadius: BorderRadius.only(
-        topLeft:
-        hasTopLeft ? Radius.circular(radius) : const Radius.circular(0),
-        topRight:
-        hasTopRight ? Radius.circular(radius) : const Radius.circular(0),
-        bottomLeft:
-        hasBottomLef ? Radius.circular(radius) : const Radius.circular(0),
-        bottomRight:
-        hasBottomRight ? Radius.circular(radius) : const Radius.circular(0),
-      ),
-      gradient: LinearGradient(colors: colors??[Color(0xFF766733),
-        Color(0xFFCEBB8B),
-        Color(0xFF766733),])
-    );
+        borderRadius: BorderRadius.only(
+          topLeft:
+              hasTopLeft ? Radius.circular(radius) : const Radius.circular(0),
+          topRight:
+              hasTopRight ? Radius.circular(radius) : const Radius.circular(0),
+          bottomLeft:
+              hasBottomLef ? Radius.circular(radius) : const Radius.circular(0),
+          bottomRight: hasBottomRight
+              ? Radius.circular(radius)
+              : const Radius.circular(0),
+        ),
+        gradient: LinearGradient(
+            colors: colors ?? AppGradientColors.gradientColors.getColors()));
   }
 
   BoxDecoration styleColorBorderBottomLine(
@@ -279,7 +219,7 @@ class AppStyle {
 
   BoxDecoration styleUserSetting() {
     return styleColorBorderBackground(
-        color: AppColors.bolderGrey,
+        color: AppColors.bolderGrey.getColor(),
         radius: 15,
         backgroundColor: Colors.transparent);
   }

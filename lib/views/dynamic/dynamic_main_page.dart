@@ -1,20 +1,16 @@
 import 'package:base_project/constant/enum/border_style_type.dart';
 import 'package:base_project/constant/theme/app_colors.dart';
-import 'package:base_project/constant/theme/app_image_path.dart';
-import 'package:base_project/constant/theme/app_style.dart';
 import 'package:base_project/constant/theme/app_text_style.dart';
 import 'package:base_project/constant/theme/ui_define.dart';
 import 'package:base_project/models/data/dynamic_info_data.dart';
 import 'package:base_project/view_models/base_view_model.dart';
 import 'package:base_project/widgets/label/common_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../constant/theme/global_data.dart';
 import '../../models/data/store_info_data.dart';
 import '../../widgets/dialog/common_custom_dialog.dart';
-import '../../widgets/label/custom_gradient_icon.dart';
 import 'dynamic_info_view.dart';
 import 'dynamic_post_comment_page.dart';
 
@@ -219,14 +215,14 @@ class _DynamicMainPageState extends State<DynamicMainPage> {
             child: Column(children: [
               Container(
                 height: 50,
-                color: AppColors.dialogBackground,
+                color: AppColors.dialogBackground.getColor(),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                   Icon(Icons.bookmark,color: AppColors.textWhite,),
+                   Icon(Icons.bookmark,color: AppColors.textPrimary.getColor(),),
                     Text(tr('chooseStorePlace'),style: AppTextStyle.getBaseStyle(
                       fontSize: UIDefine.fontSize16,
-                        color: AppColors.textWhite
+                        color: AppColors.textPrimary
                     ),),
                     GestureDetector(
                       onTap: (){
@@ -235,7 +231,7 @@ class _DynamicMainPageState extends State<DynamicMainPage> {
                       },
                       child: Text(tr('add'),style: AppTextStyle.getBaseStyle(
                           fontSize: UIDefine.fontSize16,
-                          color: AppColors.textWhite),),
+                          color: AppColors.textPrimary),),
                     )
                   ],
                 ),
@@ -267,7 +263,7 @@ class _DynamicMainPageState extends State<DynamicMainPage> {
                             onTap: (){
 
                             },
-                            child: Icon(Icons.add,color: AppColors.textWhite,),
+                            child: Icon(Icons.add,color: AppColors.textPrimary.getColor(),),
                           )
                         ],
                       ),
@@ -304,7 +300,7 @@ class _DynamicMainPageState extends State<DynamicMainPage> {
               child: Column(children: [
                 Container(
                   height: 50,
-                  color: AppColors.dialogBackground,
+                  color: AppColors.dialogBackground.getColor(),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -317,7 +313,7 @@ class _DynamicMainPageState extends State<DynamicMainPage> {
                       ),
                       Text(tr('addStorePlace'),style: AppTextStyle.getBaseStyle(
                           fontSize: UIDefine.fontSize16,
-                          color: AppColors.textWhite
+                          color: AppColors.textPrimary
                       ),),
                       GestureDetector(
                         onTap: (){
@@ -337,7 +333,7 @@ class _DynamicMainPageState extends State<DynamicMainPage> {
                         },
                         child: Text(tr('save'),style: AppTextStyle.getBaseStyle(
                             fontSize: UIDefine.fontSize16,
-                            color: AppColors.textWhite),),
+                            color: AppColors.textPrimary),),
                       )
                     ],
                   ),

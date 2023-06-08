@@ -22,9 +22,9 @@ abstract class BaseDialog {
   double radius;
   bool isDialogCancel;
   double contentSizeHeight;
-  Color backgroundColor;
+  AppColors backgroundColor;
   bool needClose;
-  Color? closeColor;
+  AppColors? closeColor;
 
   Future<void> initValue();
 
@@ -49,7 +49,7 @@ abstract class BaseDialog {
               }
             },
             child: Scaffold(
-                backgroundColor: AppColors.opacityBackground,
+                backgroundColor: AppColors.opacityBackground.getColor(),
                 body: WillPopScope(
                   onWillPop: () async {
                     return isDialogCancel;
@@ -59,9 +59,8 @@ abstract class BaseDialog {
                       onTap: () {},
                       child: Container(
                         decoration: BoxDecoration(
-                          color: backgroundColor,
-                          borderRadius: BorderRadius.circular(radius)
-                        ),
+                            color: backgroundColor.getColor(),
+                            borderRadius: BorderRadius.circular(radius)),
                         margin: defaultInsetMargin(),
                         child: SingleChildScrollView(
                           child: Stack(
@@ -92,14 +91,18 @@ abstract class BaseDialog {
                                   )),
                               defaultBtnCloseMargin(
                                 child: Visibility(
-                                  visible: needClose,
-                                  child:GestureDetector(
-                                    onTap: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: Icon(Icons.close,color: closeColor??AppColors.textWhite,),
-                                  )
-                                ),
+                                    visible: needClose,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Icon(
+                                        Icons.close,
+                                        color:
+                                            (closeColor ?? AppColors.textPrimary)
+                                                .getColor(),
+                                      ),
+                                    )),
                               )
                             ],
                           ),

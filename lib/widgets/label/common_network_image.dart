@@ -1,9 +1,7 @@
-import 'package:base_project/constant/theme/app_style.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import '../../constant/enum/border_style_type.dart';
 import '../../constant/theme/app_colors.dart';
 
 ///MARK: 漸進式讀取圖片
@@ -51,7 +49,7 @@ class CommonNetworkImage extends StatelessWidget {
     return Center(
         child: loadWidget ??
             LoadingAnimationWidget.hexagonDots(
-                color: AppColors.textWhite, size: 20));
+                color: AppColors.textPrimary.getColor(), size: 20));
   }
 
   Widget _buildErrorIcon() {

@@ -6,14 +6,14 @@ import 'package:flutter/cupertino.dart';
 
 class MoreActionBar extends StatelessWidget {
   final IconData icon;
-  final Color iconColor;
+  final AppColors iconColor;
   final String title;
-  final Color titleColor;
+  final AppColors titleColor;
   final onClickFunction onClick;
   const MoreActionBar({
         Key? key,
-        this.iconColor = AppColors.textWhite,
-        this.titleColor = AppColors.textWhite,
+        this.iconColor = AppColors.textPrimary,
+        this.titleColor = AppColors.textPrimary,
         required this.icon,
         required this.title,
         required this.onClick
@@ -32,7 +32,7 @@ class MoreActionBar extends StatelessWidget {
           height: UIDefine.getPixelWidth(45),
           padding: EdgeInsets.only(left: UIDefine.getPixelWidth(10)),
           decoration: BoxDecoration(
-            color: AppColors.moreActionBarBackground,
+            color: AppColors.moreActionBarBackground.getColor(),
             borderRadius: BorderRadius.circular(15),
           ),
           child: Stack(
@@ -45,7 +45,7 @@ class MoreActionBar extends StatelessWidget {
               ),
               Container(
                   alignment: Alignment.centerLeft,
-                  child: Icon(icon,color:iconColor,size: UIDefine.getPixelWidth(28),)
+                  child: Icon(icon,color:iconColor.getColor(),size: UIDefine.getPixelWidth(28),)
               )
             ],
           )

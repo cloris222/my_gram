@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:base_project/view_models/global_theme_provider.dart';
 import 'package:base_project/views/app_first_page.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'constant/theme/app_routes.dart';
 import 'constant/theme/app_text_style.dart';
-import 'constant/theme/app_theme.dart';
 import 'constant/theme/global_data.dart';
 import 'models/app_shared_preferences.dart';
 import 'models/database/chat_history_database.dart';
@@ -70,22 +70,20 @@ Widget localizations(Widget app) {
       child: app);
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends ConsumerStatefulWidget {
   const MyApp({Key? key, required this.isLogin}) : super(key: key);
   final bool isLogin;
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  ConsumerState createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends ConsumerState<MyApp> {
   @override
   void initState() {
-    // 初始化ThemeStore，之后赋值到themeProvider中
-    // AppTheme.init().then((value) {
-    //   GlobalData.themeProvider.setThemeMode(AppTheme.getThemeMode());
-    //   GlobalData.isDarkTheme = (AppTheme.getThemeMode() == ThemeMode.dark);
-    // });
+    Future.delayed(Duration.zero).then((value) async {
+      ref.read(globalThemeProvider.notifier).init();
+    });
 
     super.initState();
   }
@@ -96,8 +94,7 @@ class _MyAppState extends State<MyApp> {
 
     return MaterialApp(
       /// 深色／淺色模式
-      themeMode: null,
-      theme: AppTheme.define(),
+      themeMode: ref.watch(globalThemeProvider),
       routes: AppRoutes.define(),
       debugShowCheckedModeBanner: false,
       localizationsDelegates: context.localizationDelegates,

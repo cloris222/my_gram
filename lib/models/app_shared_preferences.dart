@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constant/theme/global_data.dart';
@@ -40,6 +41,20 @@ class AppSharedPreferences {
     SharedPreferences pref = await _getPreferences();
     if (await checkKey(key, pref: pref)) {
       return pref.getStringList(key)!;
+    } else {
+      return defaultValue;
+    }
+  }
+
+  static Future<void> setInt(String key, int value) async {
+    SharedPreferences pref = await _getPreferences();
+    await pref.setInt(key, value);
+  }
+
+  static Future<int> getInt(String key, {int defaultValue = 0}) async {
+    SharedPreferences pref = await _getPreferences();
+    if (await checkKey(key, pref: pref)) {
+      return pref.getInt(key)!;
     } else {
       return defaultValue;
     }
@@ -112,6 +127,18 @@ class AppSharedPreferences {
     return await getString("Token");
   }
 
+  static Future<void> setTheme(ThemeMode mode) async {
+    await setInt("userTheme", mode.index);
+  }
+
+  static Future<ThemeMode> getTheme() async {
+    int index = await getInt("userTheme", defaultValue: -1);
+    if (index == -1) {
+      return ThemeMode.dark;
+    }
+    return ThemeMode.values[index];
+  }
+
   /// MARK: 判斷是否登入過
   static Future<void> setLogIn(bool isLogIn) async {
     await setBool("LogIn", isLogIn);
@@ -140,10 +167,9 @@ class AppSharedPreferences {
     });
   }
 
+  ///MARK: ----使用者設定 end ----
 
-///MARK: ----使用者設定 end ----
+  ///MARK: ----暫存相關 start ----
 
-///MARK: ----暫存相關 start ----
-
-///MARK: ----暫存相關 end ----
+  ///MARK: ----暫存相關 end ----
 }

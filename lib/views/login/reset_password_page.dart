@@ -1,7 +1,6 @@
 import 'package:base_project/view_models/base_view_model.dart';
 import 'package:base_project/widgets/appbar/custom_app_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -10,9 +9,9 @@ import '../../constant/theme/app_text_style.dart';
 import '../../constant/theme/ui_define.dart';
 import '../../view_models/gobal_provider/global_tag_controller_provider.dart';
 import '../../view_models/login/forget_password_view_model.dart';
-import '../../widgets/button/countdown_button_widget.dart';
 import '../../widgets/button/text_button_widget.dart';
 import '../../widgets/label/login_param_view.dart';
+import '../common_scaffold.dart';
 
 class ResetPasswordPage extends ConsumerStatefulWidget {
   final String emailAddress;
@@ -43,17 +42,12 @@ class _ResetPasswordPageState extends ConsumerState<ResetPasswordPage> {
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar.registerAppBar(context),
-      body: GestureDetector(
-        onTap:(){
-          BaseViewModel().clearAllFocus();
-        },
-        child: SingleChildScrollView(
-          child: Container(
+    return CommonScaffold(
+        appBar: CustomAppBar.registerAppBar(context),
+        body:(isDark)=> SingleChildScrollView(
+          child: SizedBox(
             width: UIDefine.getWidth(),
             height: UIDefine.getHeight(),
-            color: Colors.black,
             child: SingleChildScrollView(
               child: Column(
                 children: [
@@ -66,7 +60,7 @@ class _ResetPasswordPageState extends ConsumerState<ResetPasswordPage> {
                           onTap: (){
                             BaseViewModel().popPage(context);
                           },
-                          child: Icon(Icons.chevron_left,color: AppColors.textWhite,size: UIDefine.getPixelWidth(30),),
+                          child: Icon(Icons.chevron_left,color: AppColors.textPrimary.getColor(),size: UIDefine.getPixelWidth(30),),
                         ),
                         SizedBox(width: UIDefine.getWidth()*0.9,)
                       ],
@@ -125,7 +119,7 @@ class _ResetPasswordPageState extends ConsumerState<ResetPasswordPage> {
                     children: [
                       (viewModel.passwordController.text.isNotEmpty&&viewModel.rePasswordController.text.isNotEmpty)?
                       TextButtonWidget(
-                          textColor: AppColors.textBlack,
+                          textColor: AppColors.buttonPrimaryText,
                           isFillWidth: false,
                           setWidth: UIDefine.getPixelWidth(150),
                           setHeight: UIDefine.getPixelWidth(45),
@@ -135,11 +129,11 @@ class _ResetPasswordPageState extends ConsumerState<ResetPasswordPage> {
                             viewModel.onPressReset(context,widget.emailAddress,widget.validate);
                           }):
                       TextButtonWidget(
-                          textColor: AppColors.textWhite,
+                          textColor: AppColors.textPrimary,
                           isFillWidth: false,
                           setWidth: UIDefine.getPixelWidth(150),
                           setHeight: UIDefine.getPixelWidth(45),
-                          setMainColor: AppColors.textGrey,
+                          setMainColor: AppColors.textSubInfo,
                           btnText: tr('reset'),
                           onPressed: (){})
                     ],
@@ -148,7 +142,6 @@ class _ResetPasswordPageState extends ConsumerState<ResetPasswordPage> {
               ),
             ),)
         ),
-      ),
     );
   }
 }

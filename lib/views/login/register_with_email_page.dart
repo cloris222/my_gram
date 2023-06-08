@@ -2,7 +2,6 @@ import 'package:base_project/constant/theme/app_colors.dart';
 import 'package:base_project/constant/theme/app_text_style.dart';
 import 'package:base_project/constant/theme/ui_define.dart';
 import 'package:base_project/views/login/register_choose_gender_page.dart';
-import 'package:base_project/views/login/register_preference_choose_main_page.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +13,6 @@ import '../../view_models/gobal_provider/global_tag_controller_provider.dart';
 import '../../view_models/login/register_main_view_model.dart';
 import '../../widgets/button/countdown_button_widget.dart';
 import '../../widgets/button/text_button_widget.dart';
-import '../../widgets/drop_buttom/custom_drop_button.dart';
 import '../../widgets/label/error_text_widget.dart';
 import '../../widgets/label/login_param_view.dart';
 
@@ -102,7 +100,7 @@ class _RegisterWithEmailViewState extends ConsumerState<RegisterWithEmailView> {
                 onPress: () {},
               ):
               TextButtonWidget(
-                setMainColor: Colors.grey,
+                setMainColor: AppColors.buttonUnable,
                 setWidth: UIDefine.getPixelWidth(100),
                 setHeight: UIDefine.getPixelWidth(36),
                 isFillWidth: false,
@@ -144,7 +142,7 @@ class _RegisterWithEmailViewState extends ConsumerState<RegisterWithEmailView> {
               TextButtonWidget(
                 setWidth: UIDefine.getPixelWidth(100),
                 radius: 4,
-                textColor: AppColors.textBlack,
+                textColor: AppColors.buttonPrimaryText,
                 isFillWidth: false,
                 isGradient: true,
                 btnText: tr('next'),

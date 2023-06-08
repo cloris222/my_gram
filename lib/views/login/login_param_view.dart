@@ -51,8 +51,8 @@ class LoginParamView extends StatelessWidget {
         keyboardType: keyboardType,
         hintText: hintText,
         controller: controller,
-        initColor: data.result ? AppColors.textFieldBackground : AppColors.textRed,
-        enabledColor: data.result ? AppColors.textFieldBackground : AppColors.textRed,
+        initColor: data.result ? AppColors.textFieldBackground : AppColors.textError,
+        enabledColor: data.result ? AppColors.textFieldBackground : AppColors.textError,
         focusedColor: AppColors.mainThemeButton,
         isSecure: isSecure,
         onChanged: onChanged,
@@ -67,14 +67,14 @@ class LoginParamView extends StatelessWidget {
   Widget _buildTextTitle(String text) {
     return Text(text,
         style: AppTextStyle.getBaseStyle(
-          color: AppColors.textWhite,
+          color: AppColors.textPrimary,
             fontWeight: FontWeight.w500, fontSize: UIDefine.fontSize14));
   }
 
   Widget _buildSubTitle(String text) {
     return Text(text,
         style: AppTextStyle.getBaseStyle(
-            color: AppColors.textWhite,
+            color: AppColors.textPrimary,
             fontWeight: FontWeight.w500,
             fontSize: UIDefine.fontSize14));
   }

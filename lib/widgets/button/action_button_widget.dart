@@ -9,8 +9,8 @@ class ActionButtonWidget extends StatelessWidget {
       required this.btnText,
       required this.onPressed,
       this.setMainColor = AppColors.mainThemeButton,
-      this.setSubColor = AppColors.textWhite,
-      this.setTransColor = Colors.transparent,
+      this.setSubColor = AppColors.textPrimary,
+      this.setTransColor = AppColors.transparent,
       this.setHeight,
       this.fontSize,
       this.fontWeight,
@@ -22,9 +22,9 @@ class ActionButtonWidget extends StatelessWidget {
       : super(key: key);
   final String btnText;
   final VoidCallback onPressed;
-  final Color setMainColor; //主色
-  final Color setSubColor; //子色
-  final Color setTransColor; //取代透明色,用於倒數框
+  final AppColors setMainColor; //主色
+  final AppColors setSubColor; //子色
+  final AppColors setTransColor; //取代透明色,用於倒數框
   final double? setHeight;
   final double? fontSize;
   final FontWeight? fontWeight;
@@ -41,14 +41,15 @@ class ActionButtonWidget extends StatelessWidget {
   }
 
   Widget createButton(BuildContext context) {
-    Color primaryColor, borderColor, textColor;
+    Color primaryColor, borderColor;
+    AppColors textColor;
     if (isBorderStyle) {
-      primaryColor = setSubColor;
-      borderColor = setMainColor;
+      primaryColor = setSubColor.getColor();
+      borderColor = setMainColor.getColor();
       textColor = setMainColor;
     } else {
-      primaryColor = setMainColor;
-      borderColor = setTransColor;
+      primaryColor = setMainColor.getColor();
+      borderColor = setTransColor.getColor();
       textColor = setSubColor;
     }
     var actionButton = ElevatedButton(

@@ -1,7 +1,6 @@
 import 'package:base_project/constant/theme/app_colors.dart';
 import 'package:base_project/constant/theme/global_data.dart';
 import 'package:base_project/constant/theme/ui_define.dart';
-import 'package:base_project/models/data/message_info_data.dart';
 import 'package:base_project/view_models/base_view_model.dart';
 import 'package:base_project/views/message/more_action_bar.dart';
 import 'package:base_project/views/message/private_message_page.dart';
@@ -9,9 +8,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../../constant/theme/app_text_style.dart';
 import '../../models/data/chat_room_data.dart';
-import '../../models/data/user_friends_data.dart';
 import '../../models/parameter/pair_image_data.dart';
-import '../../utils/date_format_util.dart';
 import 'message_list_view.dart';
 import 'news_navbar.dart';
 
@@ -132,7 +129,7 @@ class _MessageMainPageState extends State<MessageMainPage> {
           builder:(BuildContext context, StateSetter setState)=> Container(
             clipBehavior: Clip.antiAlias,
             decoration: BoxDecoration(
-              color: AppColors.dialogBackground,
+              color: AppColors.dialogBackground.getColor(),
               borderRadius: BorderRadius.only(
                 topLeft: const Radius.circular(20.0),
                 topRight: const Radius.circular(20.0),
@@ -163,9 +160,9 @@ class _MessageMainPageState extends State<MessageMainPage> {
                     },),
                   MoreActionBar(
                     icon: Icons.delete,
-                    iconColor: Colors.red,
+                    iconColor: AppColors.buttonMessageRed,
                     title: tr('deleteChat'),
-                    titleColor: Colors.red,
+                    titleColor: AppColors.buttonMessageRed,
                     onClick: (){
                       _onDeleteChat(context,index);
                     },
@@ -191,7 +188,7 @@ class _MessageMainPageState extends State<MessageMainPage> {
               Container(
                 clipBehavior: Clip.antiAlias,
                 decoration: BoxDecoration(
-                  color: AppColors.dialogBackground,
+                  color: AppColors.dialogBackground.getColor(),
                   borderRadius: BorderRadius.circular(15.0),
                 ),
                 width: UIDefine.getPixelWidth(300),
@@ -220,7 +217,7 @@ class _MessageMainPageState extends State<MessageMainPage> {
                               style: AppTextStyle.getBaseStyle(
                                   fontSize: UIDefine.fontSize14,
                                   fontWeight: FontWeight.w400,
-                                  color: AppColors.textGrey),
+                                  color: AppColors.textSubInfo),
                               textAlign: TextAlign.center,
                             )
                           ],
@@ -246,7 +243,7 @@ class _MessageMainPageState extends State<MessageMainPage> {
                             style: AppTextStyle.getBaseStyle(
                                 fontSize: UIDefine.fontSize16,
                                 fontWeight: FontWeight.w600,
-                                color: AppColors.textWhite),)),
+                                color: AppColors.textPrimary),)),
                     ]),
               )
           );

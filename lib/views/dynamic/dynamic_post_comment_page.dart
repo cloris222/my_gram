@@ -14,11 +14,11 @@ import 'package:base_project/widgets/text_field/login_text_widget.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../../constant/theme/app_colors.dart';
 import '../../constant/theme/app_style.dart';
 import '../../models/parameter/post_comment_data.dart';
 import '../../widgets/label/avatar_icon_widget.dart';
+import '../common_scaffold.dart';
 
 class DynamicPostCommentPage extends StatefulWidget {
   const DynamicPostCommentPage({
@@ -50,10 +50,9 @@ class _DynamicPostCommentPageState extends State<DynamicPostCommentPage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
+    return CommonScaffold(
       appBar: CustomAppBar.titleAppBar(context, title: tr("commentTitle")),
-      body: GestureDetector(
+      body: (isDark) => GestureDetector(
         // 使空白處可以點擊
         behavior: HitTestBehavior.translucent,
         onTap: () => BaseViewModel().clearAllFocus(),
@@ -64,7 +63,7 @@ class _DynamicPostCommentPageState extends State<DynamicPostCommentPage>
                 children: [
                   Container(
                       decoration: AppStyle().styleColorBorderBottomLine(
-                          color: AppColors.mainThemeButton),
+                          color: AppColors.mainThemeButton.getColor()),
                       child: buildListView()),
                   Positioned(
                       bottom: 0, right: 0, left: 0, child: _buildReplyView()),
@@ -132,7 +131,7 @@ class _DynamicPostCommentPageState extends State<DynamicPostCommentPage>
 
   Widget _buildCommentBar() {
     return Container(
-        color: Colors.black,
+        color: AppColors.mainBackground.getColor(),
         padding: EdgeInsets.only(
             right: UIDefine.getPixelWidth(10),
             left: UIDefine.getPixelWidth(10),
@@ -166,7 +165,8 @@ class _DynamicPostCommentPageState extends State<DynamicPostCommentPage>
                   child: Text(
                     "${data.isMainComment() ? "" : "@${data.userName}"} ${data.commentContext}",
                     textAlign: TextAlign.start,
-                    style: AppTextStyle.getBaseStyle(color: Colors.black),
+                    style: AppTextStyle.getBaseStyle(
+                        color: AppColors.buttonPrimaryText),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ))));

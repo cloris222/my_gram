@@ -392,7 +392,7 @@ abstract class BaseListInterface {
         alignment: Alignment.center,
         margin: const EdgeInsets.symmetric(vertical: 10),
         child: LoadingAnimationWidget.hexagonDots(
-            color: AppColors.textWhite, size: 30));
+            color: AppColors.textPrimary.getColor(), size: 30));
   }
 
   Widget _buildReadMore() {

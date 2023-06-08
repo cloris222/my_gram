@@ -126,21 +126,21 @@ class _CommentItemViewState extends State<CommentItemView>
   }
 
   Widget _buildLikes() {
-    Color color =
+    AppColors color =
         data.isLike ? AppColors.mainThemeButton : AppColors.commentUnlike;
     return GestureDetector(
       onTap: _onPressLike,
       child: Container(
         constraints: BoxConstraints(minWidth: UIDefine.getPixelWidth(60)),
         decoration: AppStyle().styleColorBorderBackground(
-            radius: 25, color: color, backgroundColor: Colors.transparent),
+            radius: 25, color: color.getColor(), backgroundColor: Colors.transparent),
         padding: EdgeInsets.all(UIDefine.getPixelWidth(5)),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Icon(Icons.favorite,
-                color: color, size: UIDefine.getPixelWidth(15)),
+                color: color.getColor(), size: UIDefine.getPixelWidth(15)),
             Text(
               data.likes.numberCompatFormat(),
               style: AppTextStyle.getBaseStyle(

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../view_models/base_view_model.dart';
 import '../enum/style_enum.dart';
 import 'app_colors.dart';
+import 'app_gradient_colors.dart';
 import 'ui_define.dart';
 
 class AppTextStyle {
@@ -38,7 +39,7 @@ class AppTextStyle {
   }
 
   static TextStyle getBaseStyle({
-    Color color = AppColors.textWhite,
+    AppColors color = AppColors.textPrimary,
     double? fontSize,
     FontWeight? fontWeight,
     AppTextFamily? fontFamily,
@@ -48,7 +49,7 @@ class AppTextStyle {
     AppTextShadows shadowsType = AppTextShadows.none,
   }) {
     return TextStyle(
-        color: color,
+        color: color.getColor(),
         fontSize: fontSize ?? UIDefine.fontSize12,
         fontFamily: fontFamily?.name,
         fontWeight: getFontWeight(fontWeight),
@@ -77,24 +78,20 @@ class AppTextStyle {
   //建立漸層樣式
   static TextStyle getGradientStyle(
       {List<Color>? colors,
-        double? fontSize,
-        FontWeight? fontWeight,
-        AppTextFamily? fontFamily,
-        FontStyle? fontStyle,
-        double? height,
-        TextDecoration? textDecoration}) {
+      double? fontSize,
+      FontWeight? fontWeight,
+      AppTextFamily? fontFamily,
+      FontStyle? fontStyle,
+      double? height,
+      TextDecoration? textDecoration}) {
     Gradient gradient = LinearGradient(
       begin: Alignment(-1, 0),
       end: Alignment(1, 0),
-      colors: colors ?? [
-        Color(0xFF766733),
-        Color(0xFFCEBB8B),
-        Color(0xFF766733),
-      ],);
-    Shader shader = gradient.createShader(Rect.fromLTWH(0,0,400,1920));
+      colors: colors ?? AppGradientColors.gradientColors.getColors(),
+    );
+    Shader shader = gradient.createShader(Rect.fromLTWH(0, 0, 400, 1920));
     return TextStyle(
-      foreground: Paint()
-        ..shader = shader,
+      foreground: Paint()..shader = shader,
       fontSize: fontSize ?? UIDefine.fontSize12,
       fontFamily: fontFamily?.name,
       fontWeight: getFontWeight(fontWeight),

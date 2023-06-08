@@ -9,12 +9,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../constant/enum/border_style_type.dart';
+import '../../constant/theme/app_gradient_colors.dart';
 import '../../constant/theme/global_data.dart';
 import '../../models/data/personal_info_data.dart';
 import '../../models/data/post_info_data.dart';
 import '../../view_models/call_back_function.dart';
 import '../../widgets/label/common_network_image.dart';
-import '../../widgets/label/gradient_border_type.dart';
 
 class PersonalInfoView extends StatefulWidget {
   final PersonalInfoData data;
@@ -88,7 +88,7 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
                           radius: 20,
                           borderWidth: 2,
                           type: GradientBorderType.common,
-                          colors: AppColors.gradientColors),
+                          colors: AppGradientColors.gradientColors.getColors()),
                       child: SizedBox()
                   ),
                   ClipRRect(
@@ -106,14 +106,14 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
               Column(
                 children: [
                   Text((widget.data.totalPosts).numberCompatFormat(),style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize16),),
-                  Text(tr('posts'),style: AppTextStyle.getBaseStyle(color: AppColors.textGrey),)
+                  Text(tr('posts'),style: AppTextStyle.getBaseStyle(color: AppColors.textSubInfo),)
                 ],
               ),
               ///粉絲
               Column(
                 children: [
                   Text((widget.data.fans.length).numberCompatFormat(),style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize16),),
-                  Text(tr('fans'),style: AppTextStyle.getBaseStyle(color: AppColors.textGrey))
+                  Text(tr('fans'),style: AppTextStyle.getBaseStyle(color: AppColors.textSubInfo))
                 ],
               ),
               ///聲量排行（企劃待補）
@@ -151,7 +151,7 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
                 ),
                 GestureDetector(
                   onTap: widget.clickSeeMore,
-                  child: Text(tr('seeMore'),style: AppTextStyle.getBaseStyle(color: AppColors.textGrey),),
+                  child: Text(tr('seeMore'),style: AppTextStyle.getBaseStyle(color: AppColors.textSubInfo),),
                 )
               ],
             ),),
@@ -170,9 +170,9 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
                   borderSize: 0.5,
                   isFillWidth: false,
                   isBorderStyle: true,
-                  textColor: AppColors.textWhite,
-                  setMainColor: AppColors.textWhite,
-                  setSubColor: Colors.transparent,
+                  textColor: AppColors.textPrimary,
+                  setMainColor: AppColors.textPrimary,
+                  setSubColor: AppColors.transparent,
                   btnText: tr('following'),
                   onPressed: widget.clickFollowing):
               TextButtonWidget(
@@ -182,7 +182,7 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
                   borderSize: 0.5,
                   isFillWidth: false,
                   isGradient: true,
-                  textColor: AppColors.textWhite,
+                  textColor: AppColors.textPrimary,
                   btnText: tr('follow'),
                   onPressed: widget.clickFollowing),
               TextButtonWidget(
@@ -192,9 +192,9 @@ class _PersonalInfoViewState extends State<PersonalInfoView> {
                   borderSize: 0.5,
                   isFillWidth: false,
                   isBorderStyle: true,
-                  textColor:AppColors.textWhite ,
-                  setMainColor: AppColors.textWhite,
-                  setSubColor: Colors.transparent,
+                  textColor:AppColors.textPrimary ,
+                  setMainColor: AppColors.textPrimary,
+                  setSubColor: AppColors.transparent,
                   btnText: tr('message'),
                   onPressed: widget.clickMessage)
             ],

@@ -4,6 +4,7 @@ import 'package:base_project/views/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:format/format.dart';
 import '../constant/enum/app_param_enum.dart';
+import '../constant/theme/app_colors.dart';
 import '../constant/theme/app_image_path.dart';
 import '../constant/theme/global_data.dart';
 import '../constant/theme/ui_define.dart';
@@ -76,7 +77,7 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar>
 
   Widget _barBuilder(BuildContext context) {
     return Container(
-        color: Colors.black,
+        color: AppColors.mainBackground.getColor(),
         padding: EdgeInsets.only(
             right: UIDefine.getPixelWidth(10),
             left: UIDefine.getPixelWidth(10),
@@ -121,7 +122,9 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar>
         children: [
           Icon(type.icon,
               size: UIDefine.getPixelWidth(25),
-              color: isSelect ? Colors.yellow : Colors.grey)
+              color: isSelect
+                  ? AppColors.navigationBarSelect.getColor()
+                  : AppColors.navigationBarUnSelect.getColor())
         ],
       ),
     );

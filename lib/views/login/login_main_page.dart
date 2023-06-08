@@ -4,7 +4,6 @@ import 'package:base_project/constant/theme/app_colors.dart';
 import 'package:base_project/constant/theme/app_text_style.dart';
 import 'package:base_project/view_models/base_view_model.dart';
 import 'package:base_project/views/login/register_main_page.dart';
-import 'package:base_project/views/login/register_with_email_page.dart';
 import 'package:base_project/widgets/appbar/custom_app_bar.dart';
 import 'package:base_project/widgets/button/text_button_widget.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -15,6 +14,7 @@ import '../../constant/theme/ui_define.dart';
 import '../../view_models/gobal_provider/global_tag_controller_provider.dart';
 import '../../view_models/login/login_main_view_model.dart';
 import '../../widgets/label/login_param_view.dart';
+import '../common_scaffold.dart';
 import 'forget_password_page.dart';
 
 class LoginMainPage extends ConsumerStatefulWidget {
@@ -44,14 +44,13 @@ class _LoginMainPageState extends ConsumerState<LoginMainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return CommonScaffold(
         appBar: CustomAppBar.registerAppBar(context),
-        body: GestureDetector(
+        body:(isDark)=>GestureDetector(
           onTap: BaseViewModel().clearAllFocus,
-          child: Container(
+          child: SizedBox(
             width: UIDefine.getWidth(),
             height: UIDefine.getHeight(),
-            color: Colors.black,
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -97,7 +96,7 @@ class _LoginMainPageState extends ConsumerState<LoginMainPage> {
                             setHeight: UIDefine.getPixelWidth(40),
                             radius: 4,
                             isGradient: true,
-                            textColor: AppColors.textBlack,
+                            textColor: AppColors.buttonPrimaryText,
                             fontWeight: FontWeight.w600,
                             btnText: tr('login'),
                             onPressed: (){
@@ -108,7 +107,7 @@ class _LoginMainPageState extends ConsumerState<LoginMainPage> {
                             setHeight: UIDefine.getPixelWidth(40),
                             radius: 4,
                             isGradient: true,
-                            textColor: AppColors.textBlack,
+                            textColor: AppColors.buttonPrimaryText,
                             fontWeight: FontWeight.w600,
                             btnText: tr('registerWithEmail'),
                             onPressed: (){
@@ -120,7 +119,7 @@ class _LoginMainPageState extends ConsumerState<LoginMainPage> {
                           children: [
                             Divider(
                               height: UIDefine.getPixelWidth(1),
-                              color: AppColors.textWhite,
+                              color: AppColors.textPrimary.getColor(),
                             ),
                             Container(
                               alignment: Alignment.center,
@@ -134,8 +133,8 @@ class _LoginMainPageState extends ConsumerState<LoginMainPage> {
                         TextButtonWidget(
                             setHeight: UIDefine.getPixelWidth(40),
                             radius: 4,
-                            setMainColor: AppColors.textWhite,
-                            textColor: AppColors.textBlack,
+                            setMainColor: AppColors.textPrimary,
+                            textColor: AppColors.buttonPrimaryText,
                             fontWeight: FontWeight.w600,
                             btnText: tr('registerWithGoogle'),
                             onPressed: (){}),
@@ -145,8 +144,8 @@ class _LoginMainPageState extends ConsumerState<LoginMainPage> {
                             child: TextButtonWidget(
                             setHeight: UIDefine.getPixelWidth(40),
                             radius: 4,
-                            setMainColor: AppColors.textWhite,
-                            textColor: AppColors.textBlack,
+                            setMainColor: AppColors.textPrimary,
+                            textColor: AppColors.buttonPrimaryText,
                             fontWeight: FontWeight.w600,
                             btnText: tr('registerWithApple'),
                             onPressed: (){})),
@@ -160,7 +159,7 @@ class _LoginMainPageState extends ConsumerState<LoginMainPage> {
                       },
                     child: Text(tr('forgetPassword'),style: AppTextStyle.getBaseStyle(
                         fontSize: UIDefine.fontSize16,
-                        color: AppColors.textGrey),),
+                        color: AppColors.textSubInfo),),
                   )
                 ],
               ),

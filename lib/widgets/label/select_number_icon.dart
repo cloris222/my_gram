@@ -4,6 +4,7 @@ import 'package:base_project/constant/theme/ui_define.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+
 class SelectNumberIcon extends StatelessWidget {
   final int number;
   const SelectNumberIcon({Key? key,required this.number}) : super(key: key);
@@ -15,11 +16,11 @@ class SelectNumberIcon extends StatelessWidget {
       width: UIDefine.getPixelWidth(25),
       height: UIDefine.getPixelWidth(25),
       decoration: BoxDecoration(
-            color:AppColors.chatBubbleColor,
+            color:AppColors.chatBubbleColor.getColor(),
             borderRadius: BorderRadius.circular(50),
             border: Border.all(width: 3,color: Colors.white)
       ),
-      child: Text(number.toString(),style: AppTextStyle.getBaseStyle(color: AppColors.textBlack,fontWeight: FontWeight.w700),),
+      child: Text(number.toString(),style: AppTextStyle.getBaseStyle(color: AppColors.buttonPrimaryText,fontWeight: FontWeight.w700),),
     );
   }
 }

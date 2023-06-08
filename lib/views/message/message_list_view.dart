@@ -1,16 +1,12 @@
 import 'package:base_project/constant/theme/app_colors.dart';
 import 'package:base_project/constant/theme/app_text_style.dart';
 import 'package:base_project/constant/theme/ui_define.dart';
-import 'package:base_project/view_models/base_view_model.dart';
 import 'package:base_project/view_models/call_back_function.dart';
-import 'package:base_project/views/message/private_message_page.dart';
 import 'package:base_project/widgets/label/common_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import '../../models/data/chat_room_data.dart';
-import '../../models/data/user_friends_data.dart';
 
 class MessageListView extends StatefulWidget {
   final onGetIntFunction onLongPress;
@@ -72,16 +68,16 @@ class _MessageListViewState extends State<MessageListView> {
                       onPressed: (_){
                         widget.onPin(index);
                       },
-                      backgroundColor: AppColors.mainThemeButton,
-                      foregroundColor: Colors.white,
+                      backgroundColor: AppColors.mainThemeButton.getColor(),
+                      foregroundColor: AppColors.textPrimary.getColor(),
                       label: tr('pin'),
                     ),
                     SlidableAction(
                       onPressed: (_){
                         widget.onMute(index);
                       },
-                      backgroundColor: Color(0xFF936714),
-                      foregroundColor: Colors.white,
+                      backgroundColor: AppColors.messageBackground.getColor(),
+                      foregroundColor: AppColors.textPrimary.getColor(),
                       label: tr('mute'),
                     ),
                   ],
@@ -95,7 +91,7 @@ class _MessageListViewState extends State<MessageListView> {
                       onPressed: (_){
                         widget.onMarkRead(index);
                       },
-                      backgroundColor: AppColors.mainThemeButton,
+                      backgroundColor: AppColors.mainThemeButton.getColor(),
                       foregroundColor: Colors.white,
                       label: tr('markRead'),
                     ),
@@ -111,7 +107,7 @@ class _MessageListViewState extends State<MessageListView> {
                 ),
                 child:
                 Container(
-                    color: Colors.black,
+                    color: AppColors.mainBackground.getColor(),
                     width: UIDefine.getWidth(),
                     padding: EdgeInsets.all(UIDefine.getPixelWidth(5)),
                     child: Row(
@@ -141,7 +137,7 @@ class _MessageListViewState extends State<MessageListView> {
                                       Text(_getTime(widget.list[index].time),
                                         style: AppTextStyle.getBaseStyle(
                                           fontSize: UIDefine.fontSize12,
-                                          color: AppColors.textGrey,
+                                          color: AppColors.textSubInfo,
                                         ),)
                                     ],
                                   ),
@@ -150,7 +146,7 @@ class _MessageListViewState extends State<MessageListView> {
                                 Row(children: [
                                   Visibility(
                                       visible: widget.list[index].beRead == true,
-                                      child: Icon(Icons.reply,color: AppColors.textGrey,size: UIDefine.getPixelWidth(10),)),
+                                      child: Icon(Icons.reply,color: AppColors.textSubInfo.getColor(),size: UIDefine.getPixelWidth(10),)),
                                   Container(
                                     width: UIDefine.getPixelWidth(200),
                                     child: Text(widget.list[index].content,
@@ -159,7 +155,7 @@ class _MessageListViewState extends State<MessageListView> {
                                         style: AppTextStyle.getBaseStyle(
                                           fontSize: UIDefine.fontSize14,
                                           fontWeight: (widget.list[index].isRead || widget.list[index].beRead)?FontWeight.w500:FontWeight.w700,
-                                          color: (widget.list[index].isRead || widget.list[index].beRead)?AppColors.textGrey:AppColors.textWhite,
+                                          color: (widget.list[index].isRead || widget.list[index].beRead)?AppColors.textSubInfo:AppColors.textPrimary,
                                         )
                                     ),
                                   ),
@@ -170,7 +166,7 @@ class _MessageListViewState extends State<MessageListView> {
                         ),
                         Visibility(
                             visible: widget.list[index].isRead == false && widget.list[index].beRead == false,
-                            child:Icon(Icons.fiber_manual_record,color: AppColors.mainThemeButton,size: UIDefine.getPixelWidth(15),))
+                            child:Icon(Icons.fiber_manual_record,color: AppColors.mainThemeButton.getColor(),size: UIDefine.getPixelWidth(15),))
                       ],
                     )
                 ),

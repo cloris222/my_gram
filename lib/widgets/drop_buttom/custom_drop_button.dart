@@ -42,8 +42,8 @@ class CustomDropButton extends StatefulWidget {
   final Widget Function()? buildCustomSelectHintItem;
   final bool needShowEmpty;
   final bool needArrow;
-  final Color? textColor;
-  final Color? selectTextColor;
+  final AppColors? textColor;
+  final AppColors? selectTextColor;
   final double? offsetX;
   final double? offsetY;
 
@@ -69,8 +69,8 @@ class _CustomDropButtonState extends State<CustomDropButton> {
     return Container(
       decoration: widget.needBorderBackground
           ? AppStyle().styleColorBorderBackground(
-          color: AppColors.bolderGrey,
-          backgroundColor: AppColors.textFieldBackground,
+          color: AppColors.bolderGrey.getColor(),
+          backgroundColor: AppColors.textFieldBackground.getColor(),
           radius: 8,
           borderLine: 1)
           : null,
@@ -79,8 +79,8 @@ class _CustomDropButtonState extends State<CustomDropButton> {
           child: DropdownButton2(
             offset: Offset(widget.offsetX??0, widget.offsetX??-UIDefine.getPixelWidth(10)),
             dropdownDecoration: AppStyle().styleColorBorderBackground(
-                color: AppColors.textFieldBackground,
-                backgroundColor: AppColors.textFieldBackground,
+                color: AppColors.textFieldBackground.getColor(),
+                backgroundColor: AppColors.textFieldBackground.getColor(),
                 radius: 0,
                 borderLine: 1),
             customButton: widget.buildCustomDropCurrentItem != null
@@ -178,14 +178,14 @@ class _CustomDropButtonState extends State<CustomDropButton> {
                 overflow: TextOverflow.ellipsis,
                 style: AppTextStyle.getBaseStyle(
                     fontSize: UIDefine.fontSize14,
-                    color: widget.selectTextColor??AppColors.mainThemeButton),
+                    color: (widget.selectTextColor??AppColors.mainThemeButton)),
               )
                   : Text(
                 itemContext,
                 maxLines: needArrow ? 1 : null,
                 overflow: TextOverflow.ellipsis,
                 style: AppTextStyle.getBaseStyle(
-                    color:widget.textColor??AppColors.textWhite,
+                    color:widget.textColor??AppColors.textPrimary,
                     fontSize: UIDefine.fontSize14),
               ),
             ),

@@ -1,51 +1,54 @@
+import 'package:base_project/constant/theme/global_data.dart';
 import 'package:flutter/material.dart';
 
-@immutable
-class AppColors {
-  const AppColors._();
-
-  ///MARK:基本文字顏色
-  static const Color textWhite = Color(0xFFFFFFFF);
-  static const Color textGrey = Color(0xFFBDBDBD);
-  static const Color textRed = Color(0xFFEC6898);
-  static const Color textBlack = Color(0xFF000000);
-  static const Color textHintWhite = Color(0xFFAEAEAE);
-  static const Color bolderGrey = Color.fromRGBO(255, 255, 255, 0.3);
-  static const Color textSuccess = Color(0xFFDCAC4E);
-  static const Color textFail = Color(0xFFF24C65);
-  static const Color textWarning = Color(0xFFFFD600);
-
-  static const Color commentUnlike = Color(0xFF979797);
-
+enum AppColors {
   ///MARK:主題色彩
-  static const Color mainThemeButton = Color(0xFF766733);
-  static const Color subThemePurple = Color(0xFFCEBB8B);
+  mainThemeButton(dark: Color(0xFF766733), light: Color(0xFF3B82F6)),
+  subThemePurple(dark: Color(0xFFCEBB8B), light: Color(0xFF9657D7)),
+  mainBackground(dark: Colors.black, light: Colors.white),
+  navigationBarSelect(dark: Colors.yellow, light: Color(0xFF3B82F6)),
+  navigationBarUnSelect(dark: Colors.grey, light: Colors.grey),
+
+  /// ICON 主要顏色
+  iconPrimary(dark: Color(0xFFFFFFFF), light: Color(0xFF000000)),
+
+  /// 文字主要顏色
+  textPrimary(dark: Color(0xFFFFFFFF), light: Color(0xFF000000)),
+  textSubInfo(dark: Color(0xFFBDBDBD), light: Color(0xFFBDBDBD)),
+  textError(dark: Color(0xFFEC6898), light: Color(0xFFEC6898)),
+  textHint(dark: Color(0xFFAEAEAE), light: Color(0xFFAEAEAE)),
+  textSuccess(dark: Color(0xFFDCAC4E), light: Color(0xFFDCAC4E)),
+  textFail(dark: Color(0xFFF24C65), light: Color(0xFFF24C65)),
+  textWarning(dark: Color(0xFFFFD600), light: Color(0xFFFFD600)),
+  bolderGrey(
+      dark: Color.fromRGBO(255, 255, 255, 0.3),
+      light: Color.fromRGBO(0, 0, 0, 0.7)),
+  commentUnlike(dark: Color(0xFF979797), light: Color(0xFF979797)),
+
+  /// 按鈕顏色相關
+  buttonPrimaryText(dark: Color(0xFF000000), light: Color(0xFFFFFFFF)),
+  buttonUnable(dark: Colors.grey, light: Colors.grey),
+  buttonLike(dark: Color(0xFF3CDBA7), light: Color(0xFF3CDBA7)),
+  buttonDisLike(dark: Color(0xFFF24C65), light: Color(0xFFF24C65)),
+  buttonMessageRed(dark: Colors.red, light: Colors.red),
 
   ///背景顏色
-  static const Color textFieldBackground = Color(0xFF1F1F1F);
-  static const Color dialogBackground = Color(0xFF333333);
-  static const Color moreActionBarBackground = Color(0xFF464646);
-  static const Color opacityBackground = Color(0xC6000000);
-  static const Color chatBubbleColor = Color(0xFFFFD600);
+  textFieldBackground(dark: Color(0xFF1F1F1F), light: Color(0xFFFFFFFF)),
+  dialogBackground(dark: Color(0xFF333333), light: Color(0xFFBDBDBD)),
+  moreActionBarBackground(dark: Color(0xFF464646), light: Color(0xFF464646)),
+  opacityBackground(dark: Color(0xC6000000), light: Color(0xC6000000)),
+  chatBubbleColor(dark: Color(0xFFFFD600), light: Color(0xFFFFD600)),
+  messageBackground(dark: Color(0xFF936714), light: Color(0xFF936714)),
 
-  static const Color buttonLike = Color(0xFF3CDBA7);
-  static const Color buttonDisLike = Color(0xFFF24C65);
+  /// 基本顏色
+  transparent(dark: Colors.transparent, light: Colors.transparent);
 
-  ///MARK: 漸層
-  static const List<Color> gradientBaseColorBg = [
-    mainThemeButton,
-    subThemePurple,
-  ];
+  final Color dark;
+  final Color light;
 
-  static const List<Color> gradientBaseFlipColorBg = [
-    mainThemeButton,
-    subThemePurple,
-  ];
+  const AppColors({required this.dark, required this.light});
 
-  static const List<Color> gradientColors = [
-    Color(0xFF766733),
-    Color(0xFFCEBB8B),
-    Color(0xFF766733),
-  ];
-
+  Color getColor() {
+    return GlobalData.isDark ? dark : light;
+  }
 }

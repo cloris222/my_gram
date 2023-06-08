@@ -1,16 +1,13 @@
 import 'package:base_project/constant/enum/border_style_type.dart';
-import 'package:base_project/constant/theme/app_colors.dart';
 import 'package:base_project/constant/theme/app_image_path.dart';
 import 'package:base_project/constant/theme/app_style.dart';
 import 'package:base_project/constant/theme/app_text_style.dart';
 import 'package:base_project/constant/theme/ui_define.dart';
-import 'package:base_project/views/message/private_message_page.dart';
 import 'package:base_project/widgets/label/common_network_image.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../../models/data/user_friends_data.dart';
+import '../../constant/theme/app_gradient_colors.dart';
 import '../../models/parameter/pair_image_data.dart';
-import '../../view_models/base_view_model.dart';
 import '../../view_models/call_back_function.dart';
 
 class NewsNavbar extends StatefulWidget {
@@ -57,7 +54,7 @@ class _NewsNavbarState extends State<NewsNavbar> {
                         decoration: AppStyle().buildGradientBorderWithGradientColor(
                           borderWidth: 3,
                           type: GradientBorderType.common,
-                          colors: AppColors.gradientColors,
+                          colors: AppGradientColors.gradientColors.getColors(),
                           radius:15,
                         ),
                       ):

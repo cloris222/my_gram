@@ -7,6 +7,7 @@ import '../constant/theme/ui_define.dart';
 import '../view_models/base_view_model.dart';
 import '../widgets/app_bottom_navigation_bar.dart';
 import '../widgets/appbar/custom_app_bar.dart';
+import 'common_scaffold.dart';
 
 ///MARK:用於推出來的頁面
 class CommonAppbarView extends ConsumerWidget {
@@ -33,33 +34,33 @@ class CommonAppbarView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: backgroundColor,
+    return CommonScaffold(
         appBar: needAppBar ? CustomAppBar.mainAppBar(context) : null,
-        body: GestureDetector(
-          onTap: () => BaseViewModel().clearAllFocus(),
-          child: Stack(children: [
-            Container(
-                color: backgroundColor,
-                height: UIDefine.getViewHeight(
-                    needAppBar: needAppBar, needAppNavBar: false),
-                width: UIDefine.getWidth(),
-                padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).viewInsets.bottom +
-                        UIDefine.getScreenWidth(1.38)),
-                child:
-                    needScrollView ? SingleChildScrollView(child: body) : body),
-            Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: needBottom
-                    ? AppBottomNavigationBar(
-                        initType: type ?? GlobalData.mainBottomType)
-                    : const SizedBox())
-          ]),
-        ),
+        resizeToAvoidBottomInset: false,
+        body: (isDark) => GestureDetector(
+              onTap: () => BaseViewModel().clearAllFocus(),
+              child: Stack(children: [
+                Container(
+                    color: backgroundColor,
+                    height: UIDefine.getViewHeight(
+                        needAppBar: needAppBar, needAppNavBar: false),
+                    width: UIDefine.getWidth(),
+                    padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).viewInsets.bottom +
+                            UIDefine.getScreenWidth(1.38)),
+                    child: needScrollView
+                        ? SingleChildScrollView(child: body)
+                        : body),
+                Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: needBottom
+                        ? AppBottomNavigationBar(
+                            initType: type ?? GlobalData.mainBottomType)
+                        : const SizedBox())
+              ]),
+            ),
         extendBody: true);
   }
 }

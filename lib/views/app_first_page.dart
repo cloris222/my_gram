@@ -1,10 +1,13 @@
+import 'package:base_project/view_models/global_theme_provider.dart';
+import 'package:base_project/widgets/button/action_button_widget.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../constant/theme/app_routes.dart';
 import '../constant/theme/app_text_style.dart';
 import '../constant/theme/ui_define.dart';
-import '../widgets/button/text_button_widget.dart';
+import 'common_scaffold.dart';
 class AppFirstPage extends StatefulWidget {
   const AppFirstPage({Key? key}) : super(key: key);
 
@@ -22,10 +25,10 @@ class _AppFirstPageState extends State<AppFirstPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Container(
+    return CommonScaffold(
+        body:(isDark)=> Container(
           width: UIDefine.getWidth(),
-          decoration: BoxDecoration(color: Colors.black),
+
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -43,9 +46,13 @@ class _AppFirstPageState extends State<AppFirstPage> {
                   GestureDetector(
                       onTap: () => AppRoutes.pushLogin(context, removeUntil: false),
                       child: Text(tr("login"), style: AppTextStyle.getGradientStyle())),
-                ],)
+                ],),
 
-
+                Consumer(
+                  builder: (context, ref, child) {
+                    return ActionButtonWidget(btnText: "AAAA", onPressed: ()=>ref.read(globalThemeProvider.notifier).flipMode());
+                  },
+                ),
                 // TextButtonWidget(
                 //     btnText: "showMain",
                 //     onPressed: () => AppRoutes.pushRemoveMain(context))

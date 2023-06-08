@@ -1,14 +1,8 @@
 enum GradientBorderType {
   base,
   common,
-  error,
-  homeArtsRecord,
-  homeMint,
-  tradeDivision,
-  test,
-  buttonGrey,
-  buttonMain,
   none,
+  test,
 }
 
 enum DialogImageType { success, fail, warning }

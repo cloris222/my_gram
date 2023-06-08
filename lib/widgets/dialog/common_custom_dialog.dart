@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../constant/enum/border_style_type.dart';
 import '../../constant/theme/app_text_style.dart';
 import '../../constant/theme/ui_define.dart';
-import '../button/action_button_widget.dart';
 import '../button/text_button_widget.dart';
 import 'base_dialog.dart';
 
@@ -28,7 +27,7 @@ class CommonCustomDialog extends BaseDialog {
   DialogImageType type;
   String title;
   String content;
-  Color? titleColor;
+  AppColors? titleColor;
   bool bOneButton;
   String leftBtnText;
   String rightBtnText;
@@ -81,12 +80,12 @@ class CommonCustomDialog extends BaseDialog {
                     style: AppTextStyle.getBaseStyle(
                         fontSize: UIDefine.fontSize16,
                         fontWeight: FontWeight.w500,
-                        color: AppColors.textGrey
+                        color: AppColors.textSubInfo
                     ))
               ],
             )),
         SizedBox(height: UIDefine.getScreenWidth(8.5)),
-        Divider(height: 1.0,color: AppColors.textWhite,),
+        Divider(height: 1.0,color: AppColors.textPrimary.getColor()),
         _getButton(),
       ],
     );
@@ -123,7 +122,7 @@ class CommonCustomDialog extends BaseDialog {
       setMainColor: AppColors.dialogBackground,
       isFillWidth: true,
       isBorderStyle: true,
-      setSubColor: Colors.transparent,
+      setSubColor: AppColors.transparent,
       btnText: leftBtnText,
       onPressed: () => onLeftPress(),
       radius: 10,
@@ -151,8 +150,8 @@ class CommonCustomDialog extends BaseDialog {
     return imagePath;
   }
 
-  Color _getTitleColor(DialogImageType type) {
-    Color titleColor;
+  AppColors _getTitleColor(DialogImageType type) {
+    AppColors titleColor;
     switch(type) {
       case DialogImageType.success:
         titleColor = AppColors.textSuccess;
@@ -164,7 +163,7 @@ class CommonCustomDialog extends BaseDialog {
         titleColor = AppColors.textWarning;
         break;
       default:
-        titleColor = AppColors.textWhite;
+        titleColor = AppColors.textPrimary;
         break;
     }
     return titleColor;

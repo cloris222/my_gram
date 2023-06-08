@@ -1,11 +1,10 @@
 import 'dart:math';
 
 import 'package:base_project/models/data/dynamic_info_data.dart';
-import 'package:base_project/models/data/message_info_data.dart';
 import 'package:base_project/models/data/store_info_data.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import '../../models/data/chat_room_data.dart';
-import '../../models/data/user_friends_data.dart';
 import '../../models/http_setting.dart';
 import '../../models/parameter/country_phone_data.dart';
 import '../../models/parameter/pair_image_data.dart';
@@ -21,6 +20,8 @@ class GlobalData {
   static bool firstLaunch = true;
   static List<CountryPhoneData> country = [];
   static AppNavigationBarType mainBottomType = AppNavigationBarType.typePair;
+  /// 樣式
+  static bool isDark = false;
 
   /// USER
   static String userToken = '';
@@ -69,14 +70,13 @@ class GlobalData {
     return List<DynamicInfoData>.generate(length, (index) {
       int random = Random().nextInt(3);
       return DynamicInfoData(
-        avatar: photos2[random],
-        name: 'user$index',
-        context: 'text',
-        comments: 30*index,
-        images: photos,
-        likes: 100*index,
-        time: '2023-04-01'
-      );
+          avatar: photos2[random],
+          name: 'user$index',
+          context: 'text',
+          comments: 30 * index,
+          images: photos,
+          likes: 100 * index,
+          time: '2023-04-01');
     });
   }
 
@@ -84,25 +84,26 @@ class GlobalData {
     return List<StoreInfoData>.generate(length, (index) {
       int random = Random().nextInt(3);
       return StoreInfoData(
-        avatar: photos[random],
-        name: 'store$random',
-        list: generateDynamicData(10)
-      );
+          avatar: photos[random],
+          name: 'store$random',
+          list: generateDynamicData(10));
     });
   }
 
-  static List<ChatRoomData> generateChatRoomData(int length){
+  static List<ChatRoomData> generateChatRoomData(int length) {
     String text = 'text';
     int random = Random().nextInt(3);
-    return List<ChatRoomData>.generate(length, (index){
+    return List<ChatRoomData>.generate(length, (index) {
       return ChatRoomData(
           nickName: 'user$random',
-          avatar:photos[random],
+          avatar: photos[random],
           content: text * random + text,
-          time: index % 2==0?'2023-0$random-05 12:00':'2023-05-10 0${random+5}:00',
+          time: index % 2 == 0
+              ? '2023-0$random-05 12:00'
+              : '2023-05-10 0${random + 5}:00',
           isRead: index % 2 == 0,
-          beRead:  index % 3 ==0, imageList: []
-      );
+          beRead: index % 3 == 0,
+          imageList: []);
     });
   }
 
@@ -119,11 +120,11 @@ class GlobalData {
   //   });
   // }
 
-  static List<PairImageData> generatePairImageData(int length){
+  static List<PairImageData> generatePairImageData(int length) {
     return List<PairImageData>.generate(length, (index) {
       int random = Random().nextInt(3);
       return PairImageData(
-          images: photos,
+        images: photos,
         name: 'user$random',
         context: 'user$random',
       );

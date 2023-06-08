@@ -11,7 +11,7 @@ class LoginTextWidget extends StatefulWidget {
     Key? key,
     required this.hintText,
     this.fontSize,
-    this.hintColor = AppColors.textHintWhite,
+    this.hintColor = AppColors.textHint,
     this.isSecure = false,
     this.prefixIconAsset = '',
     this.suffixIconAsset = '',
@@ -30,7 +30,7 @@ class LoginTextWidget extends StatefulWidget {
     this.bPasswordFormatter = false,
     this.inputFormatters = const [],
     this.bFill = true,
-    this.fillColor = Colors.transparent,
+    this.fillColor = AppColors.transparent,
     this.bFocusedGradientBolder = false,
     this.margin,
     this.radius = 10,
@@ -38,7 +38,7 @@ class LoginTextWidget extends StatefulWidget {
   }) : super(key: key);
   final String hintText;
   final double? fontSize;
-  final Color hintColor;
+  final AppColors hintColor;
   final bool isSecure;
   final String prefixIconAsset;
   final String suffixIconAsset;
@@ -51,7 +51,7 @@ class LoginTextWidget extends StatefulWidget {
   final double? contentPaddingTop;
   final double? contentPaddingBottom;
   final bool bFill;
-  final Color fillColor;
+  final AppColors fillColor;
 
   ///MARK: 小數點限制兩位
   final bool bLimitDecimalLength;
@@ -63,9 +63,9 @@ class LoginTextWidget extends StatefulWidget {
   final List<TextInputFormatter> inputFormatters;
 
   ///控制不同狀態下的框限顏色
-  final Color enabledColor; //可用狀態
-  final Color focusedColor; //點選中
-  final Color initColor; //初始化
+  final AppColors enabledColor; //可用狀態
+  final AppColors focusedColor; //點選中
+  final AppColors initColor; //初始化
 
   /// 是否開啟漸層框(for 點選中)
   final bool bFocusedGradientBolder;
@@ -94,7 +94,7 @@ class _LoginTextWidgetState extends State<LoginTextWidget> {
   Widget _buildEdit() {
     return TextField(
         maxLines: widget.maxLines,
-        cursorColor: Colors.white,
+        cursorColor: AppColors.textPrimary.getColor(),
         controller: widget.controller,
         inputFormatters: widget.bLimitDecimalLength
             ? [
@@ -115,7 +115,7 @@ class _LoginTextWidgetState extends State<LoginTextWidget> {
         style: AppTextStyle.getBaseStyle(),
         decoration: InputDecoration(
             filled: widget.bFill,
-            fillColor: widget.fillColor,
+            fillColor: widget.fillColor.getColor(),
             isCollapsed: true,
             hintText: widget.hintText,
             hintStyle:
@@ -123,7 +123,7 @@ class _LoginTextWidgetState extends State<LoginTextWidget> {
             labelStyle: AppTextStyle.getBaseStyle(),
             alignLabelWithHint: true,
             counterStyle: AppTextStyle.getBaseStyle(
-                color: Colors.black,
+                color: AppColors.buttonPrimaryText,
                 fontSize: widget.fontSize ?? UIDefine.fontSize12),
             contentPadding: EdgeInsets.only(
                 top: widget.contentPaddingTop ?? UIDefine.getPixelWidth(15),
@@ -132,13 +132,13 @@ class _LoginTextWidgetState extends State<LoginTextWidget> {
                 left: widget.contentPaddingLeft ?? UIDefine.getPixelWidth(20),
                 right: widget.contentPaddingRight ?? UIDefine.getPixelWidth(0)),
             disabledBorder: AppTheme.style.styleTextEditBorderBackground(
-                color: widget.enabledColor, radius: widget.radius,width: 1),
+                color: widget.enabledColor.getColor(), radius: widget.radius,width: 1),
             enabledBorder: AppTheme.style.styleTextEditBorderBackground(
-                color: widget.enabledColor, radius: widget.radius,width: 1),
+                color: widget.enabledColor.getColor(), radius: widget.radius,width: 1),
             focusedBorder: AppTheme.style.styleTextEditBorderBackground(
-                color: widget.focusedColor, radius: widget.radius,width: 1),
+                color: widget.focusedColor.getColor(), radius: widget.radius,width: 1),
             border: AppTheme.style.styleTextEditBorderBackground(
-                color: widget.initColor, radius: widget.radius,width: 1),
+                color: widget.initColor.getColor(), radius: widget.radius,width: 1),
             suffixIcon: widget.suffixIconAsset.isNotEmpty
                 ? Image.asset(widget.suffixIconAsset)
                 : widget.isSecure

@@ -1,3 +1,4 @@
+import 'package:base_project/constant/theme/app_gradient_colors.dart';
 import 'package:flutter/material.dart';
 
 import '../../constant/theme/app_colors.dart';
@@ -11,7 +12,7 @@ class CustomLinearProgress extends StatelessWidget {
     Key? key,
     required this.percentage,
     this.isGradient = false,
-    this.backgroundColor = Colors.white,
+    this.backgroundColor = AppColors.textPrimary,
     this.valueColor = AppColors.mainThemeButton,
     this.height = 10,
     this.radius = 15,
@@ -21,8 +22,8 @@ class CustomLinearProgress extends StatelessWidget {
     this.setWidth
   }) : super(key: key);
   final double percentage;
-  final Color backgroundColor;
-  final Color valueColor;
+  final AppColors backgroundColor;
+  final AppColors valueColor;
   final double? height;
   final double radius;
   final bool needShowPercentage;
@@ -47,7 +48,7 @@ class CustomLinearProgress extends StatelessWidget {
             child: Stack(alignment: Alignment.centerLeft, children: [
           Container(
               decoration: AppStyle().styleColorsRadiusBackground(
-                  color: backgroundColor, radius: radius),
+                  color: backgroundColor.getColor(), radius: radius),
               width: setWidth??UIDefine.getWidth(),
               height: height),
           Row(
@@ -58,11 +59,9 @@ class CustomLinearProgress extends StatelessWidget {
                       flex: flex,
                       child: Container(
                           decoration: isGradient?
-                          AppStyle().styleLinearRadiusBackground(colors: [Color(0xFF766733),
-                              Color(0xFFCEBB8B),
-                              Color(0xFF766733),]):
+                          AppStyle().styleLinearRadiusBackground(colors: AppGradientColors.gradientColors.getColors()):
                           AppStyle().styleColorsRadiusBackground(
-                              color: valueColor, radius: radius),
+                              color: valueColor.getColor(), radius: radius),
                           width: UIDefine.getWidth(),
                           height: height),
                     ),

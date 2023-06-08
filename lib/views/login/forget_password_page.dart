@@ -14,6 +14,7 @@ import '../../view_models/login/forget_password_view_model.dart';
 import '../../widgets/button/countdown_button_widget.dart';
 import '../../widgets/button/text_button_widget.dart';
 import '../../widgets/label/login_param_view.dart';
+import '../common_scaffold.dart';
 
 class ForgetPasswordPage extends ConsumerStatefulWidget {
   const ForgetPasswordPage({
@@ -35,10 +36,9 @@ class _ForgetPasswordPageState extends ConsumerState<ForgetPasswordPage> {
   }
 
   void _onListener() {
-    setState(() {
-
-    });
+    setState(() {});
   }
+
   @override
   void dispose() {
     viewModel.dispose();
@@ -50,139 +50,173 @@ class _ForgetPasswordPageState extends ConsumerState<ForgetPasswordPage> {
   Widget build(BuildContext context) {
     ref.watch(globalValidateDataProvider(viewModel.tagEmail));
     ref.watch(globalValidateDataProvider(viewModel.tagValidate));
-    return Scaffold(
+    return CommonScaffold(
       appBar: CustomAppBar.registerAppBar(context),
-      body: GestureDetector(
-        onTap: (){
-          BaseViewModel().clearAllFocus();
-        },
-        child: Container(
-          width: UIDefine.getWidth(),
-          height: UIDefine.getHeight(),
-          color: Colors.black,
-          child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                width: UIDefine.getWidth(),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    GestureDetector(
-                      onTap: (){
-                        BaseViewModel().popPage(context);
-                      },
-                      child: Icon(Icons.chevron_left,color: AppColors.textWhite,size: UIDefine.getPixelWidth(30),),
-                    ),
-                    SizedBox(width: UIDefine.getWidth()*0.9,)
-                  ],
-                ),
-              ),
-              Container(
-                alignment: Alignment.center,
-                child: Text(tr('forgetPassword'),style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize16),),
-              ),
-              SizedBox(height: UIDefine.getHeight()*0.1,),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(7)),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(tr('emailAddress'),style: AppTextStyle.getBaseStyle(fontSize: UIDefine.getPixelWidth(16)),),
-                    SizedBox(height: UIDefine.getPixelWidth(5),),
-                    ///email
-                    LoginParamView(
-                        keyboardType: TextInputType.emailAddress,
-                        hindTitle: true,
-                        titleText: tr('email_placeHolder'),
-                        hintText: tr("email_placeHolder"),
-                        controller: viewModel.emailController,
-                        data: ref.watch(
-                            globalValidateDataProvider(viewModel.tagEmail)),
-                        onChanged: (String value) {
-                          setState(() {
-                            viewModel.onEmailChanged(value);
-                          });
-                        }
-                    ),
-                    ///驗證碼
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        ///輸入驗證碼
-                        Expanded(
-                          child: LoginParamView(
-                            keyboardType: TextInputType.number,
-                            hindTitle: true,
-                            titleText: tr('validateHint_placeHolder'),
-                            hintText: tr("validateHint_placeHolder"),
-                            controller: viewModel.validateController,
-                            data: ref.watch(
-                                globalValidateDataProvider(viewModel.tagValidate)),
-                          ),),
-                        SizedBox(width: UIDefine.getPixelWidth(10),),
-                        ///獲取驗證碼btn
-                        viewModel.emailController.text.isEmpty?
-                        TextButtonWidget(
-                          setMainColor: Colors.grey,
-                          setWidth: UIDefine.getPixelWidth(100),
-                          setHeight: UIDefine.getPixelWidth(36),
-                          isFillWidth: false,
-                          btnText: tr('getValidate'),
-                          onPressed: (){},
-                        ):
-                        CountdownButtonWidget(
-                          setWidth: UIDefine.getPixelWidth(100),
-                          setHeight: UIDefine.getPixelWidth(36),
-                          isGradient: true,
-                          initEnable: true,
-                          btnText: tr('getValidate'),
-                          onPress: () {},
-                        )
-                      ],),
-                  ],
-                ),
-              ),
-              SizedBox(height: UIDefine.getHeight()*0.2,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+      body: (isDark) => GestureDetector(
+          onTap: () {
+            BaseViewModel().clearAllFocus();
+          },
+          child: SizedBox(
+            width: UIDefine.getWidth(),
+            height: UIDefine.getHeight(),
+            child: SingleChildScrollView(
+              child: Column(
                 children: [
-                  (viewModel.emailController.text.isNotEmpty&&viewModel.validateController.text.isNotEmpty)?
-                  TextButtonWidget(
-                      textColor: AppColors.textBlack,
-                      isFillWidth: false,
-                      setWidth: UIDefine.getPixelWidth(150),
-                      setHeight: UIDefine.getPixelWidth(45),
-                      isGradient: true,
-                      btnText: tr('next'),
-                      onPressed: (){
-                        viewModel.onPressNext(context);
-                      }):
-                  TextButtonWidget(
-                      textColor: AppColors.textWhite,
-                      isFillWidth: false,
-                      setWidth: UIDefine.getPixelWidth(150),
-                      setHeight: UIDefine.getPixelWidth(45),
-                      setMainColor: AppColors.textGrey,
-                      btnText: tr('next'),
-                      onPressed: (){})
+                  Container(
+                    width: UIDefine.getWidth(),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            BaseViewModel().popPage(context);
+                          },
+                          child: Icon(
+                            Icons.chevron_left,
+                            color: AppColors.textPrimary.getColor(),
+                            size: UIDefine.getPixelWidth(30),
+                          ),
+                        ),
+                        SizedBox(
+                          width: UIDefine.getWidth() * 0.9,
+                        )
+                      ],
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.center,
+                    child: Text(
+                      tr('forgetPassword'),
+                      style: AppTextStyle.getBaseStyle(
+                          fontSize: UIDefine.fontSize16),
+                    ),
+                  ),
+                  SizedBox(
+                    height: UIDefine.getHeight() * 0.1,
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(
+                        horizontal: UIDefine.getPixelWidth(7)),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          tr('emailAddress'),
+                          style: AppTextStyle.getBaseStyle(
+                              fontSize: UIDefine.getPixelWidth(16)),
+                        ),
+                        SizedBox(
+                          height: UIDefine.getPixelWidth(5),
+                        ),
+
+                        ///email
+                        LoginParamView(
+                            keyboardType: TextInputType.emailAddress,
+                            hindTitle: true,
+                            titleText: tr('email_placeHolder'),
+                            hintText: tr("email_placeHolder"),
+                            controller: viewModel.emailController,
+                            data: ref.watch(
+                                globalValidateDataProvider(viewModel.tagEmail)),
+                            onChanged: (String value) {
+                              setState(() {
+                                viewModel.onEmailChanged(value);
+                              });
+                            }),
+
+                        ///驗證碼
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            ///輸入驗證碼
+                            Expanded(
+                              child: LoginParamView(
+                                keyboardType: TextInputType.number,
+                                hindTitle: true,
+                                titleText: tr('validateHint_placeHolder'),
+                                hintText: tr("validateHint_placeHolder"),
+                                controller: viewModel.validateController,
+                                data: ref.watch(globalValidateDataProvider(
+                                    viewModel.tagValidate)),
+                              ),
+                            ),
+                            SizedBox(
+                              width: UIDefine.getPixelWidth(10),
+                            ),
+
+                            ///獲取驗證碼btn
+                            viewModel.emailController.text.isEmpty
+                                ? TextButtonWidget(
+                                    setMainColor: AppColors.buttonUnable,
+                                    setWidth: UIDefine.getPixelWidth(100),
+                                    setHeight: UIDefine.getPixelWidth(36),
+                                    isFillWidth: false,
+                                    btnText: tr('getValidate'),
+                                    onPressed: () {},
+                                  )
+                                : CountdownButtonWidget(
+                                    setWidth: UIDefine.getPixelWidth(100),
+                                    setHeight: UIDefine.getPixelWidth(36),
+                                    isGradient: true,
+                                    initEnable: true,
+                                    btnText: tr('getValidate'),
+                                    onPress: () {},
+                                  )
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: UIDefine.getHeight() * 0.2,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      (viewModel.emailController.text.isNotEmpty &&
+                              viewModel.validateController.text.isNotEmpty)
+                          ? TextButtonWidget(
+                              textColor: AppColors.buttonPrimaryText,
+                              isFillWidth: false,
+                              setWidth: UIDefine.getPixelWidth(150),
+                              setHeight: UIDefine.getPixelWidth(45),
+                              isGradient: true,
+                              btnText: tr('next'),
+                              onPressed: () {
+                                viewModel.onPressNext(context);
+                              })
+                          : TextButtonWidget(
+                              textColor: AppColors.textPrimary,
+                              isFillWidth: false,
+                              setWidth: UIDefine.getPixelWidth(150),
+                              setHeight: UIDefine.getPixelWidth(45),
+                              setMainColor: AppColors.textSubInfo,
+                              btnText: tr('next'),
+                              onPressed: () {})
+                    ],
+                  ),
+                  SizedBox(
+                    height: UIDefine.getHeight() * 0.1,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        tr('haveAccount'),
+                        style: AppTextStyle.getBaseStyle(),
+                      ),
+                      GestureDetector(
+                          onTap: () =>
+                              AppRoutes.pushLogin(context, removeUntil: false),
+                          child: Text(tr("login"),
+                              style: AppTextStyle.getGradientStyle())),
+                    ],
+                  )
                 ],
               ),
-              SizedBox(height: UIDefine.getHeight()*0.1,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(tr('haveAccount'),style: AppTextStyle.getBaseStyle(),),
-                  GestureDetector(
-                      onTap: () => AppRoutes.pushLogin(context, removeUntil: false),
-                      child: Text(tr("login"), style: AppTextStyle.getGradientStyle())),
-                ],)
-            ],
-          ),
-        ),)
-
-      ),
+            ),
+          )),
     );
   }
 }

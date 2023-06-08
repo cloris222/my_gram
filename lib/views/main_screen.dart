@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../constant/enum/app_param_enum.dart';
 import '../constant/theme/ui_define.dart';
 import '../widgets/appbar/custom_app_bar.dart';
+import 'common_scaffold.dart';
 
 /// App一開啟後的主頁
 class MainScreen extends ConsumerStatefulWidget {
@@ -42,22 +43,19 @@ class _MainScreenState extends ConsumerState<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: Colors.black,
+    return CommonScaffold(
         appBar: CustomAppBar.mainAppBar(context),
         bottomNavigationBar: AppBottomNavigationBar(
           initType: widget.type,
           bottomFunction: _changePage,
         ),
-        body: GestureDetector(
-          onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-          child: PageView(
-            controller: controller,
-            physics: const NeverScrollableScrollPhysics(),
-            children: List<Widget>.generate(AppNavigationBarType.values.length,
-                (index) => AppNavigationBarType.values[index].typePage),
-          ),
-        ));
+        body: (isDark) => PageView(
+              controller: controller,
+              physics: const NeverScrollableScrollPhysics(),
+              children: List<Widget>.generate(
+                  AppNavigationBarType.values.length,
+                  (index) => AppNavigationBarType.values[index].typePage),
+            ));
   }
 
   void _changePage(AppNavigationBarType type) {
@@ -66,6 +64,4 @@ class _MainScreenState extends ConsumerState<MainScreen> {
       controller.jumpToPage(type.index);
     });
   }
-
-
 }

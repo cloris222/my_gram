@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../widgets/appbar/custom_app_bar.dart';
-import '../common_appbar_view.dart';
+import '../common_scaffold.dart';
 
 class PersonalHomePage extends ConsumerStatefulWidget {
   const PersonalHomePage({
@@ -21,83 +21,76 @@ class PersonalHomePage extends ConsumerStatefulWidget {
 class _PersonalHomePageState extends ConsumerState<PersonalHomePage> {
   PersonalInfoData data = PersonalInfoData(
     avatar: GlobalData.photos[0],
-    name:'bbb',
+    name: 'bbb',
     totalPosts: 15,
-    fans: ['qqq','222','ttt'],
+    fans: ['qqq', '222', 'ttt'],
     posts: [
       PostInfoData(
-        context: 'contextcontextcontextcontextcontextcontextcontext',
-        images: GlobalData.photos
-    ),PostInfoData(
-        context: 'texttexttexttexttexttextvtexttexttexttext',
-        images: GlobalData.photos2
-    ),
+          context: 'contextcontextcontextcontextcontextcontextcontext',
+          images: GlobalData.photos),
+      PostInfoData(
+          context: 'texttexttexttexttexttextvtexttexttexttext',
+          images: GlobalData.photos2),
       PostInfoData(
           context: 'contextcontextcontextcontextcontextcontextcontext',
-          images: GlobalData.photos
-      ),PostInfoData(
+          images: GlobalData.photos),
+      PostInfoData(
           context: 'texttexttexttexttexttextvtexttexttexttext',
-          images: GlobalData.photos2
-      ),
+          images: GlobalData.photos2),
       PostInfoData(
           context: 'contextcontextcontextcontextcontextcontextcontext',
-          images: GlobalData.photos
-      ),PostInfoData(
+          images: GlobalData.photos),
+      PostInfoData(
           context: 'texttexttexttexttexttextvtexttexttexttext',
-          images: GlobalData.photos2
-      ),
+          images: GlobalData.photos2),
       PostInfoData(
           context: 'contextcontextcontextcontextcontextcontextcontext',
-          images: GlobalData.photos
-      ),PostInfoData(
+          images: GlobalData.photos),
+      PostInfoData(
           context: 'texttexttexttexttexttextvtexttexttexttext',
-          images: GlobalData.photos2
-      ),
+          images: GlobalData.photos2),
       PostInfoData(
           context: 'contextcontextcontextcontextcontextcontextcontext',
-          images: GlobalData.photos
-      ),PostInfoData(
+          images: GlobalData.photos),
+      PostInfoData(
           context: 'texttexttexttexttexttextvtexttexttexttext',
-          images: GlobalData.photos2
-      ),
+          images: GlobalData.photos2),
       PostInfoData(
           context: 'contextcontextcontextcontextcontextcontextcontext',
-          images: GlobalData.photos
-      ),PostInfoData(
+          images: GlobalData.photos),
+      PostInfoData(
           context: 'texttexttexttexttexttextvtexttexttexttext',
-          images: GlobalData.photos2
-      )
+          images: GlobalData.photos2)
     ],
-    introduce: 'texttexttexttexttexttextvtexttexttexttextcontextcontextcontextcontextcontextcontextcontexttexttexttexttexttexttextvtexttexttexttextcontextcontextcontextcontextcontextcontextcontext',
+    introduce:
+        'texttexttexttexttexttextvtexttexttexttextcontextcontextcontextcontextcontextcontextcontexttexttexttexttexttexttextvtexttexttexttextcontextcontextcontextcontextcontextcontextcontext',
   );
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar.titleAppBar(context, title: 'personalHomePage'),
-      body: Container(
-        color: Colors.black,
-        child: PersonalInfoView(
-        data: data,
-        clickFollowing: _clickFollowing,
-        clickMessage: _clickMessage,
-          clickSeeMore: _clickSeeMore,
-      ),)
-
-    );
-
+    return CommonScaffold(
+        appBar: CustomAppBar.titleAppBar(context, title: 'personalHomePage'),
+        body: (isDark) => Container(
+              child: PersonalInfoView(
+                data: data,
+                clickFollowing: _clickFollowing,
+                clickMessage: _clickMessage,
+                clickSeeMore: _clickSeeMore,
+              ),
+            ));
   }
 
-  _clickFollowing(){
+  _clickFollowing() {
     setState(() {
       data.isFollowing = !data.isFollowing;
     });
   }
 
-  _clickMessage(){
+  _clickMessage() {
     print('clickMessage');
   }
 
-  _clickSeeMore(){
+  _clickSeeMore() {
     setState(() {
       data.isShowMore = true;
       print(data.isShowMore);
