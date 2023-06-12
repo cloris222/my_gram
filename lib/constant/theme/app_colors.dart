@@ -27,6 +27,7 @@ enum AppColors {
 
   /// 按鈕顏色相關
   buttonPrimaryText(dark: Color(0xFF000000), light: Color(0xFFFFFFFF)),
+  buttonGradientText(dark: Color(0xFFFFFFFF), light: Color(0xFFFFFFFF)),
   buttonUnable(dark: Colors.grey, light: Colors.grey),
   buttonLike(dark: Color(0xFF3CDBA7), light: Color(0xFF3CDBA7)),
   buttonDisLike(dark: Color(0xFFF24C65), light: Color(0xFFF24C65)),

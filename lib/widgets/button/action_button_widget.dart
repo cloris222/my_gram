@@ -9,7 +9,7 @@ class ActionButtonWidget extends StatelessWidget {
       required this.btnText,
       required this.onPressed,
       this.setMainColor = AppColors.mainThemeButton,
-      this.setSubColor = AppColors.textPrimary,
+      this.setSubColor = AppColors.buttonPrimaryText,
       this.setTransColor = AppColors.transparent,
       this.setHeight,
       this.fontSize,

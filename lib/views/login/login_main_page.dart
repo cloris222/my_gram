@@ -96,7 +96,6 @@ class _LoginMainPageState extends ConsumerState<LoginMainPage> {
                             setHeight: UIDefine.getPixelWidth(40),
                             radius: 4,
                             isGradient: true,
-                            textColor: AppColors.buttonPrimaryText,
                             fontWeight: FontWeight.w600,
                             btnText: tr('login'),
                             onPressed: (){
@@ -107,7 +106,6 @@ class _LoginMainPageState extends ConsumerState<LoginMainPage> {
                             setHeight: UIDefine.getPixelWidth(40),
                             radius: 4,
                             isGradient: true,
-                            textColor: AppColors.buttonPrimaryText,
                             fontWeight: FontWeight.w600,
                             btnText: tr('registerWithEmail'),
                             onPressed: (){
@@ -123,7 +121,7 @@ class _LoginMainPageState extends ConsumerState<LoginMainPage> {
                             ),
                             Container(
                               alignment: Alignment.center,
-                              color: Colors.black,
+                              color: AppColors.mainBackground.getColor(),
                               width: UIDefine.getPixelWidth(100),
                               height: UIDefine.getPixelWidth(50),
                               child: Text('or',style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize16),),

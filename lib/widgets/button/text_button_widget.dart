@@ -9,32 +9,31 @@ import '../../constant/theme/ui_define.dart';
 import 'interval_click.dart';
 
 class TextButtonWidget extends StatefulWidget {
-  const TextButtonWidget({
-    super.key,
-    required this.btnText,
-    required this.onPressed,
-    this.setMainColor = AppColors.mainThemeButton,
-    this.setSubColor = AppColors.textPrimary,
-    this.setTransColor = AppColors.transparent,
-    this.setHeight,
-    this.setWidth,
-    this.fontSize,
-    this.fontWeight,
-    this.margin,
-    this.padding,
-    this.isBorderStyle = false,
-    this.borderWidth = 1,
-    this.isFillWidth = true,
-    this.radius = 10,
-    this.backgroundHorizontal,
-    this.backgroundVertical,
-    this.borderSize = 2,
-    this.needTimes = 1,
-    this.isGradient = false,
-    this.textColor,
-    this.isTextGradient = false,
-    this.isBorderGradient = false
-  });
+  const TextButtonWidget(
+      {super.key,
+      required this.btnText,
+      required this.onPressed,
+      this.setMainColor = AppColors.mainThemeButton,
+      this.setSubColor = AppColors.textPrimary,
+      this.setTransColor = AppColors.transparent,
+      this.setHeight,
+      this.setWidth,
+      this.fontSize,
+      this.fontWeight,
+      this.margin,
+      this.padding,
+      this.isBorderStyle = false,
+      this.borderWidth = 1,
+      this.isFillWidth = true,
+      this.radius = 10,
+      this.backgroundHorizontal,
+      this.backgroundVertical,
+      this.borderSize = 2,
+      this.needTimes = 1,
+      this.isGradient = false,
+      this.textColor = AppColors.buttonGradientText,
+      this.isTextGradient = false,
+      this.isBorderGradient = false});
 
   final String btnText;
   final VoidCallback onPressed;
@@ -58,7 +57,7 @@ class TextButtonWidget extends StatefulWidget {
 
   final int needTimes;
   final bool isGradient;
-  final AppColors? textColor;
+  final AppColors textColor;
   final bool isTextGradient;
   final bool isBorderGradient;
 
@@ -70,72 +69,66 @@ class _TextButtonWidgetState extends State<TextButtonWidget>
     with IntervalClick {
   @override
   void didUpdateWidget(covariant TextButtonWidget oldWidget) {
-    setState(() {
-
-    });
+    setState(() {});
     super.didUpdateWidget(oldWidget);
-
   }
+
   @override
   Widget build(BuildContext context) {
     return createButton(context);
   }
 
   Widget createButton(BuildContext context) {
-    Color primaryColor, borderColor, textColor;
+    Color primaryColor, borderColor;
     if (widget.isBorderStyle) {
       primaryColor = widget.setSubColor.getColor();
       borderColor = widget.setMainColor.getColor();
-      textColor = widget.setMainColor.getColor();
     } else {
       primaryColor = widget.setMainColor.getColor();
       borderColor = widget.setTransColor.getColor();
-      textColor = widget.setSubColor.getColor();
     }
     var actionButton = GestureDetector(
         onTap: () => intervalClick(widget.needTimes, widget.onPressed),
         child: Container(
-          alignment: Alignment.center,
-          width: widget.setWidth,
-          height: widget.setHeight,
+            alignment: Alignment.center,
+            width: widget.setWidth,
+            height: widget.setHeight,
             padding: EdgeInsets.symmetric(
                 vertical:
                     widget.backgroundVertical ?? UIDefine.getPixelHeight(5),
                 horizontal:
                     widget.backgroundHorizontal ?? UIDefine.getPixelWidth(10)),
-            decoration: widget.isGradient?
-          BoxDecoration(
-                border: Border.all(
-                    color: borderColor,
-                    width: widget.borderSize
-                ),
-                borderRadius:BorderRadius.circular(widget.radius),
-                gradient: LinearGradient(
-                  begin: const Alignment(-1, 0),
-                  end: const Alignment(1, 0),
-                  colors: AppGradientColors.gradientColors.getColors(),)
-            ):widget.isBorderGradient?AppStyle().buildGradientBorderWithGradientColor(
-                type: GradientBorderType.common,
-                colors: AppGradientColors.gradientColors.getColors(),
-            ):
-            AppStyle().styleColorBorderBackground(
-                borderLine: widget.borderSize,
-                radius: widget.radius,
-                color: borderColor,
-                backgroundColor: primaryColor),
+            decoration: widget.isGradient
+                ? BoxDecoration(
+                    border: Border.all(
+                        color: borderColor, width: widget.borderSize),
+                    borderRadius: BorderRadius.circular(widget.radius),
+                    gradient: LinearGradient(
+                      begin: const Alignment(-1, 0),
+                      end: const Alignment(1, 0),
+                      colors: AppGradientColors.gradientColors.getColors(),
+                    ))
+                : widget.isBorderGradient
+                    ? AppStyle().buildGradientBorderWithGradientColor(
+                        type: GradientBorderType.common,
+                        colors: AppGradientColors.gradientColors.getColors(),
+                      )
+                    : AppStyle().styleColorBorderBackground(
+                        borderLine: widget.borderSize,
+                        radius: widget.radius,
+                        color: borderColor,
+                        backgroundColor: primaryColor),
             child: Text(
               widget.btnText,
               textAlign: TextAlign.center,
-              style: widget.isTextGradient?
-              AppTextStyle.getGradientStyle(
-                  fontSize: widget.fontSize ?? UIDefine.fontSize16,
-                  fontWeight: widget.fontWeight??FontWeight.w500
-              ):
-              AppTextStyle.getBaseStyle(
-                  color: widget.textColor??AppColors.textPrimary,
-                  fontSize: widget.fontSize ?? UIDefine.fontSize16,
-                  fontWeight: widget.fontWeight??FontWeight.w500)
-              ,
+              style: widget.isTextGradient
+                  ? AppTextStyle.getGradientStyle(
+                      fontSize: widget.fontSize ?? UIDefine.fontSize16,
+                      fontWeight: widget.fontWeight ?? FontWeight.w500)
+                  : AppTextStyle.getBaseStyle(
+                      color: widget.textColor,
+                      fontSize: widget.fontSize ?? UIDefine.fontSize16,
+                      fontWeight: widget.fontWeight ?? FontWeight.w500),
             )));
 
     return widget.isFillWidth
