@@ -1,6 +1,6 @@
 //MARK: 檢查字串回傳的結果
 import 'package:easy_localization/easy_localization.dart';
-import '../../constant/theme/app_colors.dart';
+import '../constant/theme/app_colors.dart';
 
 class ValidateResultData {
   final bool result;

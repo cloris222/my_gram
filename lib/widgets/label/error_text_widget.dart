@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../constant/theme/app_text_style.dart';
 import '../../constant/theme/ui_define.dart';
-import '../../models/data/validate_result_data.dart';
+import '../../models/validate_result_data.dart';
 
 class ErrorTextWidget extends StatelessWidget {
   const ErrorTextWidget(

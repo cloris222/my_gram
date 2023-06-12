@@ -7,8 +7,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../constant/theme/global_data.dart';
 import '../models/app_shared_preferences.dart';
-import '../models/http_setting.dart';
-import '../models/parameter/api_response.dart';
+import '../models/http/http_setting.dart';
+import '../models/http/data/api_response.dart';
 import '../utils/language_util.dart';
 
 class BaseViewModel {

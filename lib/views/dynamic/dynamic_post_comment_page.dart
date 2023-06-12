@@ -16,7 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../constant/theme/app_colors.dart';
 import '../../constant/theme/app_style.dart';
-import '../../models/parameter/post_comment_data.dart';
+import '../../models/http/data/post_comment_data.dart';
 import '../../widgets/label/avatar_icon_widget.dart';
 import '../common_scaffold.dart';
 

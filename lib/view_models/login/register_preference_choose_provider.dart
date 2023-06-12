@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../models/data/register_preference_choose_data.dart';
+import '../../models/http/data/register_preference_choose_data.dart';
 
 
 final registerPreferenceChooseProvider = StateNotifierProvider<

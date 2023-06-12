@@ -1,4 +1,4 @@
-import 'package:base_project/models/data/post_info_data.dart';
+import 'package:base_project/models/http/data/post_info_data.dart';
 
 class PersonalInfoData {
   PersonalInfoData({

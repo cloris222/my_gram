@@ -11,8 +11,8 @@ import 'package:flutter/material.dart';
 import '../../constant/enum/border_style_type.dart';
 import '../../constant/theme/app_gradient_colors.dart';
 import '../../constant/theme/global_data.dart';
-import '../../models/data/personal_info_data.dart';
-import '../../models/data/post_info_data.dart';
+import '../../models/http/data/personal_info_data.dart';
+import '../../models/http/data/post_info_data.dart';
 import '../../view_models/call_back_function.dart';
 import '../../widgets/label/common_network_image.dart';
 

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../constant/theme/app_colors.dart';
 import '../../constant/theme/app_text_style.dart';
 import '../../constant/theme/ui_define.dart';
-import '../../models/data/validate_result_data.dart';
+import '../../models/validate_result_data.dart';
 import '../../widgets/label/error_text_widget.dart';
 import '../../widgets/text_field/login_text_widget.dart';
 

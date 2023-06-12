@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../constant/theme/app_colors.dart';
-import '../../../models/parameter/post_comment_data.dart';
+import '../../../models/http/data/post_comment_data.dart';
 
 ///MARK: 第一層留言用
 class CommentItemView extends StatefulWidget {

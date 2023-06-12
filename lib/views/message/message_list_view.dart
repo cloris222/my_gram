@@ -6,7 +6,7 @@ import 'package:base_project/widgets/label/common_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import '../../models/data/chat_room_data.dart';
+import '../../models/http/data/chat_room_data.dart';
 
 class MessageListView extends StatefulWidget {
   final onGetIntFunction onLongPress;

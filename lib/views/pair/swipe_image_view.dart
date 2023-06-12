@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 import '../../constant/enum/pair_enum.dart';
 import '../../constant/theme/app_colors.dart';
-import '../../models/parameter/pair_image_data.dart';
+import '../../models/http/data/pair_image_data.dart';
 import 'dart:math' as math;
 
 import '../../widgets/label/common_network_image.dart';

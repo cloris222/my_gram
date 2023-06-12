@@ -7,8 +7,8 @@ import 'package:base_project/views/message/private_message_page.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../../constant/theme/app_text_style.dart';
-import '../../models/data/chat_room_data.dart';
-import '../../models/parameter/pair_image_data.dart';
+import '../../models/http/data/chat_room_data.dart';
+import '../../models/http/data/pair_image_data.dart';
 import 'message_list_view.dart';
 import 'news_navbar.dart';
 

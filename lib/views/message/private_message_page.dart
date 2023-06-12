@@ -7,7 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 import '../../constant/theme/ui_define.dart';
-import '../../models/data/chat_room_data.dart';
+import '../../models/http/data/chat_room_data.dart';
 import '../../view_models/message/chat_room_provider.dart';
 import '../common_scaffold.dart';
 import 'gallery_view.dart';

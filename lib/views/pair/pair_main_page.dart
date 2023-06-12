@@ -2,7 +2,7 @@ import 'package:base_project/constant/enum/pair_enum.dart';
 import 'package:base_project/constant/theme/global_data.dart';
 import 'package:flutter/material.dart';
 import '../../constant/theme/ui_define.dart';
-import '../../models/parameter/pair_image_data.dart';
+import '../../models/http/data/pair_image_data.dart';
 import 'swipe_image_view.dart';
 
 class PairMainPage extends StatefulWidget {

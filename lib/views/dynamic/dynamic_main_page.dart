@@ -2,14 +2,14 @@ import 'package:base_project/constant/enum/border_style_type.dart';
 import 'package:base_project/constant/theme/app_colors.dart';
 import 'package:base_project/constant/theme/app_text_style.dart';
 import 'package:base_project/constant/theme/ui_define.dart';
-import 'package:base_project/models/data/dynamic_info_data.dart';
+import 'package:base_project/models/http/data/dynamic_info_data.dart';
 import 'package:base_project/view_models/base_view_model.dart';
 import 'package:base_project/widgets/label/common_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../../constant/theme/global_data.dart';
-import '../../models/data/store_info_data.dart';
+import '../../models/http/data/store_info_data.dart';
 import '../../widgets/dialog/common_custom_dialog.dart';
 import 'dynamic_info_view.dart';
 import 'dynamic_post_comment_page.dart';

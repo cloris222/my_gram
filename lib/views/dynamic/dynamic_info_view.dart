@@ -7,7 +7,7 @@ import 'package:base_project/widgets/button/text_button_widget.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../../constant/theme/app_gradient_colors.dart';
-import '../../models/data/dynamic_info_data.dart';
+import '../../models/http/data/dynamic_info_data.dart';
 import '../../view_models/call_back_function.dart';
 import '../../widgets/label/common_network_image.dart';
 import '../../widgets/label/custom_gradient_icon.dart';

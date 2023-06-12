@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../constant/theme/app_image_path.dart';
-import '../../models/data/validate_result_data.dart';
+import '../../models/validate_result_data.dart';
 import '../../view_models/gobal_provider/global_tag_controller_provider.dart';
 import '../../view_models/login/register_main_view_model.dart';
 import '../../widgets/button/countdown_button_widget.dart';

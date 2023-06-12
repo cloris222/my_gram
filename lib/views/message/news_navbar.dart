@@ -7,7 +7,7 @@ import 'package:base_project/widgets/label/common_network_image.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../constant/theme/app_gradient_colors.dart';
-import '../../models/parameter/pair_image_data.dart';
+import '../../models/http/data/pair_image_data.dart';
 import '../../view_models/call_back_function.dart';
 
 class NewsNavbar extends StatefulWidget {

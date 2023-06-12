@@ -3,7 +3,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../../constant/theme/global_data.dart';
-import '../../models/data/validate_result_data.dart';
+import '../../models/validate_result_data.dart';
 import '../../views/login/reset_password_finish_page.dart';
 import '../../views/login/reset_password_page.dart';
 import '../check_texteditor_view_model.dart';

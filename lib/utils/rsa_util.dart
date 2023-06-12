@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:encrypt/encrypt.dart';
 
-import '../models/http_setting.dart';
+import '../models/http/http_setting.dart';
 
 //MARK: RSA 加密
 class RSAEncode {

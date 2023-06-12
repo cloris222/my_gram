@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../models/data/validate_result_data.dart';
+import '../../models/validate_result_data.dart';
 
 final globalTextProviderProvider =
     StateProvider.family.autoDispose<String, String>((ref, tag) {

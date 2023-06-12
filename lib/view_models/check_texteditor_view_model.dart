@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../models/data/validate_result_data.dart';
+import '../models/validate_result_data.dart';
 import '../utils/regular_expression_util.dart';
 import 'base_view_model.dart';
 import 'gobal_provider/global_tag_controller_provider.dart';

@@ -2,14 +2,14 @@ import 'package:base_project/constant/theme/app_routes.dart';
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-import '../../utils/language_util.dart';
-import '../../utils/rsa_util.dart';
-import '../constant/theme/global_data.dart';
-import '../view_models/base_view_model.dart';
-import '../view_models/call_back_function.dart';
+import '../../../utils/language_util.dart';
+import '../../../utils/rsa_util.dart';
+import '../../constant/theme/global_data.dart';
+import '../../view_models/base_view_model.dart';
+import '../../view_models/call_back_function.dart';
 import 'http_exceptions.dart';
 import 'http_setting.dart';
-import 'parameter/api_response.dart';
+import 'data/api_response.dart';
 
 ///MARK: 參考網站
 ///https://dhruvnakum.xyz/networking-in-flutter-dio#heading-repository

@@ -1,6 +1,6 @@
 import 'package:base_project/constant/theme/global_data.dart';
-import 'package:base_project/models/data/personal_info_data.dart';
-import 'package:base_project/models/data/post_info_data.dart';
+import 'package:base_project/models/http/data/personal_info_data.dart';
+import 'package:base_project/models/http/data/post_info_data.dart';
 import 'package:base_project/views/personal/personal_info_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

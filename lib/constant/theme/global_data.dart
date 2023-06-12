@@ -1,14 +1,14 @@
 import 'dart:math';
 
-import 'package:base_project/models/data/dynamic_info_data.dart';
-import 'package:base_project/models/data/store_info_data.dart';
+import 'package:base_project/models/http/data/dynamic_info_data.dart';
+import 'package:base_project/models/http/data/store_info_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../models/data/chat_room_data.dart';
-import '../../models/http_setting.dart';
-import '../../models/parameter/country_phone_data.dart';
-import '../../models/parameter/pair_image_data.dart';
-import '../../models/parameter/post_comment_data.dart';
+import '../../models/http/data/chat_room_data.dart';
+import '../../models/http/http_setting.dart';
+import '../../models/http/data/country_phone_data.dart';
+import '../../models/http/data/pair_image_data.dart';
+import '../../models/http/data/post_comment_data.dart';
 import '../enum/app_param_enum.dart';
 
 class GlobalData {
