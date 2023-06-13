@@ -7,6 +7,7 @@ import '../../constant/theme/app_colors.dart';
 import '../../constant/theme/ui_define.dart';
 import '../../view_models/call_back_function.dart';
 
+/// 倒數計時的button
 class CountdownButtonWidget extends StatefulWidget {
   const CountdownButtonWidget(
       {Key? key,

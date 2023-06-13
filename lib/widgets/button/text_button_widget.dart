@@ -8,6 +8,7 @@ import '../../constant/theme/app_text_style.dart';
 import '../../constant/theme/ui_define.dart';
 import 'interval_click.dart';
 
+/// 通用的文字button
 class TextButtonWidget extends StatefulWidget {
   const TextButtonWidget(
       {super.key,

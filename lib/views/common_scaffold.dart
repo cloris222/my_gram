@@ -22,12 +22,12 @@ class CommonScaffold extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.watch(globalThemeProvider);
+    GlobalData.isDark = (ref.read(globalThemeProvider) == ThemeMode.dark);
     return Scaffold(
       body: GestureDetector(
           onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
           behavior: HitTestBehavior.translucent,
-          child: body(GlobalData.isDark)),
+          child: body(ref.watch(globalThemeProvider) == ThemeMode.dark)),
       appBar: appBar,
       backgroundColor: AppColors.mainBackground.getColor(),
       resizeToAvoidBottomInset: resizeToAvoidBottomInset,
