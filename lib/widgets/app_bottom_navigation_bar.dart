@@ -120,11 +120,13 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar>
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(type.icon,
-              size: UIDefine.getPixelWidth(25),
-              color: isSelect
-                  ? AppColors.navigationBarSelect.getColor()
-                  : AppColors.navigationBarUnSelect.getColor())
+          isSelect?
+          Image.asset(type.onIcon,):Image.asset(type.icon,)
+          // Icon(type.icon,
+          //     size: UIDefine.getPixelWidth(25),
+          //     color: isSelect
+          //         ? AppColors.navigationBarSelect.getColor()
+          //         : AppColors.navigationBarUnSelect.getColor())
         ],
       ),
     );
