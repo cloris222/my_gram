@@ -44,7 +44,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return CommonScaffold(
-        appBar: CustomAppBar.mainAppBar(context),
+        // appBar: CustomAppBar.mainAppBar(context),
         bottomNavigationBar: AppBottomNavigationBar(
           initType: widget.type,
           bottomFunction: _changePage,

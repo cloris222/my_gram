@@ -41,5 +41,9 @@ class AppImagePath {
   static const String onMatchIcon = '$assetPath/ic_nav_card_normal.png';
   static const String onChatIcon = '$assetPath/ic_nav_messege_normal.png';
   static const String onCreateIcon = '$assetPath/ic_nav_profile_normal.png';
+  static const String btnDislike = '$assetPath/ic_dislike.png';
+  static const String btnLike = '$assetPath/ic_like.png';
+  static const String imgLike = '$assetPath/img_like.png';
+  static const String imgDislike = '$assetPath/img_dislike.png';
 
 }
