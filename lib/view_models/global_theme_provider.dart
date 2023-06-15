@@ -24,7 +24,7 @@ class GlobalThemeNotifier extends StateNotifier<ThemeMode> {
   }
 
   void _setSharePrf(ThemeMode mode) {
-    AppSharedPreferences.setTheme(state);
+    AppSharedPreferences.setTheme(mode);
     GlobalData.isDark = (mode == ThemeMode.dark);
 
     state = mode;
