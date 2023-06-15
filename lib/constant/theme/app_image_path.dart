@@ -5,6 +5,7 @@ class AppImagePath {
   static const String iconPath = 'assets/icon/icon';
   static const String btnPath = 'assets/icon/btn';
   static const String imgPath = 'assets/icon/img';
+  static const String assetPath = "assets/icon/assets";
 
   ///MARK: Arrow Icon
   static const String arrowUp = '$btnPath/btn_arrow_01_up.png';
