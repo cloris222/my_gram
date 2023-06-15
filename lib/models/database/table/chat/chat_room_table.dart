@@ -1,5 +1,6 @@
 import 'package:sqflite/sqflite.dart';
 
+import '../../../http/data/chat_room_data.dart';
 import '../base_table.dart';
 
 /// 聊天室清單
@@ -39,5 +40,10 @@ $unreadCount INTEGER,
 $time TEXT
   )
 ''');
+  }
+  Future<ChatRoomData> insert(ChatRoomData data) async {
+    final db = await instance.database;
+    await db.insert(tableName, data.toJson());
+    return data;
   }
 }

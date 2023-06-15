@@ -1,5 +1,6 @@
 import 'package:sqflite/sqflite.dart';
 
+import '../../data/chat/chat_member_data.dart';
 import '../base_table.dart';
 
 /// 聊天對象清單
@@ -39,5 +40,10 @@ $oldUid TEXT,
 $time TEXT
   )
 ''');
+  }
+  Future<ChatMemberData> insert(ChatMemberData data) async {
+    final db = await instance.database;
+    await db.insert(tableName, data.toJson());
+    return data;
   }
 }

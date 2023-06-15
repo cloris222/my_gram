@@ -1,6 +1,8 @@
 import 'package:base_project/models/database/table/base_table.dart';
 import 'package:sqflite/sqflite.dart';
 
+import '../../data/chat/chat_history_data.dart';
+
 class ChatHistoryTable extends BaseTable {
   static const String tableName = 'chatHistory';
   static const String contentId = 'contentId';
@@ -76,5 +78,11 @@ $replyByUid TEXT,
 $replyByAvatar TEXT
   )
 ''');
+  }
+
+  Future<ChatHistoryData> insert(ChatHistoryData data) async {
+    final db = await instance.database;
+    await db.insert(tableName, data.toJson());
+    return data;
   }
 }
