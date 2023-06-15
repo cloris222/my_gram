@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:base_project/view_models/global_theme_provider.dart';
+import 'package:base_project/views/main_screen.dart';
 import 'package:base_project/views/pair/pair_main_page.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';

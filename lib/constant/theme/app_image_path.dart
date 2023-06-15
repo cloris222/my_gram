@@ -19,12 +19,28 @@ class AppImagePath {
   static const String btnCancel = '$iconPath/icon_cross_01.png';
 
   static const String demoImage = '$imgPath/img_check_01.png';
+
+  ///login頁面icon&image
+
   static const String loginBgImage = '$imgPath/img_login_bg.png';
   static const String logoTextImage = '$assetPath/logo_Mygram.png';
   static const String logoImage = '$assetPath/logo_Vector.png';
   static const String googleIcon = '$assetPath/icon_google.png';
   static const String fbIcon = '$assetPath/icon_fb.png';
   static const String appleIcon = '$assetPath/icon_apple.png';
+
+  ///底部導覽頁icon
+  static const String dynamicIcon = '$assetPath/ic_nav_home-fill.png';
+  static const String exploreIcon = '$assetPath/ic_nav_search_default.png';
+  static const String matchIcon = '$assetPath/ic_nav_card_default.png';
+  static const String chatIcon = '$assetPath/ic_nav_messege_default.png';
+  static const String createIcon = '$assetPath/ic_nav_profile_default.png';
+
+  static const String onDynamicIcon = '$assetPath/ic_nav_home-normal.png';
+  static const String onExploreIcon = '$assetPath/ic_nav_search_normal.png';
+  static const String onMatchIcon = '$assetPath/ic_nav_card_normal.png';
+  static const String onChatIcon = '$assetPath/ic_nav_messege_normal.png';
+  static const String onCreateIcon = '$assetPath/ic_nav_profile_normal.png';
   static const String btnDislike = '$assetPath/ic_dislike.png';
   static const String btnLike = '$assetPath/ic_like.png';
   static const String imgLike = '$assetPath/img_like.png';
