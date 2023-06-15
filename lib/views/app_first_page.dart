@@ -14,6 +14,7 @@ import '../constant/theme/ui_define.dart';
 import '../view_models/base_view_model.dart';
 import '../widgets/button/text_button_widget.dart';
 import 'common_scaffold.dart';
+import 'main_screen.dart';
 
 class AppFirstPage extends StatefulWidget {
   const AppFirstPage({Key? key}) : super(key: key);
@@ -34,7 +35,7 @@ class _AppFirstPageState extends State<AppFirstPage> {
     return CommonScaffold(
         body: (isDark) => GestureDetector(
           onTap: (){
-            BaseViewModel().pushPage(context, const PairMainPage());
+            BaseViewModel().pushPage(context, const MainScreen());
           },
           child: Container(
             width: UIDefine.getWidth(),
@@ -86,7 +87,9 @@ class _AppFirstPageState extends State<AppFirstPage> {
                                       setHeight: UIDefine.getPixelWidth(30),
                                       isGradient: true,
                                       btnText: tr('registerWithEmail'),
-                                      onPressed: () {  },),
+                                      onPressed: () {
+                                        BaseViewModel().pushPage(context, const MainScreen());
+                                      },),
                                   ],
                                 ),
                                 Container(
@@ -132,20 +135,25 @@ class _AppFirstPageState extends State<AppFirstPage> {
   }
 
   Widget _buildIconButton(String image){
-    return Container(
-      width: UIDefine.getWidth()*0.1,
-      height: UIDefine.getWidth()*0.1,
-      margin: EdgeInsets.symmetric(horizontal: 15),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(50),
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(50),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-          child: Container(
-            color: Colors.grey.withOpacity(0.5),
-            child: Image.asset(image,),
+    return GestureDetector(
+      onTap: (){
+        BaseViewModel().pushPage(context, const MainScreen());
+      },
+      child: Container(
+        width: UIDefine.getWidth()*0.1,
+        height: UIDefine.getWidth()*0.1,
+        margin: EdgeInsets.symmetric(horizontal: 15),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(50),
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(50),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+            child: Container(
+              color: Colors.grey.withOpacity(0.5),
+              child: Image.asset(image,),
+            ),
           ),
         ),
       ),
