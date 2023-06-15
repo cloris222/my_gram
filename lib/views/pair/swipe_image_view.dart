@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 
 import '../../constant/enum/pair_enum.dart';
 import '../../constant/theme/app_colors.dart';
+import '../../constant/theme/app_gradient_colors.dart';
+import '../../constant/theme/app_image_path.dart';
 import '../../models/http/data/pair_image_data.dart';
 import 'dart:math' as math;
 
@@ -78,28 +80,41 @@ class _SwipeImageViewState extends State<SwipeImageView> {
                           fit: BoxFit.cover),
 
                       Positioned(
-                          left: UIDefine.getPixelWidth(5),
-                          right: UIDefine.getPixelWidth(5),
-                          top: UIDefine.getPixelWidth(5),
+                          left: UIDefine.getPixelWidth(25),
+                          right: UIDefine.getPixelWidth(25),
+                          top: UIDefine.getPixelWidth(40),
                           child: _buildImageIndex()),
 
+                      ///漸層遮罩
+                      Positioned(
+                        top: UIDefine.getViewHeight()*0.6,
+                        child: Container(
+                          width: UIDefine.getWidth(),
+                          height: UIDefine.getViewHeight()*0.4,
+                          decoration: const BoxDecoration(
+                              gradient: LinearGradient(
+                                  begin: Alignment(0.0,-0.9),
+                                  end: Alignment(0.0,0.1),
+                                  colors: [Colors.transparent,Colors.black]
+                              )
+                          ),
+                        ),
+                      ),
                       ///不喜歡的icon顯示
                       Positioned(
-                          top: UIDefine.getPixelWidth(15),
-                          right: 0,
+                          top: UIDefine.getPixelWidth(100),
+                          right:  UIDefine.getPixelWidth(15),
                           child: Visibility(
                               visible: status == GramSetStatus.disLike,
-                              child: Icon(Icons.close,
-                                  size: UIDefine.getPixelWidth(30)))),
+                              child: Image.asset(AppImagePath.imgDislike))),
 
                       ///喜歡的icon顯示
                       Positioned(
-                          top: UIDefine.getPixelWidth(15),
-                          left: 0,
+                          top: UIDefine.getPixelWidth(100),
+                          left: UIDefine.getPixelWidth(15),
                           child: Visibility(
                               visible: status == GramSetStatus.like,
-                              child: Icon(Icons.favorite,
-                                  size: UIDefine.getPixelWidth(30)))),
+                              child: Image.asset(AppImagePath.imgLike))),
 
                       ///自介
                       Positioned(
@@ -114,13 +129,13 @@ class _SwipeImageViewState extends State<SwipeImageView> {
                                   style: AppTextStyle.getBaseStyle(
                                     fontSize: UIDefine.fontSize36,
                                     fontWeight: FontWeight.w700,
-                                    shadowsType: AppTextShadows.common,
+                                    // shadowsType: AppTextShadows.common,
                                   )),
                               Text(data.context,
                                   style: AppTextStyle.getBaseStyle(
                                     fontSize: UIDefine.fontSize18,
                                     fontWeight: FontWeight.w400,
-                                    shadowsType: AppTextShadows.common,
+                                    // shadowsType: AppTextShadows.common,
                                   )),
                             ],
                           )),
@@ -134,41 +149,58 @@ class _SwipeImageViewState extends State<SwipeImageView> {
 
         ///下方按鈕
         Positioned(
-            bottom: UIDefine.getPixelWidth(15),
+            bottom: UIDefine.getPixelWidth(25),
             right: UIDefine.getPixelWidth(20),
             left: UIDefine.getPixelWidth(20),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () => _buttonAnimate(false),
-                    child: Container(
-                      decoration: AppStyle().styleColorBorderBackground(
-                          color: AppColors.buttonDisLike.getColor(),
-                          radius: 10,
-                          backgroundColor: Colors.transparent,
-                          borderLine: 4),
-                      padding: EdgeInsets.all(UIDefine.getPixelWidth(15)),
-                      child:  Icon(Icons.close,
-                          color: AppColors.buttonDisLike.getColor()),
+                GestureDetector(
+                  onTap: () => _buttonAnimate(false),
+                  child:
+                  status == GramSetStatus.disLike?
+                  Container(
+                    width: UIDefine.getPixelWidth(50),
+                    height:UIDefine.getPixelWidth(50),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        color:AppColors.buttonDisLike.getColor().withOpacity(0.8)
                     ),
-                  ),
+                    child: Image.asset(AppImagePath.btnDislike),
+                  ):
+                  Container(
+                    width: UIDefine.getPixelWidth(50),
+                    height:UIDefine.getPixelWidth(50),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50),
+                      color:AppColors.buttonCommon.getColor().withOpacity(0.5)
+                    ),
+                    child: Image.asset(AppImagePath.btnDislike),
+                  )
                 ),
-                SizedBox(width: UIDefine.getPixelWidth(15)),
-                Expanded(
-                  child: GestureDetector(
+                SizedBox(width: UIDefine.getPixelWidth(40)),
+                GestureDetector(
                     onTap: () => _buttonAnimate(true),
-                    child: Container(
-                      decoration: AppStyle().styleColorBorderBackground(
-                          color: AppColors.buttonLike.getColor(),
-                          radius: 10,
-                          backgroundColor: Colors.transparent,
-                          borderLine: 4),
-                      padding: EdgeInsets.all(UIDefine.getPixelWidth(15)),
-                      child:  Icon(Icons.favorite,
-                          color: AppColors.buttonLike.getColor()),
-                    ),
-                  ),
+                    child:
+                    status == GramSetStatus.like?
+                    Container(
+                      width: UIDefine.getPixelWidth(50),
+                      height:UIDefine.getPixelWidth(50),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                        gradient: LinearGradient(colors: AppGradientColors.gradientColors.getColors())
+                      ),
+                      child: Image.asset(AppImagePath.btnLike,color: Colors.white,),
+                    ):
+                    Container(
+                      width: UIDefine.getPixelWidth(50),
+                      height:UIDefine.getPixelWidth(50),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                          color:AppColors.buttonCommon.getColor().withOpacity(0.5)
+                      ),
+                      child: Image.asset(AppImagePath.btnLike),
+                    )
                 ),
               ],
             ))
@@ -182,13 +214,13 @@ class _SwipeImageViewState extends State<SwipeImageView> {
         bool isCurrent = currentIndex == index;
         return Expanded(
             child: Container(
-          height: UIDefine.getPixelWidth(5),
+          height: UIDefine.getPixelWidth(2),
           decoration: AppStyle().styleColorsRadiusBackground(
               radius: 1,
               color: isCurrent
                   ? Colors.white.withOpacity(0.6)
                   : const Color(0xFFE2E2E2).withOpacity(0.13)),
-          margin: const EdgeInsets.symmetric(horizontal: 0.5, vertical: 5),
+          margin: const EdgeInsets.symmetric(horizontal: 1, vertical: 5),
         ));
       }),
     );

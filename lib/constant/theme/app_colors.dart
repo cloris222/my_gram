@@ -30,8 +30,9 @@ enum AppColors {
   buttonGradientText(dark: Color(0xFFFFFFFF), light: Color(0xFFFFFFFF)),
   buttonUnable(dark: Colors.grey, light: Colors.grey),
   buttonLike(dark: Color(0xFF3CDBA7), light: Color(0xFF3CDBA7)),
-  buttonDisLike(dark: Color(0xFFF24C65), light: Color(0xFFF24C65)),
+  buttonDisLike(dark: Color(0xFFC11D11), light: Color(0xFFC11D11)),
   buttonMessageRed(dark: Colors.red, light: Colors.red),
+  buttonCommon(dark: Color(0xFF9E9E9E), light: Color(0xFF9E9E9E)),
 
   ///背景顏色
   textFieldBackground(dark: Color(0xFF1F1F1F), light: Color(0xFFFFFFFF)),

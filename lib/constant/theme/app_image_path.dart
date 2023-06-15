@@ -25,6 +25,9 @@ class AppImagePath {
   static const String googleIcon = '$assetPath/icon_google.png';
   static const String fbIcon = '$assetPath/icon_fb.png';
   static const String appleIcon = '$assetPath/icon_apple.png';
-
+  static const String btnDislike = '$assetPath/ic_dislike.png';
+  static const String btnLike = '$assetPath/ic_like.png';
+  static const String imgLike = '$assetPath/img_like.png';
+  static const String imgDislike = '$assetPath/img_dislike.png';
 
 }
