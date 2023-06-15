@@ -1,8 +1,11 @@
+import 'package:base_project/constant/enum/app_param_enum.dart';
 import 'package:base_project/constant/enum/pair_enum.dart';
 import 'package:base_project/constant/theme/global_data.dart';
 import 'package:flutter/material.dart';
 import '../../constant/theme/ui_define.dart';
 import '../../models/http/data/pair_image_data.dart';
+import '../../view_models/base_view_model.dart';
+import '../main_screen.dart';
 import 'swipe_image_view.dart';
 
 class PairMainPage extends StatefulWidget {
@@ -14,17 +17,16 @@ class PairMainPage extends StatefulWidget {
 
 class _PairMainPageState extends State<PairMainPage> {
   final List<PairImageData> list = [];
+  final List<PairImageData> showList = [];
 
   @override
   void initState() {
-    list.add(PairImageData(
-        images: GlobalData.photos,
-        name: "cat1",
-        context: "catcatcatcatcatcat"));
-    list.add(PairImageData(
-        images: GlobalData.photos2,
-        name: "cat2",
-        context: "cutecutecutecutecutecute"));
+    list.addAll(GlobalData.generatePairImageData(8));
+    Future.delayed(Duration.zero,(){
+      setState(() {
+        showList.addAll(list);
+      });
+    });
 
     super.initState();
   }
@@ -37,10 +39,10 @@ class _PairMainPageState extends State<PairMainPage> {
   @override
   Widget build(BuildContext context) {
     List<Widget> widgetList = List.generate(
-        list.length,
+        showList.length,
         (index) => SwipeImageView(
               key: UniqueKey(),
-              data: list[index],
+              data: showList[index],
               onRemove: _onRemove,
             ));
     /// MARK: 加入避免重複觸碰
@@ -51,6 +53,7 @@ class _PairMainPageState extends State<PairMainPage> {
               color: Colors.transparent,
               width: UIDefine.getWidth(),
               height: UIDefine.getViewHeight()));
+
     }
     return Stack(children: widgetList);
   }
@@ -58,13 +61,17 @@ class _PairMainPageState extends State<PairMainPage> {
   void _onRemove(PairImageData data, GramSetStatus status) {
     setState(() {
       if (status == GramSetStatus.like) {
+        BaseViewModel().pushPage(context, const MainScreen(type: AppNavigationBarType.typePersonal,));
       } else {}
-      list.removeLast();
-
+      showList.removeLast();
+      if(showList.isEmpty){
+        showList.addAll(list);
+      }
       /// MARK: 移除後，新增一筆到底部
       // if (addPhotos.isNotEmpty) {
       //   list.insert(0, PairImageData(images: addPhotos.removeLast()));
       // }
+
     });
   }
 }
