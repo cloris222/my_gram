@@ -21,9 +21,19 @@ class RSAEncode {
     return begin + strList.join('\n') + end;
   }
 
-  static Future<String> encodeString(Map<String, String> content) async {
+  static Future<String> encodeString(Map<String, String> content,
+      {String? key}) async {
     String encoded = base64.encode(utf8.encode(jsonEncode(content)));
-    dynamic publicKey = RSAKeyParser().parse(splitStr(HttpSetting.postKey));
+    dynamic publicKey =
+    RSAKeyParser().parse(splitStr(key ?? HttpSetting.postKey));
+    final encrypt = Encrypter(RSA(publicKey: publicKey));
+    return encrypt.encrypt(encoded).base64;
+  }
+
+  static Future<String> encodeOnlyString(String content, {String? key}) async {
+    String encoded = base64.encode(utf8.encode(content));
+    dynamic publicKey =
+    RSAKeyParser().parse(splitStr(key ?? HttpSetting.postKey));
     final encrypt = Encrypter(RSA(publicKey: publicKey));
     return encrypt.encrypt(encoded).base64;
   }
