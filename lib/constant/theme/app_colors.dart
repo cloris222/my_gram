@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 enum AppColors {
   ///MARK:主題色彩
-  mainThemeButton(dark: Color(0xFF766733), light: Color(0xFF3B82F6)),
-  subThemePurple(dark: Color(0xFFCEBB8B), light: Color(0xFF9657D7)),
+  mainThemeButton(dark: Color(0xFFECB680), light: Color(0xFFECB680)),
+  subThemePurple(dark: Color(0xFFE2C98E), light: Color(0xFFE2C98E)),
   mainBackground(dark: Colors.black, light: Colors.white),
   navigationBarSelect(dark: Colors.yellow, light: Color(0xFF3B82F6)),
   navigationBarUnSelect(dark: Colors.grey, light: Colors.grey),

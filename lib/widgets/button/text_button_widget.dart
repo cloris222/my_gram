@@ -26,7 +26,7 @@ class TextButtonWidget extends StatefulWidget {
       this.isBorderStyle = false,
       this.borderWidth = 1,
       this.isFillWidth = true,
-      this.radius = 10,
+      this.radius = 8,
       this.backgroundHorizontal,
       this.backgroundVertical,
       this.borderSize = 2,

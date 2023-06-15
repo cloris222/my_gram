@@ -11,7 +11,6 @@ enum AppGradientColors {
   gradientColors([
     AppColors.mainThemeButton,
     AppColors.subThemePurple,
-    AppColors.mainThemeButton
   ]);
 
   final List<AppColors> list;

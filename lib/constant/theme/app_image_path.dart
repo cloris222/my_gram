@@ -20,5 +20,11 @@ class AppImagePath {
 
   static const String demoImage = '$imgPath/img_check_01.png';
   static const String loginBgImage = '$imgPath/img_login_bg.png';
+  static const String logoTextImage = '$assetPath/logo_Mygram.png';
+  static const String logoImage = '$assetPath/logo_Vector.png';
+  static const String googleIcon = '$assetPath/icon_google.png';
+  static const String fbIcon = '$assetPath/icon_fb.png';
+  static const String appleIcon = '$assetPath/icon_apple.png';
+
 
 }
