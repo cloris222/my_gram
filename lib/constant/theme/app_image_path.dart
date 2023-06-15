@@ -18,5 +18,6 @@ class AppImagePath {
   static const String btnCancel = '$iconPath/icon_cross_01.png';
 
   static const String demoImage = '$imgPath/img_check_01.png';
+  static const String loginBgImage = '$imgPath/img_login_bg.png';
 
 }
