@@ -1,4 +1,5 @@
 import 'package:base_project/constant/theme/global_data.dart';
+import 'package:base_project/constant/theme/ui_define.dart';
 import 'package:base_project/models/http/data/personal_info_data.dart';
 import 'package:base_project/models/http/data/post_info_data.dart';
 import 'package:base_project/views/personal/personal_info_view.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../widgets/appbar/custom_app_bar.dart';
+import '../../widgets/label/common_network_image.dart';
 import '../common_scaffold.dart';
 
 class PersonalHomePage extends ConsumerStatefulWidget {
@@ -69,31 +71,21 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage> {
   @override
   Widget build(BuildContext context) {
     return CommonScaffold(
-        appBar: CustomAppBar.titleAppBar(context, title: 'personalHomePage'),
+      backgroundColor: Colors.transparent,
+        appBar: CustomAppBar.personalAppBar(context, title: 'Rebacca'),
         body: (isDark) => Container(
-              child: PersonalInfoView(
-                data: data,
-                clickFollowing: _clickFollowing,
-                clickMessage: _clickMessage,
-                clickSeeMore: _clickSeeMore,
-              ),
-            ));
+          width:UIDefine.getWidth(),
+          child: Column(
+            children: [
+              CommonNetworkImage(
+                fit: BoxFit.cover,
+                imageUrl: data.avatar,
+                width: UIDefine.getWidth(),
+                height: UIDefine.getViewHeight()*0.6,
+              )
+            ],
+          ),
+        ));
   }
 
-  _clickFollowing() {
-    setState(() {
-      data.isFollowing = !data.isFollowing;
-    });
-  }
-
-  _clickMessage() {
-    print('clickMessage');
-  }
-
-  _clickSeeMore() {
-    setState(() {
-      data.isShowMore = true;
-      print(data.isShowMore);
-    });
-  }
 }

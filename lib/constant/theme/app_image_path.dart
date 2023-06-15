@@ -10,7 +10,7 @@ class AppImagePath {
   ///MARK: Arrow Icon
   static const String arrowUp = '$btnPath/btn_arrow_01_up.png';
   static const String arrowDown = '$btnPath/btn_arrow_01_down.png';
-  static const String arrowLeft = '$btnPath/btn_back_01_nor.png';
+  static const String arrowLeft = '$assetPath/ic_arrow-previous.png';
   static const String arrowRight = '$btnPath/btn_arrow_right_01_nor.png';
 
   ///Icons
@@ -18,6 +18,7 @@ class AppImagePath {
   static const String unCheckedIcon = '$iconPath/icon_cross_01.png';
   static const String btnCancel = '$iconPath/icon_cross_01.png';
 
+  ///login頁
   static const String demoImage = '$imgPath/img_check_01.png';
   static const String loginBgImage = '$imgPath/img_login_bg.png';
   static const String logoTextImage = '$assetPath/logo_Mygram.png';
@@ -25,9 +26,14 @@ class AppImagePath {
   static const String googleIcon = '$assetPath/icon_google.png';
   static const String fbIcon = '$assetPath/icon_fb.png';
   static const String appleIcon = '$assetPath/icon_apple.png';
+
+  ///配對頁
   static const String btnDislike = '$assetPath/ic_dislike.png';
   static const String btnLike = '$assetPath/ic_like.png';
   static const String imgLike = '$assetPath/img_like.png';
   static const String imgDislike = '$assetPath/img_dislike.png';
+
+  ///個人主頁
+  static const String hotIcon = '$assetPath/btn_ranking.png';
 
 }
