@@ -1,4 +1,3 @@
-import 'package:base_project/constant/enum/gender_enum.dart';
 import 'package:base_project/constant/theme/app_colors.dart';
 import 'package:base_project/constant/theme/app_text_style.dart';
 import 'package:base_project/constant/theme/ui_define.dart';
@@ -9,6 +8,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../constant/enum/user_enum.dart';
 import '../../view_models/login/register_param_provider.dart';
 import '../../widgets/button/text_button_widget.dart';
 import '../../widgets/label/custom_linear_progress.dart';
@@ -25,11 +25,7 @@ class RegisterChooseGenderPage extends ConsumerStatefulWidget {
 
 class _RegisterChooseGenderPageState
     extends ConsumerState<RegisterChooseGenderPage> {
-  List<genderType> genderList = [
-    genderType.male,
-    genderType.female,
-    genderType.other
-  ];
+  List<GenderType> get genderList => GenderType.values;
 
   String get genderSection => ref.read(registerParamProvider).gender;
   BaseViewModel viewModel = BaseViewModel();
@@ -66,7 +62,7 @@ class _RegisterChooseGenderPageState
                 backgroundVertical: UIDefine.getPixelWidth(8),
                 setHeight: UIDefine.getPixelWidth(44),
                 setWidth: UIDefine.getWidth() * 0.4,
-                btnText: genderList[i].name,
+                btnText: tr(genderList[i].name.toLowerCase()),
                 onPressed: () {
                   ref
                       .read(registerParamProvider.notifier)
@@ -171,18 +167,5 @@ class _RegisterChooseGenderPageState
                 )
               ],
             ));
-  }
-
-  genderType getgenderType(String gender) {
-    switch (gender) {
-      case "male":
-        return genderType.male;
-      case "female":
-        return genderType.female;
-      case "other":
-        return genderType.other;
-      default:
-        return genderType.other;
-    }
   }
 }

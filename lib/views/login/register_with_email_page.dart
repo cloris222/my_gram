@@ -99,7 +99,9 @@ class _RegisterWithEmailViewState extends ConsumerState<RegisterWithEmailView> {
                 isGradient: true,
                 initEnable: true,
                 btnText: tr('getValidate'),
-                onPress: () {},
+                onPress: () {
+                  viewModel.sendVerifyCode(context);
+                },
               ):
               TextButtonWidget(
                 setMainColor: AppColors.buttonUnable,

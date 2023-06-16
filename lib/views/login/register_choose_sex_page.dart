@@ -1,4 +1,3 @@
-import 'package:base_project/constant/enum/sex_enum.dart';
 import 'package:base_project/constant/theme/app_colors.dart';
 import 'package:base_project/constant/theme/app_text_style.dart';
 import 'package:base_project/constant/theme/ui_define.dart';
@@ -8,6 +7,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../constant/enum/user_enum.dart';
 import '../../view_models/login/register_param_provider.dart';
 import '../../widgets/button/text_button_widget.dart';
 import '../../widgets/label/custom_linear_progress.dart';
@@ -23,7 +23,7 @@ class RegisterChooseSexPage extends ConsumerStatefulWidget {
 }
 
 class _RegisterChooseSexPageState extends ConsumerState<RegisterChooseSexPage> {
-  List<sexType> sexList = [sexType.male, sexType.female, sexType.other];
+  List<GenderType> get genderList => GenderType.values;
 
   String get sexSection => ref.read(registerParamProvider).preferGender;
   BaseViewModel viewModel = BaseViewModel();
@@ -37,8 +37,8 @@ class _RegisterChooseSexPageState extends ConsumerState<RegisterChooseSexPage> {
   Widget build(BuildContext context) {
     ref.watch(registerParamProvider);
     List<Widget> buttons = [];
-    for (var i = 0; i < sexList.length; i++) {
-      bool isSelected=(sexSection == sexList[i].name);
+    for (var i = 0; i < genderList.length; i++) {
+      bool isSelected = (sexSection == genderList[i].name);
       buttons.add(Column(
         children: [
           Row(
@@ -60,11 +60,11 @@ class _RegisterChooseSexPageState extends ConsumerState<RegisterChooseSexPage> {
                 backgroundVertical: UIDefine.getPixelWidth(8),
                 setHeight: UIDefine.getPixelWidth(44),
                 setWidth: UIDefine.getWidth() * 0.4,
-                btnText: sexList[i].name,
+                btnText: tr(genderList[i].name.toLowerCase()),
                 onPressed: () {
                   ref
                       .read(registerParamProvider.notifier)
-                      .setPreferGender(sexList[i].name);
+                      .setPreferGender(genderList[i].name);
                 },
               ),
             ],
@@ -165,18 +165,5 @@ class _RegisterChooseSexPageState extends ConsumerState<RegisterChooseSexPage> {
                 )
               ],
             ));
-  }
-
-  sexType getSexType(String sex) {
-    switch (sex) {
-      case "male":
-        return sexType.male;
-      case "female":
-        return sexType.female;
-      case "other":
-        return sexType.other;
-      default:
-        return sexType.other;
-    }
   }
 }

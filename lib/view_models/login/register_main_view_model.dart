@@ -1,8 +1,10 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:base_project/models/http/api/user_api.dart';
 import 'package:base_project/view_models/login/register_param_provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import '../../constant/enum/login_enum.dart';
 import '../../constant/theme/global_data.dart';
 import '../../models/validate_result_data.dart';
 import '../../views/login/register_choose_gender_page.dart';
@@ -118,5 +120,11 @@ class RegisterMainViewModel extends CheckTextEditorViewModel {
 
   void onPasswordChanged(String value) {
     checkPassword();
+  }
+
+  void sendVerifyCode(BuildContext context) {
+    UserAPI(onConnectFail: (msg) => onBaseConnectFail(context, msg))
+        .sendEmailVerifyCode(emailController.text, EmailAction.register)
+        .then((value) => onBaseConnectFail(context, tr("success")));
   }
 }
