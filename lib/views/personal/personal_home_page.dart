@@ -186,79 +186,82 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
           });
         },
         itemBuilder: (BuildContext context, int index) {
-          return Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              // color: Colors.red,
-              margin: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(2)),
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  SizedBox(
-                    width: UIDefine.getPixelWidth(200),
-                    height: UIDefine.getPixelWidth(130),
-                  ),
-                  Positioned(
-                    left: 0,
-                    right: 0,
-                    top: index==selectedCardIndex?0:UIDefine.getPixelWidth(20),
-                    bottom: 0,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Container(
-                        width: index==selectedCardIndex?UIDefine.getPixelWidth(200):UIDefine.getPixelWidth(130),
-                        height: index==selectedCardIndex?UIDefine.getPixelWidth(120):UIDefine.getPixelWidth(110),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: CommonNetworkImage(
-                          fit: BoxFit.cover,
-                          imageUrl: data.posts[index].images[0],
-                        ),
-                      ),
+          return GestureDetector(
+            onTap: (){},
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                // color: Colors.red,
+                margin: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(2)),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    SizedBox(
+                      width: UIDefine.getPixelWidth(200),
+                      height: UIDefine.getPixelWidth(130),
                     ),
-                  ),
-                  Positioned(
-                    left: 0,
-                    right: 0,
-                    top: index==selectedCardIndex?0:UIDefine.getPixelWidth(20),
-                    bottom: 0,
-                    child: Visibility(
-                      visible: index==selectedCardIndex,
-                      child: Container(
-                        width: index==selectedCardIndex?UIDefine.getPixelWidth(200):UIDefine.getPixelWidth(130),
-                        height: index==selectedCardIndex?UIDefine.getPixelWidth(120):UIDefine.getPixelWidth(110),
-                        clipBehavior: Clip.antiAlias,
-                        margin: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(1)),
-                        decoration: BoxDecoration(
+                    Positioned(
+                      left: 0,
+                      right: 0,
+                      top: index==selectedCardIndex?0:UIDefine.getPixelWidth(20),
+                      bottom: 0,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Container(
+                          width: index==selectedCardIndex?UIDefine.getPixelWidth(200):UIDefine.getPixelWidth(130),
+                          height: index==selectedCardIndex?UIDefine.getPixelWidth(120):UIDefine.getPixelWidth(110),
+                          decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            border:Border.all(
-                                color: AppColors.mainThemeButton.getColor(),width: 2,strokeAlign: BorderSide.strokeAlignOutside)
+                          ),
+                          child: CommonNetworkImage(
+                            fit: BoxFit.cover,
+                            imageUrl: data.posts[index].images[0],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Positioned(
-                    left: 0,
-                    right: 0,
-                    top: index==selectedCardIndex?0:UIDefine.getPixelWidth(20),
-                    bottom: 0,
-                    child: Visibility(
-                      visible: index!=selectedCardIndex,
-                      child: Container(
-                        width: index==selectedCardIndex?UIDefine.getPixelWidth(200):UIDefine.getPixelWidth(130),
-                        height: index==selectedCardIndex?UIDefine.getPixelWidth(120):UIDefine.getPixelWidth(110),
-                        clipBehavior: Clip.antiAlias,
-                        margin: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(1)),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.black.withOpacity(0.3)
+                    Positioned(
+                      left: 0,
+                      right: 0,
+                      top: index==selectedCardIndex?0:UIDefine.getPixelWidth(20),
+                      bottom: 0,
+                      child: Visibility(
+                        visible: index==selectedCardIndex,
+                        child: Container(
+                          width: index==selectedCardIndex?UIDefine.getPixelWidth(200):UIDefine.getPixelWidth(130),
+                          height: index==selectedCardIndex?UIDefine.getPixelWidth(120):UIDefine.getPixelWidth(110),
+                          clipBehavior: Clip.antiAlias,
+                          margin: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(1)),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border:Border.all(
+                                  color: AppColors.mainThemeButton.getColor(),width: 2,strokeAlign: BorderSide.strokeAlignOutside)
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  // Positioned(child: Center(child: Text("$index"),)),
-                ],
+                    Positioned(
+                      left: 0,
+                      right: 0,
+                      top: index==selectedCardIndex?0:UIDefine.getPixelWidth(20),
+                      bottom: 0,
+                      child: Visibility(
+                        visible: index!=selectedCardIndex,
+                        child: Container(
+                          width: index==selectedCardIndex?UIDefine.getPixelWidth(200):UIDefine.getPixelWidth(130),
+                          height: index==selectedCardIndex?UIDefine.getPixelWidth(120):UIDefine.getPixelWidth(110),
+                          clipBehavior: Clip.antiAlias,
+                          margin: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(1)),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.black.withOpacity(0.3)
+                          ),
+                        ),
+                      ),
+                    ),
+                    // Positioned(child: Center(child: Text("$index"),)),
+                  ],
+                ),
               ),
             ),
           );
