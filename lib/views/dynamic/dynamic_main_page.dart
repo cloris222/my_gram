@@ -1,9 +1,11 @@
 import 'package:base_project/constant/enum/border_style_type.dart';
 import 'package:base_project/constant/theme/app_colors.dart';
+import 'package:base_project/constant/theme/app_image_path.dart';
 import 'package:base_project/constant/theme/app_text_style.dart';
 import 'package:base_project/constant/theme/ui_define.dart';
 import 'package:base_project/models/http/data/dynamic_info_data.dart';
 import 'package:base_project/view_models/base_view_model.dart';
+import 'package:base_project/views/common_scaffold.dart';
 import 'package:base_project/widgets/label/common_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -63,60 +65,101 @@ class _DynamicMainPageState extends State<DynamicMainPage> {
   }
   @override
   Widget build(BuildContext context) {
-   return NotificationListener<ScrollEndNotification>(
-     onNotification: (scrollEnd){
-       final metrics = scrollEnd.metrics;
-       if (metrics.atEdge) {
-         bool isTop = metrics.pixels == 0;
-         if (isTop) {
-           GlobalData.printLog('At the top');
-         } else {
-           GlobalData.printLog('At the bottom');
-           if (!bDownloading) {
-             // 防止短時間載入過多造成OOM
-             bDownloading = true;
-             _updateView();
-           }
-         }
-       }
-       return true;
-     },
-       child: SingleChildScrollView(
-           child: Container(
-             width: UIDefine.getWidth(),
-             child: ListView.builder(
-                 shrinkWrap: true,
-                 physics: const NeverScrollableScrollPhysics(),
-                 itemCount: list.length,
-                 itemBuilder: (context,index){
-                   if(index == list.length-1){
-                     bDownloading = false;
-                   }
-                   return DynamicInfoView(
-                     data: list[index],
-                     index:index,
-                     onComment: (index){
-                       _onComment(index);
-                     },
-                     onFollowing: (index){
-                       _onFollowing(index);
-                     },
-                     onLike: (index){
-                       _onlike(index);
-                     },
-                     onStore: (index){
-                       _showCustomModalBottomSheet(context,stores);
-                     },
-                     onShare: (index){
-                       _onShare().then((value) => setState((){}));
-                     },
-                     showFullContext: (index){
-                       _showMore(index);
-                     },
-                   );
-                 })
-           )
-       ));
+   return CommonScaffold(
+       body: (isDark) => NotificationListener<ScrollEndNotification>(
+           onNotification: (scrollEnd){
+             final metrics = scrollEnd.metrics;
+             if (metrics.atEdge) {
+               bool isTop = metrics.pixels == 0;
+               if (isTop) {
+                 GlobalData.printLog('At the top');
+               } else {
+                 GlobalData.printLog('At the bottom');
+                 if (!bDownloading) {
+                   // 防止短時間載入過多造成OOM
+                   bDownloading = true;
+                   _updateView();
+                 }
+               }
+             }
+             return true;
+           },
+           child: CustomScrollView(
+             slivers: [
+               SliverAppBar(
+                 automaticallyImplyLeading: false,
+                 snap: false,
+                 floating: true,
+                 pinned: false,
+                 expandedHeight: UIDefine.getPixelWidth(60),
+                 backgroundColor: Colors.transparent,
+                 flexibleSpace: FlexibleSpaceBar(
+                   background: Container(
+                     decoration: BoxDecoration(
+                       borderRadius: const BorderRadius.vertical(
+                         bottom: Radius.circular(10)
+                       ),
+                       gradient: LinearGradient(
+                         colors: [AppColors.personalDarkBackground.getColor(),AppColors.personalLightBackground.getColor()], // 渐变颜色列表
+                       ),
+                     ),
+                   ),
+                 ),
+                 title: Container(
+                   width: UIDefine.getWidth(),
+                   child: Row(
+                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                     children: [
+                       Image.asset(AppImagePath.logoTextImage),
+                       Container(
+                         width: UIDefine.getPixelWidth(35),
+                         height: UIDefine.getPixelWidth(35),
+                         decoration: BoxDecoration(
+                           borderRadius: BorderRadius.circular(50),
+                           color: AppColors.buttonCommon.getColor().withOpacity(0.5)
+                         ),
+                         child: Image.asset(AppImagePath.shopIcon),
+                       )
+                     ],
+                   ),
+                 ),
+               ),
+               SliverToBoxAdapter(
+                 child: ListView.builder(
+                     shrinkWrap: true,
+                     physics: const NeverScrollableScrollPhysics(),
+                     itemCount: list.length,
+                     itemBuilder: (context,index){
+                       if(index == list.length-1){
+                         bDownloading = false;
+                       }
+                       return DynamicInfoView(
+                         data: list[index],
+                         index:index,
+                         onComment: (index){
+                           _onComment(index);
+                         },
+                         onFollowing: (index){
+                           _onFollowing(index);
+                         },
+                         onLike: (index){
+                           _onlike(index);
+                         },
+                         onStore: (index){
+                           _showCustomModalBottomSheet(context,stores);
+                         },
+                         onShare: (index){
+                           _onShare().then((value) => setState((){}));
+                         },
+                         showFullContext: (index){
+                           _showMore(index);
+                         },
+                       );
+                     }),
+               )
+             ],
+           )));
+
   }
 
   _onComment(int index){
