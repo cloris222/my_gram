@@ -12,7 +12,7 @@ class GlobalThemeNotifier extends StateNotifier<ThemeMode> {
   GlobalThemeNotifier() : super(ThemeMode.dark);
 
   void init() async {
-    _setSharePrf(await AppSharedPreferences.getTheme());
+    // _setSharePrf(await AppSharedPreferences.getTheme());
   }
 
   void flipMode() {
