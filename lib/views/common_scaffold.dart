@@ -13,12 +13,14 @@ class CommonScaffold extends ConsumerWidget {
     this.resizeToAvoidBottomInset,
     this.extendBody = false,
     this.bottomNavigationBar,
+    this.backgroundColor
   }) : super(key: key);
   final Widget Function(bool isDark) body;
   final PreferredSizeWidget? appBar;
   final bool? resizeToAvoidBottomInset;
   final bool extendBody;
   final Widget? bottomNavigationBar;
+  final Color? backgroundColor;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -29,7 +31,7 @@ class CommonScaffold extends ConsumerWidget {
           behavior: HitTestBehavior.translucent,
           child: body(ref.watch(globalThemeProvider) == ThemeMode.dark)),
       appBar: appBar,
-      backgroundColor: AppColors.mainBackground.getColor(),
+      backgroundColor: backgroundColor??AppColors.mainBackground.getColor(),
       resizeToAvoidBottomInset: resizeToAvoidBottomInset,
       extendBody: extendBody,
       bottomNavigationBar: bottomNavigationBar,

@@ -8,6 +8,7 @@ class PersonalInfoData {
     required this.posts,
     required this.fans,
     required this.introduce,
+    this.link,
     this.isFollowing = true,
     this.isShowMore = false
   });
@@ -17,6 +18,7 @@ class PersonalInfoData {
   List<PostInfoData> posts;
   List<String> fans;
   String introduce;
+  String? link;
   bool isFollowing;
   bool isShowMore;
 
@@ -28,6 +30,7 @@ class PersonalInfoData {
       posts:json["posts"]?List<PostInfoData>.from(json["posts"].map((x)=>x)):[],
       fans: json["fans"]?List<String>.from(json["fans"].map((x)=>x)):[],
       introduce: json["introduce"] ?? "",
+      link: json["link"] ?? "",
       isFollowing: json["isFollowing"]??true,
       isShowMore: json["isShowMore"]??false
   );
@@ -39,6 +42,7 @@ class PersonalInfoData {
     "posts":List<dynamic>.from(posts.map((x) => x)),
     "fans": List<dynamic>.from(fans.map((x) => x)),
     "introduce":introduce,
+    "link":link,
     "isFollowing":isFollowing,
     "isShowMore":isShowMore
   };

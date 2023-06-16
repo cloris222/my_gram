@@ -20,10 +20,13 @@ enum AppColors {
   textSuccess(dark: Color(0xFFDCAC4E), light: Color(0xFFDCAC4E)),
   textFail(dark: Color(0xFFF24C65), light: Color(0xFFF24C65)),
   textWarning(dark: Color(0xFFFFD600), light: Color(0xFFFFD600)),
+  textLink(dark: Color(0xFFC6A146), light: Color(0xFFC6A146)),
   bolderGrey(
       dark: Color.fromRGBO(255, 255, 255, 0.3),
       light: Color.fromRGBO(0, 0, 0, 0.7)),
   commentUnlike(dark: Color(0xFF979797), light: Color(0xFF979797)),
+  textBlack(dark: Color(0xFF000000), light: Color(0xFF000000)),
+
 
   /// 按鈕顏色相關
   buttonPrimaryText(dark: Color(0xFF000000), light: Color(0xFFFFFFFF)),
@@ -41,6 +44,8 @@ enum AppColors {
   opacityBackground(dark: Color(0xC6000000), light: Color(0xC6000000)),
   chatBubbleColor(dark: Color(0xFFFFD600), light: Color(0xFFFFD600)),
   messageBackground(dark: Color(0xFF936714), light: Color(0xFF936714)),
+  personalDarkBackground(dark: Color(0xFF222222), light: Color(0xFF222222)),
+  personalLightBackground(dark: Color(0xFF2a1a14), light: Color(0xFF2a1a14)),
 
   /// 基本顏色
   transparent(dark: Colors.transparent, light: Colors.transparent);

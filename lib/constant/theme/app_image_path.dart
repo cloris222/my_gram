@@ -10,7 +10,7 @@ class AppImagePath {
   ///MARK: Arrow Icon
   static const String arrowUp = '$btnPath/btn_arrow_01_up.png';
   static const String arrowDown = '$btnPath/btn_arrow_01_down.png';
-  static const String arrowLeft = '$btnPath/btn_back_01_nor.png';
+  static const String arrowLeft = '$assetPath/ic_arrow-previous.png';
   static const String arrowRight = '$btnPath/btn_arrow_right_01_nor.png';
 
   ///Icons
@@ -29,6 +29,8 @@ class AppImagePath {
   static const String fbIcon = '$assetPath/icon_fb.png';
   static const String appleIcon = '$assetPath/icon_apple.png';
 
+
+
   ///底部導覽頁icon
   static const String dynamicIcon = '$assetPath/ic_nav_home-fill.png';
   static const String exploreIcon = '$assetPath/ic_nav_search_default.png';
@@ -41,9 +43,15 @@ class AppImagePath {
   static const String onMatchIcon = '$assetPath/ic_nav_card_normal.png';
   static const String onChatIcon = '$assetPath/ic_nav_messege_normal.png';
   static const String onCreateIcon = '$assetPath/ic_nav_profile_normal.png';
+
+  ///配對頁
   static const String btnDislike = '$assetPath/ic_dislike.png';
   static const String btnLike = '$assetPath/ic_like.png';
   static const String imgLike = '$assetPath/img_like.png';
   static const String imgDislike = '$assetPath/img_dislike.png';
+
+  ///個人主頁
+  static const String hotIcon = '$assetPath/btn_ranking.png';
+  static const String linkIcon = '$assetPath/icon_link.png';
 
 }

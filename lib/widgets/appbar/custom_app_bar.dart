@@ -1,4 +1,5 @@
 import 'package:base_project/constant/theme/app_colors.dart';
+import 'package:base_project/constant/theme/app_image_path.dart';
 import 'package:base_project/constant/theme/app_text_style.dart';
 import 'package:base_project/constant/theme/ui_define.dart';
 import 'package:base_project/view_models/base_view_model.dart';
@@ -94,6 +95,34 @@ class CustomAppBar {
           )),
       title: Text(title,
           style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize36)),
+    );
+  }
+
+  static AppBar personalAppBar(BuildContext context,
+      {required String title, onClickFunction? onPressBack}) {
+    return AppBar(
+      elevation: 0,
+      automaticallyImplyLeading: false,
+      backgroundColor: Colors.transparent,
+      centerTitle: true,
+      leading: GestureDetector(
+        onTap: (){
+          if (onPressBack == null) {
+            Navigator.pop(context);
+          } else {
+            onPressBack();
+          }
+        },
+        child: Image.asset(AppImagePath.arrowLeft),
+      ),
+      title: Text(title,
+          style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize16,fontWeight: FontWeight.w600)),
+      actions: [
+        GestureDetector(
+          onTap: (){},
+          child: Image.asset(AppImagePath.hotIcon),
+        )
+      ],
     );
   }
 
