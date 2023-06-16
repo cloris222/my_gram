@@ -40,7 +40,7 @@ class _registerPreferenceChooseMainPageState extends State<registerPreferenceCho
           ],
         ),
         SizedBox(height: UIDefine.getHeight()*0.05,),
-        registerChooseGenderPage(),
+        RegisterChooseGenderPage(),
       ],
     );
   }

@@ -1,9 +1,8 @@
 import 'package:base_project/constant/theme/app_colors.dart';
 import 'package:base_project/constant/theme/app_text_style.dart';
 import 'package:base_project/constant/theme/ui_define.dart';
-import 'package:base_project/views/login/register_choose_gender_page.dart';
+import 'package:base_project/view_models/login/register_param_provider.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -35,6 +34,9 @@ class _RegisterWithEmailViewState extends ConsumerState<RegisterWithEmailView> {
   @override
   void initState() {
     viewModel = RegisterMainViewModel(ref);
+
+    Future.delayed(Duration.zero)
+        .then((value) => ref.read(registerParamProvider.notifier).init());
     super.initState();
   }
 
@@ -97,7 +99,9 @@ class _RegisterWithEmailViewState extends ConsumerState<RegisterWithEmailView> {
                 isGradient: true,
                 initEnable: true,
                 btnText: tr('getValidate'),
-                onPress: () {},
+                onPress: () {
+                  viewModel.sendVerifyCode(context);
+                },
               ):
               TextButtonWidget(
                 setMainColor: AppColors.buttonUnable,
@@ -146,11 +150,7 @@ class _RegisterWithEmailViewState extends ConsumerState<RegisterWithEmailView> {
                 isFillWidth: false,
                 isGradient: true,
                 btnText: tr('next'),
-                onPressed: (){
-                  if(viewModel.checkNotEmpty() && viewModel.checkSendRequest()){
-                    viewModel.pushPage(context,const registerChooseGenderPage());
-                  }
-                },
+                onPressed:()=> viewModel.onPressRegister(context)
               )
             ],),
         ],

@@ -7,16 +7,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../constant/theme/app_colors.dart';
 import '../../constant/theme/app_image_path.dart';
 import '../../constant/theme/ui_define.dart';
-import '../../view_models/login/register_preference_choose_provider.dart';
 import '../../widgets/button/text_button_widget.dart';
 import '../../widgets/label/custom_linear_progress.dart';
 import '../common_scaffold.dart';
 import '../main_screen.dart';
 
-class registerFinishPage extends ConsumerWidget {
+class RegisterFinishPage extends ConsumerWidget {
   final BaseViewModel viewModel = BaseViewModel();
 
-  registerFinishPage({
+  RegisterFinishPage({
     Key? key,
   }) : super(key: key);
 
@@ -94,9 +93,6 @@ class registerFinishPage extends ConsumerWidget {
                           setWidth: UIDefine.getWidth() * 0.4,
                           btnText: tr('use'),
                           onPressed: () {
-                            ref
-                                .read(registerPreferenceChooseProvider.notifier)
-                                .reset();
                             viewModel.pushAndRemoveUntil(
                                 context, const MainScreen());
                           },
@@ -120,9 +116,6 @@ class registerFinishPage extends ConsumerWidget {
                           setWidth: UIDefine.getWidth() * 0.4,
                           btnText: tr('createPersonal'),
                           onPressed: () {
-                            ref
-                                .read(registerPreferenceChooseProvider.notifier)
-                                .reset();
                             viewModel.pushAndRemoveUntil(
                                 context, const MainScreen());
                           },

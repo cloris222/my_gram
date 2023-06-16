@@ -1,4 +1,3 @@
-import 'package:base_project/constant/enum/sex_enum.dart';
 import 'package:base_project/constant/theme/app_colors.dart';
 import 'package:base_project/constant/theme/app_text_style.dart';
 import 'package:base_project/constant/theme/ui_define.dart';
@@ -8,25 +7,25 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../view_models/login/register_preference_choose_provider.dart';
+import '../../constant/enum/user_enum.dart';
+import '../../view_models/login/register_param_provider.dart';
 import '../../widgets/button/text_button_widget.dart';
 import '../../widgets/label/custom_linear_progress.dart';
 import '../common_scaffold.dart';
 
-class registerChooseSexPage extends ConsumerStatefulWidget {
-  const registerChooseSexPage({
+class RegisterChooseSexPage extends ConsumerStatefulWidget {
+  const RegisterChooseSexPage({
     Key? key,
   }) : super(key: key);
 
   @override
-  ConsumerState createState() => _registerChooseSexPageState();
+  ConsumerState createState() => _RegisterChooseSexPageState();
 }
 
-class _registerChooseSexPageState extends ConsumerState<registerChooseSexPage> {
-  List<sexType> sexList = [sexType.male, sexType.female, sexType.other];
+class _RegisterChooseSexPageState extends ConsumerState<RegisterChooseSexPage> {
+  List<GenderType> get genderList => GenderType.values;
 
-  String? get sexSection =>
-      ref.read(registerPreferenceChooseProvider).data['sexSection'];
+  String get sexSection => ref.read(registerParamProvider).preferGender;
   BaseViewModel viewModel = BaseViewModel();
 
   @override
@@ -36,35 +35,36 @@ class _registerChooseSexPageState extends ConsumerState<registerChooseSexPage> {
 
   @override
   Widget build(BuildContext context) {
-    ref.watch(registerPreferenceChooseProvider);
+    ref.watch(registerParamProvider);
     List<Widget> buttons = [];
-    for (var i = 0; i < sexList.length; i++) {
+    for (var i = 0; i < genderList.length; i++) {
+      bool isSelected = (sexSection == genderList[i].name);
       buttons.add(Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextButtonWidget(
-                isTextGradient: sexSection != sexList[i].name,
+                isTextGradient: !isSelected,
                 fontSize: UIDefine.fontSize18,
                 radius: 4,
-                isGradient: sexSection == sexList[i].name,
-                textColor: sexSection == sexList[i].name
+                isGradient: isSelected,
+                textColor: isSelected
                     ? AppColors.buttonPrimaryText
                     : AppColors.mainThemeButton,
                 isFillWidth: false,
-                isBorderStyle: sexSection != sexList[i].name,
+                isBorderStyle: !isSelected,
                 isBorderGradient: true,
                 setMainColor: AppColors.mainThemeButton,
                 setSubColor: AppColors.transparent,
                 backgroundVertical: UIDefine.getPixelWidth(8),
                 setHeight: UIDefine.getPixelWidth(44),
                 setWidth: UIDefine.getWidth() * 0.4,
-                btnText: sexList[i].name,
+                btnText: tr(genderList[i].name.toLowerCase()),
                 onPressed: () {
                   ref
-                      .read(registerPreferenceChooseProvider.notifier)
-                      .updateSexSection(sexList[i].name);
+                      .read(registerParamProvider.notifier)
+                      .setPreferGender(genderList[i].name);
                 },
               ),
             ],
@@ -82,7 +82,7 @@ class _registerChooseSexPageState extends ConsumerState<registerChooseSexPage> {
                 SizedBox(
                   height: UIDefine.getHeight() * 0.1,
                 ),
-                Container(
+                SizedBox(
                   width: UIDefine.getWidth() * 0.9,
                   child: Center(
                     child: CustomLinearProgress(
@@ -155,27 +155,15 @@ class _registerChooseSexPageState extends ConsumerState<registerChooseSexPage> {
                       setWidth: UIDefine.getWidth() * 0.4,
                       btnText: tr('next'),
                       onPressed: () {
-                        if (sexSection == '') return;
-                        viewModel.pushPage(
-                            context, const registerChooseCountryPage());
+                        if (sexSection.isNotEmpty) {
+                          viewModel.pushPage(
+                              context, const RegisterChooseCountryPage());
+                        }
                       },
                     ),
                   ],
                 )
               ],
             ));
-  }
-
-  sexType getSexType(String sex) {
-    switch (sex) {
-      case "male":
-        return sexType.male;
-      case "female":
-        return sexType.female;
-      case "other":
-        return sexType.other;
-      default:
-        return sexType.other;
-    }
   }
 }
