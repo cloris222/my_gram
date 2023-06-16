@@ -22,7 +22,7 @@ class _PairMainPageState extends State<PairMainPage> {
   @override
   void initState() {
     list.addAll(GlobalData.generatePairImageData(8));
-    Future.delayed(Duration.zero,(){
+    Future.delayed(Duration.zero, () {
       setState(() {
         showList.addAll(list);
       });
@@ -42,9 +42,10 @@ class _PairMainPageState extends State<PairMainPage> {
         showList.length,
         (index) => SwipeImageView(
               key: UniqueKey(),
-              data: showList[index],
+              data: showList[showList.length - index - 1],
               onRemove: _onRemove,
             ));
+
     /// MARK: 加入避免重複觸碰
     if (widgetList.isNotEmpty) {
       widgetList.insert(
@@ -53,7 +54,6 @@ class _PairMainPageState extends State<PairMainPage> {
               color: Colors.transparent,
               width: UIDefine.getWidth(),
               height: UIDefine.getViewHeight()));
-
     }
     return Stack(children: widgetList);
   }
@@ -61,17 +61,16 @@ class _PairMainPageState extends State<PairMainPage> {
   void _onRemove(PairImageData data, GramSetStatus status) {
     setState(() {
       if (status == GramSetStatus.like) {
-        BaseViewModel().pushPage(context, const MainScreen(type: AppNavigationBarType.typePersonal,));
+        BaseViewModel().pushPage(
+            context,
+            const MainScreen(
+              type: AppNavigationBarType.typePersonal,
+            ));
       } else {}
-      showList.removeLast();
-      if(showList.isEmpty){
-        showList.addAll(list);
-      }
-      /// MARK: 移除後，新增一筆到底部
-      // if (addPhotos.isNotEmpty) {
-      //   list.insert(0, PairImageData(images: addPhotos.removeLast()));
-      // }
 
+      /// MARK: 移除後，新增一筆到底部
+      var data = showList.removeAt(0);
+      showList.add(data);
     });
   }
 }
