@@ -3,7 +3,6 @@ import 'package:base_project/views/dynamic/dynamic_main_page.dart';
 import 'package:base_project/views/explore/explore_main_page.dart';
 import 'package:base_project/views/message/message_main_page.dart';
 import 'package:base_project/views/pair/pair_main_page.dart';
-import 'package:base_project/views/personal/personal_main_page.dart';
 import 'package:flutter/material.dart';
 
 import '../../views/personal/personal_home_page.dart';
@@ -14,7 +13,7 @@ enum AppNavigationBarType {
   typeExplore(label: "explore",icon:AppImagePath.exploreIcon,onIcon: AppImagePath.onExploreIcon, typePage:ExploreMainPage()),
   typePair(label: "pair",icon:AppImagePath.matchIcon,onIcon: AppImagePath.onMatchIcon, typePage: PairMainPage()),
   typeMessage(label: "message",icon:AppImagePath.chatIcon,onIcon: AppImagePath.onChatIcon, typePage: MessageMainPage()),
-  typePersonal(label: "personal",icon:AppImagePath.createIcon,onIcon: AppImagePath.onCreateIcon, typePage: PersonalMainPage());
+  typePersonal(label: "personal",icon:AppImagePath.createIcon,onIcon: AppImagePath.onCreateIcon, typePage: PersonalHomePage());
 
   /// 名稱
   final String label;

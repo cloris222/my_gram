@@ -52,5 +52,6 @@ class AppImagePath {
 
   ///個人主頁
   static const String hotIcon = '$assetPath/btn_ranking.png';
+  static const String linkIcon = '$assetPath/icon_link.png';
 
 }
