@@ -37,8 +37,6 @@ class _RegisterMainPageState extends State<RegisterMainPage> {
             child: Container(
                 padding: EdgeInsets.symmetric(
                     horizontal: UIDefine.getPixelWidth(7)),
-                height: UIDefine.getHeight(),
-                width: UIDefine.getWidth(),
                 child: Center(
                     child: Column(
                   children: [

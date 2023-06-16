@@ -1,9 +1,11 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:base_project/view_models/login/register_param_provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../../constant/theme/global_data.dart';
 import '../../models/validate_result_data.dart';
+import '../../views/login/register_choose_gender_page.dart';
 import '../check_texteditor_view_model.dart';
 import '../gobal_provider/global_tag_controller_provider.dart';
 
@@ -27,7 +29,7 @@ class RegisterMainViewModel extends CheckTextEditorViewModel {
   String validateEmail = '';
 
   String phoneCountry =
-  GlobalData.country.isNotEmpty ? GlobalData.country.first.country : '';
+      GlobalData.country.isNotEmpty ? GlobalData.country.first.country : '';
 
   void dispose() {
     emailController.dispose();
@@ -43,7 +45,6 @@ class RegisterMainViewModel extends CheckTextEditorViewModel {
     checkEmptyController(tagPassword, passwordController);
     checkEmptyController(tagRePassword, rePasswordController);
 
-
     return checkValidateResult(tagEmail) &&
         checkValidateResult(tagValidate) &&
         checkValidateResult(tagPassword) &&
@@ -57,9 +58,8 @@ class RegisterMainViewModel extends CheckTextEditorViewModel {
 
     ///MARK: 判斷是否有點選協議
     ref.read(globalValidateDataProvider(tagAcceptProtocol).notifier).update(
-            (state) =>
-            ValidateResultData(
-                result: ref.read(globalBoolProvider(tagAcceptProtocol))));
+        (state) => ValidateResultData(
+            result: ref.read(globalBoolProvider(tagAcceptProtocol))));
 
     return checkValidateResult(tagRePassword) &&
         checkValidateResult(tagAcceptProtocol);
@@ -74,18 +74,16 @@ class RegisterMainViewModel extends CheckTextEditorViewModel {
     if (passwordController.text.isNotEmpty &&
         rePasswordController.text.isNotEmpty) {
       ref.read(globalValidateDataProvider(tagRePassword).notifier).update(
-              (state) =>
-              ValidateResultData(
-                  result: passwordController.text
+          (state) => ValidateResultData(
+              result: passwordController.text
                       .compareTo(rePasswordController.text) ==
-                      0,
-                  message: tr('rule_confirmPW')));
+                  0,
+              message: tr('rule_confirmPW')));
     } else {
       initResult(tagPassword);
       initResult(tagRePassword);
     }
   }
-
 
   ///MARK: 註冊
   void onPressRegister(BuildContext context) {
@@ -93,52 +91,30 @@ class RegisterMainViewModel extends CheckTextEditorViewModel {
     if (!checkNotEmpty()) {
       return;
     }
-
-      // ///MARK: 如果檢查有部分錯誤時
-      // if (!checkSendRequest()) {
-      //   return;
-      // }
-    //   LoginAPI(onConnectFail: (message) => onBaseConnectFail(context, message))
-    //       .register(
-    //       account: accountController.text,
-    //       password: passwordController.text,
-    //       email: emailController.text,
-    //       nickname: nicknameController.text,
-    //       inviteCode: referralController.text,
-    //       emailVerifyCode: emailCodeController.text)
-    //       .then((value) async {
-    //     ///MARK: 註冊成功動畫
-    //     BaseViewModel().pushOpacityPage(
-    //         context,
-    //         FullAnimationPage(
-    //           limitTimer: 10,
-    //           animationPath: AppAnimationPath.registerSuccess,
-    //           isGIF: true,
-    //           nextPage: const MainPage(bRegisterFirstTime: true),
-    //           runFunction: _updateRegisterInfo,
-    //         ));
-    //   });
-    // }
-
-
-
-    ///MARK: 切換到登入頁面
-    void onPressLogin(BuildContext context) {
-      popPage(context);
+    if (!checkSendRequest()) {
+      return;
     }
+    ref.read(registerParamProvider.notifier).setAccountInfo(
+        email: emailController.text,
+        verifyCode: validateController.text,
+        password: passwordController.text);
+    pushPage(context, const RegisterChooseGenderPage());
   }
 
-  void showAcceptProtocol() {
-
+  ///MARK: 切換到登入頁面
+  void onPressLogin(BuildContext context) {
+    popPage(context);
   }
 
-  void onEmailChanged(value){
-    if(value.isNotEmpty){
-      ref.read(globalValidateDataProvider(tagEmail).notifier)
+  void showAcceptProtocol() {}
+
+  void onEmailChanged(value) {
+    if (value.isNotEmpty) {
+      ref
+          .read(globalValidateDataProvider(tagEmail).notifier)
           .update((state) => ValidateResultData());
     }
   }
-
 
   void onPasswordChanged(String value) {
     checkPassword();
