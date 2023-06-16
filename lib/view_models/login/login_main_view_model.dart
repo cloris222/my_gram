@@ -5,6 +5,7 @@ import '../../models/validate_result_data.dart';
 import '../../views/main_screen.dart';
 import '../check_texteditor_view_model.dart';
 import '../gobal_provider/global_tag_controller_provider.dart';
+import '../gobal_provider/user_info_provider.dart';
 
 class LoginMainViewModel extends CheckTextEditorViewModel {
   LoginMainViewModel(super.ref);
@@ -34,23 +35,28 @@ class LoginMainViewModel extends CheckTextEditorViewModel {
     return true;
   }
 
-  void onEmailChanged(value){
-    if(value.isNotEmpty){
-      ref.read(globalValidateDataProvider(tagEmail).notifier)
+  void onEmailChanged(value) {
+    if (value.isNotEmpty) {
+      ref
+          .read(globalValidateDataProvider(tagEmail).notifier)
           .update((state) => ValidateResultData());
     }
   }
-
 
   void onPasswordChanged(String value) {
-    if(value.isNotEmpty){
-      ref.read(globalValidateDataProvider(tagPassword).notifier)
+    if (value.isNotEmpty) {
+      ref
+          .read(globalValidateDataProvider(tagPassword).notifier)
           .update((state) => ValidateResultData());
     }
   }
 
-  void onPressLogin(BuildContext context){
-    if(!checkNotEmpty()) return;
-    pushAndRemoveUntil(context, const MainScreen());
+  void onPressLogin(BuildContext context) {
+    if (!checkNotEmpty()) return;
+    ref
+        .read(userInfoProvider.notifier)
+        .loginWithMail(
+            email: emailController.text, password: passwordController.text)
+        .then((value) => pushAndRemoveUntil(context, const MainScreen()));
   }
 }
