@@ -51,6 +51,7 @@ dependencies:
   flutter_slidable: ^3.0.0
   image_picker: ^0.8.7+4
   photo_manager: ^2.6.0
+  card_swiper: ^2.0.4
 
 dev_dependencies:
   flutter_test:

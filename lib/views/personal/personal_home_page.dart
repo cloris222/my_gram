@@ -15,6 +15,7 @@ import '../../widgets/button/text_button_widget.dart';
 import '../../widgets/label/avatar_icon_widget.dart';
 import '../../widgets/label/common_network_image.dart';
 import '../common_scaffold.dart';
+import 'package:card_swiper/card_swiper.dart';
 
 class PersonalHomePage extends ConsumerStatefulWidget {
   const PersonalHomePage({
@@ -29,6 +30,7 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
     with TickerProviderStateMixin {
   late TabController _tabController;
   int selectedIndex = 0;
+  int selectedCardIndex = 0;
 
   PersonalInfoData data = PersonalInfoData(
     avatar: GlobalData.photos[0],
@@ -78,6 +80,8 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
         'texttexttexttexttexttextvtexttexttexttextcontextcontextcontextcontextcontextcontextcontexttexttexttexttexttexttextvtexttexttexttextcontextcontextcontextcontextcontextcontextcontext',
   );
 
+
+
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this, initialIndex: 0);
@@ -104,9 +108,13 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
                       height: UIDefine.getViewHeight() * 0.7,
                       child: Stack(
                         children: [
+                          SizedBox(
+                            width: UIDefine.getWidth(),
+                            height: UIDefine.getHeight(),
+                          ),
                           CommonNetworkImage(
                             fit: BoxFit.cover,
-                            imageUrl: data.avatar,
+                            imageUrl: data.posts[selectedCardIndex].images[0],
                             width: UIDefine.getWidth(),
                             height: UIDefine.getViewHeight() * 0.7,
                           ),
@@ -133,7 +141,12 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
                                     child: Image.asset(AppImagePath.hotIcon),
                                   )
                                 ],
-                              ))
+                              )),
+                          Positioned(
+                            bottom:UIDefine.getPixelWidth(5),
+                              left: 0,
+                              right: 0,
+                              child: _buildSwiperCards())
                         ],
                       ),
                     ),
@@ -158,6 +171,86 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
                 ),
               ),
             ));
+  }
+
+  Widget _buildSwiperCards(){
+    return SizedBox(
+      height: UIDefine.getPixelWidth(130),
+      child: Swiper(
+        itemCount: data.posts.length,
+        index: selectedCardIndex,
+        onIndexChanged: (index) {
+          setState(() {
+            selectedCardIndex = index;
+          });
+        },
+        itemBuilder: (BuildContext context, int index) {
+          return Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(2)),
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  SizedBox(
+                    width: UIDefine.getPixelWidth(200),
+                    height: UIDefine.getPixelWidth(130),
+                  ),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: AnimatedContainer(
+                      duration: Duration(milliseconds: 100),
+                      curve: Curves.easeInOut,
+                      width: index==selectedCardIndex?UIDefine.getPixelWidth(200):UIDefine.getPixelWidth(130),
+                      height: index==selectedCardIndex?UIDefine.getPixelWidth(120):UIDefine.getPixelWidth(110),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: CommonNetworkImage(
+                        fit: BoxFit.cover,
+                        imageUrl: data.posts[index].images[0],
+                      ),
+                    ),
+                  ),
+                  Visibility(
+                    visible: index==selectedCardIndex,
+                    child: AnimatedContainer(
+                      width: index==selectedCardIndex?UIDefine.getPixelWidth(200):UIDefine.getPixelWidth(130),
+                      height: index==selectedCardIndex?UIDefine.getPixelWidth(120):UIDefine.getPixelWidth(110),
+                      duration: Duration(milliseconds: 100),
+                      curve: Curves.easeInOut,
+                      clipBehavior: Clip.antiAlias,
+                      margin: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(1)),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          border:Border.all(
+                              color: AppColors.mainThemeButton.getColor(),width: 2,strokeAlign: BorderSide.strokeAlignOutside)
+                      ),
+                    ),
+                  ),
+                  Visibility(
+                    visible: index!=selectedCardIndex,
+                    child: AnimatedContainer(
+                      width: index==selectedCardIndex?UIDefine.getPixelWidth(200):UIDefine.getPixelWidth(130),
+                      height: index==selectedCardIndex?UIDefine.getPixelWidth(120):UIDefine.getPixelWidth(110),
+                      duration: Duration(milliseconds: 100),
+                      curve: Curves.easeInOut,
+                      clipBehavior: Clip.antiAlias,
+                      margin: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(1)),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.black.withOpacity(0.3)
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+        viewportFraction: 0.23,
+      ),
+    );
   }
 
   Widget _buildButton() {
