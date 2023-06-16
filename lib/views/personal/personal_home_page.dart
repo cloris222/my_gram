@@ -105,7 +105,7 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
                   children: [
                     Container(
                       width: UIDefine.getWidth(),
-                      height: UIDefine.getViewHeight() * 0.7,
+                      height: UIDefine.getViewHeight() * 0.65,
                       child: Stack(
                         children: [
                           SizedBox(
@@ -116,7 +116,7 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
                             fit: BoxFit.cover,
                             imageUrl: data.posts[selectedCardIndex].images[0],
                             width: UIDefine.getWidth(),
-                            height: UIDefine.getViewHeight() * 0.7,
+                            height: UIDefine.getViewHeight() * 0.65,
                           ),
                           Positioned(
                               top: UIDefine.getHeight() * 0.07,
@@ -143,7 +143,7 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
                                 ],
                               )),
                           Positioned(
-                            bottom:UIDefine.getPixelWidth(5),
+                            bottom:UIDefine.getPixelWidth(1),
                               left: 0,
                               right: 0,
                               child: _buildSwiperCards())
@@ -174,8 +174,9 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
   }
 
   Widget _buildSwiperCards(){
-    return SizedBox(
-      height: UIDefine.getPixelWidth(130),
+    return Container(
+      height: UIDefine.getPixelWidth(150),alignment: Alignment.bottomCenter,
+      // color: Colors.blue,
       child: Swiper(
         itemCount: data.posts.length,
         index: selectedCardIndex,
@@ -188,6 +189,7 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
           return Align(
             alignment: Alignment.bottomCenter,
             child: Container(
+              // color: Colors.red,
               margin: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(2)),
               child: Stack(
                 alignment: Alignment.center,
@@ -196,59 +198,73 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
                     width: UIDefine.getPixelWidth(200),
                     height: UIDefine.getPixelWidth(130),
                   ),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: AnimatedContainer(
-                      duration: Duration(milliseconds: 100),
-                      curve: Curves.easeInOut,
-                      width: index==selectedCardIndex?UIDefine.getPixelWidth(200):UIDefine.getPixelWidth(130),
-                      height: index==selectedCardIndex?UIDefine.getPixelWidth(120):UIDefine.getPixelWidth(110),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: CommonNetworkImage(
-                        fit: BoxFit.cover,
-                        imageUrl: data.posts[index].images[0],
-                      ),
-                    ),
-                  ),
-                  Visibility(
-                    visible: index==selectedCardIndex,
-                    child: AnimatedContainer(
-                      width: index==selectedCardIndex?UIDefine.getPixelWidth(200):UIDefine.getPixelWidth(130),
-                      height: index==selectedCardIndex?UIDefine.getPixelWidth(120):UIDefine.getPixelWidth(110),
-                      duration: Duration(milliseconds: 100),
-                      curve: Curves.easeInOut,
-                      clipBehavior: Clip.antiAlias,
-                      margin: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(1)),
-                      decoration: BoxDecoration(
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    top: index==selectedCardIndex?0:UIDefine.getPixelWidth(20),
+                    bottom: 0,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Container(
+                        width: index==selectedCardIndex?UIDefine.getPixelWidth(200):UIDefine.getPixelWidth(130),
+                        height: index==selectedCardIndex?UIDefine.getPixelWidth(120):UIDefine.getPixelWidth(110),
+                        decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
-                          border:Border.all(
-                              color: AppColors.mainThemeButton.getColor(),width: 2,strokeAlign: BorderSide.strokeAlignOutside)
+                        ),
+                        child: CommonNetworkImage(
+                          fit: BoxFit.cover,
+                          imageUrl: data.posts[index].images[0],
+                        ),
                       ),
                     ),
                   ),
-                  Visibility(
-                    visible: index!=selectedCardIndex,
-                    child: AnimatedContainer(
-                      width: index==selectedCardIndex?UIDefine.getPixelWidth(200):UIDefine.getPixelWidth(130),
-                      height: index==selectedCardIndex?UIDefine.getPixelWidth(120):UIDefine.getPixelWidth(110),
-                      duration: Duration(milliseconds: 100),
-                      curve: Curves.easeInOut,
-                      clipBehavior: Clip.antiAlias,
-                      margin: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(1)),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.black.withOpacity(0.3)
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    top: index==selectedCardIndex?0:UIDefine.getPixelWidth(20),
+                    bottom: 0,
+                    child: Visibility(
+                      visible: index==selectedCardIndex,
+                      child: Container(
+                        width: index==selectedCardIndex?UIDefine.getPixelWidth(200):UIDefine.getPixelWidth(130),
+                        height: index==selectedCardIndex?UIDefine.getPixelWidth(120):UIDefine.getPixelWidth(110),
+                        clipBehavior: Clip.antiAlias,
+                        margin: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(1)),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border:Border.all(
+                                color: AppColors.mainThemeButton.getColor(),width: 2,strokeAlign: BorderSide.strokeAlignOutside)
+                        ),
                       ),
                     ),
                   ),
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    top: index==selectedCardIndex?0:UIDefine.getPixelWidth(20),
+                    bottom: 0,
+                    child: Visibility(
+                      visible: index!=selectedCardIndex,
+                      child: Container(
+                        width: index==selectedCardIndex?UIDefine.getPixelWidth(200):UIDefine.getPixelWidth(130),
+                        height: index==selectedCardIndex?UIDefine.getPixelWidth(120):UIDefine.getPixelWidth(110),
+                        clipBehavior: Clip.antiAlias,
+                        margin: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(1)),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.black.withOpacity(0.3)
+                        ),
+                      ),
+                    ),
+                  ),
+                  // Positioned(child: Center(child: Text("$index"),)),
                 ],
               ),
             ),
           );
         },
         viewportFraction: 0.23,
+        // scale: 0.5,
       ),
     );
   }
