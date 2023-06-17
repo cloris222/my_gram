@@ -7,6 +7,7 @@ import '../../../utils/rsa_util.dart';
 import '../../constant/theme/global_data.dart';
 import '../../view_models/base_view_model.dart';
 import '../../view_models/call_back_function.dart';
+import 'data/api_secret_key.dart';
 import 'http_exceptions.dart';
 import 'http_setting.dart';
 import 'data/api_response.dart';
@@ -117,6 +118,20 @@ class HttpManager {
 
   double getDouble(json, String key) {
     return json[key] is int ? (json[key] as int).toDouble() : json[key];
+  }
+
+  /// Api Secret Key:-----------------------------------------------------------
+  Future<ApiSecretKey> getSecretKey() async {
+    var response = await get("/apiSecret");
+    return ApiSecretKey.fromJson(response.data);
+  }
+
+  Future<String> encodeContext(String secretContext) async {
+    var key = await getSecretKey();
+    key.encodeContext =
+        await RSAEncode.encodeOnlyString(secretContext, key: key.publicKey);
+    addDioHeader({"api-secret-key": key.apiSecretKey});
+    return key.encodeContext;
   }
 
   // Get:-----------------------------------------------------------------------

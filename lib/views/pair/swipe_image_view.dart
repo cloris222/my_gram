@@ -1,4 +1,5 @@
-import 'package:base_project/constant/enum/style_enum.dart';
+import 'dart:math';
+
 import 'package:base_project/constant/theme/app_style.dart';
 import 'package:base_project/constant/theme/app_text_style.dart';
 import 'package:base_project/constant/theme/ui_define.dart';
@@ -6,8 +7,9 @@ import 'package:flutter/material.dart';
 
 import '../../constant/enum/pair_enum.dart';
 import '../../constant/theme/app_colors.dart';
+import '../../constant/theme/app_gradient_colors.dart';
+import '../../constant/theme/app_image_path.dart';
 import '../../models/http/data/pair_image_data.dart';
-import 'dart:math' as math;
 
 import '../../widgets/label/common_network_image.dart';
 
@@ -16,7 +18,7 @@ class SwipeImageView extends StatefulWidget {
     Key? key,
     required this.data,
     required this.onRemove,
-    this.toggleRate = 0.25,
+    this.toggleRate = 0.1,
   }) : super(key: key);
   final PairImageData data;
   final double toggleRate;
@@ -26,14 +28,12 @@ class SwipeImageView extends StatefulWidget {
   State<SwipeImageView> createState() => _SwipeImageViewState();
 }
 
-class _SwipeImageViewState extends State<SwipeImageView> {
+class _SwipeImageViewState extends State<SwipeImageView>
+    with SingleTickerProviderStateMixin {
   PairImageData get data => widget.data;
 
   /// 圖片狀態
   GramSetStatus status = GramSetStatus.none;
-
-  ///圖片滑動用
-  double _left = 0.0;
 
   ///觸發時，避免連續點擊按鈕
   bool isToggle = false;
@@ -41,28 +41,60 @@ class _SwipeImageViewState extends State<SwipeImageView> {
   ///切換圖片用
   int currentIndex = 0;
 
+  ///圖片滑動用
+  double _left = 0;
+  double _top = 0;
+  double _total = 0;
+  double _angle = 0;
+  final double _maxAngle = 30 * (pi / 180);
+  double _scale = 0.9;
+  double _difference = 40;
+  bool _tapOnTop = false;
+
+  late AnimationController _animationController;
+  late Animation<double> _leftAnimation;
+  late Animation<double> _topAnimation;
+  late Animation<double> _scaleAnimation;
+  late Animation<double> _differenceAnimation;
+
+  @override
+  void initState() {
+    _animationController = AnimationController(
+        duration: const Duration(milliseconds: 200), vsync: this);
+    _animationController.addListener(_onAnimationListener);
+    _animationController.addStatusListener(_onAnimationStatusListener);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _animationController.removeListener(_onAnimationListener);
+    _animationController.removeStatusListener(_onAnimationStatusListener);
+    _animationController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        SizedBox(width: UIDefine.getWidth(), height: UIDefine.getViewHeight()),
+        SizedBox(
+          width: UIDefine.getWidth(),
+          height: UIDefine.getViewHeight(),
+        ),
         Positioned(
-          left: 0,
-          right: 0,
-          top: 0,
-          bottom: 0,
+          left: _left,
+          top: _top,
           child: Transform.rotate(
-            alignment: _left > 0 ? Alignment.topRight : Alignment.topLeft,
-            angle: math.pi * _left / UIDefine.getWidth() / -2,
+            angle: _angle,
             child: GestureDetector(
-              /// 判斷左右滑動，並更新畫面
-              onHorizontalDragUpdate: _onHorizontalUpdate,
-
-              /// 判斷滑動結束時，應觸發的動作
-              onHorizontalDragEnd: _onHorizontalEnd,
-
               /// 判斷觸碰點，是否要切換上下分頁
               onTapUp: _onTapUp,
+
+              /// 監聽滑動
+              onPanStart: _onPanStart,
+              onPanUpdate: _onPanUpdate,
+              onPanEnd: _onPanEnd,
 
               child: Container(
                 margin: EdgeInsets.all(UIDefine.getPixelWidth(5)),
@@ -78,28 +110,40 @@ class _SwipeImageViewState extends State<SwipeImageView> {
                           fit: BoxFit.cover),
 
                       Positioned(
-                          left: UIDefine.getPixelWidth(5),
-                          right: UIDefine.getPixelWidth(5),
-                          top: UIDefine.getPixelWidth(5),
+                          left: UIDefine.getPixelWidth(25),
+                          right: UIDefine.getPixelWidth(25),
+                          top: UIDefine.getPixelWidth(40),
                           child: _buildImageIndex()),
+
+                      ///漸層遮罩
+                      Positioned(
+                        top: UIDefine.getViewHeight() * 0.6,
+                        child: Container(
+                          width: UIDefine.getWidth(),
+                          height: UIDefine.getViewHeight() * 0.4,
+                          decoration: const BoxDecoration(
+                              gradient: LinearGradient(
+                                  begin: Alignment(0.0, -0.9),
+                                  end: Alignment(0.0, 0.1),
+                                  colors: [Colors.transparent, Colors.black])),
+                        ),
+                      ),
 
                       ///不喜歡的icon顯示
                       Positioned(
-                          top: UIDefine.getPixelWidth(15),
-                          right: 0,
+                          top: UIDefine.getPixelWidth(100),
+                          right: UIDefine.getPixelWidth(15),
                           child: Visibility(
                               visible: status == GramSetStatus.disLike,
-                              child: Icon(Icons.close,
-                                  size: UIDefine.getPixelWidth(30)))),
+                              child: Image.asset(AppImagePath.imgDislike))),
 
                       ///喜歡的icon顯示
                       Positioned(
-                          top: UIDefine.getPixelWidth(15),
-                          left: 0,
+                          top: UIDefine.getPixelWidth(100),
+                          left: UIDefine.getPixelWidth(15),
                           child: Visibility(
                               visible: status == GramSetStatus.like,
-                              child: Icon(Icons.favorite,
-                                  size: UIDefine.getPixelWidth(30)))),
+                              child: Image.asset(AppImagePath.imgLike))),
 
                       ///自介
                       Positioned(
@@ -114,13 +158,13 @@ class _SwipeImageViewState extends State<SwipeImageView> {
                                   style: AppTextStyle.getBaseStyle(
                                     fontSize: UIDefine.fontSize36,
                                     fontWeight: FontWeight.w700,
-                                    shadowsType: AppTextShadows.common,
+                                    // shadowsType: AppTextShadows.common,
                                   )),
                               Text(data.context,
                                   style: AppTextStyle.getBaseStyle(
                                     fontSize: UIDefine.fontSize18,
                                     fontWeight: FontWeight.w400,
-                                    shadowsType: AppTextShadows.common,
+                                    // shadowsType: AppTextShadows.common,
                                   )),
                             ],
                           )),
@@ -134,42 +178,62 @@ class _SwipeImageViewState extends State<SwipeImageView> {
 
         ///下方按鈕
         Positioned(
-            bottom: UIDefine.getPixelWidth(15),
+            bottom: 0,
             right: UIDefine.getPixelWidth(20),
             left: UIDefine.getPixelWidth(20),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Expanded(
-                  child: GestureDetector(
+                GestureDetector(
                     onTap: () => _buttonAnimate(false),
-                    child: Container(
-                      decoration: AppStyle().styleColorBorderBackground(
-                          color: AppColors.buttonDisLike.getColor(),
-                          radius: 10,
-                          backgroundColor: Colors.transparent,
-                          borderLine: 4),
-                      padding: EdgeInsets.all(UIDefine.getPixelWidth(15)),
-                      child:  Icon(Icons.close,
-                          color: AppColors.buttonDisLike.getColor()),
-                    ),
-                  ),
-                ),
-                SizedBox(width: UIDefine.getPixelWidth(15)),
-                Expanded(
-                  child: GestureDetector(
+                    child: status == GramSetStatus.disLike
+                        ? Container(
+                            width: UIDefine.getPixelWidth(50),
+                            height: UIDefine.getPixelWidth(50),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(50),
+                                color: AppColors.buttonDisLike
+                                    .getColor()
+                                    .withOpacity(0.8)),
+                            child: Image.asset(AppImagePath.btnDislike),
+                          )
+                        : Container(
+                            width: UIDefine.getPixelWidth(50),
+                            height: UIDefine.getPixelWidth(50),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(50),
+                                color: AppColors.buttonCommon
+                                    .getColor()
+                                    .withOpacity(0.5)),
+                            child: Image.asset(AppImagePath.btnDislike),
+                          )),
+                SizedBox(width: UIDefine.getPixelWidth(40)),
+                GestureDetector(
                     onTap: () => _buttonAnimate(true),
-                    child: Container(
-                      decoration: AppStyle().styleColorBorderBackground(
-                          color: AppColors.buttonLike.getColor(),
-                          radius: 10,
-                          backgroundColor: Colors.transparent,
-                          borderLine: 4),
-                      padding: EdgeInsets.all(UIDefine.getPixelWidth(15)),
-                      child:  Icon(Icons.favorite,
-                          color: AppColors.buttonLike.getColor()),
-                    ),
-                  ),
-                ),
+                    child: status == GramSetStatus.like
+                        ? Container(
+                            width: UIDefine.getPixelWidth(50),
+                            height: UIDefine.getPixelWidth(50),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(50),
+                                gradient: LinearGradient(
+                                    colors: AppGradientColors.gradientColors
+                                        .getColors())),
+                            child: Image.asset(
+                              AppImagePath.btnLike,
+                              color: Colors.white,
+                            ),
+                          )
+                        : Container(
+                            width: UIDefine.getPixelWidth(50),
+                            height: UIDefine.getPixelWidth(50),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(50),
+                                color: AppColors.buttonCommon
+                                    .getColor()
+                                    .withOpacity(0.5)),
+                            child: Image.asset(AppImagePath.btnLike),
+                          )),
               ],
             ))
       ],
@@ -182,13 +246,13 @@ class _SwipeImageViewState extends State<SwipeImageView> {
         bool isCurrent = currentIndex == index;
         return Expanded(
             child: Container(
-          height: UIDefine.getPixelWidth(5),
+          height: UIDefine.getPixelWidth(2),
           decoration: AppStyle().styleColorsRadiusBackground(
               radius: 1,
               color: isCurrent
                   ? Colors.white.withOpacity(0.6)
                   : const Color(0xFFE2E2E2).withOpacity(0.13)),
-          margin: const EdgeInsets.symmetric(horizontal: 0.5, vertical: 5),
+          margin: const EdgeInsets.symmetric(horizontal: 1, vertical: 5),
         ));
       }),
     );
@@ -209,26 +273,20 @@ class _SwipeImageViewState extends State<SwipeImageView> {
     }
   }
 
-  void _onHorizontalUpdate(DragUpdateDetails details) {
-    setState(() {
-      _left += details.delta.dx;
-      status = checkStatus();
-    });
-  }
-
+  /// 檢查滑動停止的動作
   void _onHorizontalEnd(DragEndDetails details) {
     switch (status) {
       case GramSetStatus.none:
         {
-          setState(() {
-            _left = 0;
-          });
+          ///MARK:復歸
+          _onBack();
         }
         break;
       case GramSetStatus.like:
       case GramSetStatus.disLike:
         {
-          widget.onRemove(data, status);
+          /// 滑動移出頁面
+          _buttonAnimate(status == GramSetStatus.like);
         }
         break;
     }
@@ -238,16 +296,34 @@ class _SwipeImageViewState extends State<SwipeImageView> {
     if (!isToggle) {
       isToggle = true;
       status = isLike ? GramSetStatus.like : GramSetStatus.disLike;
-      int count = (widget.toggleRate ~/ 0.01);
-      while (count >= 0) {
-        await Future.delayed(const Duration(milliseconds: 2));
-        setState(() {
-          _left += (UIDefine.getWidth() * 0.01 * (isLike ? 1 : -1));
-        });
-        count -= 1;
-      }
-      widget.onRemove(data, status);
+
+      _leftAnimation = Tween<double>(
+        begin: _left,
+        end: isLike
+            ? MediaQuery.of(context).size.width
+            : -MediaQuery.of(context).size.width,
+      ).animate(_animationController);
+      _topAnimation = Tween<double>(
+        begin: _top,
+        end: MediaQuery.of(context).size.width * 0.1,
+      ).animate(_animationController);
+      _scaleAnimation = Tween<double>(
+        begin: _scale,
+        end: 1.0,
+      ).animate(_animationController);
+      _differenceAnimation = Tween<double>(
+        begin: _difference,
+        end: 0,
+      ).animate(_animationController);
+      _animationController.forward();
     }
+  }
+
+  void _onPanStart(DragStartDetails tapInfo) {
+    RenderBox renderBox = context.findRenderObject() as RenderBox;
+    Offset position = renderBox.globalToLocal(tapInfo.globalPosition);
+
+    if (position.dy < renderBox.size.height / 2) _tapOnTop = true;
   }
 
   void _onTapUp(TapUpDetails details) {
@@ -263,6 +339,100 @@ class _SwipeImageViewState extends State<SwipeImageView> {
       if (currentIndex - 1 >= 0) {
         setState(() {
           currentIndex -= 1;
+        });
+      }
+    }
+  }
+
+  void _onPanUpdate(DragUpdateDetails tapInfo) {
+    setState(() {
+      _left += tapInfo.delta.dx;
+      _top += tapInfo.delta.dy;
+      _total = _left + _top;
+      _calculateAngle();
+      _calculateScale();
+      _calculateDifference();
+      status = checkStatus();
+    });
+  }
+
+  void _onPanEnd(DragEndDetails tapInfo) {
+    _tapOnTop = false;
+    _onEndAnimation(tapInfo);
+  }
+
+  void _calculateAngle() {
+    if (_angle <= _maxAngle && _angle >= -_maxAngle) {
+      (_tapOnTop == true)
+          ? _angle = (_maxAngle / 100) * (_left / 10)
+          : _angle = (_maxAngle / 100) * (_left / 10) * -1;
+    }
+  }
+
+  void _calculateScale() {
+    if (_scale <= 1.0 && _scale >= 0.9) {
+      _scale =
+          (_total > 0) ? 0.9 + (_total / 5000) : 0.9 + -1 * (_total / 5000);
+    }
+  }
+
+  void _calculateDifference() {
+    if (_difference >= 0 && _difference <= _difference) {
+      _difference = (_total > 0) ? 40 - (_total / 10) : 40 + (_total / 10);
+    }
+  }
+
+  void _onEndAnimation(DragEndDetails tapInfo) {
+    _onHorizontalEnd(tapInfo);
+  }
+
+  //moves the card back to starting position
+  void _onBack() {
+    setState(() {
+      _leftAnimation = Tween<double>(
+        begin: _left,
+        end: 0,
+      ).animate(_animationController);
+      _topAnimation = Tween<double>(
+        begin: _top,
+        end: 0,
+      ).animate(_animationController);
+      _scaleAnimation = Tween<double>(
+        begin: _scale,
+        end: 0.9,
+      ).animate(_animationController);
+      _differenceAnimation = Tween<double>(
+        begin: _difference,
+        end: 40,
+      ).animate(_animationController);
+      _animationController.forward();
+    });
+  }
+
+  void _onAnimationListener() {
+    if (_animationController.status == AnimationStatus.forward) {
+      setState(() {
+        _left = _leftAnimation.value;
+        _top = _topAnimation.value;
+        _scale = _scaleAnimation.value;
+        _difference = _differenceAnimation.value;
+      });
+    }
+  }
+
+  void _onAnimationStatusListener(AnimationStatus status) {
+    if (status == AnimationStatus.completed) {
+      if (this.status != GramSetStatus.none) {
+        widget.onRemove(data, this.status);
+      } else {
+        _animationController.reset();
+        setState(() {
+          _left = 0;
+          _top = 0;
+          _total = 0;
+          _angle = 0;
+          _scale = 0.9;
+          _difference = 40;
         });
       }
     }

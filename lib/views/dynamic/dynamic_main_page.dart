@@ -1,122 +1,168 @@
 import 'package:base_project/constant/enum/border_style_type.dart';
 import 'package:base_project/constant/theme/app_colors.dart';
+import 'package:base_project/constant/theme/app_image_path.dart';
 import 'package:base_project/constant/theme/app_text_style.dart';
 import 'package:base_project/constant/theme/ui_define.dart';
 import 'package:base_project/models/http/data/dynamic_info_data.dart';
 import 'package:base_project/view_models/base_view_model.dart';
+import 'package:base_project/views/common_scaffold.dart';
 import 'package:base_project/widgets/label/common_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../constant/theme/global_data.dart';
 import '../../models/http/data/store_info_data.dart';
+import '../../view_models/dynmaic/is_rebecca_provider.dart';
 import '../../widgets/dialog/common_custom_dialog.dart';
 import 'dynamic_info_view.dart';
 import 'dynamic_post_comment_page.dart';
 
-class DynamicMainPage extends StatefulWidget {
-  const DynamicMainPage({Key? key}) : super(key: key);
+class DynamicMainPage extends ConsumerStatefulWidget {
+  const DynamicMainPage({
+    Key? key,
+  }) : super(key: key);
 
   @override
-  State<DynamicMainPage> createState() => _DynamicMainPageState();
+  ConsumerState createState() => _DynamicMainPageState();
 }
 
-class _DynamicMainPageState extends State<DynamicMainPage> {
+class _DynamicMainPageState extends ConsumerState<DynamicMainPage> {
   final List<DynamicInfoData> list = [];
+  List<DynamicInfoData> isRebeccaList = GlobalData.generateIsRebeccaData(8);
+  List<DynamicInfoData> notRebeccaList = GlobalData.generateNotRebeccaData(8);
   int clickLikeTimes = 1;
   bool bDownloading = true;
   BaseViewModel viewModel = BaseViewModel();
   List<StoreInfoData> stores = GlobalData.generateStoreData(10);
   TextEditingController controller = TextEditingController();
+  bool get isRebecca => ref.read(isRebeccaProvider);
 
 
   @override
   void initState() {
-    list.add(DynamicInfoData(
-        avatar: GlobalData.photos[0],
-        name: 'name',
-        time: '2023-05-02 12:00',
-        context: 'contextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontext'
-            'contextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontext',
-        images: GlobalData.photos2,
-        likes: 1000,
-        comments: 20000));
-    list.add(DynamicInfoData(
-        avatar: GlobalData.photos[1],
-        name: 'name222',
-        time: '2023-04-01',
-        context: 'contextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontext'
-            'contextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontext',
-        images: GlobalData.photos2,
-        likes: 30000,
-        comments: 400));
-    list.add(DynamicInfoData(
-        avatar: GlobalData.photos[2],
-        name: 'name333',
-        time: '2023-04-30',
-        context: 'contextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontext'
-            'contextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontext',
-        images: GlobalData.photos2,
-        likes: 500,
-        comments: 20000));
+    Future.delayed(Duration.zero,(){
+      setState(() {
+        if(isRebecca == true){
+          list.addAll(isRebeccaList);
+        }else{
+          list.addAll(notRebeccaList);
+        }
+      });
+    });
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-   return NotificationListener<ScrollEndNotification>(
-     onNotification: (scrollEnd){
-       final metrics = scrollEnd.metrics;
-       if (metrics.atEdge) {
-         bool isTop = metrics.pixels == 0;
-         if (isTop) {
-           GlobalData.printLog('At the top');
-         } else {
-           GlobalData.printLog('At the bottom');
-           if (!bDownloading) {
-             // 防止短時間載入過多造成OOM
-             bDownloading = true;
-             _updateView();
-           }
-         }
-       }
-       return true;
-     },
-       child: SingleChildScrollView(
-           child: Container(
-             width: UIDefine.getWidth(),
-             child: ListView.builder(
-                 shrinkWrap: true,
-                 physics: const NeverScrollableScrollPhysics(),
-                 itemCount: list.length,
-                 itemBuilder: (context,index){
-                   if(index == list.length-1){
-                     bDownloading = false;
-                   }
-                   return DynamicInfoView(
-                     data: list[index],
-                     index:index,
-                     onComment: (index){
-                       _onComment(index);
-                     },
-                     onFollowing: (index){
-                       _onFollowing(index);
-                     },
-                     onLike: (index){
-                       _onlike(index);
-                     },
-                     onStore: (index){
-                       _showCustomModalBottomSheet(context,stores);
-                     },
-                     onShare: (index){
-                       _onShare().then((value) => setState((){}));
-                     },
-                     showFullContext: (index){
-                       _showMore(index);
-                     },
-                   );
-                 })
+    ref.watch(isRebeccaProvider);
+    print('isRebecca=${isRebecca}');
+   return CommonScaffold(
+       body: (isDark) => Container(
+         decoration: BoxDecoration(
+           gradient: LinearGradient(
+             colors: [AppColors.personalDarkBackground.getColor(),AppColors.personalLightBackground.getColor()]
            )
+         ),
+         child: NotificationListener<ScrollEndNotification>(
+             onNotification: (scrollEnd){
+               final metrics = scrollEnd.metrics;
+               if (metrics.atEdge) {
+                 bool isTop = metrics.pixels == 0;
+                 if (isTop) {
+                   GlobalData.printLog('At the top');
+                 } else {
+                   GlobalData.printLog('At the bottom');
+                   if (!bDownloading) {
+                     // 防止短時間載入過多造成OOM
+                     bDownloading = true;
+                     _updateView();
+                   }
+                 }
+               }
+               return true;
+             },
+             child: CustomScrollView(
+               slivers: [
+                 SliverAppBar(
+                   automaticallyImplyLeading: false,
+                   snap: false,
+                   floating: true,
+                   pinned: false,
+                   expandedHeight: UIDefine.getPixelWidth(60),
+                   backgroundColor: Colors.transparent,
+                   flexibleSpace: FlexibleSpaceBar(
+                     background: Container(
+                       decoration: BoxDecoration(
+                         borderRadius: const BorderRadius.vertical(
+                           bottom: Radius.circular(10)
+                         ),
+                         gradient: LinearGradient(
+                           colors: [AppColors.personalDarkBackground.getColor(),AppColors.personalLightBackground.getColor()], // 渐变颜色列表
+                         ),
+                       ),
+                     ),
+                   ),
+                   title: Container(
+                     width: UIDefine.getWidth(),
+                     child: Row(
+                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                       children: [
+                         Image.asset(AppImagePath.logoTextImage),
+                         Container(
+                           width: UIDefine.getPixelWidth(35),
+                           height: UIDefine.getPixelWidth(35),
+                           decoration: BoxDecoration(
+                             borderRadius: BorderRadius.circular(50),
+                             color: AppColors.buttonCommon.getColor().withOpacity(0.5)
+                           ),
+                           child: Image.asset(AppImagePath.shopIcon),
+                         )
+                       ],
+                     ),
+                   ),
+                 ),
+                 SliverToBoxAdapter(
+                   child: ListView.builder(
+                       shrinkWrap: true,
+                       physics: const NeverScrollableScrollPhysics(),
+                       itemCount: list.length,
+                       padding: EdgeInsets.zero,
+                       itemBuilder: (context,index){
+                         if(index == list.length-1){
+                           bDownloading = false;
+                         }
+                         return DynamicInfoView(
+                           data: list[index],
+                           index:index,
+                           onComment: (index){
+                             _onComment(index);
+                           },
+                           onFollowing: (index){
+                             _onFollowing(index);
+                           },
+                           onLike: (index){
+                             _onlike(index);
+                           },
+                           onStore: (index){
+                             _showCustomModalBottomSheet(context,stores);
+                           },
+                           onShare: (index){
+                             _onShare().then((value) => setState((){}));
+                           },
+                           showFullContext: (index){
+                             _showMore(index);
+                           },
+                           showLessContext: (index){
+                             _showLess(index);
+                           },
+                         );
+                       }),
+                 )
+               ],
+             )),
        ));
+
   }
 
   _onComment(int index){
@@ -147,6 +193,12 @@ class _DynamicMainPageState extends State<DynamicMainPage> {
    void _showMore(int index){
     setState(() {
       list[index].isShowMore = true;
+    });
+  }
+
+  void _showLess(int index){
+    setState(() {
+      list[index].isShowMore = false;
     });
   }
 

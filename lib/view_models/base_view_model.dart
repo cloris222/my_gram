@@ -67,6 +67,23 @@ class BaseViewModel {
   Future<void> pushPage(BuildContext context, Widget page) async {
     await Navigator.push(
         context, MaterialPageRoute(builder: (context) => page));
+
+    // /// 由下而上的推頁方式
+    // await Navigator.of(context).push( PageRouteBuilder(
+    //   pageBuilder: (context, animation, secondaryAnimation) => page,
+    //   transitionsBuilder: (context, animation, secondaryAnimation, child) {
+    //     const begin = Offset(0.0, 1.0);
+    //     const end = Offset.zero;
+    //     const curve = Curves.ease;
+    //
+    //     var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+    //
+    //     return SlideTransition(
+    //       position: animation.drive(tween),
+    //       child: child,
+    //     );
+    //   },
+    // ));
   }
 
   ///MARK: 取代當前頁面
