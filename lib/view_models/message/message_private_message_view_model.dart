@@ -45,7 +45,7 @@ class MessagePrivateGroupMessageViewModel extends BaseViewModel {
       }
     }
     roomId = 1;
-    sendMessage(bShowReply, bImage, sContent, roomId, true, replyByMessageData, _chatroomDetailData);
+    sendMessage(bShowReply, bImage, sContent, roomId, false, replyByMessageData, _chatroomDetailData);
     // 清掉
     replyByMessageData = ChatHistorySQLite();
     textController.clear(); // 發送完清除剛輸入的
@@ -54,7 +54,7 @@ class MessagePrivateGroupMessageViewModel extends BaseViewModel {
   void sendMessage(bool bShowReply, bool bImage, String sContent, int theRoom, bool bGroup,
       ChatHistorySQLite replyByMessageData, MessageChatroomDetailResponseData userInfoData) {
     roomId = theRoom;
-    String sAction = 'message';
+    String sAction = 'MSG';
     String sTime = DateFormatUtil().getDateTimeStringNow();
     String sType = 'text';
     if (bShowReply) {
@@ -90,9 +90,9 @@ class MessagePrivateGroupMessageViewModel extends BaseViewModel {
 
     ChatData chatData = ChatData(
       roomId: roomId,
-      receiverAcatarId: receiverAcatarId,
-      msgType: '',
-      content: content,
+      receiverAvatarId: receiverAcatarId,
+      msgType: 'TEXT',
+      content: sContent,
       // otherSideMemberId: userInfoData.chatMemberId,
       // content: content,
       // contentId: replyByMessageData.contentId, updateInfo: UpdateInfo() // ChatData

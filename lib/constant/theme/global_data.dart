@@ -69,7 +69,6 @@ class GlobalData {
     "https://s3-alpha-sig.figma.com/img/fb03/175c/468672bb0a284c6967e1ef1c9f72b293?Expires=1687737600&Signature=Bnc3cWCN~wuar3hti9iA-PS~uOdzjWvZX59mw47XyEC5Z8aBfzzBTc3ST7DOP29B1RwOJoFFKOk1TIlv7wqGUKP9KGN5Kjg5P-yLrXZjp72Rpb1-rw9yzQoXBcukRfIBkomvzRbJGU7CC3tN0durQ39ljMPxopVT-rtAzHdk4vhHXLvb0NKRV8cDs7GLDw1AShaTcdrJv4GP4nX-qU8Fp0CbVX-IkJM-dbcyXswUWjqnyZOhH6d4-719suFUK~oTon3wqjyBqMAxF0Oob-y7n2E2XLVFN8xbMWidleJ3aW6wt2BJukpCQiusN1NWrZ3sussHOBEbX1iPmWIkISAnZQ__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4",
   ];
 
-
   static List<PostCommentData> generateCommentData(int page, int size,
       {required bool isMain, String replyId = ""}) {
     return List<PostCommentData>.generate(size, (index) {

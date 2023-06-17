@@ -18,26 +18,27 @@ class WsSendMessageData {
   int timestamp;
 
   factory WsSendMessageData.fromJson(Map<String, dynamic> json) => WsSendMessageData(
-    topic: json["topic"] ?? '',
-    action: json["action"] ?? '',
-    chatData: ChatData.fromJson(json["chatData"]),
-    timestamp: json["timestamp"] ?? '',
-  );
+        topic: json["topic"] ?? '',
+        action: json["action"] ?? '',
+        chatData: ChatData.fromJson(json["chatData"]),
+        timestamp: json["timestamp"] ?? '',
+      );
 
   Map<String, dynamic> toJson() => {
-    "topic": topic,
-    "action": action,
-    "chatData": chatData.toJson(),
-    "timestamp": timestamp,
-  };
+        "topic": topic,
+        "action": action,
+        "chatData": chatData.toJson(),
+        "timestamp": timestamp,
+      };
 }
 
 class ChatData {
   ChatData({
     this.roomId = 0,
-    this.receiverAcatarId = 0,
+    this.receiverAvatarId = 0,
     this.msgType = '',
-    required this.content,
+    this.content = '',
+    this.contentId = '',
 
     // this.otherSideMemberId = '',
     // this.chatMemberId = '',
@@ -57,9 +58,10 @@ class ChatData {
   });
 
   int roomId;
-  int receiverAcatarId;
+  int receiverAvatarId;
   String msgType;
-  Content content;
+  String content;
+  String contentId;
 
   // String emoji;
   // String otherSideMemberId;
@@ -78,52 +80,52 @@ class ChatData {
   // AgoraInfo? agoraInfo;
 
   factory ChatData.fromJson(Map<String, dynamic> json) => ChatData(
-    roomId: json["roomId"] ?? '',
-    receiverAcatarId: json["receiverAcatarId"]??'',
-    msgType: json["msgType"]??'',
-    content: json["content"]??'',
-
-    // emoji: json["emoji"] ?? '',
-    // otherSideMemberId: json["otherSideMemberId"] ?? '',
-    // chatMemberId: json["otherSideMemberId"] ?? '',
-    // callAction: json["callAction"] ?? '',
-    // callStatus: json["callStatus"] ?? '',
-    // callDuration: json["callDuration"] ?? '',
-    // callId: json["callId"] ?? '',
-    // readAllTime: json["readAllTime"] ?? '',
-    // content: json["content"] != null ? Content.fromJson(json["content"]) : Content(),
-    // stickerReply: json["stickerReply"] != null
-    //     ? List<StickerReply>.from(json["stickerReply"].map((x) => StickerReply.fromJson(x)))
-    //     : [],
-    // read: json["read"] != null ? List<String>.from(json["read"].map((x) => x)) : [],
-    // readRooms: json["readRooms"] != null ? List<String>.from(json["readRooms"].map((x) => x)) : [],
-    // contentId: json["contentId"] ?? '',
-    // updateInfo: json["updateInfo"] != null ? UpdateInfo.fromJson(json["updateInfo"]) : UpdateInfo(),
-    // agoraInfo: json["agoraInfo"] != null? AgoraInfo.fromJson(json["agoraInfo"]) : AgoraInfo(),
-  );
+        roomId: json["roomId"] ?? '',
+        receiverAvatarId: json["receiverAvatarId"] ?? '',
+        msgType: json["msgType"] ?? '',
+        content: json["content"] ?? '',
+        contentId: json["contentId"]??'',
+        // emoji: json["emoji"] ?? '',
+        // otherSideMemberId: json["otherSideMemberId"] ?? '',
+        // chatMemberId: json["otherSideMemberId"] ?? '',
+        // callAction: json["callAction"] ?? '',
+        // callStatus: json["callStatus"] ?? '',
+        // callDuration: json["callDuration"] ?? '',
+        // callId: json["callId"] ?? '',
+        // readAllTime: json["readAllTime"] ?? '',
+        // content: json["content"] != null ? Content.fromJson(json["content"]) : Content(),
+        // stickerReply: json["stickerReply"] != null
+        //     ? List<StickerReply>.from(json["stickerReply"].map((x) => StickerReply.fromJson(x)))
+        //     : [],
+        // read: json["read"] != null ? List<String>.from(json["read"].map((x) => x)) : [],
+        // readRooms: json["readRooms"] != null ? List<String>.from(json["readRooms"].map((x) => x)) : [],
+        // contentId: json["contentId"] ?? '',
+        // updateInfo: json["updateInfo"] != null ? UpdateInfo.fromJson(json["updateInfo"]) : UpdateInfo(),
+        // agoraInfo: json["agoraInfo"] != null? AgoraInfo.fromJson(json["agoraInfo"]) : AgoraInfo(),
+      );
 
   Map<String, dynamic> toJson() => {
-    "roomId": roomId,
-    "receiverAcatarId": receiverAcatarId,
-    "msgType": msgType,
-    "content": content,
-    
-    // "emoji": emoji,
-    // "otherSideMemberId": otherSideMemberId,
-    // "chatMemberId": chatMemberId,
-    // "callAction": callAction,
-    // "callStatus": callStatus,
-    // "callDuration": callDuration,
-    // "callId": callId,
-    // "readAllTime": readAllTime,
-    // "content": content.toJson(),
-    // "updateInfo": updateInfo?.toJson(),
-    // "contentId": contentId,
-    // "stickerReply": List<dynamic>.from(stickerReply.map((x) => x.toJson())),
-    // "read": List<dynamic>.from(read.map((x) => x)),
-    // "readRooms": List<dynamic>.from(readRooms.map((x) => x)),
-    // "agoraInfo": agoraInfo?.toJson(),
-  };
+        "roomId": roomId,
+        "receiverAvatarId": receiverAvatarId,
+        "msgType": msgType,
+        "content": content,
+        "contentId": contentId,
+        // "emoji": emoji,
+        // "otherSideMemberId": otherSideMemberId,
+        // "chatMemberId": chatMemberId,
+        // "callAction": callAction,
+        // "callStatus": callStatus,
+        // "callDuration": callDuration,
+        // "callId": callId,
+        // "readAllTime": readAllTime,
+        // "content": content.toJson(),
+        // "updateInfo": updateInfo?.toJson(),
+        // "contentId": contentId,
+        // "stickerReply": List<dynamic>.from(stickerReply.map((x) => x.toJson())),
+        // "read": List<dynamic>.from(read.map((x) => x)),
+        // "readRooms": List<dynamic>.from(readRooms.map((x) => x)),
+        // "agoraInfo": agoraInfo?.toJson(),
+      };
 }
 
 class UpdateInfo {
@@ -236,63 +238,62 @@ class Content {
   // UserInfoData? joinerInfo;
 
   factory Content.fromJson(Map<String, dynamic> json) => Content(
-    
-    content: json["content"] ?? '',
+        content: json["content"] ?? '',
 
-    // msgType: json["msgType"]??'',
-    // message: json["message"]??'',
-    // replyByContentId: json["replyByContentId"]??'',
-    // replyByMsg: json["replyByMsg"]??'',
-    // replyById: json["replyById"]??'',
-    // replyByAvatar: json["replyByAvatar"]??'',
-    // replyByNickName: json["replyByNickName"]??'',
-    // replyByUid: json["replyByUid"]??'',
-    // time: json["time"]??'',
-    // otherSideMemberId: json["otherSideMemberId"]??'',
-    // otherSideUid: json["otherSideUid"]??'',
-    // otherSideAvatar: json["otherSideAvatar"]??'',
-    // otherSideNickname: json["otherSideNickname"]??'',
-    // senderUid: json["senderUid"]??'',
-    // senderMemberId: json["senderMemberId"]??'',
-    // senderAvatar: json["senderAvatar"]??'',
-    // senderNickname: json["senderNickname"]??'',
-    // groupType: json["groupType"]??'',
-    // groupName: json["groupName"]??'',
-    // groupImgUrl: json["groupImgUrl"]??'',
-    // roomType: json["roomType"]??'',
-    // type: json["type"]??'',
-    // creatorInfo: json["creatorInfo"] != null? UserInfoData.fromJson(json["creatorInfo"]) : UserInfoData(avatar: ''),
-    // joinerInfo: json["joinerInfo"] != null? UserInfoData.fromJson(json["joinerInfo"]) : UserInfoData(avatar: ''),
-  );
+        // msgType: json["msgType"]??'',
+        // message: json["message"]??'',
+        // replyByContentId: json["replyByContentId"]??'',
+        // replyByMsg: json["replyByMsg"]??'',
+        // replyById: json["replyById"]??'',
+        // replyByAvatar: json["replyByAvatar"]??'',
+        // replyByNickName: json["replyByNickName"]??'',
+        // replyByUid: json["replyByUid"]??'',
+        // time: json["time"]??'',
+        // otherSideMemberId: json["otherSideMemberId"]??'',
+        // otherSideUid: json["otherSideUid"]??'',
+        // otherSideAvatar: json["otherSideAvatar"]??'',
+        // otherSideNickname: json["otherSideNickname"]??'',
+        // senderUid: json["senderUid"]??'',
+        // senderMemberId: json["senderMemberId"]??'',
+        // senderAvatar: json["senderAvatar"]??'',
+        // senderNickname: json["senderNickname"]??'',
+        // groupType: json["groupType"]??'',
+        // groupName: json["groupName"]??'',
+        // groupImgUrl: json["groupImgUrl"]??'',
+        // roomType: json["roomType"]??'',
+        // type: json["type"]??'',
+        // creatorInfo: json["creatorInfo"] != null? UserInfoData.fromJson(json["creatorInfo"]) : UserInfoData(avatar: ''),
+        // joinerInfo: json["joinerInfo"] != null? UserInfoData.fromJson(json["joinerInfo"]) : UserInfoData(avatar: ''),
+      );
 
   Map<String, dynamic> toJson() => {
-    "content": content,
+        "content": content,
 
-    // "msgType": msgType,
-    // "message": message,
-    // "replyByContentId": replyByContentId,
-    // "replyByMsg": replyByMsg,
-    // "replyById": replyById,
-    // "replyByAvatar": replyByAvatar,
-    // "replyByNickName": replyByNickName,
-    // "replyByUid": replyByUid,
-    // "time": time,
-    // "otherSideMemberId": otherSideMemberId,
-    // "otherSideUid": otherSideUid,
-    // "otherSideAvatar": otherSideAvatar,
-    // "otherSideNickname": otherSideNickname,
-    // "senderUid": senderUid,
-    // "senderMemberId": senderMemberId,
-    // "senderAvatar": senderAvatar,
-    // "senderNickname": senderNickname,
-    // "groupType": groupType,
-    // "groupName": groupName,
-    // "groupImgUrl": groupImgUrl,
-    // "roomType": roomType,
-    // "type":type,
-    // "creatorInfo": creatorInfo?.toJson(),
-    // "joinerInfo": joinerInfo?.toJson(),
-  };
+        // "msgType": msgType,
+        // "message": message,
+        // "replyByContentId": replyByContentId,
+        // "replyByMsg": replyByMsg,
+        // "replyById": replyById,
+        // "replyByAvatar": replyByAvatar,
+        // "replyByNickName": replyByNickName,
+        // "replyByUid": replyByUid,
+        // "time": time,
+        // "otherSideMemberId": otherSideMemberId,
+        // "otherSideUid": otherSideUid,
+        // "otherSideAvatar": otherSideAvatar,
+        // "otherSideNickname": otherSideNickname,
+        // "senderUid": senderUid,
+        // "senderMemberId": senderMemberId,
+        // "senderAvatar": senderAvatar,
+        // "senderNickname": senderNickname,
+        // "groupType": groupType,
+        // "groupName": groupName,
+        // "groupImgUrl": groupImgUrl,
+        // "roomType": roomType,
+        // "type":type,
+        // "creatorInfo": creatorInfo?.toJson(),
+        // "joinerInfo": joinerInfo?.toJson(),
+      };
 }
 
 class StickerReply {
