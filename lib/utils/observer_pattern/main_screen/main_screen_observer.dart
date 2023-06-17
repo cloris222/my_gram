@@ -4,8 +4,8 @@ import '../notification_data.dart';
 import '../observer.dart';
 import '../subject_key.dart';
 
-class UserCommentObserver extends Observer {
-  UserCommentObserver(super.name,
+class MainScreenObserver extends Observer {
+  MainScreenObserver(super.name,
       {required this.changeMainPage});
   Function(AppNavigationBarType type) changeMainPage;
 

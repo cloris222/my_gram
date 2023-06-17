@@ -25,7 +25,7 @@ class MainScreen extends ConsumerStatefulWidget {
 
 class _MainScreenState extends ConsumerState<MainScreen> {
   late PageController controller;
-  late UserCommentObserver observer;
+  late MainScreenObserver observer;
 
   @override
   void didChangeDependencies() {
@@ -36,7 +36,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
   @override
   void initState() {
     controller = PageController(initialPage: widget.type.index);
-    observer = UserCommentObserver("main",
+    observer = MainScreenObserver("main",
         changeMainPage: (AppNavigationBarType type) => _changePage(type));
     GlobalData.mainScreenSubject.registerObserver(observer);
     super.initState();
