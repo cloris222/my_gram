@@ -5,6 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../constant/enum/app_param_enum.dart';
 import '../constant/theme/ui_define.dart';
+import '../utils/observer_pattern/main_screen/main_screen_observer.dart';
+import '../view_models/gobal_provider/main_bottom_bar_provider.dart';
 import '../widgets/appbar/custom_app_bar.dart';
 import 'common_scaffold.dart';
 
@@ -22,6 +24,7 @@ class MainScreen extends ConsumerStatefulWidget {
 
 class _MainScreenState extends ConsumerState<MainScreen> {
   late PageController controller;
+  late UserCommentObserver observer;
 
   @override
   void didChangeDependencies() {
@@ -32,17 +35,24 @@ class _MainScreenState extends ConsumerState<MainScreen> {
   @override
   void initState() {
     controller = PageController(initialPage: widget.type.index);
+    observer = UserCommentObserver("main",
+        changeMainPage: (AppNavigationBarType type) => _changePage(type));
+    GlobalData.mainScreenSubject.registerObserver(observer);
     super.initState();
   }
 
   @override
   void dispose() {
     controller.dispose();
+    GlobalData.mainScreenSubject.unregisterObserver(observer);
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    ref.listen(mainBottomBarProvider, (previous, next) {
+      _changePage(AppNavigationBarType.values[next]);
+    });
     return CommonScaffold(
         // appBar: CustomAppBar.mainAppBar(context),
         bottomNavigationBar: AppBottomNavigationBar(

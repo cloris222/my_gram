@@ -11,6 +11,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../constant/enum/app_param_enum.dart';
+import '../../view_models/gobal_provider/main_bottom_bar_provider.dart';
 import '../../widgets/button/text_button_widget.dart';
 import '../../widgets/label/avatar_icon_widget.dart';
 import '../../widgets/label/common_network_image.dart';
@@ -300,7 +302,10 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
               isGradient: true,
               btnText: tr('message'),
               textColor: AppColors.textBlack,
-              onPressed: () {},
+              onPressed: () {
+                /// 切換頁面
+               GlobalData.mainScreenSubject.changeMainScreenPage( AppNavigationBarType.typeMessage);
+              },
             ),
           ),
           SizedBox(
@@ -392,7 +397,7 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
           ]),
     );
   }
-  
+
   Widget _aboutMeView(){
     return Column(
       children: [
