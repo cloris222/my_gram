@@ -9,6 +9,7 @@ import '../../models/http/http_setting.dart';
 import '../../models/http/data/country_phone_data.dart';
 import '../../models/http/data/pair_image_data.dart';
 import '../../models/http/data/post_comment_data.dart';
+import '../../utils/observer_pattern/main_screen/main_screen_subject.dart';
 import '../enum/app_param_enum.dart';
 
 class GlobalData {
@@ -31,6 +32,9 @@ class GlobalData {
   static String publicKey = '';
   static String apiSecretKey = '';
   static String userId = '';
+
+  ///  主頁頁面切換的監聽
+  static MainScreenSubject mainScreenSubject = MainScreenSubject();
 
   static printLog(String? logMessage) {
     if (HttpSetting.debugMode) {
