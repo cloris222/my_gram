@@ -201,7 +201,6 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
             child: Align(
               alignment: Alignment.bottomCenter,
               child: Container(
-                // color: Colors.red,
                 margin: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(2)),
                 child: Stack(
                   alignment: Alignment.center,
@@ -211,15 +210,15 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
                       height: UIDefine.getPixelWidth(130),
                     ),
                     Positioned(
-                      left: 0,
-                      right: 0,
+                      left: index==selectedCardIndex?0:UIDefine.getPixelWidth(5),
+                      right: index==selectedCardIndex?0:UIDefine.getPixelWidth(5),
                       top: index==selectedCardIndex?0:UIDefine.getPixelWidth(20),
                       bottom: 0,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(10),
                         child: Container(
                           width: index==selectedCardIndex?UIDefine.getPixelWidth(200):UIDefine.getPixelWidth(130),
-                          height: index==selectedCardIndex?UIDefine.getPixelWidth(120):UIDefine.getPixelWidth(110),
+                          height: index==selectedCardIndex?UIDefine.getPixelWidth(130):UIDefine.getPixelWidth(110),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -231,35 +230,35 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
                       ),
                     ),
                     Positioned(
-                      left: 0,
-                      right: 0,
+                      left: index==selectedCardIndex?0:UIDefine.getPixelWidth(5),
+                      right: index==selectedCardIndex?0:UIDefine.getPixelWidth(5),
                       top: index==selectedCardIndex?0:UIDefine.getPixelWidth(20),
                       bottom: 0,
                       child: Visibility(
                         visible: index==selectedCardIndex,
                         child: Container(
                           width: index==selectedCardIndex?UIDefine.getPixelWidth(200):UIDefine.getPixelWidth(130),
-                          height: index==selectedCardIndex?UIDefine.getPixelWidth(120):UIDefine.getPixelWidth(110),
+                          height: index==selectedCardIndex?UIDefine.getPixelWidth(130):UIDefine.getPixelWidth(110),
                           clipBehavior: Clip.antiAlias,
                           margin: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(1)),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               border:Border.all(
-                                  color: AppColors.mainThemeButton.getColor(),width: 2,strokeAlign: BorderSide.strokeAlignOutside)
+                                  color: AppColors.mainThemeButton.getColor(),width: 2,strokeAlign: BorderSide.strokeAlignCenter)
                           ),
                         ),
                       ),
                     ),
                     Positioned(
-                      left: 0,
-                      right: 0,
+                      left: index==selectedCardIndex?0:UIDefine.getPixelWidth(5),
+                      right: index==selectedCardIndex?0:UIDefine.getPixelWidth(5),
                       top: index==selectedCardIndex?0:UIDefine.getPixelWidth(20),
                       bottom: 0,
                       child: Visibility(
                         visible: index!=selectedCardIndex,
                         child: Container(
                           width: index==selectedCardIndex?UIDefine.getPixelWidth(200):UIDefine.getPixelWidth(130),
-                          height: index==selectedCardIndex?UIDefine.getPixelWidth(120):UIDefine.getPixelWidth(110),
+                          height: index==selectedCardIndex?UIDefine.getPixelWidth(130):UIDefine.getPixelWidth(110),
                           clipBehavior: Clip.antiAlias,
                           margin: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(1)),
                           decoration: BoxDecoration(
