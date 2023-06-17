@@ -53,6 +53,8 @@ dependencies:
   photo_manager: ^2.6.0
   card_swiper: ^2.0.4
   web_socket_channel: ^2.4.0
+  permission_handler: ^10.3.0
+  flutter_sound: ^9.2.13
 
 dev_dependencies:
   flutter_test:

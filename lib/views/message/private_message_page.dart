@@ -1,4 +1,10 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:base_project/constant/theme/app_colors.dart';
+import 'package:base_project/constant/theme/app_gradient_colors.dart';
+import 'package:base_project/constant/theme/app_image_path.dart';
 import 'package:base_project/constant/theme/app_text_style.dart';
 import 'package:base_project/views/sqlite/data/chat_history_sqlite.dart';
 import 'package:base_project/widgets/appbar/custom_app_bar.dart';
@@ -6,6 +12,8 @@ import 'package:base_project/widgets/label/common_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_sound/public/flutter_sound_player.dart';
+import 'package:flutter_sound/public/flutter_sound_recorder.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 import '../../constant/theme/ui_define.dart';
@@ -15,6 +23,8 @@ import '../common_scaffold.dart';
 import 'data/message_chatroom_detail_response_data.dart';
 import '../../view_models/message/message_private_message_view_model.dart';
 import 'gallery_view.dart';
+
+import 'package:permission_handler/permission_handler.dart';
 
 class PrivateMessagePage extends ConsumerStatefulWidget {
   // final ChatRoomData data;
@@ -49,8 +59,13 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
   List<AssetEntity> get imageList => ref.read(chatRoomProvider);
   List<AssetEntity> showImageList = [];
 
+  ///語音訊息部分
+  FlutterSoundRecorder? recorder;
+  StreamSubscription? _recorderSubscription;
+
   @override
   initState() {
+    super.initState();
     // Future<MessageChatroomDetailResponseData> userData = viewModel.getChatroomDetail(roomId);
     // userData.then((value) => {
     //   _chatroomDetailData = value,
@@ -72,8 +87,13 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
   Widget build(BuildContext context) {
     return CommonScaffold(
       appBar: CustomAppBar.chatRoomAppBar(context, nickName: friendName, avatar: friendAvatar),
-      body: (isDark) => SizedBox(
+      body: (isDark) => Container(
         width: UIDefine.getWidth(),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: AppGradientColors.gradientBlackGoldColors.getColors()
+          )
+        ),
         child: Stack(
           alignment: Alignment.topCenter,
           children: [
@@ -172,25 +192,40 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                                 child: Icon(Icons.photo)),
                             SizedBox(width: UIDefine.getPixelWidth(10)),
 
-                            ///輸入框
-                            Flexible(
-                                child: Container(
-                              padding: EdgeInsets.only(bottom: UIDefine.getPixelWidth(2)),
-                              child: TextField(
-                                // focusNode: _focusNode,
-                                controller: viewModel.textController,
-                                style: AppTextStyle.getBaseStyle(
-                                    color: AppColors.buttonPrimaryText, fontSize: UIDefine.fontSize12),
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  hintText: tr('writeAMessage'),
-                                  hintStyle: AppTextStyle.getBaseStyle(
-                                      fontSize: UIDefine.fontSize12, color: AppColors.textPrimary),
-                                  fillColor: AppColors.bolderGrey.getColor(),
-                                  filled: true,
+                            Stack(
+                              children: [
+                                ///輸入框
+                                Container(
+                                  width: UIDefine.getPixelWidth(180),
+                                  height: UIDefine.getPixelWidth(40),
+                                  padding: EdgeInsets.only(bottom: UIDefine.getPixelWidth(2)),
+                                  child: TextField(
+                                    // focusNode: _focusNode,
+                                    controller: viewModel.textController,
+                                    style: AppTextStyle.getBaseStyle(
+                                        color: AppColors.buttonPrimaryText, fontSize: UIDefine.fontSize12),
+                                    decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      hintText: tr('writeAMessage'),
+                                      hintStyle: AppTextStyle.getBaseStyle(
+                                          fontSize: UIDefine.fontSize12, color: AppColors.textPrimary),
+                                      fillColor: AppColors.bolderGrey.getColor(),
+                                      filled: true,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            )),
+                                Positioned(
+                                  bottom: UIDefine.getPixelWidth(5),
+                                    right: 0,
+                                    child: GestureDetector(
+                                    onTap: (){
+                                      _onTapMicrophone();
+                                    },
+                                      child: Image.asset(AppImagePath.microphoneIcon),
+                                    )
+                                    )
+                              ],
+                            )
                           ],
                         ),
                       ),
@@ -234,6 +269,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
     });
   }
 
+
   Future<PermissionState> _getPermission() async {
     ps = await PhotoManager.requestPermissionExtend();
     return ps;
@@ -247,6 +283,60 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
   //     showGallery = false;
   //   });
   // }
+
+  Future<bool> getPermissionStatus() async {
+    Permission permission = Permission.microphone;
+    //granted 通过，denied 被拒绝，permanentlyDenied 拒绝且不再提示
+    PermissionStatus status = await permission.status;
+    if (status.isGranted) {
+      return true;
+    } else if (status.isDenied) {
+      requestPermission(permission);
+    } else if (status.isPermanentlyDenied) {
+      openAppSettings();
+    } else if (status.isRestricted) {
+      requestPermission(permission);
+    } else {}
+    return false;
+  }
+
+  ///申请權限
+  void requestPermission(Permission permission) async {
+    PermissionStatus status = await permission.request();
+    if (status.isPermanentlyDenied) {
+      openAppSettings();
+    }
+  }
+
+  Future<void> _onTapMicrophone()async{
+    final result = await getPermissionStatus();
+    if(result == true){
+      _startRecorder();
+    }
+  }
+
+  void _startRecorder()async{
+    recorder = FlutterSoundRecorder();
+
+    // 配置录音设置
+    recorder!.openAudioSession().then((value) {
+      recorder!.setSubscriptionDuration(Duration(seconds: 15)); // 设置录音时间不超过15秒
+      recorder!.startRecorder(toFile: 'path_to_save_recording.mp4');
+      _recorderSubscription = recorder!.onProgress?.listen((e) {
+        // 更新录音进度
+      });
+    });
+  }
+
+
+
+
+
+
+
+
+
+
 
   Future<void> _sendImage() async {
     setState(() {

@@ -60,4 +60,7 @@ class AppImagePath {
   static const String commentIcon = '$assetPath/ic_comment-solid.png';
   static const String storeIcon = '$assetPath/ic_bookmark.png';
   static const String moreIcon = '$assetPath/ic_others.png';
+
+  ///聊天室
+  static const String microphoneIcon = '$assetPath/ic_microphone.png';
 }
