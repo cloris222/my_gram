@@ -142,4 +142,42 @@ class GlobalData {
       );
     });
   }
+
+  static List<DynamicInfoData> generateIsRebeccaData(int length) {
+    return List<DynamicInfoData>.generate(length, (index) {
+      return DynamicInfoData(
+          avatar: GlobalData.photos[0],
+          name: 'Rebecca',
+          time: index % 2 == 0
+              ? '2023-0${index + 1}-05 12:00':
+          index>=5?
+          '2023-06-17 ${index + 5}:00'
+              :'2023-06-17 0${index + 5}:00' ,
+          context: 'contextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontext'
+              'contextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontext',
+          images: index % 2 ==0 ?GlobalData.photos:GlobalData.photos2,
+          likes: (index + 1)*1000,
+          comments: (index + 1)*2000
+      );
+    });
+  }
+
+  static List<DynamicInfoData> generateNotRebeccaData(int length) {
+    return List<DynamicInfoData>.generate(length, (index) {
+      return DynamicInfoData(
+          avatar: GlobalData.photos[0],
+          name: 'Somebody',
+          time: index % 2 == 0
+              ? '2023-0${index + 1}-05 12:00':
+          index>=5?
+          '2023-06-17 ${index + 5}:00'
+              :'2023-06-17 0${index + 5}:00' ,
+          context: 'contextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontext'
+              'contextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontext',
+          images: index % 2 ==0 ?GlobalData.photos:GlobalData.photos2,
+          likes: (index + 1)*1000,
+          comments: (index + 1)*2000
+      );
+    });
+  }
 }

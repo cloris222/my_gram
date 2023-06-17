@@ -53,5 +53,11 @@ class AppImagePath {
   ///個人主頁
   static const String hotIcon = '$assetPath/btn_ranking.png';
   static const String linkIcon = '$assetPath/icon_link.png';
+  static const String shopIcon = '$assetPath/icon_shop.png';
 
+  ///動態頁
+  static const String heartIcon = '$assetPath/ic_heart.png';
+  static const String commentIcon = '$assetPath/ic_comment-solid.png';
+  static const String storeIcon = '$assetPath/ic_bookmark.png';
+  static const String moreIcon = '$assetPath/ic_others.png';
 }
