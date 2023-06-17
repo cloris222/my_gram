@@ -26,10 +26,11 @@ class WsAckSendMessageData {
   factory WsAckSendMessageData.fromJson(Map<String, dynamic> json) => WsAckSendMessageData(
     topic: json["topic"] ?? '',
     action: json["action"] ?? '',
-    chatData: ChatData.fromJson(json["chatData"]),
-    // json["chatData"] != null
-    //   ? ChatData.fromJson(json["chatData"])
-    //   : ChatData(),
+    chatData: 
+    // ChatData.fromJson(json["chatData"]),
+    json["chatData"] != null
+      ? ChatData.fromJson(json["chatData"])
+      : ChatData(),
     code: json["code"] ?? '',
     message: json["message"] ?? '',
     timestamp: json["timestamp"] ?? -1,
