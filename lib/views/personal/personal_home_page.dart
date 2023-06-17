@@ -1,3 +1,4 @@
+import 'package:base_project/constant/enum/app_param_enum.dart';
 import 'package:base_project/constant/theme/app_colors.dart';
 import 'package:base_project/constant/theme/app_image_path.dart';
 import 'package:base_project/constant/theme/app_text_style.dart';
@@ -6,16 +7,20 @@ import 'package:base_project/constant/theme/ui_define.dart';
 import 'package:base_project/models/http/data/personal_info_data.dart';
 import 'package:base_project/models/http/data/post_info_data.dart';
 import 'package:base_project/view_models/base_view_model.dart';
+import 'package:base_project/views/main_screen.dart';
 import 'package:base_project/views/personal/personal_info_view.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../view_models/dynmaic/is_rebecca_provider.dart';
 import '../../widgets/button/text_button_widget.dart';
 import '../../widgets/label/avatar_icon_widget.dart';
 import '../../widgets/label/common_network_image.dart';
 import '../common_scaffold.dart';
 import 'package:card_swiper/card_swiper.dart';
+
+import '../dynamic/dynamic_main_page.dart';
 
 class PersonalHomePage extends ConsumerStatefulWidget {
   const PersonalHomePage({
@@ -187,7 +192,12 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
         },
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
-            onTap: (){},
+            onTap: (){
+              if(selectedCardIndex == index){
+                ref.read(isRebeccaProvider.notifier).update((state) => true);
+                BaseViewModel().pushPage(context, MainScreen(type: AppNavigationBarType.typeDynamic,));
+              }
+            },
             child: Align(
               alignment: Alignment.bottomCenter,
               child: Container(
@@ -327,33 +337,33 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
             selectedIndex = index;
           });
         },
+        labelStyle: AppTextStyle.getBaseStyle(
+            fontSize: UIDefine.fontSize14,
+            fontWeight: FontWeight.w600),
+        unselectedLabelStyle: AppTextStyle.getBaseStyle(
+            fontSize: UIDefine.fontSize14,
+            fontWeight: FontWeight.w400,
+            color: AppColors.bolderGrey),
         tabs: [
-          Container(
+          Tab(
+            height: UIDefine.getPixelWidth(40),
+            child: Container(
               alignment: Alignment.center,
-              height: 40,
-              decoration: const BoxDecoration(
-                color: Colors.transparent,
-                  border: Border(
-                    bottom: BorderSide(
-                      color: Colors.grey,
-                      width: 1.0,
-                    ),
-              )),
-              child: selectedIndex == 0
-                  ? Text(
-                tr('aboutMe'),
-                style: AppTextStyle.getBaseStyle(
-                    fontSize: UIDefine.fontSize14,
-                    fontWeight: FontWeight.w600),
-              )
-                  : Text(
-                tr('aboutMe'),
-                style: AppTextStyle.getBaseStyle(
-                    fontSize: UIDefine.fontSize14,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.bolderGrey),
-              )),
-          Container(
+                   height: 40,
+                   decoration: const BoxDecoration(
+                       color: Colors.transparent,
+                       border: Border(
+                         bottom: BorderSide(
+                           color: Colors.grey,
+                           width: 1.0,
+                         ),
+                       )),
+              child: Text( tr('aboutMe')),
+            ),
+          ),
+          Tab(
+            height: UIDefine.getPixelWidth(40),
+            child: Container(
               alignment: Alignment.center,
               height: 40,
               decoration: const BoxDecoration(
@@ -364,20 +374,9 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
                       width: 1.0,
                     ),
                   )),
-              child: selectedIndex == 1
-                  ? Text(
-                tr('allPost'),
-                style: AppTextStyle.getBaseStyle(
-                    fontSize: UIDefine.fontSize14,
-                    fontWeight: FontWeight.w600),
-              )
-                  : Text(
-                tr('allPost'),
-                style: AppTextStyle.getBaseStyle(
-                    fontSize: UIDefine.fontSize14,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.bolderGrey),
-              )),
+              child: Text( tr('allPost')),
+            ),
+          ),
         ]);
   }
 

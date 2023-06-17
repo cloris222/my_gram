@@ -9,62 +9,54 @@ import 'package:base_project/views/common_scaffold.dart';
 import 'package:base_project/widgets/label/common_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../constant/theme/global_data.dart';
 import '../../models/http/data/store_info_data.dart';
+import '../../view_models/dynmaic/is_rebecca_provider.dart';
 import '../../widgets/dialog/common_custom_dialog.dart';
 import 'dynamic_info_view.dart';
 import 'dynamic_post_comment_page.dart';
 
-class DynamicMainPage extends StatefulWidget {
-  const DynamicMainPage({Key? key}) : super(key: key);
+class DynamicMainPage extends ConsumerStatefulWidget {
+  const DynamicMainPage({
+    Key? key,
+  }) : super(key: key);
 
   @override
-  State<DynamicMainPage> createState() => _DynamicMainPageState();
+  ConsumerState createState() => _DynamicMainPageState();
 }
 
-class _DynamicMainPageState extends State<DynamicMainPage> {
+class _DynamicMainPageState extends ConsumerState<DynamicMainPage> {
   final List<DynamicInfoData> list = [];
+  List<DynamicInfoData> isRebeccaList = GlobalData.generateIsRebeccaData(8);
+  List<DynamicInfoData> notRebeccaList = GlobalData.generateNotRebeccaData(8);
   int clickLikeTimes = 1;
   bool bDownloading = true;
   BaseViewModel viewModel = BaseViewModel();
   List<StoreInfoData> stores = GlobalData.generateStoreData(10);
   TextEditingController controller = TextEditingController();
+  bool get isRebecca => ref.read(isRebeccaProvider);
 
 
   @override
   void initState() {
-    list.add(DynamicInfoData(
-        avatar: GlobalData.photos[0],
-        name: 'name',
-        time: '2023-05-02 12:00',
-        context: 'contextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontext'
-            'contextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontext',
-        images: GlobalData.photos2,
-        likes: 1000,
-        comments: 20000));
-    list.add(DynamicInfoData(
-        avatar: GlobalData.photos[1],
-        name: 'name222',
-        time: '2023-04-01',
-        context: 'contextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontext'
-            'contextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontext',
-        images: GlobalData.photos2,
-        likes: 30000,
-        comments: 400));
-    list.add(DynamicInfoData(
-        avatar: GlobalData.photos[2],
-        name: 'name333',
-        time: '2023-04-30',
-        context: 'contextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontext'
-            'contextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontext',
-        images: GlobalData.photos2,
-        likes: 500,
-        comments: 20000));
+    Future.delayed(Duration.zero,(){
+      setState(() {
+        if(isRebecca == true){
+          list.addAll(isRebeccaList);
+        }else{
+          list.addAll(notRebeccaList);
+        }
+      });
+    });
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
+    ref.watch(isRebeccaProvider);
+    print('isRebecca=${isRebecca}');
    return CommonScaffold(
        body: (isDark) => Container(
          decoration: BoxDecoration(

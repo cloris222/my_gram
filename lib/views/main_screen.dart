@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../constant/enum/app_param_enum.dart';
 import '../constant/theme/ui_define.dart';
+import '../view_models/dynmaic/is_rebecca_provider.dart';
 import '../widgets/appbar/custom_app_bar.dart';
 import 'common_scaffold.dart';
 
@@ -60,6 +61,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
 
   void _changePage(AppNavigationBarType type) {
     setState(() {
+      ref.read(isRebeccaProvider.notifier).update((state) => false);
       GlobalData.mainBottomType = type;
       controller.jumpToPage(type.index);
     });
