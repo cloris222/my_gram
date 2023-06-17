@@ -12,6 +12,7 @@ class HttpSetting {
   static const String appUrl = "https://test.mygram.ai/gateway/app";
   static const String commonUrl = "https://test.mygram.ai/gateway/common";
   static const String socketUrl = 'wss://test.mygram.ai/gateway/websocket/connect';
+  // static const String msgUrl = "http://test.mygram.ai/gateway";
   static const String postKey = "RSA加密KEY";
   static const bool debugMode = true;
 
