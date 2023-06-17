@@ -178,7 +178,7 @@ class _SwipeImageViewState extends State<SwipeImageView>
 
         ///下方按鈕
         Positioned(
-            bottom: UIDefine.getPixelWidth(25),
+            bottom: 0,
             right: UIDefine.getPixelWidth(20),
             left: UIDefine.getPixelWidth(20),
             child: Row(

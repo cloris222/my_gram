@@ -1,5 +1,8 @@
+import 'dart:ui';
+
 import 'package:base_project/constant/extension/int_extension.dart';
 import 'package:base_project/constant/theme/app_colors.dart';
+import 'package:base_project/constant/theme/app_image_path.dart';
 import 'package:base_project/constant/theme/app_text_style.dart';
 import 'package:base_project/constant/theme/ui_define.dart';
 import 'package:base_project/view_models/base_view_model.dart';
@@ -7,8 +10,11 @@ import 'package:base_project/widgets/button/text_button_widget.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../../constant/theme/app_gradient_colors.dart';
+import '../../constant/theme/app_style.dart';
 import '../../models/http/data/dynamic_info_data.dart';
+import '../../utils/number_format_util.dart';
 import '../../view_models/call_back_function.dart';
+import '../../widgets/circlie_avatar_widget.dart';
 import '../../widgets/label/common_network_image.dart';
 import '../../widgets/label/custom_gradient_icon.dart';
 import '../personal/personal_home_page.dart';
@@ -20,6 +26,7 @@ class DynamicInfoView extends StatefulWidget {
     required this.index,
     required this.onFollowing,
     required this.showFullContext,
+    required this.showLessContext,
     required this.onLike,
     required this.onComment,
     required this.onStore,
@@ -28,6 +35,7 @@ class DynamicInfoView extends StatefulWidget {
 final DynamicInfoData data;
 final int index;
 final onGetIntFunction showFullContext;
+  final onGetIntFunction showLessContext;
 final onGetIntFunction onFollowing;
 final onGetIntFunction onLike;
 final onGetIntFunction onComment;
@@ -39,228 +47,239 @@ final onGetIntFunction onShare;
 
 class _DynamicInfoViewState extends State<DynamicInfoView> {
   BaseViewModel viewModel = BaseViewModel();
+  int currentIndex = 0;
+
   @override
-  void didUpdateWidget(covariant DynamicInfoView oldWidget) {
+  void didChangeDependencies() {
     setState(() {
 
     });
-    super.didUpdateWidget(oldWidget);
+    super.didChangeDependencies();
   }
+
+
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Stack(
       children: [
-        ///頭像,時間,名字,追蹤btn
         Container(
-          padding: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(2)),
           width: UIDefine.getWidth(),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  GestureDetector(
-                    onTap:(){
-                      viewModel.pushPage(context, const PersonalHomePage());
-                    },
-                    child: CommonNetworkImage(
-                        imageUrl: widget.data.avatar,
-                        width: UIDefine.getPixelWidth(40),
-                        height: UIDefine.getPixelWidth(40),
-                        fit: BoxFit.cover),
-                  ),
-                  SizedBox(width: UIDefine.getPixelWidth(10),),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      GestureDetector(
-                        onTap:(){
-                          viewModel.pushPage(context, const PersonalHomePage());
-                        },
-                        child: Text(widget.data.name,style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize14),),
-                      ),
-                      Text(_getTime(widget.data.time),style: AppTextStyle.getBaseStyle(color: AppColors.textSubInfo,fontSize: UIDefine.fontSize12),),
-                    ],
-                  ),
-                ],
-              ),
-            TextButtonWidget(
-              isFillWidth: false,
-              setWidth: UIDefine.getPixelWidth(100),
-              radius: 50,
-                setMainColor: AppColors.buttonUnable,
-                btnText: widget.data.isFollowing?tr('following'):tr('follow'),
-                onPressed: (){
-                  widget.onFollowing(widget.index);
-                })
-          ],),
+          height: UIDefine.getViewHeight()*0.85,
+          // color: Colors.blue,
         ),
-        SizedBox(height: UIDefine.getPixelWidth(10),),
-        ///發文內容,更多btn
-        Container(
-          margin: EdgeInsets.only(left: UIDefine.getWidth()*0.1),
-          padding: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(10)),
-          width: UIDefine.getWidth()*0.9,
-          child:
-          widget.data.isShowMore?
-          Row(
-            children: [
-              Container(
-                width: UIDefine.getWidth()*0.8,
-                child: Wrap(
-                  children: [
-                    Text(widget.data.context,style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize14)),
-                  ],
-                ),
-              ),
-            ],
-          ):
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Container(
-                width: UIDefine.getWidth()*0.6,
-                child: Wrap(
-                  children: [
-                    Text(widget.data.context,style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize14),maxLines: 2,),
-                  ],
-                ),
-              ),
-            GestureDetector(
-              onTap: (){
-                widget.showFullContext(widget.index);
-              },
-              child: Visibility(
-              visible: !widget.data.isShowMore,
-              child: Text(tr('showMore'),style: AppTextStyle.getBaseStyle(color: AppColors.textSubInfo),),
-            ),
-          )
-            ],
-          )
-        ),
-        SizedBox(height: UIDefine.getPixelWidth(10),),
-        ///大圖
-        CommonNetworkImage(
-            imageUrl: widget.data.images[0],
-            width: UIDefine.getWidth(),
-            height: UIDefine.getPixelWidth(300),
-            fit: BoxFit.cover),
-        SizedBox(height: UIDefine.getPixelWidth(10),),
-        ///底下navbar
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(2)),
-          width: UIDefine.getWidth(),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ///like
-              TextButton(
-                style: TextButton.styleFrom(
-                  shape:RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                      side: BorderSide(color: AppColors.mainThemeButton.getColor())
-                  ),
-                  foregroundColor: AppColors.mainThemeButton.getColor(),
-                ),
-                  onPressed: ()=>widget.onLike(widget.index),
-                  child: Container(
-                    alignment: Alignment.center,
-                    width: UIDefine.getPixelWidth(65),
-                    height: 25,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                      CustomGradientIcon(
-                        icon: Icon(Icons.favorite),
-                        colors: AppGradientColors.gradientColors.getColors(),
-                      ),
-                      SizedBox(width: UIDefine.getPixelWidth(5),),
-                      Text((widget.data.likes).numberCompatFormat())
-                    ],),
-                  )),
-              SizedBox(width:UIDefine.getPixelWidth(10)),
-              ///comments
-              TextButton(
-                  style: TextButton.styleFrom(
-                    shape:RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                        side: BorderSide(color: AppColors.mainThemeButton.getColor())
-                    ),
-                    foregroundColor: AppColors.mainThemeButton.getColor(),
-                  ),
-                  onPressed: ()=>widget.onComment(widget.index),
-                  child: Container(
-                    alignment: Alignment.center,
-                    width: UIDefine.getPixelWidth(65),
-                    height: 25,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CustomGradientIcon(
-                          icon: Icon(Icons.sms_outlined),
-                          colors: AppGradientColors.gradientColors.getColors(),
-                        ),
-                        SizedBox(width: UIDefine.getPixelWidth(5),),
-                        Text((widget.data.comments).numberCompatFormat())
-                      ],),
-                  )),
-              SizedBox(width:UIDefine.getPixelWidth(10)),
-              ///store
-              TextButton(
-                  style: TextButton.styleFrom(
-                    shape:RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                        side: BorderSide(color: AppColors.mainThemeButton.getColor())
-                    ),
-                    foregroundColor: AppColors.mainThemeButton.getColor(),
-                  ),
-                  onPressed: ()=>widget.onStore(widget.index),
-                  child: Container(
-                    alignment: Alignment.center,
-                    width: UIDefine.getPixelWidth(65),
-                    height: 25,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CustomGradientIcon(
-                          icon: Icon(Icons.bookmark),
-                          colors: AppGradientColors.gradientColors.getColors(),
-                        ),
-                      ],),
-                  )),
-              SizedBox(width:UIDefine.getPixelWidth(10)),
-              ///share
-              TextButton(
-                  style: TextButton.styleFrom(
-                    shape:RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                        side: BorderSide(color: AppColors.mainThemeButton.getColor())
-                    ),
-                    foregroundColor: AppColors.mainThemeButton.getColor(),
-                  ),
-                  onPressed: (){
-                    widget.onShare(widget.index);},
-                  child: Container(
-                    alignment: Alignment.center,
-                    width: UIDefine.getPixelWidth(65),
-                    height: 25,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CustomGradientIcon(
-                          icon: Icon(Icons.share),
-                          colors: AppGradientColors.gradientColors.getColors(),
-                        ),
-                      ],),
-                  )),
-            ],
-          ),
-        ),
-        SizedBox(height: UIDefine.getPixelWidth(10),)
+        Positioned(
+            top:0,child: _buildPhotoImage()),
+        Positioned(
+            bottom: UIDefine.getViewHeight()*0.1,
+            left: 0,
+            right: 0,
+            child: _buildInfoCard()),
+        Positioned(
+            bottom: UIDefine.getViewHeight()*0.04,
+            left: UIDefine.getPixelWidth(10),
+            right: UIDefine.getPixelWidth(10),
+            child: _buildActionButtons())
       ],
     );
   }
+
+  Widget _buildPhotoImage(){
+    return GestureDetector(
+      onTapUp: _onTapUp,
+      child: Stack(
+        children: [
+          Container(
+            // color: Colors.red,
+            width: UIDefine.getWidth(),
+            height: UIDefine.getHeight()*0.6,
+          ),
+          Container(
+            width: UIDefine.getWidth(),
+            height: UIDefine.getHeight()*0.6,
+            clipBehavior: Clip.antiAlias,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(15)),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(15)),
+              child: CommonNetworkImage(
+                imageUrl: widget.data.images[currentIndex],
+                width: UIDefine.getWidth(),
+                height: UIDefine.getHeight()*0.6,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+
+          Positioned(
+              left: UIDefine.getPixelWidth(90),
+              right: UIDefine.getPixelWidth(90),
+              top: UIDefine.getPixelWidth(15),
+              child: _buildImageIndex()),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildImageIndex() {
+    return Row(
+      children: List<Widget>.generate(widget.data.images.length, (index) {
+        bool isCurrent = currentIndex == index;
+        return Expanded(
+            child: Container(
+              height: UIDefine.getPixelWidth(2),
+              decoration: AppStyle().styleColorsRadiusBackground(
+                  radius: 1,
+                  color: isCurrent
+                      ? Colors.white.withOpacity(0.6)
+                      : const Color(0xFFE2E2E2).withOpacity(0.13)),
+              margin: const EdgeInsets.symmetric(horizontal: 1, vertical: 5),
+            ));
+      }),
+    );
+  }
+
+  Widget _buildInfoCard(){
+    return ClipRRect(
+      borderRadius:BorderRadius.circular(15),
+      child: Container(
+        width: UIDefine.getWidth(),
+        clipBehavior: Clip.antiAlias,
+        decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.2),
+            borderRadius: BorderRadius.circular(15)
+        ),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+          child: Container(
+            padding: EdgeInsets.all(UIDefine.getPixelWidth(15)),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        CircleAvatarWidget(imageUrl: widget.data.avatar,),
+                        SizedBox(width: UIDefine.getPixelWidth(10),),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(widget.data.name,style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize16,fontWeight: FontWeight.w500),),
+                            SizedBox(height:  UIDefine.getPixelWidth(3),),
+                            Text(_getTime(widget.data.time),style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize10,fontWeight: FontWeight.w500,color: AppColors.textPrimary),)
+                          ],
+                        ),
+                      ],
+                    ),
+                    Text(tr('following'),style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize14,fontWeight: FontWeight.w400),)
+                  ],
+                ),
+                SizedBox(height: UIDefine.getPixelWidth(15),),
+                widget.data.isShowMore?
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(widget.data.context,style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize14,fontWeight: FontWeight.w300),),
+                    GestureDetector(
+                        onTap: (){
+                          widget.showLessContext(widget.index);
+                        },
+                        child: Text(tr('hide'),style: AppTextStyle.getBaseStyle(color: AppColors.bolderGrey),))
+                  ],
+                ):
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Container(
+                      width: UIDefine.getWidth()*0.8,
+                      child: Wrap(
+                        children: [
+                          Text(
+                            widget.data.context,
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
+                              style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize14,fontWeight: FontWeight.w300)
+                          ),
+                        ],
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: (){
+                        widget.showFullContext(widget.index);
+                      },
+                        child: Text(tr('more'),style: AppTextStyle.getBaseStyle(color: AppColors.bolderGrey),))
+                  ],
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildIconButton(String icon, {int? number}){
+    return Container(
+      padding: EdgeInsets.symmetric(vertical:UIDefine.getPixelWidth(2),horizontal:UIDefine.getPixelWidth(4) ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: AppColors.buttonCommon.getColor().withOpacity(0.5),width: 1),
+        color: AppColors.buttonCommon.getColor().withOpacity(0.3)
+      ),
+      child:
+      number==null?
+      Image.asset(icon):
+      Row(
+        children: [
+          Image.asset(icon),
+          Text(NumberFormatUtil().numberCompatFormat(number.toString()),style: AppTextStyle.getBaseStyle(fontSize:UIDefine.fontSize12,fontWeight: FontWeight.w400),)
+        ],
+      ),
+    );
+  }
+
+  Widget _buildActionButtons(){
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            _buildIconButton(AppImagePath.heartIcon,number: widget.data.likes),
+            SizedBox(width: UIDefine.getPixelWidth(10),),
+            _buildIconButton(AppImagePath.commentIcon,number: widget.data.comments),
+          ],
+        ),
+        Row(
+          children: [
+            _buildIconButton(AppImagePath.storeIcon),
+            SizedBox(width: UIDefine.getPixelWidth(10),),
+            _buildIconButton(AppImagePath.moreIcon),
+          ],
+        )
+      ],
+    );
+  }
+
+  void _onTapUp(TapUpDetails details) {
+    if (details.localPosition.dx / UIDefine.getWidth() >= 0.5) {
+      ///圖片是否已經到最底
+      if (currentIndex + 1 < widget.data.images.length) {
+        setState(() {
+          currentIndex += 1;
+        });
+      }
+    } else {
+      ///圖片是否已經到最前面
+      if (currentIndex - 1 >= 0) {
+        setState(() {
+          currentIndex -= 1;
+        });
+      }
+    }
+  }
+
 
   _getTime(String time){
     DateTime now = DateTime.now();

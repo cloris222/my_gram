@@ -26,6 +26,7 @@ enum AppColors {
       light: Color.fromRGBO(0, 0, 0, 0.7)),
   commentUnlike(dark: Color(0xFF979797), light: Color(0xFF979797)),
   textBlack(dark: Color(0xFF000000), light: Color(0xFF000000)),
+  textWhite(dark: Color(0xFFFFFFFF), light: Color(0xFFFFFFFF)),
 
 
   /// 按鈕顏色相關

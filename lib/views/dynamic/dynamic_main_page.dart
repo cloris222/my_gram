@@ -66,99 +66,110 @@ class _DynamicMainPageState extends State<DynamicMainPage> {
   @override
   Widget build(BuildContext context) {
    return CommonScaffold(
-       body: (isDark) => NotificationListener<ScrollEndNotification>(
-           onNotification: (scrollEnd){
-             final metrics = scrollEnd.metrics;
-             if (metrics.atEdge) {
-               bool isTop = metrics.pixels == 0;
-               if (isTop) {
-                 GlobalData.printLog('At the top');
-               } else {
-                 GlobalData.printLog('At the bottom');
-                 if (!bDownloading) {
-                   // 防止短時間載入過多造成OOM
-                   bDownloading = true;
-                   _updateView();
+       body: (isDark) => Container(
+         decoration: BoxDecoration(
+           gradient: LinearGradient(
+             colors: [AppColors.personalDarkBackground.getColor(),AppColors.personalLightBackground.getColor()]
+           )
+         ),
+         child: NotificationListener<ScrollEndNotification>(
+             onNotification: (scrollEnd){
+               final metrics = scrollEnd.metrics;
+               if (metrics.atEdge) {
+                 bool isTop = metrics.pixels == 0;
+                 if (isTop) {
+                   GlobalData.printLog('At the top');
+                 } else {
+                   GlobalData.printLog('At the bottom');
+                   if (!bDownloading) {
+                     // 防止短時間載入過多造成OOM
+                     bDownloading = true;
+                     _updateView();
+                   }
                  }
                }
-             }
-             return true;
-           },
-           child: CustomScrollView(
-             slivers: [
-               SliverAppBar(
-                 automaticallyImplyLeading: false,
-                 snap: false,
-                 floating: true,
-                 pinned: false,
-                 expandedHeight: UIDefine.getPixelWidth(60),
-                 backgroundColor: Colors.transparent,
-                 flexibleSpace: FlexibleSpaceBar(
-                   background: Container(
-                     decoration: BoxDecoration(
-                       borderRadius: const BorderRadius.vertical(
-                         bottom: Radius.circular(10)
-                       ),
-                       gradient: LinearGradient(
-                         colors: [AppColors.personalDarkBackground.getColor(),AppColors.personalLightBackground.getColor()], // 渐变颜色列表
+               return true;
+             },
+             child: CustomScrollView(
+               slivers: [
+                 SliverAppBar(
+                   automaticallyImplyLeading: false,
+                   snap: false,
+                   floating: true,
+                   pinned: false,
+                   expandedHeight: UIDefine.getPixelWidth(60),
+                   backgroundColor: Colors.transparent,
+                   flexibleSpace: FlexibleSpaceBar(
+                     background: Container(
+                       decoration: BoxDecoration(
+                         borderRadius: const BorderRadius.vertical(
+                           bottom: Radius.circular(10)
+                         ),
+                         gradient: LinearGradient(
+                           colors: [AppColors.personalDarkBackground.getColor(),AppColors.personalLightBackground.getColor()], // 渐变颜色列表
+                         ),
                        ),
                      ),
                    ),
-                 ),
-                 title: Container(
-                   width: UIDefine.getWidth(),
-                   child: Row(
-                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                     children: [
-                       Image.asset(AppImagePath.logoTextImage),
-                       Container(
-                         width: UIDefine.getPixelWidth(35),
-                         height: UIDefine.getPixelWidth(35),
-                         decoration: BoxDecoration(
-                           borderRadius: BorderRadius.circular(50),
-                           color: AppColors.buttonCommon.getColor().withOpacity(0.5)
-                         ),
-                         child: Image.asset(AppImagePath.shopIcon),
-                       )
-                     ],
+                   title: Container(
+                     width: UIDefine.getWidth(),
+                     child: Row(
+                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                       children: [
+                         Image.asset(AppImagePath.logoTextImage),
+                         Container(
+                           width: UIDefine.getPixelWidth(35),
+                           height: UIDefine.getPixelWidth(35),
+                           decoration: BoxDecoration(
+                             borderRadius: BorderRadius.circular(50),
+                             color: AppColors.buttonCommon.getColor().withOpacity(0.5)
+                           ),
+                           child: Image.asset(AppImagePath.shopIcon),
+                         )
+                       ],
+                     ),
                    ),
                  ),
-               ),
-               SliverToBoxAdapter(
-                 child: ListView.builder(
-                     shrinkWrap: true,
-                     physics: const NeverScrollableScrollPhysics(),
-                     itemCount: list.length,
-                     itemBuilder: (context,index){
-                       if(index == list.length-1){
-                         bDownloading = false;
-                       }
-                       return DynamicInfoView(
-                         data: list[index],
-                         index:index,
-                         onComment: (index){
-                           _onComment(index);
-                         },
-                         onFollowing: (index){
-                           _onFollowing(index);
-                         },
-                         onLike: (index){
-                           _onlike(index);
-                         },
-                         onStore: (index){
-                           _showCustomModalBottomSheet(context,stores);
-                         },
-                         onShare: (index){
-                           _onShare().then((value) => setState((){}));
-                         },
-                         showFullContext: (index){
-                           _showMore(index);
-                         },
-                       );
-                     }),
-               )
-             ],
-           )));
+                 SliverToBoxAdapter(
+                   child: ListView.builder(
+                       shrinkWrap: true,
+                       physics: const NeverScrollableScrollPhysics(),
+                       itemCount: list.length,
+                       padding: EdgeInsets.zero,
+                       itemBuilder: (context,index){
+                         if(index == list.length-1){
+                           bDownloading = false;
+                         }
+                         return DynamicInfoView(
+                           data: list[index],
+                           index:index,
+                           onComment: (index){
+                             _onComment(index);
+                           },
+                           onFollowing: (index){
+                             _onFollowing(index);
+                           },
+                           onLike: (index){
+                             _onlike(index);
+                           },
+                           onStore: (index){
+                             _showCustomModalBottomSheet(context,stores);
+                           },
+                           onShare: (index){
+                             _onShare().then((value) => setState((){}));
+                           },
+                           showFullContext: (index){
+                             _showMore(index);
+                           },
+                           showLessContext: (index){
+                             _showLess(index);
+                           },
+                         );
+                       }),
+                 )
+               ],
+             )),
+       ));
 
   }
 
@@ -190,6 +201,12 @@ class _DynamicMainPageState extends State<DynamicMainPage> {
    void _showMore(int index){
     setState(() {
       list[index].isShowMore = true;
+    });
+  }
+
+  void _showLess(int index){
+    setState(() {
+      list[index].isShowMore = false;
     });
   }
 
