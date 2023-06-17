@@ -48,6 +48,7 @@ final onGetIntFunction onShare;
 class _DynamicInfoViewState extends State<DynamicInfoView> {
   BaseViewModel viewModel = BaseViewModel();
   int currentIndex = 0;
+  double _left = 0.0;
 
   @override
   void didChangeDependencies() {
@@ -86,6 +87,8 @@ class _DynamicInfoViewState extends State<DynamicInfoView> {
   Widget _buildPhotoImage(){
     return GestureDetector(
       onTapUp: _onTapUp,
+      onPanUpdate: _onPanUpdate,
+      onPanEnd: _onPanEnd,
       child: Stack(
         children: [
           Container(
@@ -278,6 +281,40 @@ class _DynamicInfoViewState extends State<DynamicInfoView> {
         });
       }
     }
+  }
+
+  void _onPanUpdate(DragUpdateDetails tapInfo){
+    setState(() {
+      _left = tapInfo.delta.dx;
+      print('_left=${_left}');
+    });
+  }
+
+  void _onPanEnd(DragEndDetails tapInfo){
+    if(_left/ UIDefine.getWidth() >= 0.0){
+      _onSwipeRight();
+    }else{
+      _onSwipeLeft();
+
+
+    }
+  }
+
+
+  void _onSwipeLeft() {
+    setState(() {
+      if (currentIndex < widget.data.images.length - 1) {
+        currentIndex++;
+      }
+    });
+  }
+
+  void _onSwipeRight() {
+    setState(() {
+      if (currentIndex > 0) {
+        currentIndex--;
+      }
+    });
   }
 
 
