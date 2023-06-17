@@ -296,7 +296,9 @@ class _MessageMainPageState extends State<MessageMainPage> {
   }
 
   _getDataToChatRoom(BuildContext context,int index){
-    BaseViewModel().pushPage(context, PrivateMessagePage(data:list[index]));
+    BaseViewModel().pushPage(context, PrivateMessagePage(
+      // data:list[index]
+      ));
   }
 }
 

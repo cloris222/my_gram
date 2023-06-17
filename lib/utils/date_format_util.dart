@@ -8,6 +8,9 @@ class DateFormatUtil {
   ///[strFormat] 日期格式,
   ///[time] 需格式化的時間,
   ///[needLocale] 時間格式是否顯示與語言相同，預設為顯示英文格式,
+  ///
+  DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss.SSS"); // For聊天記錄
+
   String buildDataFormat(
       {required String strFormat,
       required DateTime time,
@@ -62,6 +65,24 @@ class DateFormatUtil {
     } else {
       return result;
     }
+  }
+
+    /// String 轉 DateTime
+  DateTime stringToDateTime(String value) {
+    return dateFormat.parse(value);
+  }
+
+  /// DateTime 轉 String
+  String dateTimeToString(DateTime dt) {
+    return dateFormat.format(dt);
+  }
+
+  bool compareDateTime(String t1, String t2) {
+    if (t1.isNotEmpty && t2.isNotEmpty) {
+      DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+      return dateFormat.parse(t1).isAfter(stringToDateTime(t2));
+    }
+    return false;
   }
 
   ///Increase one day & 8AM
@@ -187,4 +208,15 @@ class DateFormatUtil {
     final seconds = strDigits((duration.inSeconds.remainder(60)));
     return '${hours}h ${minutes}m ${seconds}s';
   }
+
+  //////////////message////////////
+  int timeStringToMilliseconds(String time) {
+    return dateFormat.parse(time).millisecondsSinceEpoch;
+  }
+
+  /// 取得現在時間的DateTime String
+  String getDateTimeStringNow() {
+    return dateFormat.format(DateTime.now());
+  }
+
 }
