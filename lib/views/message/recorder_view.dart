@@ -38,11 +38,12 @@ class _RecorderViewState extends State<RecorderView> {
   bool isPlayingSound = false;
   StreamSubscription? _recorderSubscription;
   StreamSubscription? _playerSubscription;
-  int _count = 0;
   double maxDuration = 1.0;
   double sliderCurrentPosition = 0.0;
   Duration? recordDuration;
   late final Directory tempDir;
+  late String timeStamp;
+  String filePath = '';
 
   @override
   void initState() {
@@ -56,6 +57,14 @@ class _RecorderViewState extends State<RecorderView> {
 
     });
     super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    cancelPlayerSubscriptions();
+    cancelRecorderSubscriptions();
+    releaseFlauto();
   }
 
   @override
@@ -119,7 +128,13 @@ class _RecorderViewState extends State<RecorderView> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         GestureDetector(
-                          onTap: (){},
+                          onTap: (){
+                            setState(() {
+                              isPlayingSound = false;
+                              isPlayAudio = false;
+                            });
+                            _onTapDel();
+                          },
                             child: Image.asset(AppImagePath.delIcon)),
                         isPlayingSound?
                         Container(
@@ -212,14 +227,17 @@ class _RecorderViewState extends State<RecorderView> {
   }
 
   Future<void> _startRecording() async {
+    filePath = '';
     recordDuration = Duration(seconds: 0);
     tempDir = await getApplicationDocumentsDirectory();
-    Directory directory = Directory(path.dirname('${tempDir.path}.mp4'));
+    timeStamp = DateTime.now().millisecondsSinceEpoch.toString();
+    Directory directory = Directory(path.dirname('${tempDir.path}/$timeStamp.mp4'));
+    filePath = directory.path;
     if (!directory.existsSync()) {
       directory.createSync();
     }
     await recorder.startRecorder(
-        toFile: '${tempDir.path}.mp4', codec: Codec.aacMP4,numChannels: 1);
+        toFile: filePath, codec: Codec.aacMP4,numChannels: 1);
     _recorderSubscription = recorder.onProgress!.listen((e) {
       if(e.duration.inSeconds>15){
         stopRecording();
@@ -229,7 +247,7 @@ class _RecorderViewState extends State<RecorderView> {
             isUtc: true);
         var timeText = DateFormat('mm:ss:SS', 'en_GB').format(date);
         setState(() {
-          recordDuration = Duration(seconds: e.duration.inSeconds);
+          recordDuration = Duration(seconds: (e.duration.inSeconds +1));
           _recorderText = timeText.substring(0, 5);
           // GlobalData.printLog('_recorderText${timeText}');
         });
@@ -272,7 +290,6 @@ class _RecorderViewState extends State<RecorderView> {
   }
 
   Future<void> _initialize() async {
-    // pathToAudio = '/sdcard/Download/temp.wav';
     _recorderText = '00:00';
     recorder = FlutterSoundRecorder();
     await recorder.openRecorder();
@@ -284,12 +301,12 @@ class _RecorderViewState extends State<RecorderView> {
   }
 
   Future<void> playAudio() async {
+    _playerText = '00:00';
     setState(() {
-      _playerText = '00:00';
       isPlayingSound = true;
     });
     player.startPlayer(
-      fromURI: '${tempDir.path}.mp4',
+      fromURI: filePath,
       codec: Codec.aacMP4, //_codec,
       numChannels: 1,
       whenFinished: (){
@@ -300,6 +317,7 @@ class _RecorderViewState extends State<RecorderView> {
     );
     _addListeners();
   }
+
 
   void _addListeners() {
     _playerSubscription = player.onProgress!.listen((e) {
@@ -320,5 +338,36 @@ class _RecorderViewState extends State<RecorderView> {
         _playerText = txt.substring(0, 5);
       });
     });
+  }
+
+  void cancelRecorderSubscriptions() {
+    if (_recorderSubscription != null) {
+      _recorderSubscription!.cancel();
+      _recorderSubscription = null;
+    }
+  }
+
+  void cancelPlayerSubscriptions() {
+    if (_playerSubscription != null) {
+      _playerSubscription!.cancel();
+      _playerSubscription = null;
+    }
+  }
+
+  Future<void> releaseFlauto() async {
+    try {
+      await player.closePlayer();
+      await recorder.closeRecorder();
+    } on Exception {
+      player.logger.e('Released unsuccessful');
+    }
+  }
+
+  Future<void> _onTapDel()async{
+    await player.closePlayer();
+    if(!recorder.isStopped){
+      recorder.closeRecorder();
+    }
+    await _initialize();
   }
 }

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:base_project/view_models/global_theme_provider.dart';
 import 'package:base_project/view_models/message/websocket/web_socket_util.dart';
 import 'package:base_project/views/app_first_page.dart';
+import 'package:base_project/views/demo.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -109,7 +110,7 @@ class _MyAppState extends ConsumerState<MyApp> {
       navigatorKey: GlobalData.globalKey,
       title: 'MyGram',
       builder: AppTextStyle.setMainTextBuilder(),
-      home: const AppFirstPage(),
+      home:  Demo(),
       // home: widget.isLogin ? const MainScreen() : const AppFirstPage(),
     );
   }

@@ -25,7 +25,7 @@ class GlobalData {
   static bool isDark = false;
 
   /// USER
-  static String userToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoibWVtYmVyIiwidXNlcklkIjoiTTAwSTYzOE9NSjkifQ.6ajO9WA8mXLnHnwPD4mateBp2p_GRxf6m_BBleqqNw4';
+  static String userToken = '';
   static String userMemberId = 'M00I638OMJ9';
 
   /// RSA Public Key
