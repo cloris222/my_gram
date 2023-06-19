@@ -1,4 +1,3 @@
-
 import '../constant/theme/global_data.dart';
 import '../models/app_shared_preferences.dart';
 import 'call_back_function.dart';
@@ -12,11 +11,11 @@ abstract class BasePrefProvider {
   /// 如果為true，則會在使用者登出後自動清除
   bool setUserTemporaryValue();
 
+  /// 是否為需要加密的資料
+  bool needEncryption();
+
   /// 設定初始值
   Future<void> initValue();
-
-  /// 初始化Provider
-  Future<void> initProvider();
 
   /// 讀取 SharedPreferencesKey 內容並轉成對應值
   Future<void> readSharedPreferencesValue();
@@ -42,11 +41,10 @@ abstract class BasePrefProvider {
       {onClickFunction? onFinish,
       onClickFunction? onUpdateFinish,
       ResponseErrorFunction? onConnectFail}) async {
-    await Future.delayed(const Duration(milliseconds: 300));
-    printLog("initProvider");
-    await initProvider();
+    await Future.delayed(Duration.zero);
 
-    if (await AppSharedPreferences.checkKey(getSharedPreferencesKey())) {
+    if (await AppSharedPreferences.checkKey(getSharedPreferencesKey(),
+        needEncryption: needEncryption())) {
       printLog("readSharedPreferencesValue");
       await readSharedPreferencesValue();
     } else {

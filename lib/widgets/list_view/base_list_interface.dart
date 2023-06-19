@@ -74,6 +74,9 @@ abstract class BaseListInterface {
   /// 如果為true，則會在使用者登出後自動清除
   bool setUserTemporaryValue();
 
+  /// 是否為需要加密的資料
+  bool needEncryption();
+
   ///-----初始化-----
 
   /// 設定初始值
@@ -84,7 +87,8 @@ abstract class BaseListInterface {
   /// 讀取 SharedPreferencesKey 內容並轉成對應值
   Future<void> readSharedPreferencesValue() async {
     if (needReadSharedPreferencesValue()) {
-      var json = await AppSharedPreferences.getJson(getSharedPreferencesKey());
+      var json = await AppSharedPreferences.getJson(getSharedPreferencesKey(),
+          needEncryption: needEncryption());
       if (json != null) {
         List<dynamic> list =
             List<dynamic>.from(json.map((x) => changeDataFromJson(x)));
@@ -103,10 +107,12 @@ abstract class BaseListInterface {
       for (int i = 0; i < currentItems.length && i < maxSize; i++) {
         preList.add(currentItems[i].toJson());
       }
-      await AppSharedPreferences.setJson(getSharedPreferencesKey(), preList);
+      await AppSharedPreferences.setJson(getSharedPreferencesKey(), preList,
+          needEncryption: needEncryption());
     } else {
       await AppSharedPreferences.setJson(getSharedPreferencesKey(),
-          List<dynamic>.from(currentItems.map((x) => x.toJson())));
+          List<dynamic>.from(currentItems.map((x) => x.toJson())),
+          needEncryption: needEncryption());
     }
   }
 
@@ -115,14 +121,15 @@ abstract class BaseListInterface {
   }
 
   Future<void> init() async {
-    await Future.delayed(const Duration(milliseconds: 300));
-    if (await AppSharedPreferences.checkKey(getSharedPreferencesKey())) {
+    await Future.delayed(Duration.zero);
+    if (await AppSharedPreferences.checkKey(getSharedPreferencesKey(),
+        needEncryption: needEncryption())) {
       await readSharedPreferencesValue();
     } else {
       await initValue();
     }
     loadingFinish();
-    initListView();
+    await initListView();
   }
 
   ///MARK: 用此function 就代表不須自動更新
@@ -141,9 +148,9 @@ abstract class BaseListInterface {
 
   Future<void> initListView() async {
     if (readAll()) {
-      readAllListView();
+      await readAllListView();
     } else {
-      _readInitListView();
+      await _readInitListView();
     }
   }
 
@@ -370,7 +377,7 @@ abstract class BaseListInterface {
               GlobalData.printLog('At the top');
             } else {
               GlobalData.printLog('At the bottom');
-              if(_isLoadSetting) {
+              if (_isLoadSetting) {
                 if (nextItems.isNotEmpty && isAutoReloadMore()) {
                   _onMorePress();
                 }
