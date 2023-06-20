@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:transparent_image/transparent_image.dart';
 import '../../constant/theme/app_colors.dart';
 
 ///MARK: 漸進式讀取圖片
@@ -111,7 +112,6 @@ class CommonNetworkImage extends StatelessWidget {
         child: Container(
             alignment: childAlignment,
             padding: childPadding,
-
             decoration: BoxDecoration(
                 image: DecorationImage(image: AssetImage(imageUrl), fit: fit),
                 borderRadius: BorderRadius.all(Radius.circular(radius)))),
@@ -124,11 +124,14 @@ class CommonNetworkImage extends StatelessWidget {
       height: height,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(radius))),
-      child: Image.asset(
-        imageUrl,
+      child: FadeInImage(
+        placeholder: MemoryImage(kTransparentImage),
         width: width,
         height: height,
         fit: fit,
+        image: AssetImage(
+          imageUrl,
+        ),
       ),
     );
   }
