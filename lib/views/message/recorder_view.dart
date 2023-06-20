@@ -100,29 +100,29 @@ class _RecorderViewState extends State<RecorderView> {
 
           ///正在錄音
           isRecording
-              ? Container(
+              ? GestureDetector(
+                onTap: (){
+                  stopRecording();
+                },
+                child: Container(
             alignment: Alignment.center,
-                  width: UIDefine.getPixelWidth(100),
-                  height: UIDefine.getPixelWidth(100),
-                  decoration: BoxDecoration(
-                      color: AppColors.buttonCommon.getColor().withOpacity(0.3),
-                      borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(50)),
-                      border: Border.all(
-                          color: Colors.red, width: UIDefine.getPixelWidth(3))),
-                  child: GestureDetector(
-                    onTap: (){
-                      stopRecording();
-                    },
-                   child: Container(
-                     width: UIDefine.getPixelWidth(15),
-                     height: UIDefine.getPixelWidth(15),
-                     decoration: BoxDecoration(
-                       color: Colors.red,
-                       borderRadius: BorderRadius.circular(3)
-                     ),
-                   ),
+                    width: UIDefine.getPixelWidth(100),
+                    height: UIDefine.getPixelWidth(100),
+                    decoration: BoxDecoration(
+                        color: AppColors.buttonCommon.getColor().withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(50)),
+                        border: Border.all(
+                            color: Colors.red, width: UIDefine.getPixelWidth(3))),
+                    child: Container(
+                      width: UIDefine.getPixelWidth(15),
+                      height: UIDefine.getPixelWidth(15),
+                      decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(3)
+                      ),
+                    ),
                   ),
-                )
+              )
               :
 
               ///預覽畫面

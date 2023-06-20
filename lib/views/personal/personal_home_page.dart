@@ -299,6 +299,7 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
           Expanded(
             child: TextButtonWidget(
               isFillWidth: true,
+              backgroundVertical: UIDefine.getPixelWidth(1),
               btnText: tr('following'),
               setMainColor: AppColors.buttonCommon,
               textColor: AppColors.textPrimary,
@@ -311,6 +312,7 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
           Expanded(
             child: TextButtonWidget(
               isFillWidth: true,
+              backgroundVertical: UIDefine.getPixelWidth(1),
               isGradient: true,
               btnText: tr('message'),
               textColor: AppColors.textBlack,
