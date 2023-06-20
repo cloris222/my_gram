@@ -1,7 +1,5 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
-import 'dart:math';
 
 import 'package:base_project/constant/theme/app_colors.dart';
 import 'package:base_project/constant/theme/app_image_path.dart';
@@ -184,7 +182,8 @@ class _RecorderViewState extends State<RecorderView> {
                         ,
                         GestureDetector(
                           onTap: (){
-                            _onSend();
+                            GlobalData.audioPath = '${tempDir.path}/$timeStamp.mp4';
+                            // _onSend();
                           },
                             child: Image.asset(AppImagePath.sendIcon,)),
                       ],

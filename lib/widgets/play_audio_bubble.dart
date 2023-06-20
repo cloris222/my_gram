@@ -1,6 +1,8 @@
 import 'package:base_project/constant/theme/app_image_path.dart';
 import 'package:base_project/constant/theme/app_text_style.dart';
+import 'package:base_project/constant/theme/global_data.dart';
 import 'package:base_project/constant/theme/ui_define.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:flutter/material.dart';
@@ -22,11 +24,11 @@ class _PlayAudioBubbleState extends State<PlayAudioBubble> {
 bool isPlaying = false;
 String playText = '00:00';
 late PlayerController controller;
-late final waveformData;
+List<double> waveformData = [];
 
   @override
   void initState() {
-    PlayerController controller = PlayerController();
+    controller = PlayerController();
    Future.delayed(Duration.zero,()async{
      waveformData = await controller.extractWaveformData(
        path: widget.path,
@@ -46,8 +48,8 @@ late final waveformData;
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: UIDefine.getWidth()*0.3,
-      height: UIDefine.getPixelWidth(60),
+      width: UIDefine.getWidth()*0.5,
+      height: UIDefine.getPixelWidth(50),
       padding: EdgeInsets.all(UIDefine.getPixelWidth(5)),
       decoration: BoxDecoration(
         gradient: LinearGradient(colors:AppGradientColors.gradientBaseColorBg.getColors()),
@@ -55,16 +57,17 @@ late final waveformData;
       ),
       child: Row(
         children: [
+          SizedBox(width: UIDefine.getPixelWidth(5),),
           GestureDetector(
             onTap: (){
               _onTap();
             },
             child: Container(
-              width: UIDefine.getPixelWidth(10),
-              height: UIDefine.getPixelWidth(10),
+              width: UIDefine.getPixelWidth(30),
+              height: UIDefine.getPixelWidth(30),
               decoration: BoxDecoration(
-                color: AppColors.buttonCommon.getColor().withOpacity(0.4),
-                borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(5))
+                color: AppColors.buttonCommon.getColor().withOpacity(0.8),
+                borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(15))
               ),
               child:
               isPlaying?
@@ -87,11 +90,23 @@ late final waveformData;
         isPlaying = true;
       });
       await controller.startPlayer(finishMode: FinishMode.stop);
+      controller.onCurrentDurationChanged.listen((event) {
+        var date = DateTime.fromMillisecondsSinceEpoch(event,
+            isUtc: true);
+        var timeText = DateFormat('mm:ss:SS', 'en_GB').format(date);
+        setState(() {
+          GlobalData.printLog('_recorderText${playText}');
+          playText = timeText.substring(0, 5);
+
+        });
+        GlobalData.printLog(event.toString());
+      });
     }else{
       setState(() {
         isPlaying = false;
       });
       await controller.pausePlayer();
+      GlobalData.printLog('controller.pausePlayer');
     }
   }
 
@@ -105,7 +120,7 @@ late final waveformData;
         playerWaveStyle: PlayerWaveStyle(
             fixedWaveColor:AppColors.bolderGrey.getColor(),
             liveWaveColor: AppColors.textBlack.getColor(),
-            spacing: 6,
+            spacing: 5,
         ),
     );
   }

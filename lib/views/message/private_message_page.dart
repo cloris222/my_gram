@@ -6,6 +6,7 @@ import 'package:base_project/constant/theme/app_colors.dart';
 import 'package:base_project/constant/theme/app_gradient_colors.dart';
 import 'package:base_project/constant/theme/app_image_path.dart';
 import 'package:base_project/constant/theme/app_text_style.dart';
+import 'package:base_project/constant/theme/global_data.dart';
 import 'package:base_project/views/message/recorder_view.dart';
 import 'package:base_project/views/sqlite/data/chat_history_sqlite.dart';
 import 'package:base_project/widgets/appbar/custom_app_bar.dart';
@@ -18,6 +19,7 @@ import 'package:photo_manager/photo_manager.dart';
 import '../../constant/theme/ui_define.dart';
 import '../../models/http/data/chat_room_data.dart';
 import '../../view_models/message/chat_room_provider.dart';
+import '../../widgets/play_audio_bubble.dart';
 import '../common_scaffold.dart';
 import 'data/message_chatroom_detail_response_data.dart';
 import '../../view_models/message/message_private_message_view_model.dart';
@@ -99,6 +101,14 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
             ),
             Column(
               children: [
+                SizedBox(height: UIDefine.getPixelWidth(10),),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    PlayAudioBubble(path: GlobalData.audioPath,),
+                    SizedBox(width: UIDefine.getPixelWidth(10),)
+                  ],
+                ),
                 Consumer(
                   builder: (context, ref, child) {
                     ref.watch(chatRoomProvider);

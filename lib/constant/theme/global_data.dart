@@ -33,6 +33,9 @@ class GlobalData {
   static String userToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoibWVtYmVyIiwidXNlcklkIjoiTTAwMDJYR1BEWkMifQ.ryzGxav0KI8OaVSZm44k9fmskE6-LhCu-0dPLxHvEv8';
   static String userMemberId = 'M000C6314L4';
 
+  ///音檔測試資料,記得刪
+  static String audioPath = '';
+
   /// RSA Public Key
   static String publicKey = '';
   static String apiSecretKey = '';
