@@ -37,6 +37,13 @@ late final waveformData;
   }
 
   @override
+  void dispose() {
+    controller.stopPlayer();                                         // Stop all registered audio players
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       width: UIDefine.getWidth()*0.3,
@@ -49,7 +56,9 @@ late final waveformData;
       child: Row(
         children: [
           GestureDetector(
-            onTap: (){},
+            onTap: (){
+              _onTap();
+            },
             child: Container(
               width: UIDefine.getPixelWidth(10),
               height: UIDefine.getPixelWidth(10),
@@ -70,6 +79,20 @@ late final waveformData;
         ],
       ),
     );
+  }
+
+  Future<void>_onTap()async{
+    if(isPlaying == false){
+      setState(() {
+        isPlaying = true;
+      });
+      await controller.startPlayer(finishMode: FinishMode.stop);
+    }else{
+      setState(() {
+        isPlaying = false;
+      });
+      await controller.pausePlayer();
+    }
   }
 
   Widget _buildAudioWave(){
