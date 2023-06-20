@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:base_project/models/http/data/dynamic_info_data.dart';
 import 'package:base_project/models/http/data/store_info_data.dart';
+import 'package:base_project/utils/pitch_data_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../models/http/data/chat_room_data.dart';
@@ -144,50 +145,14 @@ class GlobalData {
   // }
 
   static List<PairImageData> generatePairImageData(int length) {
-    return List<PairImageData>.generate(length, (index) {
-      return PairImageData(
-        images: index%2==0?photos:photos2,
-        name: 'user$index',
-        context: 'useruseruseruseruseruseruser'* (index + 1),
-      );
-    });
+   return PitchDataUtil().buildPairData();
   }
 
   static List<DynamicInfoData> generateIsRebeccaData(int length) {
-    return List<DynamicInfoData>.generate(length, (index) {
-      return DynamicInfoData(
-          avatar: GlobalData.photos[0],
-          name: 'Rebecca',
-          time: index % 2 == 0
-              ? '2023-0${index + 1}-05 12:00':
-          index>=5?
-          '2023-06-17 ${index + 5}:00'
-              :'2023-06-17 0${index + 5}:00' ,
-          context: 'contextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontext'
-              'contextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontext',
-          images: index % 2 ==0 ?GlobalData.photos:GlobalData.photos2,
-          likes: (index + 1)*1000,
-          comments: (index + 1)*2000
-      );
-    });
+    return PitchDataUtil().buildSelf(length);
   }
 
   static List<DynamicInfoData> generateNotRebeccaData(int length) {
-    return List<DynamicInfoData>.generate(length, (index) {
-      return DynamicInfoData(
-          avatar: GlobalData.photos[0],
-          name: 'Somebody',
-          time: index % 2 == 0
-              ? '2023-0${index + 1}-05 12:00':
-          index>=5?
-          '2023-06-17 ${index + 5}:00'
-              :'2023-06-17 0${index + 5}:00' ,
-          context: 'contextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontext'
-              'contextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontextcontext',
-          images: index % 2 ==0 ?GlobalData.photos:GlobalData.photos2,
-          likes: (index + 1)*1000,
-          comments: (index + 1)*2000
-      );
-    });
+    return PitchDataUtil().buildOther();
   }
 }

@@ -30,7 +30,6 @@ class CommonNetworkImage extends StatelessWidget {
   final int? cacheWidth;
   final double radius;
 
-
   /// Optional builder to further customize the display of the image.
   /// 供Container背景用
   final Widget? child;
@@ -57,6 +56,10 @@ class CommonNetworkImage extends StatelessWidget {
   }
 
   Widget _buildLoadPath() {
+    /// 判斷是否為assets 路徑的圖片
+    if (imageUrl.contains("assets/")) {
+      return _buildAssetImage();
+    }
     String lowUrl;
     if (imageUrl.contains('.')) {
       int index = imageUrl.lastIndexOf('.');
@@ -67,7 +70,9 @@ class CommonNetworkImage extends StatelessWidget {
     }
 
     return Container(
-      decoration: BoxDecoration(color: Colors.black,borderRadius: BorderRadius.all(Radius.circular(radius))),
+      decoration: BoxDecoration(
+          color: Colors.black,
+          borderRadius: BorderRadius.all(Radius.circular(radius))),
       child: CachedNetworkImage(
         width: width,
         height: height,
@@ -94,5 +99,37 @@ class CommonNetworkImage extends StatelessWidget {
             ),
             child: child)
         : imageWidgetBuilder;
+  }
+
+  /// 增加判斷是否為Asset 圖片
+  Widget _buildAssetImage() {
+    if (child != null) {
+      return Container(
+        color: Colors.black,
+        width: width,
+        height: height,
+        child: Container(
+            alignment: childAlignment,
+            padding: childPadding,
+
+            decoration: BoxDecoration(
+                image: DecorationImage(image: AssetImage(imageUrl), fit: fit),
+                borderRadius: BorderRadius.all(Radius.circular(radius)))),
+      );
+    }
+    return Container(
+      alignment: childAlignment,
+      padding: childPadding,
+      width: width,
+      height: height,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(radius))),
+      child: Image.asset(
+        imageUrl,
+        width: width,
+        height: height,
+        fit: fit,
+      ),
+    );
   }
 }
