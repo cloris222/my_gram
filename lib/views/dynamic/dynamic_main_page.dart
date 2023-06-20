@@ -83,7 +83,7 @@ class _DynamicMainPageState extends ConsumerState<DynamicMainPage> {
                    if (!bDownloading) {
                      // 防止短時間載入過多造成OOM
                      bDownloading = true;
-                     _updateView();
+                     // _updateView();
                    }
                  }
                }

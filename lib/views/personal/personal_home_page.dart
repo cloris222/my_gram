@@ -464,14 +464,25 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
           SizedBox(height: UIDefine.getPixelWidth(10),),
           Visibility(
             visible: data.link!=null,
-            child: Row(
-              children: [
-                Image.asset(AppImagePath.linkIcon),
-                GestureDetector(
-                  onTap: (){},
-                  child: Text(data.link!,style: AppTextStyle.getBaseStyle(color: AppColors.textLink,fontSize: UIDefine.fontSize14,fontWeight: FontWeight.w400),),
-                )
-              ],
+            child: Padding(
+              padding: EdgeInsets.only(left: UIDefine.getWidth()*0.04),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Image.asset(AppImagePath.linkIcon),
+                  GestureDetector(
+                    onTap: (){},
+                    child: Container(
+                      width: UIDefine.getWidth()*0.6,
+                      child: Wrap(
+                        children: [
+                          Text(data.link!,style: AppTextStyle.getBaseStyle(color: AppColors.textLink,fontSize: UIDefine.fontSize14,fontWeight: FontWeight.w400),),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
           )
         ],
