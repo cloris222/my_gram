@@ -59,6 +59,7 @@ dependencies:
   path_provider: ^2.0.15
   circle_progress_bar: ^0.1.2
   audio_waveforms: ^1.0.4
+  transparent_image: ^2.0.1
 
 dev_dependencies:
   flutter_test:

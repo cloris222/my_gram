@@ -103,7 +103,7 @@ class _SwipeImageViewState extends State<SwipeImageView>
                   child: Stack(
                     children: [
                       Container(
-                        color: Colors.black,
+                        color: AppColors.mainBackground.getColor(),
                           width: UIDefine.getWidth(),
                           height: UIDefine.getViewHeight()),
                       ///MARK:圖片本體

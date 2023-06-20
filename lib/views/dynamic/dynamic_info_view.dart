@@ -212,7 +212,7 @@ class _DynamicInfoViewState extends State<DynamicInfoView> {
                       onTap: (){
                         widget.showFullContext(widget.index);
                       },
-                        child: Text(tr('more'),style: AppTextStyle.getBaseStyle(color: AppColors.bolderGrey),))
+                        child: Text(tr('seeMore'),style: AppTextStyle.getBaseStyle(color: AppColors.bolderGrey),))
                   ],
                 )
               ],
