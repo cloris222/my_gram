@@ -113,7 +113,15 @@ class CommonNetworkImage extends StatelessWidget {
             alignment: childAlignment,
             padding: childPadding,
             decoration: BoxDecoration(
-                image: DecorationImage(image: AssetImage(imageUrl), fit: fit),
+                image: DecorationImage(
+                    image: FadeInImage(
+                      placeholder: MemoryImage(kTransparentImage),
+                      width: width,
+                      height: height,
+                      fit: fit,
+                      image: AssetImage(imageUrl),
+                    ).image,
+                    fit: fit),
                 borderRadius: BorderRadius.all(Radius.circular(radius)))),
       );
     }
@@ -126,8 +134,6 @@ class CommonNetworkImage extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(radius))),
       child: FadeInImage(
         placeholder: MemoryImage(kTransparentImage),
-        width: width,
-        height: height,
         fit: fit,
         image: AssetImage(
           imageUrl,

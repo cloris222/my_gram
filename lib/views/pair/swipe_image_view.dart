@@ -102,10 +102,6 @@ class _SwipeImageViewState extends State<SwipeImageView>
                   borderRadius: BorderRadius.circular(10),
                   child: Stack(
                     children: [
-                      Container(
-                        color: Colors.black,
-                          width: UIDefine.getWidth(),
-                          height: UIDefine.getViewHeight()),
                       ///MARK:圖片本體
                       CommonNetworkImage(
                           imageUrl: data.images[currentIndex],
