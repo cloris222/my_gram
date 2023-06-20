@@ -21,6 +21,8 @@ import 'package:path_provider/path_provider.dart';
 import '../../constant/theme/global_data.dart';
 import 'package:circle_progress_bar/circle_progress_bar.dart';
 
+import '../../view_models/message/message_private_message_view_model.dart';
+
 class RecorderView extends StatefulWidget {
   const RecorderView({Key? key}) : super(key: key);
 
@@ -43,7 +45,8 @@ class _RecorderViewState extends State<RecorderView> {
   Duration? recordDuration;
   late Directory tempDir;
   late String timeStamp;
-  String filePath = '';
+  MessagePrivateGroupMessageViewModel viewModel = MessagePrivateGroupMessageViewModel();
+  String audioFile = '';
 
   @override
   void initState() {
@@ -61,10 +64,10 @@ class _RecorderViewState extends State<RecorderView> {
 
   @override
   void dispose() {
-    super.dispose();
     cancelPlayerSubscriptions();
     cancelRecorderSubscriptions();
     releaseFlauto();
+    super.dispose();
   }
 
   @override
@@ -139,8 +142,7 @@ class _RecorderViewState extends State<RecorderView> {
                           child: CircleProgressBar(
                             animationDuration:recordDuration,
                             foregroundColor:  AppColors.mainThemeButton.getColor(),
-                            backgroundColor: AppColors.buttonCommon
-                                .getColor(),
+                            backgroundColor: AppColors.mainBackground.getColor(),
                             value: 1.0,
                             child: Container(
                               width: UIDefine.getPixelWidth(100),
@@ -181,7 +183,9 @@ class _RecorderViewState extends State<RecorderView> {
 
                         ,
                         GestureDetector(
-                          onTap: (){},
+                          onTap: (){
+                            _onSend();
+                          },
                             child: Image.asset(AppImagePath.sendIcon,)),
                       ],
                     )
@@ -223,7 +227,6 @@ class _RecorderViewState extends State<RecorderView> {
   }
 
   Future<void> _startRecording() async {
-    filePath = '';
     recordDuration = Duration(seconds: 0);
     tempDir = await getApplicationDocumentsDirectory();
     timeStamp = DateTime.now().millisecondsSinceEpoch.toString();
@@ -231,7 +234,6 @@ class _RecorderViewState extends State<RecorderView> {
     if (!directory.existsSync()) {
       directory.createSync();
     }
-    filePath = '${tempDir.path}/$timeStamp.mp4';
     await recorder.startRecorder(
         toFile: '${tempDir.path}/$timeStamp.mp4', codec: Codec.aacMP4);
     _recorderSubscription = recorder.onProgress!.listen((e) {
@@ -360,7 +362,19 @@ class _RecorderViewState extends State<RecorderView> {
       isPlayingSound = false;
       _recorderText = '00:00';
       _playerText = '00:00';
-      filePath = '';
+    });
+  }
+  
+  Future<void> _onSend()async{
+    audioFile = await viewModel.uploadFile('audio', '${tempDir.path}/$timeStamp.mp4');
+    if (await File('${tempDir.path}/$timeStamp.mp4').exists()) {
+      await File('${tempDir.path}/$timeStamp.mp4').delete();
+    }
+    setState(() {
+      isPlayAudio = false;
+      isPlayingSound = false;
+      _recorderText = '00:00';
+      _playerText = '00:00';
     });
   }
 }

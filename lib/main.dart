@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:base_project/view_models/global_theme_provider.dart';
 import 'package:base_project/view_models/message/websocket/web_socket_util.dart';
 import 'package:base_project/views/app_first_page.dart';
-import 'package:base_project/views/demo.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
