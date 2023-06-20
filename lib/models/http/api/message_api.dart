@@ -18,7 +18,7 @@ class MessageApi extends HttpManager{
     var formData = FormData();
     formData.fields.add(MapEntry('fileType', fileType));
     formData.files.add(MapEntry('file', await MultipartFile.fromFile(filePath)));
-    return post('/file/upload/chat',data: formData);
+    return post('/file/upload/chat',data: formData,);
   }
 
 

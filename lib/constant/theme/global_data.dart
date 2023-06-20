@@ -30,7 +30,7 @@ class GlobalData {
   // static String userMemberId = 'M00I638OMJ9';
 
   /// USER
-  static String userToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoibWVtYmVyIiwidXNlcklkIjoiTTAwMEM2MzE0TDQifQ.fR50QdriRo0k6GRNGwfHe8CS_ybSYDchoNMlcvOh-w0';
+  static String userToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoibWVtYmVyIiwidXNlcklkIjoiTTAwMDJYR1BEWkMifQ.ryzGxav0KI8OaVSZm44k9fmskE6-LhCu-0dPLxHvEv8';
   static String userMemberId = 'M000C6314L4';
 
   /// RSA Public Key
