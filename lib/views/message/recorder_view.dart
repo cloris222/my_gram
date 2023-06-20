@@ -32,7 +32,7 @@ class _RecorderViewState extends State<RecorderView> {
   bool isRecording = false;
   String _recorderText = '00:00';
   String _playerText = '00:00';
-  FlutterSoundPlayer player = FlutterSoundPlayer();
+  late FlutterSoundPlayer player;
   late FlutterSoundRecorder recorder;
   bool isPlayAudio = false;
   bool isPlayingSound = false;
@@ -41,14 +41,14 @@ class _RecorderViewState extends State<RecorderView> {
   double maxDuration = 1.0;
   double sliderCurrentPosition = 0.0;
   Duration? recordDuration;
-  late final Directory tempDir;
+  late Directory tempDir;
   late String timeStamp;
   String filePath = '';
 
   @override
   void initState() {
     super.initState();
-    _initialize();
+    // _initialize();
   }
 
   @override
@@ -102,7 +102,7 @@ class _RecorderViewState extends State<RecorderView> {
                   width: UIDefine.getPixelWidth(100),
                   height: UIDefine.getPixelWidth(100),
                   decoration: BoxDecoration(
-                      color: AppColors.buttonCommon.getColor().withOpacity(0.7),
+                      color: AppColors.buttonCommon.getColor().withOpacity(0.3),
                       borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(50)),
                       border: Border.all(
                           color: Colors.red, width: UIDefine.getPixelWidth(3))),
@@ -129,11 +129,7 @@ class _RecorderViewState extends State<RecorderView> {
                       children: [
                         GestureDetector(
                           onTap: (){
-                            setState(() {
-                              isPlayingSound = false;
-                              isPlayAudio = false;
-                            });
-                            _onTapDel();
+                            _deleteRecording();
                           },
                             child: Image.asset(AppImagePath.delIcon)),
                         isPlayingSound?
@@ -152,7 +148,7 @@ class _RecorderViewState extends State<RecorderView> {
                               decoration: BoxDecoration(
                                   color: AppColors.buttonCommon
                                       .getColor()
-                                      .withOpacity(0.7),
+                                      .withOpacity(0.3),
                                   borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(50)),
                                   border: Border.all(
                                       color: AppColors.mainThemeButton.getColor(),
@@ -174,7 +170,7 @@ class _RecorderViewState extends State<RecorderView> {
                             decoration: BoxDecoration(
                                 color: AppColors.buttonCommon
                                     .getColor()
-                                    .withOpacity(0.7),
+                                    .withOpacity(0.3),
                                 borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(50)),
                                 border: Border.all(
                                     color: AppColors.mainThemeButton.getColor(),
@@ -232,12 +228,12 @@ class _RecorderViewState extends State<RecorderView> {
     tempDir = await getApplicationDocumentsDirectory();
     timeStamp = DateTime.now().millisecondsSinceEpoch.toString();
     Directory directory = Directory(path.dirname('${tempDir.path}/$timeStamp.mp4'));
-    filePath = directory.path;
     if (!directory.existsSync()) {
       directory.createSync();
     }
+    filePath = '${tempDir.path}/$timeStamp.mp4';
     await recorder.startRecorder(
-        toFile: filePath, codec: Codec.aacMP4,numChannels: 1);
+        toFile: '${tempDir.path}/$timeStamp.mp4', codec: Codec.aacMP4);
     _recorderSubscription = recorder.onProgress!.listen((e) {
       if(e.duration.inSeconds>15){
         stopRecording();
@@ -249,7 +245,7 @@ class _RecorderViewState extends State<RecorderView> {
         setState(() {
           recordDuration = Duration(seconds: (e.duration.inSeconds +1));
           _recorderText = timeText.substring(0, 5);
-          // GlobalData.printLog('_recorderText${timeText}');
+          GlobalData.printLog('_recorderText${timeText}');
         });
       }
     });
@@ -257,10 +253,10 @@ class _RecorderViewState extends State<RecorderView> {
 
   Future<String?> stopRecording() async {
     setState(() {
-      _recorderSubscription!.cancel();
       isRecording = false;
       isPlayAudio = true;
     });
+    cancelRecorderSubscriptions();
     recorder.closeRecorder();
     return await recorder.stopRecorder();
   }
@@ -291,6 +287,7 @@ class _RecorderViewState extends State<RecorderView> {
 
   Future<void> _initialize() async {
     _recorderText = '00:00';
+    player = FlutterSoundPlayer();
     recorder = FlutterSoundRecorder();
     await recorder.openRecorder();
     await recorder.setSubscriptionDuration(Duration(milliseconds: 10));
@@ -306,7 +303,7 @@ class _RecorderViewState extends State<RecorderView> {
       isPlayingSound = true;
     });
     player.startPlayer(
-      fromURI: filePath,
+      fromURI: '${tempDir.path}/$timeStamp.mp4',
       codec: Codec.aacMP4, //_codec,
       numChannels: 1,
       whenFinished: (){
@@ -321,15 +318,6 @@ class _RecorderViewState extends State<RecorderView> {
 
   void _addListeners() {
     _playerSubscription = player.onProgress!.listen((e) {
-      maxDuration = e.duration.inMilliseconds.toDouble();
-      if (maxDuration <= 0) maxDuration = 0.0;
-
-      sliderCurrentPosition =
-          min(e.position.inMilliseconds.toDouble(), maxDuration);
-      if (sliderCurrentPosition < 0.0) {
-        sliderCurrentPosition = 0.0;
-      }
-
       var date = DateTime.fromMillisecondsSinceEpoch(e.position.inMilliseconds,
           isUtc: true);
       var txt = DateFormat('mm:ss:SS', 'en_GB').format(date);
@@ -363,11 +351,16 @@ class _RecorderViewState extends State<RecorderView> {
     }
   }
 
-  Future<void> _onTapDel()async{
-    await player.closePlayer();
-    if(!recorder.isStopped){
-      recorder.closeRecorder();
+  Future<void> _deleteRecording() async {
+    if (await File('${tempDir.path}/$timeStamp.mp4').exists()) {
+      await File('${tempDir.path}/$timeStamp.mp4').delete();
     }
-    await _initialize();
+    setState(() {
+      isPlayAudio = false;
+      isPlayingSound = false;
+      _recorderText = '00:00';
+      _playerText = '00:00';
+      filePath = '';
+    });
   }
 }

@@ -110,7 +110,8 @@ class _MyAppState extends ConsumerState<MyApp> {
       navigatorKey: GlobalData.globalKey,
       title: 'MyGram',
       builder: AppTextStyle.setMainTextBuilder(),
-      home:  Demo(),
+      home:AppFirstPage()
+      // home:  Demo(),
       // home: widget.isLogin ? const MainScreen() : const AppFirstPage(),
     );
   }
