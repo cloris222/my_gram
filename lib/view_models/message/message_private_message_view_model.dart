@@ -3,6 +3,7 @@ import 'package:base_project/view_models/message/websocketdata/ws_send_message_d
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../constant/theme/global_data.dart';
+import '../../models/http/api/message_api.dart';
 import '../../utils/date_format_util.dart';
 import '../../views/sqlite/data/chat_history_sqlite.dart';
 import '../base_view_model.dart';
@@ -16,6 +17,8 @@ class MessagePrivateGroupMessageViewModel extends BaseViewModel {
   int receiverAcatarId = 3;
   ChatHistorySQLite replyByMessageData = ChatHistorySQLite(); // 暫存所要回覆的訊息
   MessageChatroomDetailResponseData _chatroomDetailData = MessageChatroomDetailResponseData();
+
+  String filePrefix = '';
 
   // Future<MessageChatroomDetailResponseData> getChatroomDetail(String roomId,
   //   {ResponseErrorFunction? onConnectFail}) async {
@@ -105,5 +108,15 @@ class MessagePrivateGroupMessageViewModel extends BaseViewModel {
       chatData: chatData,
     );
     WebSocketUtil().sendMessage(data); // 發送msg -> WS
+  }
+
+  Future<void> getFilePrefix()async{
+    final data = await MessageApi().getFilePrefix();
+    filePrefix = data.data;
+  }
+
+  Future<String> uploadFile(String fileType,String filePath)async{
+    final data = await MessageApi().uploadFile(fileType, filePath);
+    return data.data;
   }
 }

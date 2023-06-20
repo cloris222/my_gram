@@ -90,8 +90,8 @@ class _AppFirstPageState extends State<AppFirstPage> {
                                       isGradient: true,
                                       btnText: tr('registerWithEmail'),
                                       onPressed: () {
-                                        BaseViewModel().pushPage(context, const MainScreen());
-                                        // BaseViewModel().pushPage(context, const LoginMainPage());
+                                        // BaseViewModel().pushPage(context, const MainScreen());
+                                        BaseViewModel().pushPage(context, const LoginMainPage());
                                       },),
                                   ],
                                 ),

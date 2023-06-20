@@ -11,6 +11,10 @@ enum AppGradientColors {
   gradientColors([
     AppColors.mainThemeButton,
     AppColors.subThemePurple,
+  ]),
+  gradientBlackGoldColors([
+    AppColors.personalDarkBackground,
+    AppColors.personalLightBackground,
   ]);
 
   final List<AppColors> list;
