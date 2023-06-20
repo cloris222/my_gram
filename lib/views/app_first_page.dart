@@ -99,18 +99,20 @@ class _AppFirstPageState extends State<AppFirstPage> {
                                   width: UIDefine.getWidth()*0.6,
                                   child: Row(
                                     children: [
-                                      Container(
-                                        width: UIDefine.getPixelWidth(50),
-                                        height: 1,
-                                        color: Colors.white.withOpacity(0.6),
+                                      Expanded(
+                                        child: Container(
+                                          margin: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(10)),
+                                          height: 1,
+                                          color: Colors.white.withOpacity(0.6),
+                                        ),
                                       ),
-                                      Expanded(child: Container()),
                                       Text(tr('otherRegisterWay'),style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize12),),
-                                      Expanded(child: Container()),
-                                      Container(
-                                        width: UIDefine.getPixelWidth(50),
-                                        height: 1,
-                                        color: Colors.white.withOpacity(0.6),
+                                      Expanded(
+                                        child: Container(
+                                          margin: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(10)),
+                                          height: 1,
+                                          color: Colors.white.withOpacity(0.6),
+                                        ),
                                       )
                                     ],
                                   ),
