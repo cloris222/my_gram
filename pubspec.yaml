@@ -114,6 +114,11 @@ flutter:
     - assets/icon/assets/1.5x/
     - assets/icon/assets/2x/
     - assets/icon/assets/3x/
+    - assets/icon/pitch/pair/
+    - assets/icon/pitch/chart/
+    - assets/icon/pitch/dynamic/self/
+    - assets/icon/pitch/dynamic/other/
+    - assets/icon/pitch/personal/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
