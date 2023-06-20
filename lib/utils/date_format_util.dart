@@ -11,13 +11,8 @@ class DateFormatUtil {
   ///
   DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss.SSS"); // For聊天記錄
 
-  String buildDataFormat(
-      {required String strFormat,
-      required DateTime time,
-      bool needLocale = false}) {
-    return DateFormat(
-            strFormat, needLocale ? LanguageUtil.getTimeLocale() : "en")
-        .format(time);
+  String buildDataFormat({required String strFormat, required DateTime time, bool needLocale = false}) {
+    return DateFormat(strFormat, needLocale ? LanguageUtil.getTimeLocale() : "en").format(time);
   }
 
   DateTime _getNow() {
@@ -67,7 +62,7 @@ class DateFormatUtil {
     }
   }
 
-    /// String 轉 DateTime
+  /// String 轉 DateTime
   DateTime stringToDateTime(String value) {
     return dateFormat.parse(value);
   }
@@ -93,19 +88,15 @@ class DateFormatUtil {
 
   ///InterestsCalculation
   String interestsCalculation(DateTime startTime, int duration) {
-    var newDate01 =
-        DateTime(startTime.year, startTime.month, startTime.day + 1);
-    var newDate02 =
-        DateTime(newDate01.year, newDate01.month, newDate01.day + duration);
+    var newDate01 = DateTime(startTime.year, startTime.month, startTime.day + 1);
+    var newDate02 = DateTime(newDate01.year, newDate01.month, newDate01.day + duration);
     return buildDataFormat(strFormat: 'yyyy-MM-dd hh:mm a', time: newDate02);
   }
 
   ///redemptionDate
   String redemptionDate(DateTime startTime, int duration) {
-    var newDate01 =
-        DateTime(startTime.year, startTime.month, startTime.day + 1, 8, 0);
-    var newDate02 = DateTime(
-        newDate01.year, newDate01.month, newDate01.day + duration + 1, 8);
+    var newDate01 = DateTime(startTime.year, startTime.month, startTime.day + 1, 8, 0);
+    var newDate02 = DateTime(newDate01.year, newDate01.month, newDate01.day + duration + 1, 8);
     return buildDataFormat(strFormat: 'yyyy-MM-dd hh:mm a', time: newDate02);
   }
 
@@ -179,16 +170,14 @@ class DateFormatUtil {
 
   ///MARK: 取得前一個月的倒數第N天
   String getPreMonthLastDay(int day) {
-    DateTime monthFirstDay =
-        DateTime.parse('${getCurrentMonthFirst()} 00:00:00');
+    DateTime monthFirstDay = DateTime.parse('${getCurrentMonthFirst()} 00:00:00');
     DateTime dateTime = monthFirstDay.subtract(Duration(days: day));
     return buildDataFormat(strFormat: 'yyyy-MM-dd', time: dateTime);
   }
 
   ///MARK: 取得後一個月的第N天
   String getNextMonthLastDay(int day) {
-    DateTime monthFirstDay =
-        DateTime.parse('${getCurrentMonthLast()} 00:00:00');
+    DateTime monthFirstDay = DateTime.parse('${getCurrentMonthLast()} 00:00:00');
     DateTime dateTime = monthFirstDay.add(Duration(days: day));
     return buildDataFormat(strFormat: 'yyyy-MM-dd', time: dateTime);
   }
@@ -219,4 +208,29 @@ class DateFormatUtil {
     return dateFormat.format(DateTime.now());
   }
 
+  /// 兩筆時間 比較是否為同一天
+  bool compareSameDay(String t1, String t2) {
+    DateFormat dateFormat = DateFormat("yyyy-MM-dd");
+    String date1 = dateFormat.format(dateFormat.parse(t1));
+    String date2 = dateFormat.format(dateFormat.parse(t2));
+    return date1 == date2;
+  }
+
+  String getTimeFormat(String sTime) {
+    if (sTime != '') {
+      DateTime dateTime = DateTime.parse(sTime);
+      sTime = DateFormat('hh:mm a').format(dateTime);
+      return sTime;
+    }
+    return '';
+  }
+
+  String timeStamptoDate(String stamp) {
+    if (stamp != '') {
+      DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(int.parse(stamp));
+      stamp = DateFormat('hh:mm a').format(dateTime);
+      return stamp;
+    }
+    return '';
+  }
 }

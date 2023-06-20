@@ -3,12 +3,12 @@ import 'dart:io';
 import 'package:base_project/view_models/global_theme_provider.dart';
 import 'package:base_project/view_models/message/websocket/web_socket_util.dart';
 import 'package:base_project/views/app_first_page.dart';
+import 'package:base_project/views/message/sqlite/chat_history_db.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'constant/theme/app_routes.dart';
 import 'constant/theme/app_text_style.dart';
 import 'constant/theme/global_data.dart';
@@ -17,9 +17,9 @@ import 'models/database/chat_history_database.dart';
 import 'utils/language_util.dart';
 import 'view_models/base_view_model.dart';
 import 'view_models/message/websocketdata/ws_ack_send_message_data.dart';
-import 'views/main_screen.dart';
+import '../../view_models/main_view_model.dart';
 
-// MainViewModel viewModel = MainViewModel();
+MainViewModel viewModel = MainViewModel();
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -42,7 +42,8 @@ Future<void> initApp() async {
   await LanguageUtil.init();
 
   /// 資料庫初始化
-  ChatHistoryDataBase.instance.database;
+  // ChatHistoryDataBase.instance.database;
+  ChatHistoryDB.instance.database2;
 
   ///MARK: 自動登入
   bool isLogin = false;
@@ -134,31 +135,14 @@ class _MyAppState extends ConsumerState<MyApp> {
     _streamSubscription = WebSocketUtil().streamController.stream.listen((message) async {
       WsAckSendMessageData data = WebSocketUtil().getACKData(message);
       if (data.message == 'SUCCESS') {
-        if (data.topic == 'chatSingle' || data.topic == 'chatGroup') {
-          if (data.action == 'message' || data.action == 'messageReply') {
-            // isSelfACK true的話, 代表是我自己訊息的ACK
-            // bool isSelfACK = data.chatData.content.senderMemberId == GlobalData.userMemberId;
-            // await viewModel.updateChatroomData(data, isSelfACK); // 存進列表DB
-            // viewModel.addHistoryToDb(data, isSelfACK); // 單則訊息 存進聊天記錄DB
-          } else if (data.action == 'stickerReply') {
-            // await viewModel.updateEmojiToDb(data);
-          } else if (data.action == 'read') {
-            // if (data.chatData.readRooms.isNotEmpty) {
-              // 編輯模式的已讀
-              // await viewModel.updateReadStatusFromEditMode(data);
-            // } else {
-              // 一般已讀
-              // await viewModel.updateReadStatus(data);
-            // }
-            if (data.topic == 'chatGroup') {
-              // 群聊的已讀 另外存已讀的member
-              // await viewModel.updateReadStatusForGroup(data);
-            }
-          } else if (data.action == 'recall') {
-            // await viewModel.updateRecallRecord(data);
-          } else if (data.action == 'update') {
-            // viewModel.addUpdateRecord(data);
-          }
+        if (data.action == 'MSG') {
+          GlobalData.printLog("the data: ${data.chatData.contentId}");
+          GlobalData.printLog("in MSG");
+          // isSelfACK true的話, 代表是我自己訊息的ACK
+          bool isSelfACK = data.chatData.receiverAvatarId == GlobalData.selfAvatar;
+
+          // await viewModel.updateChatroomData(data, isSelfACK); // 存進列表DB
+          viewModel.addHistoryToDb(data, isSelfACK); // 單則訊息 存進聊天記錄DB
         }
       }
     });
