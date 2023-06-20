@@ -75,7 +75,7 @@ class _RecorderViewState extends State<RecorderView> {
     return Container(
       width: UIDefine.getWidth(),
       height: UIDefine.getHeight(),
-      color: AppColors.mainBackground.getColor(),
+      color: AppColors.recordBackground.getColor(),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -208,7 +208,15 @@ class _RecorderViewState extends State<RecorderView> {
                           _onTap();
                         },
                           child: Image.asset(AppImagePath.goldenMicrophoneIcon)),
-                    )
+                    ),
+          SizedBox(height: UIDefine.getPixelWidth(15),),
+
+          Visibility(
+            visible: isPlayAudio == true && recordDuration!.inSeconds>=15,
+              child: Text(tr('recordMaxTime'),style: AppTextStyle.getBaseStyle(
+                  fontSize: UIDefine.fontSize14,
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.bolderGrey),))
         ],
       ),
     );
@@ -239,7 +247,7 @@ class _RecorderViewState extends State<RecorderView> {
     _recorderSubscription = recorder.onProgress!.listen((e) {
       if(e.duration.inSeconds>15){
         stopRecording();
-        recordDuration = Duration(seconds: 15);
+        recordDuration = Duration(seconds: 17);
       }else{
         var date = DateTime.fromMillisecondsSinceEpoch(e.duration.inMilliseconds,
             isUtc: true);
@@ -247,7 +255,7 @@ class _RecorderViewState extends State<RecorderView> {
         setState(() {
           recordDuration = Duration(seconds: (e.duration.inSeconds +1));
           _recorderText = timeText.substring(0, 5);
-          GlobalData.printLog('_recorderText${timeText}');
+          // GlobalData.printLog('_recorderText${timeText}');
         });
       }
     });
@@ -324,7 +332,7 @@ class _RecorderViewState extends State<RecorderView> {
           isUtc: true);
       var txt = DateFormat('mm:ss:SS', 'en_GB').format(date);
       setState(() {
-        GlobalData.printLog('_playerText${_playerText}');
+        // GlobalData.printLog('_playerText${_playerText}');
         _playerText = txt.substring(0, 5);
       });
     });

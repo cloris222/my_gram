@@ -224,7 +224,9 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                                 Positioned(
                                     bottom: UIDefine.getPixelWidth(5),
                                     right: 0,
-                                    child: GestureDetector(
+                                    child:
+                                    viewModel.textController.text == ''?
+                                    GestureDetector(
                                       onTap: () {
                                         _onTapMicrophone();
                                       },
@@ -232,22 +234,20 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                                           AppImagePath.microphoneIcon,
                                         color: showRecorder?Colors.blue:AppColors.textWhite.getColor(),
                                       ),
-                                    ))
+                                    ):
+                                    GestureDetector(
+                                      onTap: () {
+                                        viewModel.onSendMessage(
+                                            viewModel.textController.text, false);
+                                      },
+                                      child: Icon(Icons.send)
+                                    )
+                                )
                               ],
                             )
                           ],
                         ),
                       ),
-                      Container(
-                        padding:
-                            EdgeInsets.only(top: UIDefine.getPixelWidth(5)),
-                        child: InkWell(
-                            onTap: () {
-                              viewModel.onSendMessage(
-                                  viewModel.textController.text, false);
-                            },
-                            child: Icon(Icons.send)),
-                      )
                     ],
                   ),
                 ),
