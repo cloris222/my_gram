@@ -15,8 +15,8 @@ import '../../views/message/data/message_chatroom_detail_response_data.dart';
 class MessagePrivateGroupMessageViewModel extends BaseViewModel {
   final TextEditingController textController = TextEditingController();
   bool bShowReply = false; // 回覆
-  String roomId = "3";
-  String receiverAcatarId = "1";
+  String roomId = GlobalData.roomId;
+  String receiverAcatarId = GlobalData.friendAvatarId;
   String sType = '';
   ChatHistorySQLite replyByMessageData = ChatHistorySQLite(); // 暫存所要回覆的訊息
   MessageChatroomDetailResponseData _chatroomDetailData = MessageChatroomDetailResponseData();

@@ -158,7 +158,7 @@ class _SwipeImageViewState extends State<SwipeImageView>
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(data.name,
+                              Text("${data.name} ${data.age}",
                                   style: AppTextStyle.getBaseStyle(
                                     fontSize: UIDefine.fontSize36,
                                     fontWeight: FontWeight.w700,

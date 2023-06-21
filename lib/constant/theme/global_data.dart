@@ -26,16 +26,21 @@ class GlobalData {
 
   /// 樣式
   static bool isDark = false;
+  /// 固定ai id
+  static String friendAvatarId = "1";
 
   /// USER
   static String userToken = '';
   static String userMemberId = '';
   static int selfAvatar = 0;
+  static String roomId = "1";
+
 
   /// andrew
   // static String userToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoibWVtYmVyIiwidXNlcklkIjoiTTAwSTYzOE9NSjkifQ.rBPeMwYepOsnNPMHEgqM7uw-Wrua7tFINO1e-0DU8jE';
   // static String userMemberId = 'M00I638OMJ9';
   // static int selfAvatar = 4;
+  // static String roomId = "3";
 
   /// salt
   // static String userToken="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoibWVtYmVyIiwidXNlcklkIjoiTTAwMDJYR1BEWkMifQ.b0U96pRGVnr9a6A99PARjSjY7dmo8h0BWdgSLnp5G34";
@@ -49,9 +54,7 @@ class GlobalData {
   // static String userToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoibWVtYmVyIiwidXNlcklkIjoiTTAwMDJYR1BEWkMifQ.ryzGxav0KI8OaVSZm44k9fmskE6-LhCu-0dPLxHvEv8';
   // static String userMemberId = 'M000C6314L4';
 
-  /// 訊息用 (for測試用)
-  static String friendAvatarId = "1";
-  static String roomId = "1";
+
 
   /// RSA Public Key
   static String publicKey = '';
