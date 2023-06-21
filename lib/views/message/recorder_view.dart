@@ -15,10 +15,8 @@ import 'package:path/path.dart' as path;
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:path_provider/path_provider.dart';
-import '../../constant/theme/global_data.dart';
 import 'package:circle_progress_bar/circle_progress_bar.dart';
-
+import '../../constant/theme/global_data.dart';
 import '../../view_models/message/message_private_message_view_model.dart';
 
 class RecorderView extends StatefulWidget {
@@ -38,8 +36,6 @@ class _RecorderViewState extends State<RecorderView> {
   bool isPlayingSound = false;
   StreamSubscription? _recorderSubscription;
   StreamSubscription? _playerSubscription;
-  double maxDuration = 1.0;
-  double sliderCurrentPosition = 0.0;
   Duration? recordDuration;
   late Directory tempDir;
   late String timeStamp;
@@ -138,7 +134,7 @@ class _RecorderViewState extends State<RecorderView> {
                           width: UIDefine.getPixelWidth(100),
                           height: UIDefine.getPixelWidth(100),
                           child: CircleProgressBar(
-                            animationDuration:recordDuration,
+                            animationDuration: recordDuration,
                             foregroundColor:  AppColors.mainThemeButton.getColor(),
                             backgroundColor: AppColors.mainBackground.getColor(),
                             value: 1.0,
@@ -182,8 +178,8 @@ class _RecorderViewState extends State<RecorderView> {
                         ,
                         GestureDetector(
                           onTap: (){
-                            GlobalData.audioPath = '${tempDir.path}/$timeStamp.mp4';
-                            // _onSend();
+                            // GlobalData.audioPath = '${tempDir.path}/$timeStamp.mp4';
+                            _onSend();
                           },
                             child: Image.asset(AppImagePath.sendIcon,)),
                       ],
@@ -237,12 +233,12 @@ class _RecorderViewState extends State<RecorderView> {
     recordDuration = Duration(seconds: 0);
     tempDir = await getApplicationDocumentsDirectory();
     timeStamp = DateTime.now().millisecondsSinceEpoch.toString();
-    Directory directory = Directory(path.dirname('${tempDir.path}/$timeStamp.mp4'));
+    Directory directory = Directory(path.dirname('${tempDir.path}/$timeStamp.wav'));
     if (!directory.existsSync()) {
       directory.createSync();
     }
     await recorder.startRecorder(
-        toFile: '${tempDir.path}/$timeStamp.mp4', codec: Codec.aacMP4);
+        toFile: '${tempDir.path}/$timeStamp.wav', codec: Codec.pcm16WAV);
     _recorderSubscription = recorder.onProgress!.listen((e) {
       if(e.duration.inSeconds>15){
         stopRecording();
@@ -254,7 +250,7 @@ class _RecorderViewState extends State<RecorderView> {
         setState(() {
           recordDuration = Duration(seconds: (e.duration.inSeconds +1));
           _recorderText = timeText.substring(0, 5);
-          // GlobalData.printLog('_recorderText${timeText}');
+          GlobalData.printLog('_recorderText${recordDuration}');
         });
       }
     });
@@ -312,8 +308,8 @@ class _RecorderViewState extends State<RecorderView> {
       isPlayingSound = true;
     });
     player.startPlayer(
-      fromURI: '${tempDir.path}/$timeStamp.mp4',
-      codec: Codec.aacMP4, //_codec,
+      fromURI: '${tempDir.path}/$timeStamp.wav',
+      codec: Codec.pcm16WAV, //_codec,
       numChannels: 1,
       whenFinished: (){
         setState(() {
@@ -361,8 +357,8 @@ class _RecorderViewState extends State<RecorderView> {
   }
 
   Future<void> _deleteRecording() async {
-    if (await File('${tempDir.path}/$timeStamp.mp4').exists()) {
-      await File('${tempDir.path}/$timeStamp.mp4').delete();
+    if (await File('${tempDir.path}/$timeStamp.wav').exists()) {
+      await File('${tempDir.path}/$timeStamp.wav').delete();
     }
     setState(() {
       isPlayAudio = false;
@@ -373,9 +369,9 @@ class _RecorderViewState extends State<RecorderView> {
   }
   
   Future<void> _onSend()async{
-    audioFile = await viewModel.uploadFile('audio', '${tempDir.path}/$timeStamp.mp4');
-    if (await File('${tempDir.path}/$timeStamp.mp4').exists()) {
-      await File('${tempDir.path}/$timeStamp.mp4').delete();
+    audioFile = await viewModel.uploadFile('audio', '${tempDir.path}/$timeStamp.wav');
+    if (await File('${tempDir.path}/$timeStamp.wav').exists()) {
+      await File('${tempDir.path}/$timeStamp.wav').delete();
     }
     setState(() {
       isPlayAudio = false;

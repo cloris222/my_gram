@@ -60,6 +60,7 @@ dependencies:
   circle_progress_bar: ^0.1.2
   audio_waveforms: ^1.0.4
   transparent_image: ^2.0.1
+  just_waveform: ^0.0.5
 
 dev_dependencies:
   flutter_test:
