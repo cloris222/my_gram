@@ -101,6 +101,11 @@ class HttpManager {
     if (onConnectFail != null) {
       onConnectFail!(message);
     }
+    // else {
+    //   /// 預設有錯就自動顯示
+    //   var viewModel = BaseViewModel();
+    //   viewModel.showToast(viewModel.getGlobalContext(), message);
+    // }
     if (onConnectFailResponse != null) {
       onConnectFailResponse!(message, response);
     }

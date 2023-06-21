@@ -34,12 +34,20 @@ class GlobalData {
   // static String userMemberId = 'M00I638OMJ9';
 
   /// salt
-  // static String userToken="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoibWVtYmVyIiwidXNlcklkIjoiTTAwOVM1OEtORzYifQ.63kCY8TT9-2fKYb8REQLE0wFeiWdTm_jmy4PiE-JwLY";
+  // static String userToken="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoibWVtYmVyIiwidXNlcklkIjoiTTAwMDJYR1BEWkMifQ.b0U96pRGVnr9a6A99PARjSjY7dmo8h0BWdgSLnp5G34";
   // static String userMemberId="M0002XGPDZC";
+
+  /// salt001
+  // static String userToken="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoibWVtYmVyIiwidXNlcklkIjoiTTAwOVM1OEtORzYifQ.ewJ__UChoq2BQVxvf00L9tylvzKi4F_R-SpHKiJHu2w";
+  // static String userMemberId="M009S58KNG6";
 
   // Cloris
   // static String userToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoibWVtYmVyIiwidXNlcklkIjoiTTAwMDJYR1BEWkMifQ.ryzGxav0KI8OaVSZm44k9fmskE6-LhCu-0dPLxHvEv8';
   // static String userMemberId = 'M000C6314L4';
+
+  /// 訊息用 (for測試用)
+  static String friendAvatarId = "1";
+  static String roomId = "1";
 
   /// RSA Public Key
   static String publicKey = '';

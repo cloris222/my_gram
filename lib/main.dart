@@ -47,7 +47,6 @@ Future<void> initApp() async {
   ///MARK: 自動登入
   bool isLogin = false;
   try {
-    GlobalData.printLog(GlobalData.userToken);
     if (await AppSharedPreferences.getLogIn()) {
       GlobalData.userToken = await AppSharedPreferences.getToken();
       GlobalData.userMemberId = await AppSharedPreferences.getMemberID();
@@ -61,6 +60,7 @@ Future<void> initApp() async {
       }
     }
   } catch (e) {}
+  GlobalData.printLog("useToken:${GlobalData.userToken}");
   runApp(ProviderScope(child: localizations(MyApp(isLogin: isLogin))));
 }
 
