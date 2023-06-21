@@ -28,7 +28,7 @@ class GlobalData {
 
   /// USER
   static String userToken =
-      'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoibWVtYmVyIiwidXNlcklkIjoiTTAwSTYzOE9NSjkifQ.6ajO9WA8mXLnHnwPD4mateBp2p_GRxf6m_BBleqqNw4';
+      'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoibWVtYmVyIiwidXNlcklkIjoiTTAwSTYzOE9NSjkifQ.rBPeMwYepOsnNPMHEgqM7uw-Wrua7tFINO1e-0DU8jE';
   static String userMemberId = 'M00I638OMJ9';
   static int selfAvatar = 4;
 

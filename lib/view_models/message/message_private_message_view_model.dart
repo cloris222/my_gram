@@ -14,8 +14,9 @@ import '../../views/message/data/message_chatroom_detail_response_data.dart';
 class MessagePrivateGroupMessageViewModel extends BaseViewModel {
   final TextEditingController textController = TextEditingController();
   bool bShowReply = false; // 回覆
-  String roomId = "1";
-  String receiverAcatarId = "3";
+  String roomId = "3";
+  String receiverAcatarId = "1";
+  String sType = '';
   ChatHistorySQLite replyByMessageData = ChatHistorySQLite(); // 暫存所要回覆的訊息
   MessageChatroomDetailResponseData _chatroomDetailData = MessageChatroomDetailResponseData();
 
@@ -40,7 +41,7 @@ class MessagePrivateGroupMessageViewModel extends BaseViewModel {
     return false;
   }
 
-  void onSendMessage(String sContent, bool bImage) {
+  void onSendMessage(String sContent, bool bImage, String type) {
     if (!bImage) {
       // false=文字訊息 檢查是否空字串
       bool bShow = checkInputEmpty(sContent);
@@ -48,7 +49,7 @@ class MessagePrivateGroupMessageViewModel extends BaseViewModel {
         return;
       }
     }
-    // roomId = "1";
+    sType = type;
     sendMessage(bShowReply, bImage, sContent, roomId, false);
     // 清掉
     // replyByMessageData = ChatHistorySQLite(chatData: ChatData());
@@ -60,7 +61,7 @@ class MessagePrivateGroupMessageViewModel extends BaseViewModel {
 
     String sAction = 'MSG';
     String sTime = DateFormatUtil().getDateTimeStringNow();
-    String sType = 'text';
+
     if (bShowReply) {
       sAction = 'messageReply';
     }
@@ -95,7 +96,7 @@ class MessagePrivateGroupMessageViewModel extends BaseViewModel {
     ChatData chatData = ChatData(
       roomId: roomId,
       receiverAvatarId: receiverAcatarId,
-      msgType: 'TEXT',
+      msgType: sType,
       content: sContent,
       // otherSideMemberId: userInfoData.chatMemberId,
       // content: content,
@@ -109,5 +110,6 @@ class MessagePrivateGroupMessageViewModel extends BaseViewModel {
       chatData: chatData,
     );
     WebSocketUtil().sendMessage(data); // 發送msg -> WS
+    sType = '';
   }
 }

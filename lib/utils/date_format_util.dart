@@ -228,9 +228,10 @@ class DateFormatUtil {
   String timeStamptoDate(String stamp) {
     if (stamp != '') {
       DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(int.parse(stamp));
-      stamp = DateFormat('hh:mm a').format(dateTime);
+      stamp = DateFormat('hh:mm a','en_US').format(dateTime);
       return stamp;
     }
     return '';
   }
+  
 }

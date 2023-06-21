@@ -1,3 +1,4 @@
+import 'package:base_project/constant/theme/app_gradient_colors.dart';
 import 'package:base_project/utils/date_format_util.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -82,25 +83,26 @@ class _MessageViewForSelf extends ConsumerState<MessageViewForSelf> with TickerP
 
   /// 自己的泡泡
   Widget _getMyTalkBubble(bool bReply, ChatHistorySQLite data) {
-      return Container(
-        alignment: Alignment.centerRight,
-        decoration: BoxDecoration(
-            borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(12), topRight: Radius.circular(12), bottomLeft: Radius.circular(12)),
-                gradient: AppColors.myBubbleMessage
-        ),
-        child: Padding(
-            padding: EdgeInsets.fromLTRB(UIDefine.getScreenWidth(3), UIDefine.getScreenWidth(1.5),
-                UIDefine.getScreenWidth(3), UIDefine.getScreenWidth(1.5)),
-            child: ConstrainedBox(
-              constraints: BoxConstraints(maxWidth: UIDefine.getScreenWidth(48)),
-              child: Text(
-                data.content,
-                style: TextStyle(
-                    color: AppColors.textBlack.dark,
-                    fontSize: UIDefine.fontSize16),
-              ),
-            )),
-      );
-    }
+    return Container(
+      alignment: Alignment.centerRight,
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(12), topRight: Radius.circular(12), bottomLeft: Radius.circular(12)),
+          gradient: LinearGradient(colors: AppGradientColors.gradientBaseColorBg.getColors())
+      ),
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(UIDefine.getScreenWidth(3), UIDefine.getScreenWidth(1.5),
+          UIDefine.getScreenWidth(3), UIDefine.getScreenWidth(1.5)),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: UIDefine.getScreenWidth(48)),
+          child: data.msgType == "TEXT"?
+          Text(
+            data.content,
+            style: TextStyle(
+              color: AppColors.textBlack.dark,
+              fontSize: UIDefine.fontSize16),
+          ):SizedBox(width: 10,)
+        )),
+    );
+  }
 }

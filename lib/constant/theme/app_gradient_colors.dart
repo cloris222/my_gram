@@ -9,7 +9,8 @@ enum AppGradientColors {
   gradientColors([
     AppColors.mainThemeButton,
     AppColors.subThemePurple,
-  ]);
+  ]),
+  gradientOtherMessage([AppColors.messageOtherBg, AppColors.messageOtherBg]);
 
   final List<AppColors> list;
 

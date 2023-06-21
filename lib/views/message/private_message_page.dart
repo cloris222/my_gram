@@ -42,8 +42,8 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
   bool showGallery = false;
   bool sendImage = false;
   String friendName = "Rebecca";
-  String friendAvatar = "3";
-  String roomId = "1";
+  // String friendAvatar = "1";
+  // String roomId = "3";
   String sMyID = GlobalData.userMemberId;
   // var listViewKey = RectGet
   // bool bShowReply = false;
@@ -71,17 +71,16 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
     _chatMsgNotifier.addListener(() {
       if (mounted) {
         GlobalData.printLog('有收到訊息回傳: 單聊聊天室');
-        if (roomId == '') {
+        if (viewModel.roomId == '') {
           // 還沒建立聊天室 不用新增
           return;
         }
-        if (
-          _chatMsgNotifier.msgData.roomId == roomId) {
+        if (_chatMsgNotifier.msgData.roomId == viewModel.roomId) {
           // if ((_chatMsgNotifier.msgData.memberId == sMyID) ||
           //     (_chatMsgNotifier.msgData.memberId == _chatroomDetailData.chatMemberId)) {
           // 確認是當前聊天室的訊息
           showingList.insert(0, _chatMsgNotifier.msgData); // insert單則訊息
-          print('_chatMsgNotifier的資料：' + _chatMsgNotifier.msgData.message);
+          GlobalData.printLog('_chatMsgNotifier的資料：' + _chatMsgNotifier.msgData.message);
           setState(() {});
           // }
         }
@@ -138,17 +137,13 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
   @override
   Widget build(BuildContext context) {
     return CommonScaffold(
-      appBar: CustomAppBar.chatRoomAppBar(context, nickName: friendName, avatar: friendAvatar),
+      appBar: CustomAppBar.chatRoomAppBar(context, nickName: friendName, avatar: viewModel.receiverAcatarId),
       body: (isDark) => SizedBox(
         width: UIDefine.getWidth(),
         child: Stack(
           alignment: Alignment.topCenter,
           children: [
-            Container(
-              decoration: BoxDecoration(
-                gradient: AppColors.messageLinearBg
-              )
-            ),
+            Container(decoration: BoxDecoration(gradient: AppColors.messageLinearBg)),
             Column(
               children: [
                 Consumer(
@@ -247,10 +242,10 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                   Container(
                     padding: EdgeInsets.only(top: UIDefine.getPixelWidth(5)),
                     child: InkWell(
-                        onTap: () {
-                          viewModel.onSendMessage(viewModel.textController.text, false);
-                        },
-                        child: Icon(Icons.send)),
+                      onTap: () {
+                        viewModel.onSendMessage(viewModel.textController.text, false, "TEXT");
+                      },
+                      child: Icon(Icons.send)),
                   )
                 ],
               ),
@@ -265,10 +260,10 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                     ),
                     Expanded(
                       child: Container(
-                          width: UIDefine.getWidth(),
-                          child: GalleryView(
-                            ps: ps,
-                          )),
+                        width: UIDefine.getWidth(),
+                        child: GalleryView(
+                          ps: ps,
+                        )),
                     )
                   ],
                 ),
@@ -311,22 +306,22 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
     return RectGetter(
       key: listViewKey,
       child: ListView.builder(
-        reverse: true, // 倒序
-        itemCount: showingList.length,
-        itemBuilder: (context, index) {
-          _keys[index] = RectGetter.createGlobalKey();
-          return RectGetter(
-            key: _keys[index],
-            child: Padding(
-              padding: index == showingList.length - 1
-                  ? EdgeInsets.fromLTRB(UIDefine.getScreenWidth(5), UIDefine.getScreenWidth(1),
-                      UIDefine.getScreenWidth(5), UIDefine.getScreenWidth(0.5))
-                  : EdgeInsets.fromLTRB(UIDefine.getScreenWidth(5), UIDefine.getScreenWidth(0.5),
-                      UIDefine.getScreenWidth(5), UIDefine.getScreenWidth(0.5)),
-              child: _getTalkView(index),
-            ),
-          );
-        }),
+          reverse: true, // 倒序
+          itemCount: showingList.length,
+          itemBuilder: (context, index) {
+            _keys[index] = RectGetter.createGlobalKey();
+            return RectGetter(
+              key: _keys[index],
+              child: Padding(
+                padding: index == showingList.length - 1
+                    ? EdgeInsets.fromLTRB(UIDefine.getScreenWidth(5), UIDefine.getScreenWidth(1),
+                        UIDefine.getScreenWidth(5), UIDefine.getScreenWidth(0.5))
+                    : EdgeInsets.fromLTRB(UIDefine.getScreenWidth(1), UIDefine.getScreenWidth(0.5),
+                        UIDefine.getScreenWidth(1), UIDefine.getScreenWidth(0.5)),
+                child: _getTalkView(index),
+              ),
+            );
+          }),
     );
   }
 
@@ -344,21 +339,21 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
         ),
       );
     } else {
-      bool bMe = showingList[index].receiverAvatarId != GlobalData.selfAvatar;
-      return bMe
-        ? MessageViewForSelf(
-            index: index,
-            bGroup: false,
-            bOnLongPress: false, //先false
-            data: showingList[index],
-            roomDetailData: _chatroomDetailData,
-          )
-        : MessageViewForOther(
-            index: index,
-            bGroup: false,
-            bOnLongPress: false,
-            data: showingList[index],
-          );
+      // bool bMe = showingList[index].receiverAvatarId == GlobalData.selfAvatar;
+      return showingList[index].receiverAvatarId != GlobalData.selfAvatar.toString()
+      ? MessageViewForSelf(
+          index: index,
+          bGroup: false,
+          bOnLongPress: false, //先false
+          data: showingList[index],
+          roomDetailData: _chatroomDetailData,
+        )
+      : MessageViewForOther(
+          index: index,
+          bGroup: false,
+          bOnLongPress: false,
+          data: showingList[index],
+        );
     }
   }
 
@@ -376,7 +371,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
   }
 
   void _getDbDataToShow() {
-    Future<List<ChatHistorySQLite>> list = ChatHistoryDB.getHistory(1);
+    Future<List<ChatHistorySQLite>> list = ChatHistoryDB.getHistory(3);
     list.then((value) => _reverseList(value));
   }
 

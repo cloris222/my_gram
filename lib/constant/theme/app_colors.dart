@@ -44,6 +44,7 @@ enum AppColors {
   messageBackground(dark: Color(0xFF936714), light: Color(0xFF936714)),
   personalDarkBackground(dark: Color(0xFF222222), light: Color(0xFF222222)),
   personalLightBackground(dark: Color(0xFF2a1a14), light: Color(0xFF2a1a14)),
+  messageOtherBg(dark: Color(0xFF595451), light: Color(0xFF6A615C)),
 
   /// 基本顏色
   transparent(dark: Colors.transparent, light: Colors.transparent);
@@ -53,11 +54,6 @@ enum AppColors {
       colors: [Color(0xFF0D0806), Color(0xFF1D140F), Color(0xFF433125)],
       begin: Alignment.topLeft,
       end: Alignment.bottomRight);
-  static const Color otherBubbleMessage = Color.fromARGB(255, 89, 85, 82);
-  static const LinearGradient myBubbleMessage = LinearGradient(
-      colors: [Color.fromARGB(255, 227, 184, 135), Color.fromARGB(255, 222, 202, 149)],
-      begin: Alignment.centerLeft,
-      end: Alignment.centerRight);
 
   final Color dark;
   final Color light;
