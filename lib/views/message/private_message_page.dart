@@ -63,8 +63,14 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
   List<AssetEntity> showImageList = [];
   bool showRecorder = false;
 
+  String get filePrefix =>ref.read(filePrefixProvider);
+  String get filePath =>ref.read(msgFilePathProvider);
+
   @override
   initState() {
+    Future.delayed(Duration.zero,()async{
+      final prefix = await viewModel.getFilePrefix();
+    });
     super.initState();
     // Future<MessageChatroomDetailResponseData> userData = viewModel.getChatroomDetail(roomId);
     // userData.then((value) => {
@@ -105,7 +111,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    PlayAudioBubble(path: GlobalData.audioPath,),
+                    PlayAudioBubble(path:GlobalData.audioPath,),
                     SizedBox(width: UIDefine.getPixelWidth(10),)
                   ],
                 ),

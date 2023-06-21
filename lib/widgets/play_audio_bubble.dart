@@ -41,6 +41,13 @@ StreamSubscription? _playerSubscription;
 
 @override
   void initState() {
+  Future.delayed(Duration.zero,()async{
+    await msgPlayer.closePlayer();
+    await msgPlayer.openPlayer();
+    setState(() {
+
+    });
+  });
   // _init();
   super.initState();
   }
@@ -103,19 +110,12 @@ void dispose() {
 
   Future<void>_onTap()async{
   ///一開始播放
-  if(!isPlaying && !msgPlayer.isPaused){
-    //   final tempDir = await getApplicationDocumentsDirectory();
-    // String url = widget.path;
-    // String savePath = '${tempDir.path}/waveform/${widget.path}.wav';
-    // await downloadFile(url, savePath);
-    msgPlayer.openPlayer();
-    setState(() {
-      isPlaying = true;
-    });
+  if(isPlaying==false && !msgPlayer.isPaused){
     playText = '00:00';
     setState(() {
       isPlaying = true;
     });
+    await _addListeners();
     msgPlayer.startPlayer(
         fromURI: widget.path,
         codec: Codec.pcm16WAV, //_codec,
@@ -126,13 +126,16 @@ void dispose() {
         }
     );
 
-    // _addListeners();
-  }else if(!isPlaying && msgPlayer.isPaused){
+  }else if(isPlaying==false && msgPlayer.isPaused){
     ///暫停後恢復播放
     setState(() {
       isPlaying = true;
     });
     msgPlayer.resumePlayer();
+    _addListeners();
+    setState(() {
+
+    });
   }else{
     ///暫停
     setState(() {
@@ -142,13 +145,14 @@ void dispose() {
   }
 }
 
-void _addListeners() {
+Future<void> _addListeners()async{
   _playerSubscription = msgPlayer.onProgress!.listen((e) {
+    GlobalData.printLog('_addListeners');
     var date = DateTime.fromMillisecondsSinceEpoch(e.position.inMilliseconds,
         isUtc: true);
     var txt = DateFormat('mm:ss:SS', 'en_GB').format(date);
     setState(() {
-      GlobalData.printLog('_playerText${playText}');
+      GlobalData.printLog('_playerText${e.duration.inSeconds}');
       playText = txt.substring(0, 5);
     });
   });

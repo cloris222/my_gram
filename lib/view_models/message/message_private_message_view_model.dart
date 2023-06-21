@@ -10,6 +10,16 @@ import '../base_view_model.dart';
 import '../../constant/call_back_function.dart';
 import '../../views/message/data/message_chatroom_detail_response_data.dart';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+final filePrefixProvider = StateProvider<String>((ref) {
+  return '';
+});
+
+final msgFilePathProvider = StateProvider<String>((ref) {
+  return '';
+});
+
 class MessagePrivateGroupMessageViewModel extends BaseViewModel {
   final TextEditingController textController = TextEditingController();
   bool bShowReply = false; // 回覆
@@ -19,6 +29,7 @@ class MessagePrivateGroupMessageViewModel extends BaseViewModel {
   MessageChatroomDetailResponseData _chatroomDetailData = MessageChatroomDetailResponseData();
 
   String filePrefix = '';
+  String filePath = '';
 
   // Future<MessageChatroomDetailResponseData> getChatroomDetail(String roomId,
   //   {ResponseErrorFunction? onConnectFail}) async {
@@ -110,9 +121,10 @@ class MessagePrivateGroupMessageViewModel extends BaseViewModel {
     WebSocketUtil().sendMessage(data); // 發送msg -> WS
   }
 
-  Future<void> getFilePrefix()async{
+  Future<String> getFilePrefix()async{
     final data = await MessageApi().getFilePrefix();
-    filePrefix = data.data;
+    return data.data;
+
   }
 
   Future<String> uploadFile(String fileType,String filePath)async{

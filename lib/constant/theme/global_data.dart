@@ -34,7 +34,7 @@ class GlobalData {
   static String userMemberId = 'M000C6314L4';
 
   ///音檔測試資料,記得刪
-  static String audioPath = 'https://test-bucket.mygram.ai/chat/msg/audio/UPNZ220230621155058336W9M.wav';
+  static String audioPath ='https://www.mobilesringtones.com/static/p/ringtones/2023/01/09/51636/51636.mp3?title=51636_download_one_and_only_dre_ringtone_uncategorized.mp3';
 
   /// RSA Public Key
   static String publicKey = '';
