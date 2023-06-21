@@ -44,6 +44,7 @@ StreamSubscription? _playerSubscription;
   Future.delayed(Duration.zero,()async{
     await msgPlayer.closePlayer();
     await msgPlayer.openPlayer();
+
     setState(() {
 
     });
@@ -115,8 +116,8 @@ void dispose() {
     setState(() {
       isPlaying = true;
     });
-    await _addListeners();
-    msgPlayer.startPlayer(
+    await msgPlayer.setSubscriptionDuration(Duration(milliseconds: 10));
+    await msgPlayer.startPlayer(
         fromURI: widget.path,
         codec: Codec.pcm16WAV, //_codec,
         whenFinished: (){
@@ -125,6 +126,7 @@ void dispose() {
           });
         }
     );
+    _addListeners();
 
   }else if(isPlaying==false && msgPlayer.isPaused){
     ///暫停後恢復播放
@@ -146,6 +148,7 @@ void dispose() {
 }
 
 Future<void> _addListeners()async{
+  GlobalData.printLog('_addListeners');
   _playerSubscription = msgPlayer.onProgress!.listen((e) {
     GlobalData.printLog('_addListeners');
     var date = DateTime.fromMillisecondsSinceEpoch(e.position.inMilliseconds,
