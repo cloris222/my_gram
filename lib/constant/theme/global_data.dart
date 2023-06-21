@@ -49,6 +49,8 @@ class GlobalData {
   /// salt001
   // static String userToken="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoibWVtYmVyIiwidXNlcklkIjoiTTAwOVM1OEtORzYifQ.ewJ__UChoq2BQVxvf00L9tylvzKi4F_R-SpHKiJHu2w";
   // static String userMemberId="M009S58KNG6";
+  // static int selfAvatar = 5;
+  // static String roomId = "4";
 
   // Cloris
   // static String userToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoibWVtYmVyIiwidXNlcklkIjoiTTAwMDJYR1BEWkMifQ.ryzGxav0KI8OaVSZm44k9fmskE6-LhCu-0dPLxHvEv8';

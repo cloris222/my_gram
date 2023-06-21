@@ -48,7 +48,8 @@ Future<void> initApp() async {
   ///MARK: 自動登入
   bool isLogin = false;
   try {
-    if (await AppSharedPreferences.getLogIn()) {
+    /// 先不讀token 值
+    if (false||await AppSharedPreferences.getLogIn()) {
       GlobalData.userToken = await AppSharedPreferences.getToken();
       GlobalData.userMemberId = await AppSharedPreferences.getMemberID();
       if (GlobalData.userToken.isNotEmpty && GlobalData.userMemberId.isNotEmpty) {
