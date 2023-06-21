@@ -85,7 +85,7 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
     ],
     link: 'https://www.instagram.com/rebecca_mygram/',
     introduce:
-        "音樂家／樂團 \n\n PoppyCakes 主Rapper/副舞者 \n\n Pop the world with PoppyCakes! \n\n #poppycakes #rebeccamusic #rapper \n\n #rapperlife #dance #dancerlife",
+        "音樂家／樂團 \n PoppyCakes 主Rapper/副舞者 \n Pop the world with PoppyCakes! \n #poppycakes #rebeccamusic #rapper \n #rapperlife #dance #dancerlife",
   );
 
 
@@ -331,62 +331,58 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
   }
 
   Widget _buildTabBar() {
-    return TabBar(
-        labelPadding: EdgeInsets.zero,
-        controller: _tabController,
-        padding: EdgeInsets.symmetric(horizontal: 15),
-        indicator: UnderlineTabIndicator(
-          borderSide: BorderSide(
-              width: 4.0, color: AppColors.mainThemeButton.getColor()),
-          // 调整指示器的高度
-          insets: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(100)), // 调整指示器的左右间距
-        ),
-        onTap: (index) {
-          setState(() {
-            selectedIndex = index;
-          });
-        },
-        labelStyle: AppTextStyle.getBaseStyle(
-            fontSize: UIDefine.fontSize14,
-            fontWeight: FontWeight.w600),
-        unselectedLabelStyle: AppTextStyle.getBaseStyle(
-            fontSize: UIDefine.fontSize14,
-            fontWeight: FontWeight.w400,
-            color: AppColors.bolderGrey),
-        tabs: [
-          Tab(
-            height: UIDefine.getPixelWidth(40),
-            child: Container(
-              alignment: Alignment.center,
-                   height: 40,
-                   decoration: const BoxDecoration(
-                       color: Colors.transparent,
-                       border: Border(
-                         bottom: BorderSide(
-                           color: Colors.grey,
-                           width: 1.0,
-                         ),
-                       )),
-              child: Text( tr('aboutMe')),
+    return Container(
+      decoration:  BoxDecoration(
+          color: Colors.transparent,
+          border: Border(
+            bottom: BorderSide(
+              color: Colors.white.withOpacity(0.2),
+              width: 1.0,
             ),
+          )),
+      child: TabBar(
+          labelPadding: EdgeInsets.zero,
+          controller: _tabController,
+          physics: NeverScrollableScrollPhysics(),
+          padding: EdgeInsets.symmetric(horizontal: 15),
+          indicator: UnderlineTabIndicator(
+            borderSide: BorderSide(
+                width: 4.0, color: AppColors.mainThemeButton.getColor()),
+            // 调整指示器的高度
+            insets: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(100)), // 调整指示器的左右间距
           ),
-          Tab(
-            height: UIDefine.getPixelWidth(40),
-            child: Container(
-              alignment: Alignment.center,
-              height: 40,
-              decoration: const BoxDecoration(
-                  color: Colors.transparent,
-                  border: Border(
-                    bottom: BorderSide(
-                      color: Colors.grey,
-                      width: 1.0,
-                    ),
-                  )),
-              child: Text( tr('allPost')),
+          onTap: (index) {
+            setState(() {
+              _tabController.index=0;
+              selectedIndex = 0;
+            });
+          },
+          labelStyle: AppTextStyle.getBaseStyle(
+              fontSize: UIDefine.fontSize14,
+              fontWeight: FontWeight.w600),
+          unselectedLabelStyle: AppTextStyle.getBaseStyle(
+              fontSize: UIDefine.fontSize14,
+              fontWeight: FontWeight.w400,
+              color: AppColors.bolderGrey),
+          tabs: [
+            Tab(
+              height: UIDefine.getPixelWidth(40),
+              child: Container(
+                alignment: Alignment.center,
+                height: 40,
+                child: Text( tr('aboutMe')),
+              ),
             ),
-          ),
-        ]);
+            Tab(
+              height: UIDefine.getPixelWidth(40),
+              child: Container(
+                alignment: Alignment.center,
+                height: 40,
+                child: Text( tr('allPost')),
+              ),
+            ),
+          ]),
+    );
   }
 
   Widget _buildTabView(){
@@ -394,6 +390,7 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
       height: UIDefine.getHeight()*0.5,
       child: TabBarView(
           controller: _tabController,
+          physics: const NeverScrollableScrollPhysics(),
           children: [
             _aboutMeView(),
             Container()
@@ -454,37 +451,32 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
 
   Widget _buildInfoCard(){
     return Container(
-      width: UIDefine.getWidth()*0.85,
-      padding: EdgeInsets.all(UIDefine.getPixelWidth(20)),
+      width: UIDefine.getWidth(),
+      padding: EdgeInsets.symmetric(vertical:UIDefine.getPixelWidth(20),horizontal: UIDefine.getPixelWidth(15)),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         color: AppColors.bolderGrey.getColor().withOpacity(0.2)
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(data.introduce,style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize14,fontWeight: FontWeight.w400),),
+          Text(data.introduce,textAlign: TextAlign.start,style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize14,fontWeight: FontWeight.w400),),
           SizedBox(height: UIDefine.getPixelWidth(10),),
           Visibility(
             visible: data.link!=null,
-            child: Padding(
-              padding: EdgeInsets.only(left: UIDefine.getWidth()*0.04),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Image.asset(AppImagePath.linkIcon),
-                  GestureDetector(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Image.asset(AppImagePath.linkIcon),
+                SizedBox(width: UIDefine.getPixelWidth(8)),
+                Flexible(
+                  child: GestureDetector(
                     onTap: (){},
-                    child: Container(
-                      width: UIDefine.getWidth()*0.6,
-                      child: Wrap(
-                        children: [
-                          Text(data.link!,style: AppTextStyle.getBaseStyle(color: AppColors.textLink,fontSize: UIDefine.fontSize14,fontWeight: FontWeight.w400),),
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              ),
+                    child: Text(data.link!,style: AppTextStyle.getBaseStyle(color: AppColors.textLink,fontSize: UIDefine.fontSize14,fontWeight: FontWeight.w400),),
+                  ),
+                )
+              ],
             ),
           )
         ],
