@@ -4,10 +4,8 @@ import 'app_colors.dart';
 
 ///MARK: 漸層
 enum AppGradientColors {
-  gradientBaseColorBg(
-      [AppColors.mainThemeButton, AppColors.subThemePurple]),
-  gradientBaseFlipColorBg(
-      [AppColors.subThemePurple, AppColors.mainThemeButton]),
+  gradientBaseColorBg([AppColors.mainThemeButton, AppColors.subThemePurple]),
+  gradientBaseFlipColorBg([AppColors.subThemePurple, AppColors.mainThemeButton]),
   gradientColors([
     AppColors.mainThemeButton,
     AppColors.subThemePurple,
@@ -15,7 +13,8 @@ enum AppGradientColors {
   gradientBlackGoldColors([
     AppColors.personalDarkBackground,
     AppColors.personalLightBackground,
-  ]);
+  ]),
+  gradientOtherMessage([AppColors.messageOtherBg, AppColors.messageOtherBg]);
 
   final List<AppColors> list;
 

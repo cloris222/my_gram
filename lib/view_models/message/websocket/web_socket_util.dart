@@ -32,7 +32,7 @@ class WebSocketUtil {
   StreamController streamController = StreamController.broadcast(); // 流控制器，多頁面才能監聽同一流
   SocketStatus _socketStatus = SocketStatus.SocketStatusClose; // 連線狀態
   late Timer _heartBeat; // 心跳
-  final int _heartTimes = 5000; // 心跳間隔(毫秒)
+  final int _heartTimes = 6000; // 心跳間隔(毫秒)
   final int _reconnectCount = 20; // 最大重連次數
   late int _reconnectTimes = 0; // 重連次數紀錄
   late Timer _reconnectTimer; // 重連定時

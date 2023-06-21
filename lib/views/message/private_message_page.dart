@@ -5,23 +5,31 @@ import 'dart:io';
 import 'package:base_project/constant/theme/app_colors.dart';
 import 'package:base_project/constant/theme/app_gradient_colors.dart';
 import 'package:base_project/constant/theme/app_image_path.dart';
+import 'package:base_project/constant/theme/app_gradient_colors.dart';
 import 'package:base_project/constant/theme/app_text_style.dart';
 import 'package:base_project/views/message/recorder_view.dart';
-import 'package:base_project/views/sqlite/data/chat_history_sqlite.dart';
+import 'package:base_project/view_models/message/websocketdata/ws_send_message_data.dart';
+import 'package:base_project/views/message/sqlite/chat_history_db.dart';
+import 'package:base_project/views/message/widget/message_view_for_other.dart';
+import '../../constant/theme/app_style.dart';
+import '../../views/message/sqlite/data/chat_history_sqlite.dart';
 import 'package:base_project/widgets/appbar/custom_app_bar.dart';
-import 'package:base_project/widgets/label/common_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:photo_manager/photo_manager.dart';
-
+import 'package:rect_getter/rect_getter.dart';
 import '../../constant/theme/ui_define.dart';
-import '../../models/http/data/chat_room_data.dart';
 import '../../view_models/message/chat_room_provider.dart';
 import '../common_scaffold.dart';
+import 'package:base_project/constant/theme/global_data.dart';
 import 'data/message_chatroom_detail_response_data.dart';
 import '../../view_models/message/message_private_message_view_model.dart';
 import 'gallery_view.dart';
+import '../../utils/date_format_util.dart';
+import '../../views/message/data/message_view_for_updating.dart';
+import '../../views/message/widget/message_view_for_self.dart';
+import 'notifier/chat_msg_notifier.dart';
 
 class PrivateMessagePage extends ConsumerStatefulWidget {
   // final ChatRoomData data;
@@ -42,9 +50,9 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
   bool showGallery = false;
   bool sendImage = false;
   String friendName = "Rebecca";
-  String friendAvatar = "3";
-  String roomId = "1";
-
+  // String friendAvatar = "1";
+  // String roomId = "3";
+  String sMyID = GlobalData.userMemberId;
   // var listViewKey = RectGet
   // bool bShowReply = false;
   // bool bImage = false;
@@ -53,26 +61,42 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
   MessageChatroomDetailResponseData _chatroomDetailData =
       MessageChatroomDetailResponseData();
 
+  var listViewKey = RectGetter.createGlobalKey(); // 聊天訊息的ListView Key
+  List<ChatHistorySQLite> showingList = []; // 顯示雙方訊息用的DataList
+  var _keys = {}; // ListItem的key集合
   late PermissionState ps = PermissionState.notDetermined;
-
-  // final TextEditingController _textController = TextEditingController();
-
+  late ChatMsgNotifier _chatMsgNotifier; // 訊息之Notifier
   List<AssetEntity> get imageList => ref.read(chatRoomProvider);
   List<AssetEntity> showImageList = [];
   bool showRecorder = false;
 
   @override
   initState() {
-    super.initState();
-    // Future<MessageChatroomDetailResponseData> userData = viewModel.getChatroomDetail(roomId);
-    // userData.then((value) => {
-    //   _chatroomDetailData = value,
-    // bNormal = _chatroomDetailData.blockStatus != 'blocked',
-    // _updateUnreadCount(),
-    // _setUserData(),
-    // _onReadMessageForInit()
-    // });
-    // initWebSocket();
+    _getDbDataToShow();
+    _onNotifierListener();
+  }
+
+  _onNotifierListener() {
+    _chatMsgNotifier = GlobalData.chatMsgNotifier;
+    _chatMsgNotifier.addListener(() {
+      if (mounted) {
+        GlobalData.printLog('有收到訊息回傳: 單聊聊天室');
+        if (viewModel.roomId == '') {
+          // 還沒建立聊天室 不用新增
+          return;
+        }
+        if (_chatMsgNotifier.msgData.roomId == viewModel.roomId) {
+          // if ((_chatMsgNotifier.msgData.memberId == sMyID) ||
+          //     (_chatMsgNotifier.msgData.memberId == _chatroomDetailData.chatMemberId)) {
+          // 確認是當前聊天室的訊息
+          showingList.insert(0, _chatMsgNotifier.msgData); // insert單則訊息
+          GlobalData.printLog('_chatMsgNotifier的資料：' + _chatMsgNotifier.msgData.message);
+          setState(() {});
+          // }
+        }
+      }
+    });
+
   }
 
   @override
@@ -85,7 +109,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
   Widget build(BuildContext context) {
     return CommonScaffold(
       appBar: CustomAppBar.chatRoomAppBar(context,
-          nickName: friendName, avatar: friendAvatar),
+          nickName: friendName, avatar: viewModel.receiverAcatarId),
       body: (isDark) => Container(
         width: UIDefine.getWidth(),
         decoration: BoxDecoration(
@@ -94,9 +118,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
         child: Stack(
           alignment: Alignment.topCenter,
           children: [
-            Container(
-              color: Colors.transparent,
-            ),
+            Container(decoration: BoxDecoration(gradient: AppColors.messageLinearBg)),
             Column(
               children: [
                 Consumer(
@@ -104,24 +126,8 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                     ref.watch(chatRoomProvider);
                     return Expanded(
                       child: Container(
-                          // child: NotificationListener<ScrollNotification>(
-                          //   onNotification: (notification) {
-
-                          //   },
-                          // ),
-                          ),
-                      // child: showImageList.isNotEmpty
-                      // ? ListView.builder(
-                      //   shrinkWrap: true,
-                      //   itemCount: showImageList.length,
-                      //   itemBuilder: (context, index) {
-                      //     return AssetEntityImage(
-                      //       showImageList[index],
-                      //       width: UIDefine.getPixelWidth(200),
-                      //       height: UIDefine.getPixelWidth(200),
-                      //     );
-                      //   })
-                      // : Container(),
+                        child: _buildListView(),
+                      ),
                     );
                   },
                 ),
@@ -131,69 +137,61 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
           ],
         ),
       ),
-      // bottomNavigationBar: _getBottomNavigationBar()
     );
   }
 
   _getBottomNavigationBar() {
     return Padding(
-        padding: MediaQuery.of(context).viewInsets,
-        child: Container(
-            height: showGallery || showRecorder
-                ? UIDefine.getHeight() * 0.4
-                : UIDefine.getPixelWidth(40),
-            child: Column(
-              children: [
-                Container(
-                  padding: EdgeInsets.only(
-                      right: UIDefine.getPixelWidth(8),
-                      bottom: UIDefine.getPixelWidth(5)),
-                  width: UIDefine.getWidth(),
-                  height: UIDefine.getPixelWidth(40),
-                  decoration: BoxDecoration(
+      padding: MediaQuery.of(context).viewInsets,
+      child: Container(
+        height: showGallery||showRecorder ? UIDefine.getHeight() * 0.4 : UIDefine.getPixelWidth(40),
+        child: Column(
+          children: [
+            Container(
+              padding: EdgeInsets.only(right: UIDefine.getPixelWidth(8), bottom: UIDefine.getPixelWidth(5)),
+              width: UIDefine.getWidth(),
+              height: UIDefine.getPixelWidth(40),
+              decoration: BoxDecoration(color: AppColors.dialogBackground.getColor(), boxShadow: [
+                BoxShadow(
+                  color: Colors.black12,
+                  blurRadius: 1,
+                  spreadRadius: 0,
+                  offset: Offset(0, 0),
+                )
+              ]),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(top: UIDefine.getPixelWidth(7)),
+                    width: UIDefine.getWidth() * 0.85,
+                    height: UIDefine.getPixelWidth(40),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(14),
                       color: AppColors.dialogBackground.getColor(),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black12,
-                          blurRadius: 1,
-                          spreadRadius: 0,
-                          offset: Offset(0, 0),
-                        )
-                      ]),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        padding:
-                            EdgeInsets.only(top: UIDefine.getPixelWidth(7)),
-                        width: UIDefine.getWidth() * 0.85,
-                        height: UIDefine.getPixelWidth(40),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(14),
-                          color: AppColors.dialogBackground.getColor(),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            ///工具列
-                            SizedBox(width: UIDefine.getPixelWidth(10)),
-                            InkWell(onTap: () {}, child: Icon(Icons.add)),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        ///工具列
+                        SizedBox(width: UIDefine.getPixelWidth(10)),
+                        InkWell(onTap: () {}, child: Icon(Icons.add)),
 
                             ///拍照
                             SizedBox(width: UIDefine.getPixelWidth(10)),
                             InkWell(
                                 onTap: () {}, child: Icon(Icons.photo_camera)),
 
-                            ///相簿
-                            SizedBox(width: UIDefine.getPixelWidth(10)),
-                            InkWell(
-                                onTap: () {
-                                  _openGallery();
-                                },
-                                child: Icon(Icons.photo)),
-                            SizedBox(width: UIDefine.getPixelWidth(10)),
+                        ///相簿
+                        SizedBox(width: UIDefine.getPixelWidth(10)),
+                        InkWell(
+                            onTap: () {
+                              _openGallery();
+                            },
+                            child: Icon(Icons.photo)),
+                        SizedBox(width: UIDefine.getPixelWidth(10)),
 
                             Stack(
                               children: [
@@ -237,8 +235,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                                     ):
                                     GestureDetector(
                                       onTap: () {
-                                        viewModel.onSendMessage(
-                                            viewModel.textController.text, false);
+                                        viewModel.onSendMessage(viewModel.textController.text, false, "TEXT");
                                       },
                                       child: Icon(Icons.send)
                                     )
@@ -287,7 +284,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                         ],
                       )),
                 )
-                        : SizedBox()
+                        : SizedBox(height: 0,)
               ],
             )));
   }
@@ -325,4 +322,105 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
       showImageList.addAll(imageList);
     });
   }
+
+  Widget _buildListView() {
+    return RectGetter(
+      key: listViewKey,
+      child: ListView.builder(
+          reverse: true, // 倒序
+          itemCount: showingList.length,
+          itemBuilder: (context, index) {
+            _keys[index] = RectGetter.createGlobalKey();
+            return RectGetter(
+              key: _keys[index],
+              child: Padding(
+                padding: index == showingList.length - 1
+                    ? EdgeInsets.fromLTRB(UIDefine.getScreenWidth(5), UIDefine.getScreenWidth(1),
+                        UIDefine.getScreenWidth(5), UIDefine.getScreenWidth(0.5))
+                    : EdgeInsets.fromLTRB(UIDefine.getScreenWidth(1), UIDefine.getScreenWidth(0.5),
+                        UIDefine.getScreenWidth(1), UIDefine.getScreenWidth(0.5)),
+                child: _getTalkView(index),
+              ),
+            );
+          }),
+    );
+  }
+
+  Widget _getTalkView(int index) {
+    if (showingList[index].timestamp == 0) {
+      // 空值為顯示日期的View
+      return Container(
+        padding: const EdgeInsets.all(5),
+        margin: EdgeInsets.only(right: UIDefine.getScreenWidth(28), left: UIDefine.getScreenWidth(28)),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(borderRadius: const BorderRadius.all(Radius.circular(10)), color: Colors.blue),
+        child: Text(
+          _getDateFormat(index - 1),
+          style: TextStyle(color: Colors.yellow, fontSize: UIDefine.fontSize12),
+        ),
+      );
+    } else {
+      // bool bMe = showingList[index].receiverAvatarId == GlobalData.selfAvatar;
+      return showingList[index].receiverAvatarId != GlobalData.selfAvatar.toString()
+      ? MessageViewForSelf(
+          index: index,
+          bGroup: false,
+          bOnLongPress: false, //先false
+          data: showingList[index],
+          roomDetailData: _chatroomDetailData,
+        )
+      : MessageViewForOther(
+          index: index,
+          bGroup: false,
+          bOnLongPress: false,
+          data: showingList[index],
+        );
+    }
+  }
+
+  /// 取時間為 西元年月日
+  String _getDateFormat(int index) {
+    if (showingList.isNotEmpty) {
+      String sTime = showingList[index].timestamp.toString();
+      if (sTime != '') {
+        DateTime dateTime = DateTime.parse(sTime);
+        sTime = DateFormat('yyyy-MM-dd').format(dateTime);
+        return sTime;
+      }
+    }
+    return '';
+  }
+
+  void _getDbDataToShow() {
+    Future<List<ChatHistorySQLite>> list = ChatHistoryDB.getHistory(3);
+    list.then((value) => _reverseList(value));
+  }
+
+  Future<void> _reverseList(List<ChatHistorySQLite> tempList) async {
+    showingList = tempList.reversed.toList();
+    setState(() {});
+  }
+
+  // void _setUserData() {
+  //   userData.memberId = _chatroomDetailData.chatMemberId;
+  //   userData.nickname = _chatroomDetailData.chatNickName;
+  //   userData.userId = _chatroomDetailData.chatUid;
+  //   userData.avatar = _chatroomDetailData.chatAvatar;
+  //   userData.mark = _chatroomDetailData.chatMemberMark;
+
+  //   ChatroomListSQLiteData dbData = ChatroomListSQLiteData();
+  //   dbData.roomId = roomId;
+  //   dbData.roomType = 'single';
+  //   dbData.blockStatus = _chatroomDetailData.blockStatus;
+  //   dbData.chatMemberMark = _chatroomDetailData.chatMemberMark;
+  //   dbData.uId = _chatroomDetailData.chatUid;
+  //   dbData.avatar = _chatroomDetailData.chatAvatar;
+  //   dbData.memberId = _chatroomDetailData.chatMemberId;
+  //   dbData.readTimeStatus = _chatroomDetailData.readTimeStatus;
+  //   ChatroomListDB.updateChatRoomDetail(dbData);
+
+  //   bReadTimeStatus = _chatroomDetailData.readTimeStatus == 'enable';
+
+  //   setState(() {});
+  // }
 }

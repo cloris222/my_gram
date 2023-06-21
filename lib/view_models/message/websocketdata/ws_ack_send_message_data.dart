@@ -13,27 +13,26 @@ class WsAckSendMessageData {
     required this.chatData,
     this.code = '',
     this.message = '',
-    this.timestamp = 0,
+    this.timestamp = '',
   });
 
   String action; // 訊息:message、已讀:read、收回:recall、emoji回應:stickerReply、訊息回應:messageReply
   ChatData chatData;
   String code;
   String message;
-  int timestamp;
+  String timestamp;
   String topic;
 
   factory WsAckSendMessageData.fromJson(Map<String, dynamic> json) => WsAckSendMessageData(
     topic: json["topic"] ?? '',
     action: json["action"] ?? '',
-    chatData: 
-    // ChatData.fromJson(json["chatData"]),
-    json["chatData"] != null
-      ? ChatData.fromJson(json["chatData"])
+    chatData: json["chatData"] != null
+      // ? ChatData.fromJson(json['chatData'])
+      ? ChatData.fromJson((jsonDecode(json['chatData'])))
       : ChatData(),
     code: json["code"] ?? '',
     message: json["message"] ?? '',
-    timestamp: json["timestamp"] ?? -1,
+    timestamp: (json["timestamp"] ?? 0).toString(),
   );
 
   Map<String, dynamic> toJson() => {
