@@ -6,6 +6,7 @@ import 'package:base_project/constant/theme/global_data.dart';
 import 'package:base_project/constant/theme/ui_define.dart';
 import 'package:base_project/models/http/data/personal_info_data.dart';
 import 'package:base_project/models/http/data/post_info_data.dart';
+import 'package:base_project/utils/pitch_data_util.dart';
 import 'package:base_project/view_models/base_view_model.dart';
 import 'package:base_project/views/main_screen.dart';
 import 'package:base_project/views/personal/personal_info_view.dart';
@@ -42,7 +43,7 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
   PersonalInfoData data = PersonalInfoData(
     avatar: GlobalData.photos[0],
     name: 'bbb',
-    totalPosts: 15,
+    totalPosts: 8,
     fans: ['qqq', '222', 'ttt'],
     posts: [
       PostInfoData(
@@ -82,15 +83,17 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
           context: 'texttexttexttexttexttextvtexttexttexttext',
           images: GlobalData.photos2)
     ],
-    link: 'http://youtube.com/teresa4523',
+    link: 'https://www.instagram.com/rebecca_mygram/',
     introduce:
-        'texttexttexttexttexttextvtexttexttexttextcontextcontextcontextcontextcontextcontextcontexttexttexttexttexttexttextvtexttexttexttextcontextcontextcontextcontextcontextcontextcontext',
+        "音樂家／樂團 \n\n PoppyCakes 主Rapper/副舞者 \n\n Pop the world with PoppyCakes! \n\n #poppycakes #rebeccamusic #rapper \n\n #rapperlife #dance #dancerlife",
   );
 
 
 
   @override
   void initState() {
+    data.posts=PitchDataUtil().buildSelfPostData();
+    data.avatar=PitchDataUtil().getAvatar(MyGramAI.Rebecca);
     _tabController = TabController(length: 2, vsync: this, initialIndex: 0);
     super.initState();
   }
@@ -296,6 +299,7 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
           Expanded(
             child: TextButtonWidget(
               isFillWidth: true,
+              backgroundVertical: UIDefine.getPixelWidth(1),
               btnText: tr('following'),
               setMainColor: AppColors.buttonCommon,
               textColor: AppColors.textPrimary,
@@ -308,6 +312,7 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
           Expanded(
             child: TextButtonWidget(
               isFillWidth: true,
+              backgroundVertical: UIDefine.getPixelWidth(1),
               isGradient: true,
               btnText: tr('message'),
               textColor: AppColors.textBlack,
@@ -461,14 +466,25 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
           SizedBox(height: UIDefine.getPixelWidth(10),),
           Visibility(
             visible: data.link!=null,
-            child: Row(
-              children: [
-                Image.asset(AppImagePath.linkIcon),
-                GestureDetector(
-                  onTap: (){},
-                  child: Text(data.link!,style: AppTextStyle.getBaseStyle(color: AppColors.textLink,fontSize: UIDefine.fontSize14,fontWeight: FontWeight.w400),),
-                )
-              ],
+            child: Padding(
+              padding: EdgeInsets.only(left: UIDefine.getWidth()*0.04),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Image.asset(AppImagePath.linkIcon),
+                  GestureDetector(
+                    onTap: (){},
+                    child: Container(
+                      width: UIDefine.getWidth()*0.6,
+                      child: Wrap(
+                        children: [
+                          Text(data.link!,style: AppTextStyle.getBaseStyle(color: AppColors.textLink,fontSize: UIDefine.fontSize14,fontWeight: FontWeight.w400),),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
           )
         ],

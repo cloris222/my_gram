@@ -133,7 +133,9 @@ class _CommentItemViewState extends State<CommentItemView>
       child: Container(
         constraints: BoxConstraints(minWidth: UIDefine.getPixelWidth(60)),
         decoration: AppStyle().styleColorBorderBackground(
-            radius: 25, color: color.getColor(), backgroundColor: Colors.transparent),
+            radius: 25,
+            color: color.getColor(),
+            backgroundColor: Colors.transparent),
         padding: EdgeInsets.all(UIDefine.getPixelWidth(5)),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -231,6 +233,11 @@ class _CommentItemViewState extends State<CommentItemView>
 
   @override
   bool setUserTemporaryValue() {
+    return false;
+  }
+
+  @override
+  bool needEncryption() {
     return false;
   }
 }

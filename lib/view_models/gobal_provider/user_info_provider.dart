@@ -17,8 +17,8 @@ class UserInfoNotifier extends StateNotifier<UserInfoData?> {
 
   Future<void> loginWithMail(
       {required String email, required String password}) async {
-    var response =
-        await UserAPI().loginWithEmail(email: email, password: password);
+    var response = await UserAPI(addToken: false)
+        .loginWithEmail(email: email, password: password);
 
     _saveUserData(response);
   }
@@ -28,7 +28,7 @@ class UserInfoNotifier extends StateNotifier<UserInfoData?> {
   }
 
   Future<void> registerWithMail({required RegisterData data}) async {
-    var response = await UserAPI().registerWithEmail(data: data);
+    var response = await UserAPI(addToken: false).registerWithEmail(data: data);
     _saveUserData(response);
   }
 

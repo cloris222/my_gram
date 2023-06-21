@@ -1,6 +1,13 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:base_project/constant/theme/app_colors.dart';
 import 'package:base_project/constant/theme/app_gradient_colors.dart';
+import 'package:base_project/constant/theme/app_image_path.dart';
+import 'package:base_project/constant/theme/app_gradient_colors.dart';
 import 'package:base_project/constant/theme/app_text_style.dart';
+import 'package:base_project/views/message/recorder_view.dart';
 import 'package:base_project/view_models/message/websocketdata/ws_send_message_data.dart';
 import 'package:base_project/views/message/sqlite/chat_history_db.dart';
 import 'package:base_project/views/message/widget/message_view_for_other.dart';
@@ -37,7 +44,8 @@ class PrivateMessagePage extends ConsumerStatefulWidget {
 }
 
 class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
-  MessagePrivateGroupMessageViewModel viewModel = MessagePrivateGroupMessageViewModel();
+  MessagePrivateGroupMessageViewModel viewModel =
+      MessagePrivateGroupMessageViewModel();
 
   bool showGallery = false;
   bool sendImage = false;
@@ -50,7 +58,8 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
   // bool bImage = false;
   // bool bGroup = false;
   ChatHistorySQLite replyByMessageData = ChatHistorySQLite();
-  MessageChatroomDetailResponseData _chatroomDetailData = MessageChatroomDetailResponseData();
+  MessageChatroomDetailResponseData _chatroomDetailData =
+      MessageChatroomDetailResponseData();
 
   var listViewKey = RectGetter.createGlobalKey(); // 聊天訊息的ListView Key
   List<ChatHistorySQLite> showingList = []; // 顯示雙方訊息用的DataList
@@ -59,6 +68,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
   late ChatMsgNotifier _chatMsgNotifier; // 訊息之Notifier
   List<AssetEntity> get imageList => ref.read(chatRoomProvider);
   List<AssetEntity> showImageList = [];
+  bool showRecorder = false;
 
   @override
   initState() {
@@ -87,45 +97,6 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
       }
     });
 
-    // _emojiNotifier = GlobalData.emojiNotifier;
-    // _emojiNotifier.addListener(() async {
-    //   if (_emojiNotifier.emojiData.roomId == roomId && mounted) {
-    //     // 確認是當前聊天室的emoji
-    //     GlobalData.printLog('有收到emoji回傳: 單聊聊天室');
-    //     for (int i = 0; i < showingList.length; i++) {
-    //       if (showingList[i].contentId == _emojiNotifier.emojiData.contentId) {
-    //         // 找出該條訊息的index
-    //         await _getEmojiHistoryByContentId(i); // 透過index去抓DB資料 取出頭像跟Uid
-    //         break;
-    //       }
-    //     }
-    //   }
-    // });
-    // _readNotifier = GlobalData.readNotifier;
-    // _readNotifier.addListener(() {
-    //   if (_readNotifier.roomId == roomId && mounted) {
-    //     if (bReadTimeStatus) {
-    //       // 有開啟已讀功能才做更新 不然先存著就好
-    //       _getDbDataToShow(); // 取DB資料顯示
-    //     }
-    //   }
-    // });
-    // _saveMsgNotifier = GlobalData.saveMsgNotifier;
-    // _saveMsgNotifier.addListener(() {
-    //   // 點推播進來的 讓Main去跑聊天資料 跑完會在這接到通知才做更新
-    //   if (mounted) {
-    //     GlobalData.printLog('收到init完成通知 單聊聊天室刷新頁面');
-    //     _getDbDataToShow(); // 取DB資料顯示
-    //     _onReadMessage(roomId, _chatroomDetailData.chatMemberId);
-    //     _updateUnreadCount();
-    //   }
-    // });
-    // _recallMsgNotifier = GlobalData.recallMsgNotifier;
-    // _recallMsgNotifier.addListener(() {
-    //   if (_recallMsgNotifier.roomId == roomId && mounted) {
-    //     _getDbDataToShow();
-    //   }
-    // });
   }
 
   @override
@@ -137,9 +108,13 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
   @override
   Widget build(BuildContext context) {
     return CommonScaffold(
-      appBar: CustomAppBar.chatRoomAppBar(context, nickName: friendName, avatar: viewModel.receiverAcatarId),
-      body: (isDark) => SizedBox(
+      appBar: CustomAppBar.chatRoomAppBar(context,
+          nickName: friendName, avatar: viewModel.receiverAcatarId),
+      body: (isDark) => Container(
         width: UIDefine.getWidth(),
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+                colors: AppGradientColors.gradientBlackGoldColors.getColors())),
         child: Stack(
           alignment: Alignment.topCenter,
           children: [
@@ -169,7 +144,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
     return Padding(
       padding: MediaQuery.of(context).viewInsets,
       child: Container(
-        height: showGallery ? UIDefine.getHeight() * 0.4 : UIDefine.getPixelWidth(40),
+        height: showGallery||showRecorder ? UIDefine.getHeight() * 0.4 : UIDefine.getPixelWidth(40),
         child: Column(
           children: [
             Container(
@@ -204,9 +179,10 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                         SizedBox(width: UIDefine.getPixelWidth(10)),
                         InkWell(onTap: () {}, child: Icon(Icons.add)),
 
-                        ///拍照
-                        SizedBox(width: UIDefine.getPixelWidth(10)),
-                        InkWell(onTap: () {}, child: Icon(Icons.photo_camera)),
+                            ///拍照
+                            SizedBox(width: UIDefine.getPixelWidth(10)),
+                            InkWell(
+                                onTap: () {}, child: Icon(Icons.photo_camera)),
 
                         ///相簿
                         SizedBox(width: UIDefine.getPixelWidth(10)),
@@ -217,62 +193,100 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                             child: Icon(Icons.photo)),
                         SizedBox(width: UIDefine.getPixelWidth(10)),
 
-                        ///輸入框
-                        Flexible(
-                            child: Container(
-                          padding: EdgeInsets.only(bottom: UIDefine.getPixelWidth(2)),
-                          child: TextField(
-                            // focusNode: _focusNode,
-                            controller: viewModel.textController,
-                            style: AppTextStyle.getBaseStyle(
-                                color: AppColors.buttonPrimaryText, fontSize: UIDefine.fontSize12),
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: tr('writeAMessage'),
-                              hintStyle: AppTextStyle.getBaseStyle(
-                                  fontSize: UIDefine.fontSize12, color: AppColors.textPrimary),
-                              fillColor: AppColors.bolderGrey.getColor(),
-                              filled: true,
-                            ),
-                          ),
-                        )),
-                      ],
-                    ),
+                            Stack(
+                              children: [
+                                ///輸入框
+                                Container(
+                                  width: UIDefine.getPixelWidth(180),
+                                  height: UIDefine.getPixelWidth(40),
+                                  padding: EdgeInsets.only(
+                                      bottom: UIDefine.getPixelWidth(2)),
+                                  child: TextField(
+                                    // focusNode: _focusNode,
+                                    controller: viewModel.textController,
+                                    style: AppTextStyle.getBaseStyle(
+                                        color: AppColors.buttonPrimaryText,
+                                        fontSize: UIDefine.fontSize12),
+                                    decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      hintText: tr('writeAMessage'),
+                                      hintStyle: AppTextStyle.getBaseStyle(
+                                          fontSize: UIDefine.fontSize12,
+                                          color: AppColors.textPrimary),
+                                      fillColor:
+                                          AppColors.bolderGrey.getColor(),
+                                      filled: true,
+                                    ),
+                                  ),
+                                ),
+                                Positioned(
+                                    bottom: UIDefine.getPixelWidth(5),
+                                    right: 0,
+                                    child:
+                                    viewModel.textController.text == ''?
+                                    GestureDetector(
+                                      onTap: () {
+                                        _onTapMicrophone();
+                                      },
+                                      child: Image.asset(
+                                          AppImagePath.microphoneIcon,
+                                        color: showRecorder?Colors.blue:AppColors.textWhite.getColor(),
+                                      ),
+                                    ):
+                                    GestureDetector(
+                                      onTap: () {
+                                        viewModel.onSendMessage(viewModel.textController.text, false, "TEXT");
+                                      },
+                                      child: Icon(Icons.send)
+                                    )
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                  Container(
-                    padding: EdgeInsets.only(top: UIDefine.getPixelWidth(5)),
-                    child: InkWell(
-                      onTap: () {
-                        viewModel.onSendMessage(viewModel.textController.text, false, "TEXT");
-                      },
-                      child: Icon(Icons.send)),
-                  )
-                ],
-              ),
-            ),
-            Flexible(
-              child: Visibility(
-                visible: showGallery,
-                child: Column(
-                  children: [
-                    Divider(
-                      height: 1.0,
-                    ),
-                    Expanded(
-                      child: Container(
-                        width: UIDefine.getWidth(),
-                        child: GalleryView(
-                          ps: ps,
-                        )),
-                    )
-                  ],
                 ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+                showGallery
+                    ? Flexible(
+                        child: Visibility(
+                            visible: showGallery,
+                            child: Column(
+                              children: [
+                                Divider(
+                                  height: 1.0,
+                                ),
+                                Expanded(
+                                  child: Container(
+                                      width: UIDefine.getWidth(),
+                                      child: GalleryView(
+                                        ps: ps,
+                                      )),
+                                )
+                              ],
+                            )),
+                      )
+                    : showRecorder
+                        ? Flexible(
+                  child: Visibility(
+                      visible: showRecorder,
+                      child: Column(
+                        children: [
+                          Divider(
+                            height: 1.0,
+                          ),
+                          Expanded(
+                            child: Container(
+                                width: UIDefine.getWidth(),
+                                child: RecorderView()),
+                          )
+                        ],
+                      )),
+                )
+                        : SizedBox(height: 0,)
+              ],
+            )));
   }
 
   Future<void> _openGallery() async {
@@ -295,6 +309,13 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
   //     showGallery = false;
   //   });
   // }
+
+  void _onTapMicrophone() {
+    setState(() {
+      print('showRecorder');
+      showRecorder = !showRecorder;
+    });
+  }
 
   Future<void> _sendImage() async {
     setState(() {

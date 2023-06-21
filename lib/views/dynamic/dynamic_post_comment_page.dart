@@ -289,4 +289,9 @@ class _DynamicPostCommentPageState extends State<DynamicPostCommentPage>
       ref.read(replyCommentProvider.notifier).state = null;
     }
   }
+
+  @override
+  bool needEncryption() {
+    return false;
+  }
 }

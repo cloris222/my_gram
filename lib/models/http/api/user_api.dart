@@ -8,7 +8,7 @@ import '../data/register_data.dart';
 import '../http_setting.dart';
 
 class UserAPI extends HttpManager {
-  UserAPI({super.onConnectFail, super.baseUrl = HttpSetting.appUrl});
+  UserAPI({super.onConnectFail, super.baseUrl = HttpSetting.appUrl,super.addToken});
 
   /// 登入email
   Future<ApiResponse> loginWithEmail(

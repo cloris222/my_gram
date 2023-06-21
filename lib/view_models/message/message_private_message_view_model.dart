@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../constant/theme/global_data.dart';
+import '../../models/http/api/message_api.dart';
 import '../../utils/date_format_util.dart';
 import '../../../views/message/sqlite/data/chat_history_sqlite.dart';
 import '../../views/message/sqlite/chat_history_db.dart';
@@ -19,6 +20,8 @@ class MessagePrivateGroupMessageViewModel extends BaseViewModel {
   String sType = '';
   ChatHistorySQLite replyByMessageData = ChatHistorySQLite(); // 暫存所要回覆的訊息
   MessageChatroomDetailResponseData _chatroomDetailData = MessageChatroomDetailResponseData();
+
+  String filePrefix = '';
 
   // Future<MessageChatroomDetailResponseData> getChatroomDetail(String roomId,
   //   {ResponseErrorFunction? onConnectFail}) async {
@@ -111,5 +114,15 @@ class MessagePrivateGroupMessageViewModel extends BaseViewModel {
     );
     WebSocketUtil().sendMessage(data); // 發送msg -> WS
     sType = '';
+  }
+
+  Future<void> getFilePrefix()async{
+    final data = await MessageApi().getFilePrefix();
+    filePrefix = data.data;
+  }
+
+  Future<String> uploadFile(String fileType,String filePath)async{
+    final data = await MessageApi().uploadFile(fileType, filePath);
+    return data.data;
   }
 }

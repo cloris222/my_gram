@@ -48,7 +48,6 @@ Future<void> initApp() async {
   ///MARK: 自動登入
   bool isLogin = false;
   try {
-    GlobalData.printLog(GlobalData.userToken);
     if (await AppSharedPreferences.getLogIn()) {
       GlobalData.userToken = await AppSharedPreferences.getToken();
       GlobalData.userMemberId = await AppSharedPreferences.getMemberID();
@@ -62,6 +61,7 @@ Future<void> initApp() async {
       }
     }
   } catch (e) {}
+  GlobalData.printLog("useToken:${GlobalData.userToken}");
   runApp(ProviderScope(child: localizations(MyApp(isLogin: isLogin))));
 }
 
@@ -110,7 +110,8 @@ class _MyAppState extends ConsumerState<MyApp> {
       navigatorKey: GlobalData.globalKey,
       title: 'MyGram',
       builder: AppTextStyle.setMainTextBuilder(),
-      home: const AppFirstPage(),
+      home:AppFirstPage()
+      // home:  Demo(),
       // home: widget.isLogin ? const MainScreen() : const AppFirstPage(),
     );
   }

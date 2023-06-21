@@ -41,15 +41,22 @@ class _DynamicMainPageState extends ConsumerState<DynamicMainPage> {
 
   @override
   void initState() {
-    Future.delayed(Duration.zero,(){
-      setState(() {
-        if(isRebecca == true){
-          list.addAll(isRebeccaList);
-        }else{
-          list.addAll(notRebeccaList);
-        }
-      });
-    });
+    // Future.delayed(Duration.zero,(){
+    //   setState(() {
+    //     if(isRebecca == true){
+    //       list.addAll(isRebeccaList);
+    //     }else{
+    //       list.addAll(notRebeccaList);
+    //     }
+    //   });
+    // });
+
+    /// 暫時先直接加入
+    if(isRebecca == true){
+      list.addAll(isRebeccaList);
+    }else{
+      list.addAll(notRebeccaList);
+    }
     super.initState();
   }
 
@@ -76,7 +83,7 @@ class _DynamicMainPageState extends ConsumerState<DynamicMainPage> {
                    if (!bDownloading) {
                      // 防止短時間載入過多造成OOM
                      bDownloading = true;
-                     _updateView();
+                     // _updateView();
                    }
                  }
                }

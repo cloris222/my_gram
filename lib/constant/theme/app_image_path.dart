@@ -60,4 +60,16 @@ class AppImagePath {
   static const String commentIcon = '$assetPath/ic_comment-solid.png';
   static const String storeIcon = '$assetPath/ic_bookmark.png';
   static const String moreIcon = '$assetPath/ic_others.png';
+
+  ///聊天室
+  static const String microphoneIcon = '$assetPath/ic_microphone.png';
+  static const String goldenMicrophoneIcon = '$assetPath/ic_microphone-1.png';
+  static const String blackPlayIcon = '$assetPath/ic_play_b.png';
+  static const String whitePlayIcon = '$assetPath/ic_play_w.png';
+  static const String delIcon = '$assetPath/ic_revord_delete.png';
+  static const String sendIcon = '$assetPath/ic_record_send.png';
+  static const String pauseWhiteIcon = '$assetPath/ic_pause_W.png';
+  static const String pauseBlackIcon = '$assetPath/ic_pause_B.png';
+
+
 }
