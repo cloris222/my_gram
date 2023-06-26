@@ -110,7 +110,7 @@ class _SwipeImageViewState extends State<SwipeImageView>
                       CommonNetworkImage(
                           imageUrl: data.images[currentIndex],
                           width: UIDefine.getWidth(),
-                          height: UIDefine.getViewHeight(),
+                          height: UIDefine.getViewHeight()*0.78,
                           fit: BoxFit.cover),
 
                       Positioned(
