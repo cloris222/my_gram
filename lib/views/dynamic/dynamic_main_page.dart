@@ -63,7 +63,6 @@ class _DynamicMainPageState extends ConsumerState<DynamicMainPage> {
   @override
   Widget build(BuildContext context) {
     ref.watch(isRebeccaProvider);
-    print('isRebecca=${isRebecca}');
    return CommonScaffold(
        body: (isDark) => Container(
          decoration: BoxDecoration(
@@ -90,6 +89,7 @@ class _DynamicMainPageState extends ConsumerState<DynamicMainPage> {
                return true;
              },
              child: CustomScrollView(
+               scrollDirection: Axis.vertical,
                slivers: [
                  SliverAppBar(
                    automaticallyImplyLeading: false,
