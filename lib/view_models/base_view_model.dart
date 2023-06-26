@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../constant/enum/app_param_enum.dart';
 import '../constant/theme/global_data.dart';
 import '../models/app_shared_preferences.dart';
 import '../models/http/http_setting.dart';
@@ -117,6 +118,10 @@ class BaseViewModel {
         pageBuilder: (_, __, ___) => page,
       ),
     );
+  }
+
+  void changeMainScreenPage(AppNavigationBarType type){
+    GlobalData.mainScreenSubject.changeMainScreenPage( type);
   }
 
   String _buildDataFormat(

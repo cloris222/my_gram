@@ -22,14 +22,14 @@ enum AppColors {
   textWarning(dark: Color(0xFFFFD600), light: Color(0xFFFFD600)),
   textLink(dark: Color(0xFFC6A146), light: Color(0xFFC6A146)),
   bolderGrey(dark: Color.fromRGBO(255, 255, 255, 0.3), light: Color.fromRGBO(0, 0, 0, 0.7)),
-  commentUnlike(dark: Color(0xFF979797), light: Color(0xFF979797)),
+  commentUnlike(dark: Color(0xFF989898), light: Color(0xFF989898)),
   textBlack(dark: Color(0xFF000000), light: Color(0xFF000000)),
   textWhite(dark: Color(0xFFFFFFFF), light: Color(0xFFFFFFFF)),
 
   /// 按鈕顏色相關
   buttonPrimaryText(dark: Color(0xFF000000), light: Color(0xFFFFFFFF)),
   buttonGradientText(dark: Color(0xFFFFFFFF), light: Color(0xFFFFFFFF)),
-  buttonUnable(dark: Colors.grey, light: Colors.grey),
+  buttonUnable(dark: Color(0x3C9E9E9E), light: Color(0x3C9E9E9E)),
   buttonLike(dark: Color(0xFF3CDBA7), light: Color(0xFF3CDBA7)),
   buttonDisLike(dark: Color(0xFFC11D11), light: Color(0xFFC11D11)),
   buttonMessageRed(dark: Colors.red, light: Colors.red),
