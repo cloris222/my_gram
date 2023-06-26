@@ -34,6 +34,8 @@ enum AppColors {
   buttonDisLike(dark: Color(0xFFC11D11), light: Color(0xFFC11D11)),
   buttonMessageRed(dark: Colors.red, light: Colors.red),
   buttonCommon(dark: Color(0xFF9E9E9E), light: Color(0xFF9E9E9E)),
+  dynamicButtons(dark: Color(0xFF373737), light: Color(0xFF373737)),
+  dynamicButtonsBorder(dark: Color(0xFFFEFEFE), light: Color(0xFFFEFEFE)),
 
   ///背景顏色
   textFieldBackground(dark: Color(0xFF1F1F1F), light: Color(0xFFFFFFFF)),
@@ -46,6 +48,7 @@ enum AppColors {
   personalLightBackground(dark: Color(0xFF2a1a14), light: Color(0xFF2a1a14)),
   messageOtherBg(dark: Color(0xFF595451), light: Color(0xFF6A615C)),
   recordBackground(dark: Color(0xFF140B07), light: Color(0xFF140B07)),
+
 
   /// 基本顏色
   transparent(dark: Colors.transparent, light: Colors.transparent);
