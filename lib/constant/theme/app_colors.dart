@@ -37,6 +37,7 @@ enum AppColors {
   buttonDisLike(dark: Color(0xFFC11D11), light: Color(0xFFC11D11)),
   buttonMessageRed(dark: Colors.red, light: Colors.red),
   buttonCommon(dark: Color(0xFF9E9E9E), light: Color(0xFF9E9E9E)),
+  buttonAudio(dark: Color(0xFF0F0806), light: Color(0xFF0F0806)),
 
   ///背景顏色
   textFieldBackground(dark: Color(0xFF1F1F1F), light: Color(0xFFFFFFFF)),

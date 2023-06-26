@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:dio/dio.dart';
+import 'package:just_waveform/just_waveform.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:base_project/constant/theme/app_image_path.dart';
 import 'package:base_project/constant/theme/app_text_style.dart';
@@ -7,17 +8,14 @@ import 'package:base_project/constant/theme/global_data.dart';
 import 'package:base_project/constant/theme/ui_define.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_sound/flutter_sound.dart';
 import 'dart:io';
 import '../constant/theme/app_colors.dart';
 import '../constant/theme/app_gradient_colors.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
-import 'package:just_waveform/just_waveform.dart';
-
+import 'package:just_audio/just_audio.dart';
 import 'audio_wave_form_widget.dart';
 
 class PlayAudioBubble extends StatefulWidget {
@@ -31,19 +29,26 @@ class PlayAudioBubble extends StatefulWidget {
 }
 
 class _PlayAudioBubbleState extends State<PlayAudioBubble> {
-  // final progressStream = BehaviorSubject<WaveformProgress>();
   bool isPlaying = false;
-String playText = '00:00';
- FlutterSoundPlayer msgPlayer = FlutterSoundPlayer();
-StreamSubscription? _playerSubscription;
-// late File audioFile;
-// late File? waveFile;
+  bool isPaused = false;
+  final player = AudioPlayer();
+  late final Duration? duration;
+  Duration? currentPosition;
+
 
 @override
   void initState() {
   Future.delayed(Duration.zero,()async{
-    await msgPlayer.closePlayer();
-    await msgPlayer.openPlayer();
+     duration = await player.setUrl(widget.path);
+     player.positionStream.listen((position) {
+       print('position=$position');
+       setState(() {
+         currentPosition = position;
+       });
+     });
+
+    // await msgPlayer.closePlayer();
+    // await msgPlayer.openPlayer();
 
     setState(() {
 
@@ -63,15 +68,16 @@ StreamSubscription? _playerSubscription;
 
 @override
 void dispose() {
-  cancelPlayerSubscriptions();
-  releaseFlauto();
+  // cancelPlayerSubscriptions();
+  // releaseFlauto();
+  player.dispose();
   super.dispose();
 }
 
 
   @override
   Widget build(BuildContext context) {
-  GlobalData.printLog('path=${widget.path}');
+  print('duration=${duration.toString().substring(2,7)}');
     return Container(
       width: UIDefine.getWidth()*0.5,
       height: UIDefine.getPixelWidth(50),
@@ -83,25 +89,90 @@ void dispose() {
       child: Row(
         children: [
           SizedBox(width: UIDefine.getPixelWidth(5),),
-          GestureDetector(
-            onTap: (){
-              _onTap();
+          StreamBuilder<PlayerState>(
+            stream: player.playerStateStream,
+            builder: (context, snapshot) {
+              final playerState = snapshot.data;
+              final processingState = playerState?.processingState;
+              final playing = playerState?.playing;
+              if (processingState == ProcessingState.loading ||
+                  processingState == ProcessingState.buffering) {
+                return Container(
+                  width: UIDefine.getPixelWidth(30),
+                  height: UIDefine.getPixelWidth(30),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(15)),
+                    color: AppColors.buttonAudio.getColor().withOpacity(0.2)
+                  ),
+                  child:Image.asset(AppImagePath.blackPlayIcon),
+                );
+              } else if (playing != true) {
+                return GestureDetector(
+                  onTap: (){
+                    setState(() {
+                      isPlaying = true;
+                      if(isPaused){
+                        isPaused = false;
+                      }
+                      player.play();
+                    });
+                  },
+                  child: Container(
+                    width: UIDefine.getPixelWidth(30),
+                    height: UIDefine.getPixelWidth(30),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(15)),
+                        color: AppColors.buttonAudio.getColor().withOpacity(0.2)
+                    ),
+                    child:Image.asset(AppImagePath.blackPlayIcon),
+                  ),
+                );
+              } else if (processingState != ProcessingState.completed) {
+                return GestureDetector(
+                  onTap: (){
+                    setState(() {
+                      isPlaying = false;
+                      isPaused = true;
+                      player.pause();
+                    });
+
+                  },
+                  child: Container(
+                    width: UIDefine.getPixelWidth(30),
+                    height: UIDefine.getPixelWidth(30),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(15)),
+                        color: AppColors.buttonAudio.getColor().withOpacity(0.2)
+                    ),
+                    child:Image.asset(AppImagePath.pauseBlackIcon),
+                  ),
+                );
+              } else {
+                return
+                  GestureDetector(
+                    onTap: (){
+                      setState(() {
+                        isPlaying = true;
+                        player.seek(Duration.zero);
+                      });
+                    },
+                    child: Container(
+                      width: UIDefine.getPixelWidth(30),
+                      height: UIDefine.getPixelWidth(30),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(15)),
+                          color: AppColors.buttonAudio.getColor().withOpacity(0.2)
+                      ),
+                      child:Image.asset(AppImagePath.blackPlayIcon),
+                    ),
+                  );
+              }
             },
-            child: Container(
-              width: UIDefine.getPixelWidth(30),
-              height: UIDefine.getPixelWidth(30),
-              decoration: BoxDecoration(
-                color: AppColors.buttonCommon.getColor().withOpacity(0.8),
-                borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(15))
-              ),
-              child:
-              isPlaying?
-              Image.asset(AppImagePath.pauseBlackIcon):
-              Image.asset(AppImagePath.blackPlayIcon),
-            ),
           ),
           SizedBox(width: UIDefine.getPixelWidth(10),),
-          Text(playText,style: AppTextStyle.getBaseStyle(color: AppColors.textBlack,fontSize: UIDefine.fontSize14,fontWeight: FontWeight.w400),),
+          isPlaying == true || isPaused == true?
+          Text(currentPosition.toString().substring(2,7),style: AppTextStyle.getBaseStyle(color: AppColors.textBlack,fontSize: UIDefine.fontSize14,fontWeight: FontWeight.w400),):
+          Text(duration.toString().substring(2,7),style: AppTextStyle.getBaseStyle(color: AppColors.textBlack,fontSize: UIDefine.fontSize14,fontWeight: FontWeight.w400),),
           SizedBox(width: UIDefine.getPixelWidth(10),),
           // _buildWaveform()
         ],
@@ -109,129 +180,8 @@ void dispose() {
     );
   }
 
-  Future<void>_onTap()async{
-  ///一開始播放
-  if(isPlaying==false && !msgPlayer.isPaused){
-    playText = '00:00';
-    setState(() {
-      isPlaying = true;
-    });
-    await msgPlayer.setSubscriptionDuration(Duration(milliseconds: 10));
-    await msgPlayer.startPlayer(
-        fromURI: widget.path,
-        codec: Codec.pcm16WAV, //_codec,
-        whenFinished: (){
-          setState(() {
-            isPlaying = false;
-          });
-        }
-    );
-    _addListeners();
 
-  }else if(isPlaying==false && msgPlayer.isPaused){
-    ///暫停後恢復播放
-    setState(() {
-      isPlaying = true;
-    });
-    msgPlayer.resumePlayer();
-    _addListeners();
-    setState(() {
 
-    });
-  }else{
-    ///暫停
-    setState(() {
-      isPlaying = false;
-    });
-    msgPlayer.pausePlayer();
-  }
-}
-
-Future<void> _addListeners()async{
-  GlobalData.printLog('_addListeners');
-  _playerSubscription = msgPlayer.onProgress!.listen((e) {
-    GlobalData.printLog('_addListeners');
-    var date = DateTime.fromMillisecondsSinceEpoch(e.position.inMilliseconds,
-        isUtc: true);
-    var txt = DateFormat('mm:ss:SS', 'en_GB').format(date);
-    setState(() {
-      GlobalData.printLog('_playerText${e.duration.inSeconds}');
-      playText = txt.substring(0, 5);
-    });
-  });
-}
-
-void cancelPlayerSubscriptions() {
-  if (_playerSubscription != null) {
-    _playerSubscription!.cancel();
-    _playerSubscription = null;
-  }
-}
-
-Future<void> releaseFlauto() async {
-  try {
-    await msgPlayer.closePlayer();
-  } on Exception {
-    msgPlayer.logger.e('Released unsuccessful');
-  }
-}
-
-// Future<void> _init() async {
-//   final tempDir = await getApplicationDocumentsDirectory();
-//   String url = widget.path;
-//   String savePath = '${tempDir.path}/waveform.wav';
-//   await downloadFile(url, savePath);
-//   audioFile = File('waveform.wav');
-//   await audioFile.writeAsBytes(
-//       (await rootBundle.load('${tempDir.path}/waveform.wav')).buffer.asUint8List());
-//   waveFile =
-//       File('${tempDir.path}/waveform.wave');
-//   final progressStream = JustWaveform.extract(
-//     audioInFile: audioFile,
-//     waveOutFile: waveFile!,
-//     zoom: const WaveformZoom.pixelsPerSecond(100),
-//   );
-//   progressStream.listen((waveformProgress) {
-//     print('Progress: %${(100 * waveformProgress.progress).toInt()}');
-//     if (waveformProgress.waveform != null) {
-//       // Use the waveform.
-//     }
-//   });
-//
-// }
-//
-// Widget _buildWaveform(){
-//   return StreamBuilder<WaveformProgress>(
-//     stream: progressStream,
-//     builder: (context,snapshot){
-//       if (snapshot.hasError) {
-//         return Center(
-//           child: Text(
-//             'Error: ${snapshot.error}',
-//             style: Theme.of(context).textTheme.titleLarge,
-//             textAlign: TextAlign.center,
-//           ),
-//         );
-//       }
-//       final progress = snapshot.data?.progress ?? 0.0;
-//       final waveform = snapshot.data?.waveform;
-//       if (waveform == null) {
-//         return Center(
-//           child: Text(
-//             '${(100 * progress).toInt()}%',
-//             style: Theme.of(context).textTheme.titleLarge,
-//           ),
-//         );
-//       }
-//       return AudioWaveformWidget(
-//         waveform: waveform,
-//         start: Duration.zero,
-//         duration: waveform.duration,
-//       );
-//     },
-//   );
-// }
-//
 Future<void> downloadFile(String url, String savePath) async {
     Dio dio = Dio();
     File file = File(savePath);
