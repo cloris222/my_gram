@@ -120,8 +120,9 @@ class BaseViewModel {
     );
   }
 
-  void changeMainScreenPage(AppNavigationBarType type){
-    GlobalData.mainScreenSubject.changeMainScreenPage( type);
+  /// 切換主頁頁面
+  void changeMainScreenPage(AppNavigationBarType type,{bool isRebecca=false}){
+    GlobalData.mainScreenSubject.changeMainScreenPage( type,isRebecca:isRebecca);
   }
 
   String _buildDataFormat(

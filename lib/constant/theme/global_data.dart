@@ -80,6 +80,9 @@ class GlobalData {
   static ChatMsgNotifier chatMsgNotifier = ChatMsgNotifier();
   static UserTokenNotifier userTokenNotifier = UserTokenNotifier();
 
+  /// dynamic 記住滑動位置
+  static double dynamicOffset = 0;
+
   /// 測試資料
   static final List<String> photos = [
     "https://images.unsplash.com/photo-1586164383881-d01525b539d6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80",
