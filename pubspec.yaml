@@ -62,6 +62,7 @@ dependencies:
   transparent_image: ^2.0.1
   just_waveform: ^0.0.5
   just_audio: ^0.9.34
+  audioplayers: ^4.1.0
 
 dev_dependencies:
   flutter_test:
