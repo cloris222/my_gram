@@ -8,22 +8,15 @@ import 'package:base_project/models/http/data/personal_info_data.dart';
 import 'package:base_project/models/http/data/post_info_data.dart';
 import 'package:base_project/utils/pitch_data_util.dart';
 import 'package:base_project/view_models/base_view_model.dart';
-import 'package:base_project/views/main_screen.dart';
-import 'package:base_project/views/personal/personal_info_view.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../constant/enum/app_param_enum.dart';
-import '../../view_models/gobal_provider/main_bottom_bar_provider.dart';
 import '../../view_models/dynmaic/is_rebecca_provider.dart';
 import '../../widgets/button/text_button_widget.dart';
-import '../../widgets/label/avatar_icon_widget.dart';
 import '../../widgets/label/common_network_image.dart';
 import '../common_scaffold.dart';
 import 'package:card_swiper/card_swiper.dart';
 
-import '../dynamic/dynamic_main_page.dart';
 
 class PersonalHomePage extends ConsumerStatefulWidget {
   const PersonalHomePage({
@@ -85,7 +78,7 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
     ],
     link: 'https://www.instagram.com/rebecca_mygram/',
     introduce:
-        "音樂家／樂團 \n\n PoppyCakes 主Rapper/副舞者 \n\n Pop the world with PoppyCakes! \n\n #poppycakes #rebeccamusic #rapper \n\n #rapperlife #dance #dancerlife",
+        "音樂家／樂團 \nPoppyCakes 主Rapper/副舞者 \nPop the world with PoppyCakes! \n#poppycakes #rebeccamusic #rapper \n#rapperlife #dance #dancerlife",
   );
 
 
@@ -115,7 +108,7 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
                   children: [
                     Container(
                       width: UIDefine.getWidth(),
-                      height: UIDefine.getViewHeight() * 0.65,
+                      height: UIDefine.getViewHeight() - UIDefine.getPixelWidth(150),
                       child: Stack(
                         children: [
                           SizedBox(
@@ -126,10 +119,10 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
                             fit: BoxFit.cover,
                             imageUrl: data.posts[selectedCardIndex].images[0],
                             width: UIDefine.getWidth(),
-                            height: UIDefine.getViewHeight() * 0.65,
+                            height: UIDefine.getViewHeight() - UIDefine.getPixelWidth(150),
                           ),
                           Positioned(
-                              top: UIDefine.getHeight() * 0.07,
+                              top: UIDefine.getStatusBarHeight(),
                               left: UIDefine.getPixelWidth(10),
                               right: UIDefine.getPixelWidth(10),
                               child: Row(
@@ -137,7 +130,8 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
                                 children: [
                                  GestureDetector(
                                    onTap:(){
-                                    Navigator.pop(context);
+                                    // Navigator.pop(context);
+                                   BaseViewModel().changeMainScreenPage( AppNavigationBarType.typePair);
                                    },
                                      child: Image.asset(AppImagePath.arrowLeft)),
                                   Text(
@@ -196,11 +190,18 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
           });
         },
         itemBuilder: (BuildContext context, int index) {
+          bool isCenter = selectedCardIndex == index;
+          // double horizontalPadding = isCenter?0:UIDefine.getPixelWidth(2.5);
+          double horizontalPadding = 0;
+          double topPadding = isCenter?0:UIDefine.getPixelWidth(20);
+
+          double imageWidth = isCenter?UIDefine.getPixelWidth(200):UIDefine.getPixelWidth(160);
+          double imageHeight = isCenter?UIDefine.getPixelWidth(130):UIDefine.getPixelWidth(110);
           return GestureDetector(
             onTap: (){
-              if(selectedCardIndex == index){
+              if(isCenter){
                 ref.read(isRebeccaProvider.notifier).update((state) => true);
-                BaseViewModel().pushPage(context, MainScreen(type: AppNavigationBarType.typeDynamic,));
+                BaseViewModel().changeMainScreenPage( AppNavigationBarType.typeDynamic,isRebecca: true);
               }
             },
             child: Align(
@@ -215,15 +216,15 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
                       height: UIDefine.getPixelWidth(130),
                     ),
                     Positioned(
-                      left: index==selectedCardIndex?0:UIDefine.getPixelWidth(5),
-                      right: index==selectedCardIndex?0:UIDefine.getPixelWidth(5),
-                      top: index==selectedCardIndex?0:UIDefine.getPixelWidth(20),
+                      left: horizontalPadding,
+                      right: horizontalPadding,
+                      top: topPadding,
                       bottom: 0,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(10),
                         child: Container(
-                          width: index==selectedCardIndex?UIDefine.getPixelWidth(200):UIDefine.getPixelWidth(130),
-                          height: index==selectedCardIndex?UIDefine.getPixelWidth(130):UIDefine.getPixelWidth(110),
+                          width: imageWidth,
+                          height: imageHeight,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -235,17 +236,17 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
                       ),
                     ),
                     Positioned(
-                      left: index==selectedCardIndex?0:UIDefine.getPixelWidth(5),
-                      right: index==selectedCardIndex?0:UIDefine.getPixelWidth(5),
-                      top: index==selectedCardIndex?0:UIDefine.getPixelWidth(20),
+                      left: horizontalPadding,
+                      right: horizontalPadding,
+                      top: topPadding,
                       bottom: 0,
                       child: Visibility(
-                        visible: index==selectedCardIndex,
+                        visible: isCenter,
                         child: Container(
-                          width: index==selectedCardIndex?UIDefine.getPixelWidth(200):UIDefine.getPixelWidth(130),
-                          height: index==selectedCardIndex?UIDefine.getPixelWidth(130):UIDefine.getPixelWidth(110),
+                          width: imageWidth,
+                          height: imageHeight,
                           clipBehavior: Clip.antiAlias,
-                          margin: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(1)),
+                          // margin: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(1)),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               border:Border.all(
@@ -255,17 +256,17 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
                       ),
                     ),
                     Positioned(
-                      left: index==selectedCardIndex?0:UIDefine.getPixelWidth(5),
-                      right: index==selectedCardIndex?0:UIDefine.getPixelWidth(5),
-                      top: index==selectedCardIndex?0:UIDefine.getPixelWidth(20),
+                      left: horizontalPadding,
+                      right: horizontalPadding,
+                      top: topPadding,
                       bottom: 0,
                       child: Visibility(
-                        visible: index!=selectedCardIndex,
+                        visible: !isCenter,
                         child: Container(
-                          width: index==selectedCardIndex?UIDefine.getPixelWidth(200):UIDefine.getPixelWidth(130),
-                          height: index==selectedCardIndex?UIDefine.getPixelWidth(130):UIDefine.getPixelWidth(110),
+                          width: imageWidth,
+                          height: imageHeight,
                           clipBehavior: Clip.antiAlias,
-                          margin: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(1)),
+                          // margin: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(1)),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               color: Colors.black.withOpacity(0.3)
@@ -301,7 +302,7 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
               isFillWidth: true,
               backgroundVertical: UIDefine.getPixelWidth(1),
               btnText: tr('following'),
-              setMainColor: AppColors.buttonCommon,
+              setMainColor: AppColors.buttonUnable,
               textColor: AppColors.textPrimary,
               onPressed: () {},
             ),
@@ -318,7 +319,7 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
               textColor: AppColors.textBlack,
               onPressed: () {
                 /// 切換頁面
-               GlobalData.mainScreenSubject.changeMainScreenPage( AppNavigationBarType.typeMessage);
+                BaseViewModel().changeMainScreenPage( AppNavigationBarType.typeMessage);
               },
             ),
           ),
@@ -331,62 +332,58 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
   }
 
   Widget _buildTabBar() {
-    return TabBar(
-        labelPadding: EdgeInsets.zero,
-        controller: _tabController,
-        padding: EdgeInsets.symmetric(horizontal: 15),
-        indicator: UnderlineTabIndicator(
-          borderSide: BorderSide(
-              width: 4.0, color: AppColors.mainThemeButton.getColor()),
-          // 调整指示器的高度
-          insets: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(100)), // 调整指示器的左右间距
-        ),
-        onTap: (index) {
-          setState(() {
-            selectedIndex = index;
-          });
-        },
-        labelStyle: AppTextStyle.getBaseStyle(
-            fontSize: UIDefine.fontSize14,
-            fontWeight: FontWeight.w600),
-        unselectedLabelStyle: AppTextStyle.getBaseStyle(
-            fontSize: UIDefine.fontSize14,
-            fontWeight: FontWeight.w400,
-            color: AppColors.bolderGrey),
-        tabs: [
-          Tab(
-            height: UIDefine.getPixelWidth(40),
-            child: Container(
-              alignment: Alignment.center,
-                   height: 40,
-                   decoration: const BoxDecoration(
-                       color: Colors.transparent,
-                       border: Border(
-                         bottom: BorderSide(
-                           color: Colors.grey,
-                           width: 1.0,
-                         ),
-                       )),
-              child: Text( tr('aboutMe')),
+    return Container(
+      decoration:  BoxDecoration(
+          color: Colors.transparent,
+          border: Border(
+            bottom: BorderSide(
+              color: Colors.white.withOpacity(0.2),
+              width: 1.0,
             ),
+          )),
+      child: TabBar(
+          labelPadding: EdgeInsets.zero,
+          controller: _tabController,
+          physics: NeverScrollableScrollPhysics(),
+          padding: EdgeInsets.symmetric(horizontal: 15),
+          indicator: UnderlineTabIndicator(
+            borderSide: BorderSide(
+                width: 4.0, color: AppColors.mainThemeButton.getColor()),
+            // 调整指示器的高度
+            insets: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(100)), // 调整指示器的左右间距
           ),
-          Tab(
-            height: UIDefine.getPixelWidth(40),
-            child: Container(
-              alignment: Alignment.center,
-              height: 40,
-              decoration: const BoxDecoration(
-                  color: Colors.transparent,
-                  border: Border(
-                    bottom: BorderSide(
-                      color: Colors.grey,
-                      width: 1.0,
-                    ),
-                  )),
-              child: Text( tr('allPost')),
+          onTap: (index) {
+            setState(() {
+              _tabController.index=0;
+              selectedIndex = 0;
+            });
+          },
+          labelStyle: AppTextStyle.getBaseStyle(
+              fontSize: UIDefine.fontSize14,
+              fontWeight: FontWeight.w600),
+          unselectedLabelStyle: AppTextStyle.getBaseStyle(
+              fontSize: UIDefine.fontSize14,
+              fontWeight: FontWeight.w400,
+              color: AppColors.bolderGrey),
+          tabs: [
+            Tab(
+              height: UIDefine.getPixelWidth(40),
+              child: Container(
+                alignment: Alignment.center,
+                height: 40,
+                child: Text( tr('aboutMe')),
+              ),
             ),
-          ),
-        ]);
+            Tab(
+              height: UIDefine.getPixelWidth(40),
+              child: Container(
+                alignment: Alignment.center,
+                height: 40,
+                child: Text( tr('allPost')),
+              ),
+            ),
+          ]),
+    );
   }
 
   Widget _buildTabView(){
@@ -394,6 +391,7 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
       height: UIDefine.getHeight()*0.5,
       child: TabBarView(
           controller: _tabController,
+          physics: const NeverScrollableScrollPhysics(),
           children: [
             _aboutMeView(),
             Container()
@@ -429,7 +427,9 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
               ),
               Column(
                 children: [
-                  Text(data.totalPosts.toString(),style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize20,fontWeight: FontWeight.w600),),
+                  // Text(data.totalPosts.toString(),
+                  Text("100",
+                    style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize20,fontWeight: FontWeight.w600),),
                   Text(tr('posts'),style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize14,fontWeight: FontWeight.w400,color: AppColors.bolderGrey),),
                 ],
               ),
@@ -440,7 +440,9 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
               ),
               Column(
                 children: [
-                  Text(data.fans.length.toString(),style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize20,fontWeight: FontWeight.w600),),
+                  // Text(data.fans.length.toString(),
+                  Text("1.9M",
+                    style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize20,fontWeight: FontWeight.w600),),
                   Text(tr('fans'),style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize14,fontWeight: FontWeight.w400,color: AppColors.bolderGrey),),
                 ],
               )
@@ -454,37 +456,32 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
 
   Widget _buildInfoCard(){
     return Container(
-      width: UIDefine.getWidth()*0.85,
-      padding: EdgeInsets.all(UIDefine.getPixelWidth(20)),
+      width: UIDefine.getWidth(),
+      padding: EdgeInsets.symmetric(vertical:UIDefine.getPixelWidth(20),horizontal: UIDefine.getPixelWidth(15)),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color: AppColors.bolderGrey.getColor().withOpacity(0.2)
+        color: AppColors.commentUnlike.getColor().withOpacity(0.2)
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(data.introduce,style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize14,fontWeight: FontWeight.w400),),
+          Text(data.introduce,textAlign: TextAlign.start,style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize14,fontWeight: FontWeight.w400,height: 1.1),),
           SizedBox(height: UIDefine.getPixelWidth(10),),
           Visibility(
             visible: data.link!=null,
-            child: Padding(
-              padding: EdgeInsets.only(left: UIDefine.getWidth()*0.04),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Image.asset(AppImagePath.linkIcon),
-                  GestureDetector(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Image.asset(AppImagePath.linkIcon),
+                SizedBox(width: UIDefine.getPixelWidth(8)),
+                Flexible(
+                  child: GestureDetector(
                     onTap: (){},
-                    child: Container(
-                      width: UIDefine.getWidth()*0.6,
-                      child: Wrap(
-                        children: [
-                          Text(data.link!,style: AppTextStyle.getBaseStyle(color: AppColors.textLink,fontSize: UIDefine.fontSize14,fontWeight: FontWeight.w400),),
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              ),
+                    child: Text(data.link!,style: AppTextStyle.getBaseStyle(color: AppColors.textLink,fontSize: UIDefine.fontSize14,fontWeight: FontWeight.w400),),
+                  ),
+                )
+              ],
             ),
           )
         ],

@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:base_project/constant/theme/global_data.dart';
 import 'package:base_project/view_models/global_theme_provider.dart';
 import 'package:base_project/views/login/login_main_page.dart';
 import 'package:base_project/views/main_screen.dart';
@@ -36,9 +37,7 @@ class _AppFirstPageState extends State<AppFirstPage> {
   Widget build(BuildContext context) {
     return CommonScaffold(
         body: (isDark) => GestureDetector(
-          onTap: (){
-            BaseViewModel().pushPage(context, const MainScreen());
-          },
+          onTap: _onPress,
           child: Container(
             width: UIDefine.getWidth(),
             height: UIDefine.getHeight(),
@@ -89,10 +88,7 @@ class _AppFirstPageState extends State<AppFirstPage> {
                                       setHeight: UIDefine.getPixelWidth(30),
                                       isGradient: true,
                                       btnText: tr('registerWithEmail'),
-                                      onPressed: () {
-                                        BaseViewModel().pushPage(context, const MainScreen());
-                                        // BaseViewModel().pushPage(context, const LoginMainPage());
-                                      },),
+                                      onPressed: _onPress),
                                   ],
                                 ),
                                 Container(
@@ -141,9 +137,7 @@ class _AppFirstPageState extends State<AppFirstPage> {
 
   Widget _buildIconButton(String image){
     return GestureDetector(
-      onTap: (){
-        BaseViewModel().pushPage(context, const MainScreen());
-      },
+      onTap: _onPress,
       child: Container(
         width: UIDefine.getWidth()*0.1,
         height: UIDefine.getWidth()*0.1,
@@ -165,4 +159,11 @@ class _AppFirstPageState extends State<AppFirstPage> {
     );
   }
 
+  void _onPress(){
+    if(GlobalData.userToken.isNotEmpty) {
+      BaseViewModel().pushPage(context, const MainScreen());
+    }else{
+      BaseViewModel().pushPage(context, const LoginMainPage());
+    }
+  }
 }

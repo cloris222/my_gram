@@ -12,6 +12,7 @@ import '../../models/http/data/pair_image_data.dart';
 import '../../models/http/data/post_comment_data.dart';
 import '../../utils/observer_pattern/main_screen/main_screen_subject.dart';
 import '../../views/message/notifier/chat_msg_notifier.dart';
+import '../../views/message/notifier/userToken_notifier.dart';
 import '../enum/app_param_enum.dart';
 
 class GlobalData {
@@ -77,6 +78,10 @@ class GlobalData {
   /// notifier
   // static ChatroomNotifier chatroomNotifier = ChatroomNotifier();
   static ChatMsgNotifier chatMsgNotifier = ChatMsgNotifier();
+  static UserTokenNotifier userTokenNotifier = UserTokenNotifier();
+
+  /// dynamic 記住滑動位置
+  static double dynamicOffset = 0;
 
   /// 測試資料
   static final List<String> photos = [

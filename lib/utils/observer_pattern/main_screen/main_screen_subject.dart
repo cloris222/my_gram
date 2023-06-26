@@ -6,9 +6,9 @@ import '../subject.dart';
 import '../subject_key.dart';
 
 class MainScreenSubject extends Subject {
-  void changeMainScreenPage(AppNavigationBarType type) {
+  void changeMainScreenPage(AppNavigationBarType type,{bool isRebecca=false}) {
     notifyObservers(
-        NotificationData(key: SubjectKey.keyMainScreen, data: type));
+        NotificationData(key: SubjectKey.keyMainScreen, data: {"type":type,"isRebecca":isRebecca}));
   }
 
 }

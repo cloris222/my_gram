@@ -1,3 +1,4 @@
+import 'package:base_project/models/http/api/message_api.dart';
 import 'package:base_project/models/http/api/user_api.dart';
 import 'package:base_project/models/http/data/api_response.dart';
 import 'package:base_project/models/http/data/user_info_data.dart';
@@ -39,6 +40,22 @@ class UserInfoNotifier extends StateNotifier<UserInfoData?> {
     await AppSharedPreferences.setMemberID(GlobalData.userMemberId);
     await AppSharedPreferences.setLogIn(true);
 
-    state = UserInfoData.fromJson(response.data);
+    /// 更新連線
+    GlobalData.userTokenNotifier.setUserToken = GlobalData.userToken;
+
+    await updateUserInfo();
+
+    /// 更新使用者房號等資料
+    GlobalData.selfAvatar = state?.avatars
+            .where((element) => (element.type == "MEMBER"))
+            .first
+            .avatarIds
+            .first ??
+        0;
+    GlobalData.roomId =
+        await MessageApi().createMessageRoom(GlobalData.friendAvatarId) ?? "0";
+
+    GlobalData.printLog("self:${GlobalData.selfAvatar}");
+    GlobalData.printLog("room:${GlobalData.roomId}");
   }
 }

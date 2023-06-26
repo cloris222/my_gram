@@ -161,12 +161,12 @@ class _SwipeImageViewState extends State<SwipeImageView>
                               Text("${data.name} ${data.age}",
                                   style: AppTextStyle.getBaseStyle(
                                     fontSize: UIDefine.fontSize36,
-                                    fontWeight: FontWeight.w700,
+                                    fontWeight: FontWeight.w400,
                                     // shadowsType: AppTextShadows.common,
                                   )),
                               Text(data.context,
                                   style: AppTextStyle.getBaseStyle(
-                                    fontSize: UIDefine.fontSize18,
+                                    fontSize: UIDefine.fontSize14,
                                     fontWeight: FontWeight.w400,
                                     // shadowsType: AppTextShadows.common,
                                   )),
