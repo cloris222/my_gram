@@ -89,7 +89,7 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar>
             buildButton(AppNavigationBarType.typeExplore),
             buildButton(AppNavigationBarType.typePair),
             buildButton(AppNavigationBarType.typeMessage),
-            buildButton(AppNavigationBarType.typePersonal),
+            buildButton(AppNavigationBarType.typeCreate),
           ],
         ));
   }

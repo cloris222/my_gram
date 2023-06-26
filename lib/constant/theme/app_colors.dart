@@ -48,8 +48,7 @@ enum AppColors {
   personalLightBackground(dark: Color(0xFF2a1a14), light: Color(0xFF2a1a14)),
   messageOtherBg(dark: Color(0xFF595451), light: Color(0xFF6A615C)),
   recordBackground(dark: Color(0xFF140B07), light: Color(0xFF140B07)),
-
-
+  createFunctionBackground(dark: Color(0x33000000), light: Color(0x33FFFFFF)),
   /// 基本顏色
   transparent(dark: Colors.transparent, light: Colors.transparent);
 
