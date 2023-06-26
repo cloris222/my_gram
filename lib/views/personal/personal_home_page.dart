@@ -427,7 +427,9 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
               ),
               Column(
                 children: [
-                  Text(data.totalPosts.toString(),style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize20,fontWeight: FontWeight.w600),),
+                  // Text(data.totalPosts.toString(),
+                  Text("100",
+                    style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize20,fontWeight: FontWeight.w600),),
                   Text(tr('posts'),style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize14,fontWeight: FontWeight.w400,color: AppColors.bolderGrey),),
                 ],
               ),
@@ -438,7 +440,9 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
               ),
               Column(
                 children: [
-                  Text(data.fans.length.toString(),style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize20,fontWeight: FontWeight.w600),),
+                  // Text(data.fans.length.toString(),
+                  Text("1.9M",
+                    style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize20,fontWeight: FontWeight.w600),),
                   Text(tr('fans'),style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize14,fontWeight: FontWeight.w400,color: AppColors.bolderGrey),),
                 ],
               )
