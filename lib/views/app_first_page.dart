@@ -239,7 +239,7 @@ class _AppFirstPageState extends State<AppFirstPage> {
   }
 
   void _onPress() {
-    if (GlobalData.userToken.isNotEmpty||true) {
+    if (GlobalData.userToken.isNotEmpty) {
       BaseViewModel().pushPage(context, const MainScreen());
     } else {
       BaseViewModel().pushPage(context, const LoginMainPage());

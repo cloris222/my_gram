@@ -36,6 +36,7 @@ enum AppColors {
   buttonCommon(dark: Color(0xFF9E9E9E), light: Color(0xFF9E9E9E)),
   dynamicButtons(dark: Color(0xFF373737), light: Color(0xFF373737)),
   dynamicButtonsBorder(dark: Color(0xFFFEFEFE), light: Color(0xFFFEFEFE)),
+  randomButton(dark: Color(0xCC7AB15F),light: Color(0xCC7AB15F)),
 
   ///背景顏色
   textFieldBackground(dark: Color(0xFF1F1F1F), light: Color(0xFFFFFFFF)),

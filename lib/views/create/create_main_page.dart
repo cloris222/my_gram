@@ -11,6 +11,7 @@ import '../../constant/theme/app_image_path.dart';
 import '../../constant/theme/ui_define.dart';
 import '../../view_models/base_view_model.dart';
 import '../../view_models/create/create_main_view_model.dart';
+import '../../view_models/gobal_provider/global_tag_controller_provider.dart';
 import '../../widgets/button/text_button_widget.dart';
 import 'create_tags_view.dart';
 
@@ -37,24 +38,26 @@ class _CreateMainPageState extends ConsumerState<CreateMainPage> {
 
   @override
   Widget build(BuildContext context) {
+    bool showRandomDialog =
+        ref.watch(globalBoolProvider(viewModel.randomDialog));
     return Stack(children: [
       SizedBox(width: UIDefine.getWidth(), height: UIDefine.getViewHeight()),
 
       /// 中間主要展示圖
       Positioned(
           top: 0,
-          bottom: UIDefine.getViewHeight() * 0.3,
+          bottom: UIDefine.getPixelWidth(250),
           right: 0,
           left: 0,
           child: _buildDemoImageView()),
 
       /// 標籤
       Positioned(
-          top: UIDefine.getViewHeight() * 0.6,
           bottom: 0,
           right: 0,
           left: 0,
-          child: _buildTagsView()),
+          child: SizedBox(
+              height: UIDefine.getPixelWidth(300), child: _buildTagsView())),
 
       /// 右側功能鍵
       Positioned(
@@ -64,9 +67,17 @@ class _CreateMainPageState extends ConsumerState<CreateMainPage> {
 
       /// 左下功能鍵
       Positioned(
-          bottom: UIDefine.getViewHeight() * 0.3 + UIDefine.getPixelWidth(50),
+          bottom: UIDefine.getPixelWidth(320),
           left: UIDefine.getPixelWidth(10),
           child: _buildLeftFunction()),
+
+      /// 中間成功彈窗
+      Positioned(
+          bottom: UIDefine.getPixelWidth(320),
+          right: 0,
+          left: 0,
+          child: Visibility(
+              visible: showRandomDialog, child: _buildRandomDialog())),
 
       /// appbar
       Positioned(
@@ -151,5 +162,20 @@ class _CreateMainPageState extends ConsumerState<CreateMainPage> {
             color: AppColors.createFunctionBackground.getColor(), radius: 28),
         child:
             _buildFunctionIcon(AppImagePath.arIcon, () => null, vertical: 0));
+  }
+
+  Widget _buildRandomDialog() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        TextButtonWidget(
+            btnText: "已啟用隨機組合",
+            setMainColor: AppColors.randomButton,
+            backgroundHorizontal: UIDefine.getPixelWidth(12),
+            backgroundVertical: UIDefine.getPixelWidth(12),
+            isFillWidth: false,
+            onPressed: () {}),
+      ],
+    );
   }
 }

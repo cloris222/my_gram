@@ -20,7 +20,9 @@ class CommonNetworkImage extends StatelessWidget {
       this.childAlignment,
       this.childPadding,
       this.imageWidgetBuilder,
-      this.radius = 8})
+      this.radius = 8,
+      this.background = Colors.black,
+      })
       : super(key: key);
   final String imageUrl;
   final double? width;
@@ -30,6 +32,7 @@ class CommonNetworkImage extends StatelessWidget {
   final Widget? loadWidget;
   final int? cacheWidth;
   final double radius;
+  final Color background;
 
   /// Optional builder to further customize the display of the image.
   /// 供Container背景用
@@ -61,24 +64,24 @@ class CommonNetworkImage extends StatelessWidget {
     if (imageUrl.contains("assets/")) {
       return _buildAssetImage();
     }
-    String lowUrl;
-    if (imageUrl.contains('.')) {
-      int index = imageUrl.lastIndexOf('.');
-      lowUrl =
-          '${imageUrl.substring(0, index)}_compre${imageUrl.substring(index)}';
-    } else {
-      lowUrl = imageUrl;
-    }
+    // String lowUrl;
+    // if (imageUrl.contains('.')) {
+    //   int index = imageUrl.lastIndexOf('.');
+    //   lowUrl =
+    //       '${imageUrl.substring(0, index)}_compre${imageUrl.substring(index)}';
+    // } else {
+    //   lowUrl = imageUrl;
+    // }
 
     return Container(
       decoration: BoxDecoration(
-          color: Colors.black,
+          color: background,
           borderRadius: BorderRadius.all(Radius.circular(radius))),
       child: CachedNetworkImage(
         width: width,
         height: height,
         fit: fit,
-        imageUrl: lowUrl,
+        imageUrl: imageUrl,
         memCacheWidth: cacheWidth ?? 480,
         cacheManager: CacheManager(
           Config("flutterCampus", stalePeriod: const Duration(minutes: 5)),
