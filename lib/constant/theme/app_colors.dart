@@ -36,6 +36,7 @@ enum AppColors {
   buttonCommon(dark: Color(0xFF9E9E9E), light: Color(0xFF9E9E9E)),
   dynamicButtons(dark: Color(0xFF373737), light: Color(0xFF373737)),
   dynamicButtonsBorder(dark: Color(0xFFFEFEFE), light: Color(0xFFFEFEFE)),
+  randomButton(dark: Color(0xCC7AB15F),light: Color(0xCC7AB15F)),
 
   ///背景顏色
   textFieldBackground(dark: Color(0xFF1F1F1F), light: Color(0xFFFFFFFF)),
@@ -48,8 +49,8 @@ enum AppColors {
   personalLightBackground(dark: Color(0xFF2a1a14), light: Color(0xFF2a1a14)),
   messageOtherBg(dark: Color(0xFF595451), light: Color(0xFF6A615C)),
   recordBackground(dark: Color(0xFF140B07), light: Color(0xFF140B07)),
-
-
+  createFunctionBackground(dark: Color(0x33000000), light: Color(0x33FFFFFF)),
+  firstAppMarkBackground(dark: Color(0x333D2B17),light: Color(0x333D2B17)),
   /// 基本顏色
   transparent(dark: Colors.transparent, light: Colors.transparent);
 

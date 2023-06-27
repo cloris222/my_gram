@@ -44,7 +44,7 @@ class GlobalData {
   // static String roomId = "3";
 
   /// salt
-  // static String userToken="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoibWVtYmVyIiwidXNlcklkIjoiTTAwMDJYR1BEWkMifQ.b0U96pRGVnr9a6A99PARjSjY7dmo8h0BWdgSLnp5G34";
+  // static String userToken="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoibWVtYmVyIiwidXNlcklkIjoiTTAwMDJYR1BEWkMifQ.PtUSBFOhFhG4oZv4gvWtZfjnNS4YgStsaJ509sZDO_U";
   // static String userMemberId="M0002XGPDZC";
 
   /// salt001

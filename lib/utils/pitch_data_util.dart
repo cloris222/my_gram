@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:base_project/utils/number_format_util.dart';
 
 import '../models/http/data/dynamic_info_data.dart';
@@ -70,6 +72,11 @@ class PitchDataUtil {
   /// 取得個人頭像
   String getAvatar(MyGramAI ai) {
     return "assets/icon/pitch/pair/${NumberFormatUtil().integerTwoFormat((ai.index * 6) + 1)}.${ai.name}_01_01.png";
+  }
+
+  /// 取得創建頁的隨機主頁
+  String getRandomCreateDemo(){
+    return "assets/icon/pitch/create/0000${Random().nextInt(10)}.png";
   }
 
   /// 配對內容
