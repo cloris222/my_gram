@@ -73,10 +73,10 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
 
   @override
   initState() {
-    // viewModel.addImage();
-    // ListImgNotifer().addData();
-    Future.delayed(Duration(microseconds: 300)).then((value) {
-
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final updateList = ref.read(listImgNotiferProvider.notifier);
+      updateList.addData();
+      print("im List: ${imageList.length}");
     });
     viewModel.textFocusNode.addListener(() {
       Future.delayed(Duration(milliseconds: 300)).then((value) {
@@ -137,7 +137,54 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
             Container(decoration: BoxDecoration(gradient: AppColors.messageLinearBg)),
             Column(
               children: [
-               
+                // Consumer(
+                //   builder: (context, watch, child) {
+                //     final list = ref.watch(listImgNotiferProvider.notifier).state;
+                //     return list.length.
+                //     ListView.builder(
+                //       itemCount: imgList.length,
+                //       itemBuilder: (context, index) {
+                //         final item = imgList[index];
+                //         return
+                //       },
+                //     );
+                //   },
+                // ),
+
+                //   child: viewModel.showImageWall
+                //       ? viewModel.imageList.isEmpty
+                //           ? Container()
+                //           : Container(
+                //               height: UIDefine.getPixelHeight(100),
+                //               child: ListView.builder(
+                //                 itemCount: viewModel.imageList.length,
+                //                 itemBuilder: (context, index) {
+                //                   final image = imageList[index];
+                //                   return Container(
+                //                     color: Colors.blue,
+                //                     child: Text("test"),
+                //                   );
+                //                 },
+                //               ),
+                //             )
+                //       : Container(),
+                // ),
+                // viewModel.showImageWall
+                //     ? Container(
+                //         height: UIDefine.getPixelHeight(100),
+                //         child:
+                //         ListView.builder(
+                //           itemCount: ref.read(listImgNotiferProvider.notifier).state.length,
+                //           itemBuilder: (context, index) {
+                //             final image = imageList[index];
+                //             return Container(
+                //               color: Colors.blue,
+                //               child: Text("test"),
+                //             );
+                //           },
+                //         ),
+                //       )
+                // : Container(),
                 Consumer(
                   builder: (context, ref, child) {
                     ref.watch(chatRoomProvider);

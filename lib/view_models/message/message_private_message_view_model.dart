@@ -19,11 +19,12 @@ List<String> imageList = [];
 class ListImgNotifer extends StateNotifier<List<String>> {
   ListImgNotifer() : super([]);
   List<DynamicInfoData> dynamicList = PitchDataUtil().buildSelf(6);
-  void addData(String img) {
-    // dynamicList.forEach((element) {
-      state = [...state, img];
-      // imageList = [...imageList, ...element.images];
-    // });
+  void addData() {
+    print("dynamic List: ${dynamicList.length}");
+    for (var dynamicData in dynamicList) {
+      imageList.addAll(dynamicData.images);
+    }
+    print("llll: ${imageList}");
   }
 }
 
@@ -44,7 +45,7 @@ class MessagePrivateGroupMessageViewModel extends BaseViewModel {
   ChatHistorySQLite replyByMessageData = ChatHistorySQLite(); // 暫存所要回覆的訊息
   MessageChatroomDetailResponseData _chatroomDetailData = MessageChatroomDetailResponseData();
   String filePrefix = '';
-  List<String> imageList = [];
+  // List<String> imageList = [];
 
   // Future<MessageChatroomDetailResponseData> getChatroomDetail(String roomId,
   //   {ResponseErrorFunction? onConnectFail}) async {
@@ -69,6 +70,13 @@ class MessagePrivateGroupMessageViewModel extends BaseViewModel {
     return false;
   }
 
+  // void addImage() {
+  //   List<DynamicInfoData> dynamicList = PitchDataUtil().buildSelf(6);
+  //   dynamicList.forEach((element) {
+  //     // ref.read(imgList.notifier)
+  //     // imgList = [...imageList, ...element.images];
+  //   });
+  // }
 
   void onSendMessage(String sContent, bool bImage, String type) {
     if (!bImage) {
