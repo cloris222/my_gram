@@ -108,13 +108,13 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
             Column(
               children: [
                 SizedBox(height: UIDefine.getPixelWidth(10),),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    PlayAudioBubble(path:GlobalData.audioPath,),
-                    SizedBox(width: UIDefine.getPixelWidth(10),)
-                  ],
-                ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.end,
+                //   children: [
+                //     PlayAudioBubble(path:GlobalData.audioPath,),
+                //     SizedBox(width: UIDefine.getPixelWidth(10),)
+                //   ],
+                // ),
                 Consumer(
                   builder: (context, ref, child) {
                     ref.watch(chatRoomProvider);
