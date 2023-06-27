@@ -78,10 +78,11 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar>
   Widget _barBuilder(BuildContext context) {
     return Container(
         color: AppColors.mainBackground.getColor(),
+        height: UIDefine.getPixelWidth(Platform.isIOS ? 50 : 40),
         padding: EdgeInsets.only(
             right: UIDefine.getPixelWidth(10),
             left: UIDefine.getPixelWidth(10),
-            top: UIDefine.getPixelWidth(5),
+            top: UIDefine.getPixelWidth(8),
             bottom: UIDefine.getPixelWidth(Platform.isIOS ? 15 : 5)),
         child: Row(
           children: [
@@ -99,9 +100,8 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar>
         child: GestureDetector(
             onTap: () => _navigationTapped(
                 AppNavigationBarType.values.indexOf(type), setState),
-            child: SizedBox(
-              width: UIDefine.getWidth(),
-              height: UIDefine.getPixelWidth(56),
+            behavior: HitTestBehavior.translucent,
+            child: Center(
               child: getIcon(type),
             )));
   }
@@ -115,21 +115,10 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar>
     // return Image.asset(asset,
     //     height: UIDefine.getPixelWidth(25), fit: BoxFit.fitHeight);
     return Container(
-      alignment: Alignment.center,
-      color: Colors.transparent,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          isSelect?
-          Image.asset(type.onIcon,):Image.asset(type.icon,)
-          // Icon(type.icon,
-          //     size: UIDefine.getPixelWidth(25),
-          //     color: isSelect
-          //         ? AppColors.navigationBarSelect.getColor()
-          //         : AppColors.navigationBarUnSelect.getColor())
-        ],
-      ),
-    );
+        alignment: Alignment.center,
+        color: Colors.transparent,
+        child: Image.asset(isSelect ? type.onIcon : type.icon,
+            height: UIDefine.getPixelWidth(25), fit: BoxFit.fitHeight));
   }
 
   _navigationTapped(int index, void Function(VoidCallback fn) setState) {

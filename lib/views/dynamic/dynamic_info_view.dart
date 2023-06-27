@@ -238,8 +238,7 @@ class _DynamicInfoViewState extends State<DynamicInfoView> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Container(
-                      width: UIDefine.getWidth()*0.8,
+                    Expanded(
                       child: Wrap(
                         children: [
                           Text(

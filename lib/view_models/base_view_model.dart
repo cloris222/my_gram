@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:base_project/constant/theme/ui_define.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -121,7 +122,10 @@ class BaseViewModel {
   }
 
   /// 切換主頁頁面
-  void changeMainScreenPage(AppNavigationBarType type,{bool isRebecca=false}){
+  void changeMainScreenPage(AppNavigationBarType type,{bool isRebecca=false,int index=0}){
+    if(isRebecca){
+      GlobalData.dynamicRebeccaOffset=UIDefine.getViewHeight()*0.85*index;
+    }
     GlobalData.mainScreenSubject.changeMainScreenPage( type,isRebecca:isRebecca);
   }
 

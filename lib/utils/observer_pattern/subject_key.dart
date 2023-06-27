@@ -3,4 +3,5 @@ class SubjectKey {
 
   /// 首頁頁面切換
   static const String keyMainScreen = 'mainScreen';
+  static const String keyDynamicTop = 'dynamicTop';
 }

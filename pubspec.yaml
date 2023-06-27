@@ -60,6 +60,10 @@ dependencies:
   circle_progress_bar: ^0.1.2
   audio_waveforms: ^1.0.4
   transparent_image: ^2.0.1
+  just_waveform: ^0.0.5
+  just_audio: ^0.9.34
+  audioplayers: ^4.1.0
+  flutter_audio_waveforms: ^1.2.1+8
   lottie: ^1.4.3
 
 dev_dependencies:
@@ -88,9 +92,9 @@ flutter_icons:
   ios: true
   remove_alpha_ios: true
   #  IOS
-  image_path: "assets/icon/img_logo_app_01.png"
+#  image_path: "assets/icon/img_logo_app_01.png"
 #  Android
-#  image_path: "assets/icon/img_logo_app_02.png"
+  image_path: "assets/icon/img_logo_app_02.png"
 #cmd 更換logo---> flutter pub run flutter_launcher_icons:main
 # The following section is specific to Flutter packages.
 flutter:
@@ -128,6 +132,7 @@ flutter:
     - assets/icon/pitch/dynamic/other/
     - assets/icon/pitch/personal/
     - assets/icon/pitch/create/
+    - assets/dm.json
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

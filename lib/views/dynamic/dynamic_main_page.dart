@@ -13,6 +13,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../constant/theme/global_data.dart';
 import '../../models/http/data/store_info_data.dart';
+import '../../utils/observer_pattern/dynamic/dynamic_observer.dart';
 import '../../view_models/dynmaic/is_rebecca_provider.dart';
 import '../../widgets/dialog/common_custom_dialog.dart';
 import 'dynamic_info_view.dart';
@@ -36,13 +37,16 @@ class _DynamicMainPageState extends ConsumerState<DynamicMainPage> {
   BaseViewModel viewModel = BaseViewModel();
   List<StoreInfoData> stores = GlobalData.generateStoreData(10);
   TextEditingController controller = TextEditingController();
+
   bool get isRebecca => ref.read(isRebeccaProvider);
   late ScrollController scrollController;
 
+  late DynamicObserver observer;
 
   @override
   void initState() {
-    scrollController = ScrollController(initialScrollOffset: isRebecca? 0 : GlobalData.dynamicOffset);
+    scrollController = ScrollController(
+        initialScrollOffset: isRebecca ? GlobalData.dynamicRebeccaOffset : GlobalData.dynamicOffset);
     scrollController.addListener(_setScrollerListener);
     // Future.delayed(Duration.zero,(){
     //   setState(() {
@@ -55,17 +59,24 @@ class _DynamicMainPageState extends ConsumerState<DynamicMainPage> {
     // });
 
     /// 暫時先直接加入
-    if(isRebecca == true){
+    if (isRebecca == true) {
       list.addAll(isRebeccaList);
-    }else{
+    } else {
       list.addAll(notRebeccaList);
     }
+    observer = DynamicObserver("AA",
+        scrollTop: () => scrollController.animateTo(0,
+            duration: Duration(milliseconds: 200),
+            curve: Curves.fastLinearToSlowEaseIn));
+    GlobalData.dynamicSubject.registerObserver(observer);
     super.initState();
   }
+
   @override
   void dispose() {
     scrollController.removeListener(_setScrollerListener);
     scrollController.dispose();
+    GlobalData.dynamicSubject.clearObserver();
     super.dispose();
   }
 
@@ -435,7 +446,7 @@ class _DynamicMainPageState extends ConsumerState<DynamicMainPage> {
 
 
   void _setScrollerListener() {
-    if(!isRebecca){
+    if (!isRebecca) {
       GlobalData.dynamicOffset = scrollController.offset;
     }
   }
