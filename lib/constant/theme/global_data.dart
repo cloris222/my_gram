@@ -31,8 +31,8 @@ class GlobalData {
   static String friendAvatarId = "1";
 
   /// USER
-  static String userToken = '';
-  static String userMemberId = '';
+  // static String userToken = '';
+  // static String userMemberId = '';
   static int selfAvatar = 0;
   static String roomId = "1";
 
@@ -44,8 +44,8 @@ class GlobalData {
   // static String roomId = "3";
 
   /// salt
-  // static String userToken="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoibWVtYmVyIiwidXNlcklkIjoiTTAwMDJYR1BEWkMifQ.b0U96pRGVnr9a6A99PARjSjY7dmo8h0BWdgSLnp5G34";
-  // static String userMemberId="M0002XGPDZC";
+  static String userToken="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoibWVtYmVyIiwidXNlcklkIjoiTTAwMDJYR1BEWkMifQ.PtUSBFOhFhG4oZv4gvWtZfjnNS4YgStsaJ509sZDO_U";
+  static String userMemberId="M0002XGPDZC";
 
   /// salt001
   // static String userToken="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoibWVtYmVyIiwidXNlcklkIjoiTTAwOVM1OEtORzYifQ.ewJ__UChoq2BQVxvf00L9tylvzKi4F_R-SpHKiJHu2w";

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import '../../models/validate_result_data.dart';
 import '../../views/main_screen.dart';
 import '../check_texteditor_view_model.dart';
+import '../create/create_tag_detail_provider.dart';
+import '../create/create_tag_provider.dart';
 import '../gobal_provider/global_tag_controller_provider.dart';
 import '../gobal_provider/user_info_provider.dart';
 
@@ -55,8 +57,10 @@ class LoginMainViewModel extends CheckTextEditorViewModel {
     if (!checkNotEmpty()) return;
     ref
         .read(userInfoProvider.notifier)
-        .loginWithMail(
+        .loginWithMail(ref,
             email: emailController.text, password: passwordController.text)
-        .then((value) => pushAndRemoveUntil(context, const MainScreen()));
+        .then((value) async {
+      pushAndRemoveUntil(context, const MainScreen());
+    });
   }
 }

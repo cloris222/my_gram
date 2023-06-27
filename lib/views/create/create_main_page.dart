@@ -76,8 +76,11 @@ class _CreateMainPageState extends ConsumerState<CreateMainPage> {
           bottom: UIDefine.getPixelWidth(320),
           right: 0,
           left: 0,
-          child: Visibility(
-              visible: showRandomDialog, child: _buildRandomDialog())),
+          child: AnimatedOpacity(
+            opacity: showRandomDialog ? 1.0 : 0.0,
+            duration: const Duration(milliseconds: 500),
+            child: _buildRandomDialog(),
+          )),
 
       /// appbar
       Positioned(
