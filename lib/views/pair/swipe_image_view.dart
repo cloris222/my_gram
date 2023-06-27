@@ -151,7 +151,7 @@ class _SwipeImageViewState extends State<SwipeImageView>
 
                       ///自介
                       Positioned(
-                          bottom: UIDefine.getPixelWidth(100),
+                          bottom: UIDefine.getPixelWidth(160),
                           left: UIDefine.getPixelWidth(15),
                           right: UIDefine.getPixelWidth(15),
                           child: Column(
@@ -164,6 +164,7 @@ class _SwipeImageViewState extends State<SwipeImageView>
                                     fontWeight: FontWeight.w400,
                                     // shadowsType: AppTextShadows.common,
                                   )),
+                              SizedBox(height: UIDefine.getPixelWidth(15),),
                               Text(data.context,
                                   style: AppTextStyle.getBaseStyle(
                                     fontSize: UIDefine.fontSize14,
@@ -182,7 +183,7 @@ class _SwipeImageViewState extends State<SwipeImageView>
 
         ///下方按鈕
         Positioned(
-            bottom: 0,
+            bottom: UIDefine.getPixelWidth(50),
             right: UIDefine.getPixelWidth(20),
             left: UIDefine.getPixelWidth(20),
             child: Row(

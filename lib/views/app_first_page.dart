@@ -112,6 +112,7 @@ class _AppFirstPageState extends State<AppFirstPage> {
                         ),
                         Expanded(
                           child: ClipRRect(
+                            clipBehavior: Clip.antiAlias,
                             borderRadius: BorderRadius.circular(40),
                             child: Container(
                               width: UIDefine.getWidth() * 0.85,
