@@ -37,7 +37,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
   void initState() {
     controller = PageController(initialPage: widget.type.index);
     observer = MainScreenObserver("main",
-        changeMainPage: (AppNavigationBarType type) => _changePage(type));
+        changeMainPage: (AppNavigationBarType type,bool isRebecca) => _changePage(type,needRecover: !isRebecca));
     GlobalData.mainScreenSubject.registerObserver(observer);
     super.initState();
   }
@@ -69,9 +69,11 @@ class _MainScreenState extends ConsumerState<MainScreen> {
             ));
   }
 
-  void _changePage(AppNavigationBarType type) {
+  void _changePage(AppNavigationBarType type,{bool needRecover = true}) {
     setState(() {
-      ref.read(isRebeccaProvider.notifier).update((state) => false);
+      if(needRecover) {
+        ref.read(isRebeccaProvider.notifier).update((state) => false);
+      }
       GlobalData.mainBottomType = type;
       controller.jumpToPage(type.index);
     });

@@ -7,15 +7,14 @@ import '../subject_key.dart';
 class MainScreenObserver extends Observer {
   MainScreenObserver(super.name,
       {required this.changeMainPage});
-  Function(AppNavigationBarType type) changeMainPage;
+  Function(AppNavigationBarType type,bool isRebecca) changeMainPage;
 
   @override
   void notify(NotificationData notification) {
     switch (notification.key) {
       case SubjectKey.keyMainScreen:
         {
-          /// value 無用處
-          changeMainPage(notification.data);
+          changeMainPage(notification.data["type"],notification.data["isRebecca"]);
         }
         break;
     }

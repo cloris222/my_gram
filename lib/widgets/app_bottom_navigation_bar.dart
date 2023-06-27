@@ -89,7 +89,7 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar>
             buildButton(AppNavigationBarType.typeExplore),
             buildButton(AppNavigationBarType.typePair),
             buildButton(AppNavigationBarType.typeMessage),
-            buildButton(AppNavigationBarType.typePersonal),
+            buildButton(AppNavigationBarType.typeCreate),
           ],
         ));
   }
@@ -134,6 +134,9 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar>
 
   _navigationTapped(int index, void Function(VoidCallback fn) setState) {
     var type = AppNavigationBarType.values[index];
+    if (type == AppNavigationBarType.typeExplore) {
+      return;
+    }
     if (widget.bottomFunction != null) {
       setState(() {
         widget.bottomFunction!(type);

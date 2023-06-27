@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:base_project/view_models/global_theme_provider.dart';
 import 'package:base_project/view_models/message/websocket/web_socket_util.dart';
 import 'package:base_project/views/app_first_page.dart';
+import 'package:base_project/views/message/notifier/userToken_notifier.dart';
 import 'package:base_project/views/message/sqlite/chat_history_db.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +49,8 @@ Future<void> initApp() async {
   ///MARK: 自動登入
   bool isLogin = false;
   try {
-    if (await AppSharedPreferences.getLogIn()) {
+    /// 先不讀token 值
+    if (false&&await AppSharedPreferences.getLogIn()) {
       GlobalData.userToken = await AppSharedPreferences.getToken();
       GlobalData.userMemberId = await AppSharedPreferences.getMemberID();
       if (GlobalData.userToken.isNotEmpty && GlobalData.userMemberId.isNotEmpty) {
@@ -86,13 +88,18 @@ class MyApp extends ConsumerStatefulWidget {
 
 class _MyAppState extends ConsumerState<MyApp> {
   late StreamSubscription _streamSubscription;
+  late UserTokenNotifier _userTokenNotifier;
   @override
   void initState() {
     Future.delayed(Duration.zero).then((value) async {
       ref.read(globalThemeProvider.notifier).init();
     });
-    _initWebSocket();
-    _onWebSocketListen();
+   if(GlobalData.userToken.isNotEmpty){
+     _initWebSocket();
+     _onWebSocketListen();
+   }
+    /// 對Token監聽: 登入登出Flag
+    _addUserTokenNotifier();
     super.initState();
   }
 
@@ -110,7 +117,7 @@ class _MyAppState extends ConsumerState<MyApp> {
       navigatorKey: GlobalData.globalKey,
       title: 'MyGram',
       builder: AppTextStyle.setMainTextBuilder(),
-      home:AppFirstPage()
+      home:const AppFirstPage()
       // home:  Demo(),
       // home: widget.isLogin ? const MainScreen() : const AppFirstPage(),
     );
@@ -147,5 +154,26 @@ class _MyAppState extends ConsumerState<MyApp> {
         }
       }
     });
+  }
+  void _addUserTokenNotifier() {
+     _userTokenNotifier = GlobalData.userTokenNotifier;
+    _userTokenNotifier.addListener(() => mounted
+        ? setState(() {
+      GlobalData.printLog('userTokenNotifier監聽: MainDart');
+     bool isLogin = _userTokenNotifier.userToken.isNotEmpty;
+      if (isLogin) {
+        /// 初始WS
+        _initWebSocket();
+
+        /// WS監聽
+        _onWebSocketListen();
+      } else {
+        // 登出
+        ChatHistoryDB.database = null;
+        WebSocketUtil().closeSocket();
+        _streamSubscription.cancel();
+      }
+    })
+        : null);
   }
 }

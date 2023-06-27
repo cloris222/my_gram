@@ -37,10 +37,13 @@ class _DynamicMainPageState extends ConsumerState<DynamicMainPage> {
   List<StoreInfoData> stores = GlobalData.generateStoreData(10);
   TextEditingController controller = TextEditingController();
   bool get isRebecca => ref.read(isRebeccaProvider);
+  late ScrollController scrollController;
 
 
   @override
   void initState() {
+    scrollController = ScrollController(initialScrollOffset: isRebecca? 0 : GlobalData.dynamicOffset);
+    scrollController.addListener(_setScrollerListener);
     // Future.delayed(Duration.zero,(){
     //   setState(() {
     //     if(isRebecca == true){
@@ -59,11 +62,16 @@ class _DynamicMainPageState extends ConsumerState<DynamicMainPage> {
     }
     super.initState();
   }
+  @override
+  void dispose() {
+    scrollController.removeListener(_setScrollerListener);
+    scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     ref.watch(isRebeccaProvider);
-    print('isRebecca=${isRebecca}');
    return CommonScaffold(
        body: (isDark) => Container(
          decoration: BoxDecoration(
@@ -90,6 +98,8 @@ class _DynamicMainPageState extends ConsumerState<DynamicMainPage> {
                return true;
              },
              child: CustomScrollView(
+               scrollDirection: Axis.vertical,
+               controller: scrollController,
                slivers: [
                  SliverAppBar(
                    automaticallyImplyLeading: false,
@@ -418,4 +428,10 @@ class _DynamicMainPageState extends ConsumerState<DynamicMainPage> {
   }
 
 
+
+  void _setScrollerListener() {
+    if(!isRebecca){
+      GlobalData.dynamicOffset = scrollController.offset;
+    }
+  }
 }

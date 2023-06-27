@@ -29,8 +29,6 @@ class AppImagePath {
   static const String fbIcon = '$assetPath/icon_fb.png';
   static const String appleIcon = '$assetPath/icon_apple.png';
 
-
-
   ///底部導覽頁icon
   static const String dynamicIcon = '$assetPath/ic_nav_home-fill.png';
   static const String exploreIcon = '$assetPath/ic_nav_search_default.png';
@@ -71,5 +69,13 @@ class AppImagePath {
   static const String pauseWhiteIcon = '$assetPath/ic_pause_W.png';
   static const String pauseBlackIcon = '$assetPath/ic_pause_B.png';
 
-
+  /// 創建
+  static const String unChoose = "$assetPath/default.png";
+  static const String choose = "$assetPath/selected.png";
+  static const String faceArIcon = "$assetPath/ic_ar-on-you.png";
+  static const String infoIcon = "$assetPath/ic_information.png";
+  static const String randomIcon = "$assetPath/ic_random.png";
+  static const String spotlightIcon = "$assetPath/ic_spotlight.png";
+  static const String arIcon = "$assetPath/ic_view-in-ar.png";
+  static const String success = "$assetPath/img_create_success.png";
 }

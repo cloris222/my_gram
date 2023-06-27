@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:base_project/constant/theme/app_style.dart';
+import 'package:base_project/constant/theme/global_data.dart';
 import 'package:base_project/view_models/global_theme_provider.dart';
 import 'package:base_project/views/login/login_main_page.dart';
 import 'package:base_project/views/main_screen.dart';
@@ -36,117 +38,186 @@ class _AppFirstPageState extends State<AppFirstPage> {
   Widget build(BuildContext context) {
     return CommonScaffold(
         body: (isDark) => GestureDetector(
-          onTap: (){
-            BaseViewModel().pushPage(context, const MainScreen());
-          },
-          child: Container(
-            width: UIDefine.getWidth(),
-            height: UIDefine.getHeight(),
-            decoration: BoxDecoration(
-              image: DecorationImage(image: AssetImage(AppImagePath.loginBgImage,),
-                fit: BoxFit.cover,
-                colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.3), BlendMode.darken),),
-            ),
-            child: Column(
-              children: [
-                SizedBox(height: UIDefine.getViewHeight()*0.45,),
-                Container(
-                  width: UIDefine.getWidth()*0.2,
-                  height: UIDefine.getWidth()*0.2,
-                  child: Image.asset(AppImagePath.logoImage,fit: BoxFit.cover,),
-                ),
-                SizedBox(height:  UIDefine.getPixelWidth(15),),
-                Container(
-                  width: UIDefine.getPixelWidth(120),
-                  child: Image.asset(AppImagePath.logoTextImage,fit: BoxFit.cover,),
-                ),
-                SizedBox(height: UIDefine.getViewHeight()*0.03,),
-                Expanded(
-                  child: ClipRRect(
-                    borderRadius:BorderRadius.circular(40),
+              onTap: _onPress,
+              child: Stack(
+                children: [
+                  SizedBox(
+                      height: UIDefine.getHeight(), width: UIDefine.getWidth()),
+                  Positioned(
+                      top: 0,
+                      bottom: UIDefine.getHeight() * 0.2,
+                      child: Container(
+                          width: UIDefine.getWidth(),
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image:
+                                  const AssetImage(AppImagePath.loginBgImage),
+                              fit: BoxFit.cover,
+                              colorFilter: ColorFilter.mode(
+                                  Colors.black.withOpacity(0.3),
+                                  BlendMode.darken),
+                            ),
+                          ))),
+                  /// 底部圓角
+                  Positioned(
+                      top: UIDefine.getHeight() * 0.65,
+                      right: 0,
+                      left: 0,
+                      bottom: 0,
+                      child: Container(
+                        decoration: AppStyle().styleColorsRadiusBackground(
+                          color: AppColors.firstAppMarkBackground.getColor(),
+                          radius: 10,
+                        ),
+                      )),
+                  /// 遮罩
+                  Positioned(
+                    top: UIDefine.getViewHeight() * 0.6,
                     child: Container(
-                      width: UIDefine.getWidth()*0.85,
-                      clipBehavior: Clip.antiAlias,
-                      decoration: BoxDecoration(
-                          color: Colors.grey.withOpacity(0.3),
-                          borderRadius: BorderRadius.circular(40)
-                      ),
-                      child: BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
-                        child: Container(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    TextButtonWidget(
-                                      textColor: AppColors.mainBackground,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: UIDefine.fontSize14,
-                                      isFillWidth: false,
-                                      setWidth: UIDefine.getWidth()*0.6,
-                                      setHeight: UIDefine.getPixelWidth(30),
-                                      isGradient: true,
-                                      btnText: tr('registerWithEmail'),
-                                      onPressed: () {
-                                        BaseViewModel().pushPage(context, const MainScreen());
-                                        // BaseViewModel().pushPage(context, const LoginMainPage());
-                                      },),
-                                  ],
-                                ),
-                                Container(
-                                  width: UIDefine.getWidth()*0.6,
-                                  child: Row(
+                      width: UIDefine.getWidth(),
+                      height: UIDefine.getViewHeight() * 0.4,
+                      decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                              begin: Alignment(0.0, -0.9),
+                              end: Alignment(0.0, 0.1),
+                              colors: [Colors.transparent, Colors.black])),
+                    ),
+                  ),
+                  Positioned.fill(
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: UIDefine.getViewHeight() * 0.425,
+                        ),
+                        Container(
+                          width: UIDefine.getWidth() * 0.2,
+                          height: UIDefine.getWidth() * 0.2,
+                          child: Image.asset(
+                            AppImagePath.logoImage,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        SizedBox(
+                          height: UIDefine.getPixelWidth(15),
+                        ),
+                        Container(
+                          width: UIDefine.getPixelWidth(120),
+                          child: Image.asset(
+                            AppImagePath.logoTextImage,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        SizedBox(
+                          height: UIDefine.getViewHeight() * 0.03,
+                        ),
+                        Expanded(
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(40),
+                            child: Container(
+                              width: UIDefine.getWidth() * 0.85,
+                              clipBehavior: Clip.antiAlias,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey.withOpacity(0.3),
+                                  borderRadius: BorderRadius.circular(40)),
+                              child: BackdropFilter(
+                                filter:
+                                    ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+                                child: Container(
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      Expanded(
-                                        child: Container(
-                                          margin: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(10)),
-                                          height: 1,
-                                          color: Colors.white.withOpacity(0.6),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          TextButtonWidget(
+                                              textColor:
+                                                  AppColors.mainBackground,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: UIDefine.fontSize14,
+                                              isFillWidth: false,
+                                              setWidth:
+                                                  UIDefine.getWidth() * 0.6,
+                                              setHeight:
+                                                  UIDefine.getPixelWidth(40),
+                                              isGradient: true,
+                                              btnText: tr('registerWithEmail'),
+                                              onPressed: _onPress),
+                                        ],
+                                      ),
+                                      Container(
+                                        width: UIDefine.getWidth() * 0.6,
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                              child: Container(
+                                                margin: EdgeInsets.symmetric(
+                                                    horizontal:
+                                                        UIDefine.getPixelWidth(
+                                                            10)),
+                                                height: 1,
+                                                color: AppColors.subThemePurple
+                                                    .getColor()
+                                                    .withOpacity(0.3),
+                                              ),
+                                            ),
+                                            Text(
+                                              tr('otherRegisterWay'),
+                                              style: AppTextStyle.getBaseStyle(
+                                                  fontSize:
+                                                      UIDefine.fontSize12),
+                                            ),
+                                            Expanded(
+                                              child: Container(
+                                                margin: EdgeInsets.symmetric(
+                                                    horizontal:
+                                                        UIDefine.getPixelWidth(
+                                                            10)),
+                                                height: 1,
+                                                color: AppColors.subThemePurple
+                                                    .getColor()
+                                                    .withOpacity(0.3),
+                                              ),
+                                            )
+                                          ],
                                         ),
                                       ),
-                                      Text(tr('otherRegisterWay'),style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize12),),
-                                      Expanded(
-                                        child: Container(
-                                          margin: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(10)),
-                                          height: 1,
-                                          color: Colors.white.withOpacity(0.6),
-                                        ),
-                                      )
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          _buildIconButton(
+                                              AppImagePath.googleIcon),
+                                          _buildIconButton(AppImagePath.fbIcon),
+                                          _buildIconButton(
+                                              AppImagePath.appleIcon),
+                                        ],
+                                      ),
                                     ],
                                   ),
                                 ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    _buildIconButton(AppImagePath.googleIcon),
-                                    _buildIconButton(AppImagePath.fbIcon),
-                                    _buildIconButton(AppImagePath.appleIcon),
-                                  ],
-                                ),
-                              ],
+                              ),
                             ),
+                          ),
                         ),
-                      ),
+                        SizedBox(
+                          height: UIDefine.getViewHeight() * 0.05,
+                        ),
+                      ],
                     ),
                   ),
-                ),
-                SizedBox(height: UIDefine.getViewHeight()*0.05,),
-              ],
-            ),
-          ),
-        ));
+                ],
+              ),
+            ));
   }
 
-  Widget _buildIconButton(String image){
+  Widget _buildIconButton(String image) {
     return GestureDetector(
-      onTap: (){
-        BaseViewModel().pushPage(context, const MainScreen());
-      },
+      onTap: _onPress,
       child: Container(
-        width: UIDefine.getWidth()*0.1,
-        height: UIDefine.getWidth()*0.1,
+        width: UIDefine.getPixelWidth(50),
+        height: UIDefine.getPixelWidth(50),
         margin: EdgeInsets.symmetric(horizontal: 15),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(50),
@@ -157,7 +228,9 @@ class _AppFirstPageState extends State<AppFirstPage> {
             filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
             child: Container(
               color: Colors.grey.withOpacity(0.5),
-              child: Image.asset(image,),
+              child: Image.asset(
+                image,
+              ),
             ),
           ),
         ),
@@ -165,4 +238,11 @@ class _AppFirstPageState extends State<AppFirstPage> {
     );
   }
 
+  void _onPress() {
+    if (GlobalData.userToken.isNotEmpty||true) {
+      BaseViewModel().pushPage(context, const MainScreen());
+    } else {
+      BaseViewModel().pushPage(context, const LoginMainPage());
+    }
+  }
 }
