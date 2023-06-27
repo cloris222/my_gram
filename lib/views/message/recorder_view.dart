@@ -240,9 +240,13 @@ class _RecorderViewState extends State<RecorderView> {
     await recorder.startRecorder(
         toFile: '${tempDir.path}/$timeStamp.wav', codec: Codec.pcm16WAV);
     _recorderSubscription = recorder.onProgress!.listen((e) {
-      if(e.duration.inSeconds>15){
+      if(e.duration.inMilliseconds>15010){
+        setState(() {
+          _recorderText = '00:15';
+          recordDuration = Duration(seconds: 17);
+        });
         stopRecording();
-        recordDuration = Duration(seconds: 17);
+
       }else{
         var date = DateTime.fromMillisecondsSinceEpoch(e.duration.inMilliseconds,
             isUtc: true);
@@ -260,9 +264,9 @@ class _RecorderViewState extends State<RecorderView> {
     setState(() {
       isRecording = false;
       isPlayAudio = true;
+      cancelRecorderSubscriptions();
+      recorder.closeRecorder();
     });
-    cancelRecorderSubscriptions();
-    recorder.closeRecorder();
     return await recorder.stopRecorder();
   }
 

@@ -117,7 +117,7 @@ class _MessageViewForOthers extends ConsumerState<MessageViewForOther> with Tick
                 style: TextStyle(
                   color: AppColors.textWhite.light,
                   fontSize: UIDefine.fontSize16),
-              ):PlayAudioBubble(path: "${GlobalData.urlPrefix}${data.content}")
+              ):PlayAudioBubble(path: "${GlobalData.urlPrefix}${data.content}",bSelf: false,)
             )
           ],
         ),
