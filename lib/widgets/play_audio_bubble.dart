@@ -20,8 +20,12 @@ import '../constant/theme/app_image_path.dart';
 
 class PlayAudioBubble extends StatefulWidget {
   final String path;
+  final bool bSelf ;
 
-  const PlayAudioBubble({required this.path, Key? key}) : super(key: key);
+  const PlayAudioBubble({
+    required this.path,
+    required this.bSelf,
+    Key? key}) : super(key: key);
 
   @override
   State<PlayAudioBubble> createState() => _PlayAudioBubbleState();
@@ -32,6 +36,8 @@ class _PlayAudioBubbleState extends State<PlayAudioBubble> {
   late Duration maxDuration;
   late Duration elapsedDuration;
   final audio.AudioPlayer player = audio.AudioPlayer();
+  String totalDurationText = '00:00';
+  String playerText = '00:00';
 
   late List<String> audioData;
 
@@ -43,6 +49,7 @@ class _PlayAudioBubbleState extends State<PlayAudioBubble> {
     Future.delayed(Duration.zero, () async {
       await player.setSourceUrl(widget.path);
       duration = await player.getDuration();
+      totalDurationText = duration.toString().substring(2,7);
       playerState = player.state;
       player.onPlayerStateChanged.listen((audio.PlayerState s) {
         print('Current player state: $s');
@@ -52,19 +59,12 @@ class _PlayAudioBubbleState extends State<PlayAudioBubble> {
         print('position=$position');
         setState(() {
           currentPosition = position;
+          playerText = currentPosition.toString().substring(2,7);
         });
       });
-      // final Directory appDocumentsDir = await getApplicationDocumentsDirectory();
-      // final timeStamp = DateTime.now().millisecondsSinceEpoch.toString();
-      // await downloadFile(widget.path, '$appDocumentsDir/$timeStamp/msg.wav');
-      //
-      //
-      // duration = await player.setUrl(widget.path);
+      setState(() {
 
-      // await msgPlayer.closePlayer();
-      // await msgPlayer.openPlayer();
-
-      setState(() {});
+      });
     });
     super.initState();
   }
@@ -83,20 +83,8 @@ class _PlayAudioBubbleState extends State<PlayAudioBubble> {
 
   @override
   Widget build(BuildContext context) {
-    // print('duration222=$duration');
-    // print('duration=${duration.toString().substring(2,7)}');
     return Container(
-      // width: UIDefine.getWidth() * 0.5,
       height: UIDefine.getPixelWidth(50),
-      // padding: EdgeInsets.all(UIDefine.getPixelWidth(5)),
-      // decoration: BoxDecoration(
-      //     gradient: LinearGradient(
-      //         colors: AppGradientColors.gradientBaseColorBg.getColors()),
-      //     borderRadius: BorderRadius.only(
-      //         topLeft: Radius.circular(UIDefine.getPixelWidth(15)),
-      //         topRight: Radius.circular(UIDefine.getPixelWidth(15)),
-      //         bottomLeft: Radius.circular(UIDefine.getPixelWidth(15)),
-      //         bottomRight: Radius.zero)),
       child: Row(
         children: [
           SizedBox(
@@ -109,28 +97,28 @@ class _PlayAudioBubbleState extends State<PlayAudioBubble> {
           playerState == audio.PlayerState.playing ||
                   playerState == audio.PlayerState.paused
               ? Text(
-                  currentPosition.toString().substring(2, 7),
+                  playerText,
                   style: AppTextStyle.getBaseStyle(
-                      color: AppColors.textBlack,
+                      color: widget.bSelf?AppColors.textBlack:AppColors.textWhite,
                       fontSize: UIDefine.fontSize14,
                       fontWeight: FontWeight.w400),
                 )
               : Text(
-                  duration.toString().substring(2, 7),
+                  totalDurationText,
                   style: AppTextStyle.getBaseStyle(
-                      color: AppColors.textBlack,
+                      color: widget.bSelf?AppColors.textBlack:AppColors.textWhite,
                       fontSize: UIDefine.fontSize14,
                       fontWeight: FontWeight.w400),
                 ),
           SizedBox(width: UIDefine.getPixelWidth(15),),
           RectangleWaveform(
-            maxDuration: duration ?? Duration.zero,
+            maxDuration: duration ?? Duration(seconds: 1),
             elapsedDuration: currentPosition ?? Duration.zero,
             samples: [0, -2, 3, 10, 4, 10, 6, 3, 10, 0, 4, 14, 4, 10, 6, 3, 10, 0, 4, 6, 4, 10, 6, 3, 10,8, 5, 3],
             height: UIDefine.getPixelWidth(30),
             width: UIDefine.getPixelWidth(70),
-            inactiveColor: AppColors.buttonAudio.getColor().withOpacity(0.3),
-            activeColor: Colors.black87,
+            inactiveColor: widget.bSelf?AppColors.buttonAudio.getColor().withOpacity(0.3):Colors.white.withOpacity(0.5),
+            activeColor:widget.bSelf?AppColors.textBlack.getColor():AppColors.textWhite.getColor(),
             activeBorderColor: Colors.transparent,
             inactiveBorderColor: Colors.transparent,
             showActiveWaveform: true,
@@ -174,8 +162,8 @@ class _PlayAudioBubbleState extends State<PlayAudioBubble> {
           height: UIDefine.getPixelWidth(30),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(15)),
-              color: AppColors.buttonAudio.getColor().withOpacity(0.2)),
-          child: Image.asset(AppImagePath.blackPlayIcon),
+              color: widget.bSelf?AppColors.buttonAudio.getColor().withOpacity(0.2):AppColors.buttonCommon.getColor().withOpacity(0.3)),
+          child: Image.asset(widget.bSelf?AppImagePath.blackPlayIcon:AppImagePath.whitePlayIcon),
         ),
       );
     } else if (playerState == audio.PlayerState.playing) {
@@ -190,8 +178,8 @@ class _PlayAudioBubbleState extends State<PlayAudioBubble> {
           height: UIDefine.getPixelWidth(30),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(15)),
-              color: AppColors.buttonAudio.getColor().withOpacity(0.2)),
-          child: Image.asset(AppImagePath.pauseBlackIcon),
+              color: widget.bSelf?AppColors.buttonAudio.getColor().withOpacity(0.2):AppColors.buttonCommon.getColor().withOpacity(0.3)),
+          child: Image.asset(widget.bSelf?AppImagePath.pauseBlackIcon:AppImagePath.pauseWhiteIcon),
         ),
       );
     } else if (playerState == audio.PlayerState.paused) {
@@ -204,8 +192,8 @@ class _PlayAudioBubbleState extends State<PlayAudioBubble> {
           height: UIDefine.getPixelWidth(30),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(15)),
-              color: AppColors.buttonAudio.getColor().withOpacity(0.2)),
-          child: Image.asset(AppImagePath.blackPlayIcon),
+              color: widget.bSelf?AppColors.buttonAudio.getColor().withOpacity(0.2):AppColors.buttonCommon.getColor().withOpacity(0.3)),
+          child: Image.asset(widget.bSelf?AppImagePath.blackPlayIcon:AppImagePath.whitePlayIcon),
         ),
       );
     } else {
@@ -221,7 +209,7 @@ class _PlayAudioBubbleState extends State<PlayAudioBubble> {
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(15)),
               color: AppColors.buttonAudio.getColor().withOpacity(0.2)),
-          child: Image.asset(AppImagePath.blackPlayIcon),
+          child: Image.asset(widget.bSelf?AppImagePath.blackPlayIcon:AppImagePath.whitePlayIcon),
         ),
       );
     }
