@@ -106,9 +106,9 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    Container(
+                    SizedBox(
                       width: UIDefine.getWidth(),
-                      height: UIDefine.getViewHeight() - UIDefine.getPixelWidth(150),
+                      height: UIDefine.getViewHeight() - UIDefine.getPixelWidth(120),
                       child: Stack(
                         children: [
                           SizedBox(
@@ -119,7 +119,7 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
                             fit: BoxFit.cover,
                             imageUrl: data.posts[selectedCardIndex].images[0],
                             width: UIDefine.getWidth(),
-                            height: UIDefine.getViewHeight() - UIDefine.getPixelWidth(150),
+                            height: UIDefine.getViewHeight() - UIDefine.getPixelWidth(120),
                           ),
                           Positioned(
                               top: UIDefine.getStatusBarHeight(),
@@ -288,9 +288,9 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
   }
 
   Widget _buildButton() {
-    return Container(
+    return SizedBox(
       width: UIDefine.getWidth() * 0.9,
-      height: UIDefine.getPixelWidth(40),
+      // height: UIDefine.getPixelWidth(45),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -299,11 +299,15 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
           ),
           Expanded(
             child: TextButtonWidget(
+              backgroundVertical:0,
+              backgroundHorizontal: 0,
+              setHeight: UIDefine.getPixelWidth(40),
               isFillWidth: true,
-              backgroundVertical: UIDefine.getPixelWidth(1),
               btnText: tr('following'),
               setMainColor: AppColors.buttonUnable,
               textColor: AppColors.textPrimary,
+              fontWeight: FontWeight.w500,
+              fontSize: UIDefine.fontSize14,
               onPressed: () {},
             ),
           ),
@@ -312,11 +316,15 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
           ),
           Expanded(
             child: TextButtonWidget(
+              backgroundVertical:0,
+              backgroundHorizontal: 0,
+              setHeight: UIDefine.getPixelWidth(40),
               isFillWidth: true,
-              backgroundVertical: UIDefine.getPixelWidth(1),
               isGradient: true,
               btnText: tr('message'),
               textColor: AppColors.textBlack,
+              fontWeight: FontWeight.w500,
+              fontSize: UIDefine.fontSize14,
               onPressed: () {
                 /// 切換頁面
                 BaseViewModel().changeMainScreenPage( AppNavigationBarType.typeMessage);
@@ -344,11 +352,12 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
       child: TabBar(
           labelPadding: EdgeInsets.zero,
           controller: _tabController,
-          physics: NeverScrollableScrollPhysics(),
-          padding: EdgeInsets.symmetric(horizontal: 15),
+          physics: const NeverScrollableScrollPhysics(),
+          padding: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(15)),
           indicator: UnderlineTabIndicator(
+              borderRadius: const BorderRadius.all(Radius.circular(5)),
             borderSide: BorderSide(
-                width: 4.0, color: AppColors.mainThemeButton.getColor()),
+                width: 3.0, color: AppColors.mainThemeButton.getColor()),
             // 调整指示器的高度
             insets: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(100)), // 调整指示器的左右间距
           ),
@@ -387,8 +396,8 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
   }
 
   Widget _buildTabView(){
-    return Container(
-      height: UIDefine.getHeight()*0.5,
+    return SizedBox(
+      height: UIDefine.getPixelWidth(300),
       child: TabBarView(
           controller: _tabController,
           physics: const NeverScrollableScrollPhysics(),

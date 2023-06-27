@@ -5,7 +5,7 @@ enum AppColors {
   ///MARK:主題色彩
   mainThemeButton(dark: Color(0xFFECB680), light: Color(0xFFECB680)),
   subThemePurple(dark: Color(0xFFE2C98E), light: Color(0xFFE2C98E)),
-  mainBackground(dark: Colors.black, light: Colors.white),
+  mainBackground(dark: Color(0xCC0C0503), light: Color(0xCCFFFFFF)),
   navigationBarSelect(dark: Colors.yellow, light: Color(0xFF3B82F6)),
   navigationBarUnSelect(dark: Colors.grey, light: Colors.grey),
 

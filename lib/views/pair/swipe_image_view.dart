@@ -103,19 +103,20 @@ class _SwipeImageViewState extends State<SwipeImageView>
                   child: Stack(
                     children: [
                       Container(
-                        color: AppColors.mainBackground.getColor(),
+                          color: AppColors.mainBackground.getColor(),
                           width: UIDefine.getWidth(),
                           height: UIDefine.getViewHeight()),
+
                       ///MARK:圖片本體
                       CommonNetworkImage(
                           imageUrl: data.images[currentIndex],
                           width: UIDefine.getWidth(),
-                          height: UIDefine.getViewHeight()*0.78,
+                          height: UIDefine.getViewHeight() * 0.78,
                           fit: BoxFit.cover),
 
                       Positioned(
-                          left: UIDefine.getPixelWidth(25),
-                          right: UIDefine.getPixelWidth(25),
+                          left: UIDefine.getPixelWidth(45),
+                          right: UIDefine.getPixelWidth(45),
                           top: UIDefine.getPixelWidth(40),
                           child: _buildImageIndex()),
 
@@ -246,18 +247,20 @@ class _SwipeImageViewState extends State<SwipeImageView>
 
   Widget _buildImageIndex() {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: List<Widget>.generate(data.images.length, (index) {
         bool isCurrent = currentIndex == index;
         return Expanded(
-            child: Container(
-          height: UIDefine.getPixelWidth(2),
-          decoration: AppStyle().styleColorsRadiusBackground(
-              radius: 1,
-              color: isCurrent
-                  ? Colors.white.withOpacity(0.6)
-                  : const Color(0xFFE2E2E2).withOpacity(0.13)),
-          margin: const EdgeInsets.symmetric(horizontal: 1, vertical: 5),
-        ));
+          child: Container(
+            height: UIDefine.getPixelWidth(2),
+            decoration: AppStyle().styleColorsRadiusBackground(
+            radius: 2,
+            color: isCurrent
+                ? Colors.white
+                : Colors.white.withOpacity(0.4)),
+            margin: const EdgeInsets.symmetric(horizontal: 1, vertical: 5),
+          ),
+        );
       }),
     );
   }
@@ -331,21 +334,23 @@ class _SwipeImageViewState extends State<SwipeImageView>
   }
 
   void _onTapUp(TapUpDetails details) {
-    if (details.localPosition.dx / UIDefine.getWidth() >= 0.5) {
-      ///圖片是否已經到最底
-      if (currentIndex + 1 < data.images.length) {
-        setState(() {
+    setState(() {
+      if (details.localPosition.dx / UIDefine.getWidth() >= 0.5) {
+        ///圖片是否已經到最底
+        if (currentIndex + 1 < data.images.length) {
           currentIndex += 1;
-        });
-      }
-    } else {
-      ///圖片是否已經到最前面
-      if (currentIndex - 1 >= 0) {
-        setState(() {
+        } else {
+          currentIndex = 0;
+        }
+      } else {
+        ///圖片是否已經到最前面
+        if (currentIndex - 1 >= 0) {
           currentIndex -= 1;
-        });
+        } else {
+          currentIndex = data.images.length - 1;
+        }
       }
-    }
+    });
   }
 
   void _onPanUpdate(DragUpdateDetails tapInfo) {
