@@ -18,24 +18,24 @@ class WsSendMessageData {
   int timestamp;
 
   factory WsSendMessageData.fromJson(Map<String, dynamic> json) => WsSendMessageData(
-        topic: json["topic"] ?? '',
-        action: json["action"] ?? '',
-        chatData: ChatData.fromJson(json["chatData"]),
-        timestamp: json["timestamp"] ?? '',
-      );
+    topic: json["topic"] ?? '',
+    action: json["action"] ?? '',
+    chatData: ChatData.fromJson(json["chatData"]),
+    timestamp: json["timestamp"] ?? '',
+  );
 
   Map<String, dynamic> toJson() => {
-        "topic": topic,
-        "action": action,
-        "chatData": chatData.toJson(),
-        "timestamp": timestamp,
-      };
+    "topic": topic,
+    "action": action,
+    "chatData": chatData.toJson(),
+    "timestamp": timestamp,
+  };
 }
 
 class ChatData {
   ChatData({
-    this.roomId = 0,
-    this.receiverAvatarId = 0,
+    this.roomId = "0",
+    this.receiverAvatarId = "0",
     this.msgType = '',
     this.content = '',
     this.contentId = '',
@@ -57,8 +57,8 @@ class ChatData {
     // this.agoraInfo,
   });
 
-  int roomId;
-  int receiverAvatarId;
+  String roomId;
+  String receiverAvatarId;
   String msgType;
   String content;
   String contentId;
@@ -80,8 +80,8 @@ class ChatData {
   // AgoraInfo? agoraInfo;
 
   factory ChatData.fromJson(Map<String, dynamic> json) => ChatData(
-        roomId: json["roomId"] ?? '',
-        receiverAvatarId: json["receiverAvatarId"] ?? '',
+        roomId: (json["roomId"] ?? 0).toString(),
+        receiverAvatarId: (json["receiverAvatarId"] ?? 0).toString(),
         msgType: json["msgType"] ?? '',
         content: json["content"] ?? '',
         contentId: json["contentId"]??'',

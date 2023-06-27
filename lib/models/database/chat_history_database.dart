@@ -22,7 +22,7 @@ class ChatHistoryDataBase {
   Future<Database> get database async {
     if (_database != null) return _database!;
 
-    _database = await _initDB('ChatHistory${GlobalData.userMemberId}.db');
+    _database = await _initDB('ChatHistory2${GlobalData.userMemberId}.db');
     return _database!;
   }
 

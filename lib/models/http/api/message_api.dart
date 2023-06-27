@@ -21,6 +21,15 @@ class MessageApi extends HttpManager{
     return post('/file/upload/chat',data: formData,);
   }
 
+  /// 創建聊天室
+  Future<String?> createMessageRoom(String receiverAvatarId) async {
+    try {
+      var response = await post("/chatroom/create",
+          data: {"receiverAvatarId": receiverAvatarId});
+      return (response.data["roomId"]).toString();
+    } catch (e) {
+      return null;
+    }
+  }
 
-  
 }

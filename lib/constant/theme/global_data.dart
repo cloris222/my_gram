@@ -11,6 +11,8 @@ import '../../models/http/data/country_phone_data.dart';
 import '../../models/http/data/pair_image_data.dart';
 import '../../models/http/data/post_comment_data.dart';
 import '../../utils/observer_pattern/main_screen/main_screen_subject.dart';
+import '../../views/message/notifier/chat_msg_notifier.dart';
+import '../../views/message/notifier/userToken_notifier.dart';
 import '../enum/app_param_enum.dart';
 
 class GlobalData {
@@ -22,19 +24,40 @@ class GlobalData {
   static bool firstLaunch = true;
   static List<CountryPhoneData> country = [];
   static AppNavigationBarType mainBottomType = AppNavigationBarType.typePair;
+
   /// 樣式
   static bool isDark = false;
+  /// 固定ai id
+  static String friendAvatarId = "1";
 
   /// USER
-  // static String userToken = '';
+  static String userToken = '';
+  static String userMemberId = '';
+  static int selfAvatar = 0;
+  static String roomId = "1";
+
+
+  /// andrew
+  // static String userToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoibWVtYmVyIiwidXNlcklkIjoiTTAwSTYzOE9NSjkifQ.rBPeMwYepOsnNPMHEgqM7uw-Wrua7tFINO1e-0DU8jE';
   // static String userMemberId = 'M00I638OMJ9';
+  // static int selfAvatar = 4;
+  // static String roomId = "3";
 
-  /// USER
-  static String userToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoibWVtYmVyIiwidXNlcklkIjoiTTAwMEM2MzE0TDQifQ.fR50QdriRo0k6GRNGwfHe8CS_ybSYDchoNMlcvOh-w0';
-  static String userMemberId = 'M000C6314L4';
+  /// salt
+  // static String userToken="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoibWVtYmVyIiwidXNlcklkIjoiTTAwMDJYR1BEWkMifQ.PtUSBFOhFhG4oZv4gvWtZfjnNS4YgStsaJ509sZDO_U";
+  // static String userMemberId="M0002XGPDZC";
 
-  ///音檔測試資料,記得刪
-  static String audioPath ='https://test-bucket.mygram.ai/chat/msg/audio/UP3YO202306260958342791E3.wav';
+  /// salt001
+  // static String userToken="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoibWVtYmVyIiwidXNlcklkIjoiTTAwOVM1OEtORzYifQ.ewJ__UChoq2BQVxvf00L9tylvzKi4F_R-SpHKiJHu2w";
+  // static String userMemberId="M009S58KNG6";
+  // static int selfAvatar = 5;
+  // static String roomId = "4";
+
+  // Cloris
+  // static String userToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoibWVtYmVyIiwidXNlcklkIjoiTTAwMDJYR1BEWkMifQ.ryzGxav0KI8OaVSZm44k9fmskE6-LhCu-0dPLxHvEv8';
+  // static String userMemberId = 'M000C6314L4';
+
+
 
   /// RSA Public Key
   static String publicKey = '';
@@ -51,6 +74,14 @@ class GlobalData {
       debugPrint(logMessage);
     }
   }
+
+  /// notifier
+  // static ChatroomNotifier chatroomNotifier = ChatroomNotifier();
+  static ChatMsgNotifier chatMsgNotifier = ChatMsgNotifier();
+  static UserTokenNotifier userTokenNotifier = UserTokenNotifier();
+
+  /// dynamic 記住滑動位置
+  static double dynamicOffset = 0;
 
   /// 測試資料
   static final List<String> photos = [
@@ -77,8 +108,7 @@ class GlobalData {
     "https://s3-alpha-sig.figma.com/img/fb03/175c/468672bb0a284c6967e1ef1c9f72b293?Expires=1687737600&Signature=Bnc3cWCN~wuar3hti9iA-PS~uOdzjWvZX59mw47XyEC5Z8aBfzzBTc3ST7DOP29B1RwOJoFFKOk1TIlv7wqGUKP9KGN5Kjg5P-yLrXZjp72Rpb1-rw9yzQoXBcukRfIBkomvzRbJGU7CC3tN0durQ39ljMPxopVT-rtAzHdk4vhHXLvb0NKRV8cDs7GLDw1AShaTcdrJv4GP4nX-qU8Fp0CbVX-IkJM-dbcyXswUWjqnyZOhH6d4-719suFUK~oTon3wqjyBqMAxF0Oob-y7n2E2XLVFN8xbMWidleJ3aW6wt2BJukpCQiusN1NWrZ3sussHOBEbX1iPmWIkISAnZQ__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4",
   ];
 
-  static List<PostCommentData> generateCommentData(int page, int size,
-      {required bool isMain, String replyId = ""}) {
+  static List<PostCommentData> generateCommentData(int page, int size, {required bool isMain, String replyId = ""}) {
     return List<PostCommentData>.generate(size, (index) {
       int random = Random().nextInt(3);
       return PostCommentData(
@@ -110,10 +140,7 @@ class GlobalData {
   static List<StoreInfoData> generateStoreData(int length) {
     return List<StoreInfoData>.generate(length, (index) {
       int random = Random().nextInt(3);
-      return StoreInfoData(
-          avatar: photos[random],
-          name: 'store$random',
-          list: generateDynamicData(10));
+      return StoreInfoData(avatar: photos[random], name: 'store$random', list: generateDynamicData(10));
     });
   }
 
@@ -125,9 +152,7 @@ class GlobalData {
           nickName: 'user$random',
           avatar: photos[random],
           content: text * random + text,
-          time: index % 2 == 0
-              ? '2023-0$random-05 12:00'
-              : '2023-05-10 0${random + 5}:00',
+          time: index % 2 == 0 ? '2023-0$random-05 12:00' : '2023-05-10 0${random + 5}:00',
           isRead: index % 2 == 0,
           beRead: index % 3 == 0,
           imageList: []);
@@ -148,14 +173,17 @@ class GlobalData {
   // }
 
   static List<PairImageData> generatePairImageData(int length) {
+
    return PitchDataUtil().buildPairData();
   }
 
   static List<DynamicInfoData> generateIsRebeccaData(int length) {
+
     return PitchDataUtil().buildSelf(length);
   }
 
   static List<DynamicInfoData> generateNotRebeccaData(int length) {
+
     return PitchDataUtil().buildOther();
   }
 }

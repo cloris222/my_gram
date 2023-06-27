@@ -5,6 +5,7 @@ import 'package:base_project/views/explore/explore_main_page.dart';
 import 'package:base_project/views/message/message_main_page.dart';
 import 'package:base_project/views/pair/pair_main_page.dart';
 import 'package:flutter/material.dart';
+import '../../views/create/create_main_page.dart';
 import '../../views/personal/personal_home_page.dart';
 import '../../views/message/private_message_page.dart';
 
@@ -15,6 +16,7 @@ enum AppNavigationBarType {
   typePair(label: "pair",icon:AppImagePath.matchIcon,onIcon: AppImagePath.onMatchIcon, typePage: PairMainPage()),
   // typeMessage(label: "message",icon:AppImagePath.chatIcon,onIcon: AppImagePath.onChatIcon, typePage: MessageMainPage()),
   typeMessage(label: "message",icon:AppImagePath.chatIcon,onIcon: AppImagePath.onChatIcon, typePage: PrivateMessagePage()),
+  typeCreate(label: "personal",icon:AppImagePath.createIcon,onIcon: AppImagePath.onCreateIcon, typePage: CreateMainPage()),
   typePersonal(label: "personal",icon:AppImagePath.createIcon,onIcon: AppImagePath.onCreateIcon, typePage: PersonalHomePage());
 
   /// 名稱
