@@ -1,3 +1,5 @@
+import 'package:base_project/models/http/data/dynamic_info_data.dart';
+import 'package:base_project/utils/pitch_data_util.dart';
 import 'package:base_project/view_models/message/websocket/web_socket_util.dart';
 import 'package:base_project/view_models/message/websocketdata/ws_send_message_data.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,16 +14,38 @@ import '../base_view_model.dart';
 import '../../constant/call_back_function.dart';
 import '../../views/message/data/message_chatroom_detail_response_data.dart';
 
+List<String> imageList = [];
+
+class ListImgNotifer extends StateNotifier<List<String>> {
+  ListImgNotifer() : super([]);
+  List<DynamicInfoData> dynamicList = PitchDataUtil().buildSelf(6);
+  void addData() {
+    print("dynamic List: ${dynamicList.length}");
+    for (var dynamicData in dynamicList) {
+      imageList.addAll(dynamicData.images);
+    }
+    print("llll: ${imageList}");
+  }
+}
+
+final listImgNotiferProvider = StateNotifierProvider<ListImgNotifer, List<String>>((ref) {
+  return ListImgNotifer();
+});
+
 class MessagePrivateGroupMessageViewModel extends BaseViewModel {
   final TextEditingController textController = TextEditingController();
+  final FocusNode textFocusNode = FocusNode();
   bool bShowReply = false; // 回覆
+  bool isFocus = false;
+  bool showImageWall = true;
   String roomId = GlobalData.roomId;
   String receiverAcatarId = GlobalData.friendAvatarId;
+  String rebeccaImg = PitchDataUtil().getAvatar(MyGramAI.Rebecca);
   String sType = '';
   ChatHistorySQLite replyByMessageData = ChatHistorySQLite(); // 暫存所要回覆的訊息
   MessageChatroomDetailResponseData _chatroomDetailData = MessageChatroomDetailResponseData();
-
   String filePrefix = '';
+  // List<String> imageList = [];
 
   // Future<MessageChatroomDetailResponseData> getChatroomDetail(String roomId,
   //   {ResponseErrorFunction? onConnectFail}) async {
@@ -30,6 +54,8 @@ class MessagePrivateGroupMessageViewModel extends BaseViewModel {
   // }
 
   final showingListProvider = StateProvider<List<ChatHistorySQLite>>((ref) => []);
+
+  final StateProvider<List<String>> imgList = StateProvider((ref) => []);
 
   bool checkInputEmpty(String sContent) {
     if (sContent.isEmpty) {
@@ -43,6 +69,14 @@ class MessagePrivateGroupMessageViewModel extends BaseViewModel {
     }
     return false;
   }
+
+  // void addImage() {
+  //   List<DynamicInfoData> dynamicList = PitchDataUtil().buildSelf(6);
+  //   dynamicList.forEach((element) {
+  //     // ref.read(imgList.notifier)
+  //     // imgList = [...imageList, ...element.images];
+  //   });
+  // }
 
   void onSendMessage(String sContent, bool bImage, String type) {
     if (!bImage) {
@@ -116,12 +150,12 @@ class MessagePrivateGroupMessageViewModel extends BaseViewModel {
     sType = '';
   }
 
-  Future<void> getFilePrefix()async{
+  Future<void> getFilePrefix() async {
     final data = await MessageApi().getFilePrefix();
     filePrefix = data.data;
   }
 
-  Future<String> uploadFile(String fileType,String filePath)async{
+  Future<String> uploadFile(String fileType, String filePath) async {
     final data = await MessageApi().uploadFile(fileType, filePath);
     return data.data;
   }

@@ -14,7 +14,7 @@ class AvatarIconWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(5),
+      borderRadius: BorderRadius.circular(20),
       child: CommonNetworkImage(
         imageUrl: imageUrl,
         width: size ?? UIDefine.getPixelWidth(40),
