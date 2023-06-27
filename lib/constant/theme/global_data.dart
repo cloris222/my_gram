@@ -176,17 +176,17 @@ class GlobalData {
   // }
 
   static List<PairImageData> generatePairImageData(int length) {
-   
+
    return PitchDataUtil().buildPairData();
   }
 
   static List<DynamicInfoData> generateIsRebeccaData(int length) {
-  
+
     return PitchDataUtil().buildSelf(length);
   }
 
   static List<DynamicInfoData> generateNotRebeccaData(int length) {
-  
+
     return PitchDataUtil().buildOther();
   }
 }
