@@ -370,6 +370,7 @@ class _RecorderViewState extends State<RecorderView> {
   
   Future<void> _onSend()async{
     audioFile = await viewModel.uploadFile('audio', '${tempDir.path}/$timeStamp.wav');
+    viewModel.onSendMessage(audioFile, false, "AUDIO");
     if (await File('${tempDir.path}/$timeStamp.wav').exists()) {
       await File('${tempDir.path}/$timeStamp.wav').delete();
     }

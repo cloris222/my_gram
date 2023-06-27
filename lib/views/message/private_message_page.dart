@@ -73,8 +73,8 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
   List<AssetEntity> showImageList = [];
   bool showRecorder = false;
 
-  String get filePrefix =>ref.read(filePrefixProvider);
-  String get filePath =>ref.read(msgFilePathProvider);
+  // String get filePrefix =>ref.read(filePrefixProvider);
+  // String get filePath =>ref.read(msgFilePathProvider);
 
   @override
   initState() {

@@ -86,17 +86,17 @@ class _PlayAudioBubbleState extends State<PlayAudioBubble> {
     // print('duration222=$duration');
     // print('duration=${duration.toString().substring(2,7)}');
     return Container(
-      width: UIDefine.getWidth() * 0.5,
+      // width: UIDefine.getWidth() * 0.5,
       height: UIDefine.getPixelWidth(50),
-      padding: EdgeInsets.all(UIDefine.getPixelWidth(5)),
-      decoration: BoxDecoration(
-          gradient: LinearGradient(
-              colors: AppGradientColors.gradientBaseColorBg.getColors()),
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(UIDefine.getPixelWidth(15)),
-              topRight: Radius.circular(UIDefine.getPixelWidth(15)),
-              bottomLeft: Radius.circular(UIDefine.getPixelWidth(15)),
-              bottomRight: Radius.zero)),
+      // padding: EdgeInsets.all(UIDefine.getPixelWidth(5)),
+      // decoration: BoxDecoration(
+      //     gradient: LinearGradient(
+      //         colors: AppGradientColors.gradientBaseColorBg.getColors()),
+      //     borderRadius: BorderRadius.only(
+      //         topLeft: Radius.circular(UIDefine.getPixelWidth(15)),
+      //         topRight: Radius.circular(UIDefine.getPixelWidth(15)),
+      //         bottomLeft: Radius.circular(UIDefine.getPixelWidth(15)),
+      //         bottomRight: Radius.zero)),
       child: Row(
         children: [
           SizedBox(
