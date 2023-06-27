@@ -43,21 +43,15 @@ class _AppFirstPageState extends State<AppFirstPage> {
                 children: [
                   SizedBox(
                       height: UIDefine.getHeight(), width: UIDefine.getWidth()),
-                  Positioned(
-                      top: 0,
-                      bottom: UIDefine.getHeight() * 0.2,
-                      child: Container(
-                          width: UIDefine.getWidth(),
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image:
-                                  const AssetImage(AppImagePath.loginBgImage),
-                              fit: BoxFit.cover,
-                              colorFilter: ColorFilter.mode(
-                                  Colors.black.withOpacity(0.3),
-                                  BlendMode.darken),
-                            ),
-                          ))),
+                  Container(
+                      width: UIDefine.getWidth(),
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage(AppImagePath.loginBgImage),
+                          fit: BoxFit.cover,
+                        ),
+                      )
+                  ),
                   /// 底部圓角
                   Positioned(
                       top: UIDefine.getHeight() * 0.65,
@@ -87,11 +81,11 @@ class _AppFirstPageState extends State<AppFirstPage> {
                     child: Column(
                       children: [
                         SizedBox(
-                          height: UIDefine.getViewHeight() * 0.425,
+                          height: UIDefine.getViewHeight() * 0.377,
                         ),
                         Container(
-                          width: UIDefine.getWidth() * 0.2,
-                          height: UIDefine.getWidth() * 0.2,
+                          width: UIDefine.getPixelWidth(90),
+                          height: UIDefine.getPixelWidth(90),
                           child: Image.asset(
                             AppImagePath.logoImage,
                             fit: BoxFit.cover,
@@ -113,19 +107,17 @@ class _AppFirstPageState extends State<AppFirstPage> {
                         Expanded(
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(40),
-                            child: Container(
-                              width: UIDefine.getWidth() * 0.85,
-                              clipBehavior: Clip.antiAlias,
-                              decoration: BoxDecoration(
-                                  color: Colors.grey.withOpacity(0.3),
-                                  borderRadius: BorderRadius.circular(40)),
-                              child: BackdropFilter(
-                                filter:
-                                    ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+                            child: BackdropFilter(
+                              filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+                              child: Container(
+                                width: UIDefine.getWidth() * 0.85,
+                                clipBehavior: Clip.antiAlias,
+                                decoration: BoxDecoration(
+                                    color: Colors.grey.withOpacity(0.325),
+                                    borderRadius: BorderRadius.circular(40)),
                                 child: Container(
                                   child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
                                       Row(
                                         mainAxisAlignment:
@@ -140,7 +132,7 @@ class _AppFirstPageState extends State<AppFirstPage> {
                                               setWidth:
                                                   UIDefine.getWidth() * 0.6,
                                               setHeight:
-                                                  UIDefine.getPixelWidth(40),
+                                                  UIDefine.getPixelWidth(44),
                                               isGradient: true,
                                               btnText: tr('registerWithEmail'),
                                               onPressed: _onPress),
@@ -152,10 +144,8 @@ class _AppFirstPageState extends State<AppFirstPage> {
                                           children: [
                                             Expanded(
                                               child: Container(
-                                                margin: EdgeInsets.symmetric(
-                                                    horizontal:
-                                                        UIDefine.getPixelWidth(
-                                                            10)),
+                                                margin: EdgeInsets.only(
+                                                    right: UIDefine.getPixelWidth(15)),
                                                 height: 1,
                                                 color: AppColors.subThemePurple
                                                     .getColor()
@@ -163,17 +153,15 @@ class _AppFirstPageState extends State<AppFirstPage> {
                                               ),
                                             ),
                                             Text(
-                                              tr('otherRegisterWay'),
+                                              tr('or'),
                                               style: AppTextStyle.getBaseStyle(
                                                   fontSize:
                                                       UIDefine.fontSize12),
                                             ),
                                             Expanded(
                                               child: Container(
-                                                margin: EdgeInsets.symmetric(
-                                                    horizontal:
-                                                        UIDefine.getPixelWidth(
-                                                            10)),
+                                                margin: EdgeInsets.only(
+                                                    left: UIDefine.getPixelWidth(15)),
                                                 height: 1,
                                                 color: AppColors.subThemePurple
                                                     .getColor()
@@ -187,11 +175,9 @@ class _AppFirstPageState extends State<AppFirstPage> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                          _buildIconButton(
-                                              AppImagePath.googleIcon),
+                                          _buildIconButton(AppImagePath.googleIcon),
                                           _buildIconButton(AppImagePath.fbIcon),
-                                          _buildIconButton(
-                                              AppImagePath.appleIcon),
+                                          _buildIconButton(AppImagePath.appleIcon),
                                         ],
                                       ),
                                     ],
@@ -216,9 +202,9 @@ class _AppFirstPageState extends State<AppFirstPage> {
     return GestureDetector(
       onTap: _onPress,
       child: Container(
-        width: UIDefine.getPixelWidth(50),
-        height: UIDefine.getPixelWidth(50),
-        margin: EdgeInsets.symmetric(horizontal: 15),
+        width: UIDefine.getPixelWidth(63),
+        height: UIDefine.getPixelWidth(63),
+        margin: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(15)),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(50),
         ),
@@ -227,6 +213,8 @@ class _AppFirstPageState extends State<AppFirstPage> {
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
             child: Container(
+              width: UIDefine.getPixelWidth(24),
+              height: UIDefine.getPixelWidth(24),
               color: Colors.grey.withOpacity(0.5),
               child: Image.asset(
                 image,
