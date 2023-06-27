@@ -35,6 +35,7 @@ enum AppColors {
   buttonDisLike(dark: Color(0xFFC11D11), light: Color(0xFFC11D11)),
   buttonMessageRed(dark: Colors.red, light: Colors.red),
   buttonCommon(dark: Color(0xFF9E9E9E), light: Color(0xFF9E9E9E)),
+  buttonAudio(dark: Color(0xFF0F0806), light: Color(0xFF0F0806)),
   buttonCameraBg(dark: Color.fromARGB(255, 105, 101, 100), light: Color(0xFF514E4D)),
   dynamicButtons(dark: Color(0xFF373737), light: Color(0xFF373737)),
   dynamicButtonsBorder(dark: Color(0xFFFEFEFE), light: Color(0xFFFEFEFE)),
