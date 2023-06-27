@@ -10,6 +10,7 @@ import '../../models/http/http_setting.dart';
 import '../../models/http/data/country_phone_data.dart';
 import '../../models/http/data/pair_image_data.dart';
 import '../../models/http/data/post_comment_data.dart';
+import '../../utils/observer_pattern/dynamic/dynamic_subject.dart';
 import '../../utils/observer_pattern/main_screen/main_screen_subject.dart';
 import '../../views/message/notifier/chat_msg_notifier.dart';
 import '../../views/message/notifier/userToken_notifier.dart';
@@ -68,6 +69,7 @@ class GlobalData {
 
   ///  主頁頁面切換的監聽
   static MainScreenSubject mainScreenSubject = MainScreenSubject();
+  static DynamicSubject dynamicSubject = DynamicSubject();
 
   static printLog(String? logMessage) {
     if (HttpSetting.debugMode) {
@@ -82,6 +84,7 @@ class GlobalData {
 
   /// dynamic 記住滑動位置
   static double dynamicOffset = 0;
+  static double dynamicRebeccaOffset = 0;
 
   /// 測試資料
   static final List<String> photos = [

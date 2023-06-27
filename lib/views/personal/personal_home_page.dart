@@ -201,7 +201,7 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
             onTap: (){
               if(isCenter){
                 ref.read(isRebeccaProvider.notifier).update((state) => true);
-                BaseViewModel().changeMainScreenPage( AppNavigationBarType.typeDynamic,isRebecca: true);
+                BaseViewModel().changeMainScreenPage( AppNavigationBarType.typeDynamic,isRebecca: true,index: index);
               }
             },
             child: Align(

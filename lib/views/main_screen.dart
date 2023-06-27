@@ -38,7 +38,8 @@ class _MainScreenState extends ConsumerState<MainScreen> {
   void initState() {
     controller = PageController(initialPage: widget.type.index);
     observer = MainScreenObserver("main",
-        changeMainPage: (AppNavigationBarType type,bool isRebecca) => _changePage(type,needRecover: !isRebecca));
+        changeMainPage: (AppNavigationBarType type, bool isRebecca) =>
+            _changePage(type, needRecover: !isRebecca));
     GlobalData.mainScreenSubject.registerObserver(observer);
 
     /// 更新資料
@@ -78,10 +79,16 @@ class _MainScreenState extends ConsumerState<MainScreen> {
             ));
   }
 
-  void _changePage(AppNavigationBarType type,{bool needRecover = true}) {
+  void _changePage(AppNavigationBarType type, {bool needRecover = true}) {
     setState(() {
-      if(needRecover) {
+      if (needRecover) {
         ref.read(isRebeccaProvider.notifier).update((state) => false);
+      }
+
+      /// 判斷是否在同一頁切換
+      if (type == AppNavigationBarType.typeDynamic &&
+          GlobalData.mainBottomType == AppNavigationBarType.typeDynamic) {
+        GlobalData.dynamicSubject.scrollTop();
       }
       GlobalData.mainBottomType = type;
       controller.jumpToPage(type.index);
