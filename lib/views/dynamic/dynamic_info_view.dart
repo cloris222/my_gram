@@ -119,7 +119,7 @@ class _DynamicInfoViewState extends State<DynamicInfoView> {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(15)),
               child: CommonNetworkImage(
-                imageUrl: widget.data.images[currentIndex],
+                imageUrl: widget.data.images[index],
                 width: UIDefine.getWidth(),
                 height: UIDefine.getHeight()*0.6,
                 fit: BoxFit.cover,
@@ -180,11 +180,11 @@ class _DynamicInfoViewState extends State<DynamicInfoView> {
         width: UIDefine.getWidth(),
         clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.2),
+            color: AppColors.dynamicButtonsBorder.getColor().withOpacity(0.05),
             borderRadius: BorderRadius.circular(15)
         ),
         child: BackdropFilter(
-          filter: ui.ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+          filter: ui.ImageFilter.blur(sigmaX: 10, sigmaY: 10),
           child: Container(
             padding: EdgeInsets.all(UIDefine.getPixelWidth(15)),
             child: Column(

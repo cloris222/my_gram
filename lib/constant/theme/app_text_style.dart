@@ -44,7 +44,7 @@ class AppTextStyle {
     FontWeight? fontWeight,
     AppTextFamily? fontFamily,
     FontStyle? fontStyle,
-    double height = 1.1,
+    double height = 1.4,
     TextDecoration? textDecoration,
     AppTextShadows shadowsType = AppTextShadows.none,
   }) {
@@ -56,6 +56,7 @@ class AppTextStyle {
         fontStyle: fontStyle,
         height: height,
         decoration: textDecoration,
+        letterSpacing: 0.2,
         shadows: getTextShadow(shadowsType));
   }
 
