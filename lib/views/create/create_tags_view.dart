@@ -4,7 +4,6 @@ import 'package:base_project/constant/theme/app_text_style.dart';
 import 'package:base_project/constant/theme/ui_define.dart';
 import 'package:base_project/view_models/create/create_tag_detail_provider.dart';
 import 'package:base_project/view_models/create/create_tag_provider.dart';
-import 'package:base_project/widgets/button/text_button_widget.dart';
 import 'package:base_project/widgets/label/common_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -24,16 +23,26 @@ class CreateTagsView extends ConsumerStatefulWidget {
   ConsumerState createState() => _CreateTagsViewState();
 }
 
-class _CreateTagsViewState extends ConsumerState<CreateTagsView> {
+class _CreateTagsViewState extends ConsumerState<CreateTagsView>
+    with TickerProviderStateMixin {
   final pageTag = "createView";
 
   List<String> get tags => ref.read(createTagProvider);
+  late TabController _tabController;
 
-  int get currentTagIndex => ref.read(globalIndexProvider(pageTag)) ?? 0;
+  @override
+  void initState() {
+    _tabController =
+        TabController(length: tags.length, vsync: this, initialIndex: 0);
 
-  String get currentTag => tags[currentTagIndex];
+    super.initState();
+  }
 
-  int? get currentTagDetailIndex => ref.read(createChooseProvider(currentTag));
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +63,12 @@ class _CreateTagsViewState extends ConsumerState<CreateTagsView> {
       child: Column(
         children: [
           _buildTags(),
-          Expanded(child: _buildView()),
+          Expanded(
+              child: TabBarView(
+            controller: _tabController,
+            children: List<Widget>.generate(
+                tags.length, (index) => _buildView(tags[index])),
+          )),
         ],
       ),
     );
@@ -64,40 +78,28 @@ class _CreateTagsViewState extends ConsumerState<CreateTagsView> {
     return Container(
       height: UIDefine.getPixelWidth(50),
       padding: EdgeInsets.symmetric(vertical: UIDefine.getPixelWidth(5)),
-      child: ListView.separated(
-        padding: EdgeInsets.zero,
-        itemCount: tags.length,
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (context, index) {
-          bool isSelect = (currentTagIndex == index);
-          return TextButtonWidget(
-            fontSize: UIDefine.fontSize12,
-            fontWeight: FontWeight.w500,
-            radius: 38,
-            padding: EdgeInsets.zero,
-            backgroundVertical: UIDefine.getPixelWidth(6),
-            backgroundHorizontal: UIDefine.getPixelWidth(3),
-            margin: EdgeInsets.zero,
-            btnText: tr(tags[index]),
-            setMainColor:
-                isSelect ? AppColors.buttonUnable : AppColors.transparent,
-            onPressed: () {
-              ref
-                  .read(globalIndexProvider(pageTag).notifier)
-                  .update((state) => index);
-            },
-            isFillWidth: false,
-          );
-        },
-        separatorBuilder: (context, index) =>
-            SizedBox(width: UIDefine.getPixelWidth(2)),
+      child: TabBar(
+        isScrollable: true,
+        labelPadding: EdgeInsets.symmetric(
+            horizontal: UIDefine.getPixelWidth(5),
+            vertical: UIDefine.getPixelWidth(2)),
+        controller: _tabController,
+        indicator: AppStyle().styleColorsRadiusBackground(
+            color: AppColors.buttonUnable.getColor()),
+        labelStyle: AppTextStyle.getBaseStyle(),
+        tabs: List<Widget>.generate(
+            _tabController.length,
+            (index) => Tab(
+                height: UIDefine.getPixelWidth(40),
+                child: Center(
+                  child: Text(tr(tags[index])),
+                ))),
       ),
     );
   }
 
-  Widget _buildView() {
-    List<FeatureDetailData> list =
-        ref.read(createTagDetailProvider(currentTag));
+  Widget _buildView(String tag) {
+    List<FeatureDetailData> list = ref.read(createTagDetailProvider(tag));
     int row = 4;
     int itemCount = (list.length ~/ row) + ((list.length % row > 0) ? 1 : 0);
     return ListView.separated(
@@ -111,7 +113,7 @@ class _CreateTagsViewState extends ConsumerState<CreateTagsView> {
                   child: Container(
                       margin: EdgeInsets.symmetric(
                           horizontal: UIDefine.getPixelWidth(2.5)),
-                      child: _buildItem(list, index * 4 + itemIndex)))),
+                      child: _buildItem(list, tag, index * 4 + itemIndex)))),
         );
       },
       separatorBuilder: (context, index) =>
@@ -119,17 +121,18 @@ class _CreateTagsViewState extends ConsumerState<CreateTagsView> {
     );
   }
 
-  Widget _buildItem(List<FeatureDetailData> list, int itemIndex) {
+  Widget _buildItem(List<FeatureDetailData> list, String tag, int itemIndex) {
     if (itemIndex >= list.length) {
       return const SizedBox();
     }
     var data = list[itemIndex];
+    int currentTagDetailIndex = ref.read(createChooseProvider(tag));
     bool isSelected = currentTagDetailIndex == itemIndex;
 
     return GestureDetector(
       onTap: () {
         ref
-            .read(createChooseProvider(currentTag).notifier)
+            .read(createChooseProvider(tag).notifier)
             .update((state) => itemIndex);
       },
       behavior: HitTestBehavior.translucent,
