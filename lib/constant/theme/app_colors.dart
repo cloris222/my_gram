@@ -25,6 +25,7 @@ enum AppColors {
   commentUnlike(dark: Color(0xFF979797), light: Color(0xFF979797)),
   textBlack(dark: Color(0xFF000000), light: Color(0xFF000000)),
   textWhite(dark: Color(0xFFFFFFFF), light: Color(0xFFFFFFFF)),
+  textHintColor(dark: Color(0xFF837F7E), light: Color(0xFF837F7E)),
 
   /// 按鈕顏色相關
   buttonPrimaryText(dark: Color(0xFF000000), light: Color(0xFFFFFFFF)),
@@ -34,6 +35,7 @@ enum AppColors {
   buttonDisLike(dark: Color(0xFFC11D11), light: Color(0xFFC11D11)),
   buttonMessageRed(dark: Colors.red, light: Colors.red),
   buttonCommon(dark: Color(0xFF9E9E9E), light: Color(0xFF9E9E9E)),
+  buttonCameraBg(dark: Color.fromARGB(255, 105, 101, 100), light: Color(0xFF514E4D)),
 
   ///背景顏色
   textFieldBackground(dark: Color(0xFF1F1F1F), light: Color(0xFFFFFFFF)),
@@ -46,14 +48,20 @@ enum AppColors {
   personalLightBackground(dark: Color(0xFF2a1a14), light: Color(0xFF2a1a14)),
   messageOtherBg(dark: Color(0xFF595451), light: Color(0xFF6A615C)),
   recordBackground(dark: Color(0xFF140B07), light: Color(0xFF140B07)),
+  messageTextBg(dark: Color(0xFF18100C), light: Color(0xFF36302E)),
 
   /// 基本顏色
   transparent(dark: Colors.transparent, light: Colors.transparent);
 
   /// 背景漸層(聊天室)
-  static const LinearGradient messageLinearBg = LinearGradient(
-      colors: [Color(0xFF0D0806), Color(0xFF1D140F), Color(0xFF433125)],
-      begin: Alignment.topLeft,
+  // static RadialGradient messageLinearBg =
+  //   RadialGradient(
+  //     colors: <Color>[Color(0xFF0D0806), Color(0xFF1D140F), Color(0xFF433125)],
+  //     center: Alignment.centerLeft
+  //   );
+  static LinearGradient messageLinearBg = LinearGradient(
+      colors: [Color(0xFF433125),Color(0xFF1D140F),Color(0xFF0D0806), Color(0xFF1D140F), Color(0xFF433125)],
+      begin: Alignment.topRight,
       end: Alignment.bottomRight);
 
   final Color dark;
