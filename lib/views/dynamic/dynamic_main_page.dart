@@ -127,18 +127,18 @@ class _DynamicMainPageState extends ConsumerState<DynamicMainPage> {
                        children: [
                          Image.asset(AppImagePath.logoTextImage),
                          Container(
-                           alignment: Alignment.center,
-                           width: UIDefine.getPixelWidth(35),
-                           height: UIDefine.getPixelWidth(35),
+
+                           width: UIDefine.getPixelWidth(40),
+                           height: UIDefine.getPixelWidth(40),
                            decoration: BoxDecoration(
                              borderRadius: BorderRadius.circular(50),
                              color: AppColors.buttonCommon.getColor().withOpacity(0.5)
                            ),
                            child: Container(
-                             alignment: Alignment.center,
-                             width: UIDefine.getPixelWidth(20),
-                               height: UIDefine.getPixelWidth(20),
-                               child: Image.asset(AppImagePath.shopIcon,fit: BoxFit.cover,)),
+                            alignment: Alignment.center,
+                             width: UIDefine.getPixelWidth(15),
+                               height: UIDefine.getPixelWidth(17),
+                               child: Image.asset(AppImagePath.shopIcon,fit: BoxFit.fill,)),
                          )
                        ],
                      ),

@@ -110,7 +110,7 @@ class _SwipeImageViewState extends State<SwipeImageView>
                       CommonNetworkImage(
                           imageUrl: data.images[currentIndex],
                           width: UIDefine.getWidth(),
-                          height: UIDefine.getViewHeight()*0.78,
+                          height: UIDefine.getViewHeight(),
                           fit: BoxFit.cover),
 
                       Positioned(
@@ -121,14 +121,14 @@ class _SwipeImageViewState extends State<SwipeImageView>
 
                       ///漸層遮罩
                       Positioned(
-                        top: UIDefine.getViewHeight() * 0.6,
+                        top: UIDefine.getViewHeight() * 0.5,
                         child: Container(
                           width: UIDefine.getWidth(),
-                          height: UIDefine.getViewHeight() * 0.4,
+                          height: UIDefine.getViewHeight() * 0.5,
                           decoration: const BoxDecoration(
                               gradient: LinearGradient(
-                                  begin: Alignment(0.0, -0.9),
-                                  end: Alignment(0.0, 0.1),
+                                  begin: Alignment(0.0,-1.0),
+                                  end: Alignment(0.0,0.2),
                                   colors: [Colors.transparent, Colors.black])),
                         ),
                       ),
@@ -167,6 +167,7 @@ class _SwipeImageViewState extends State<SwipeImageView>
                               SizedBox(height: UIDefine.getPixelWidth(15),),
                               Text(data.context,
                                   style: AppTextStyle.getBaseStyle(
+                                    height: UIDefine.getPixelWidth(1.5),
                                     fontSize: UIDefine.fontSize14,
                                     fontWeight: FontWeight.w400,
                                     // shadowsType: AppTextShadows.common,
@@ -183,7 +184,7 @@ class _SwipeImageViewState extends State<SwipeImageView>
 
         ///下方按鈕
         Positioned(
-            bottom: UIDefine.getPixelWidth(50),
+            bottom: UIDefine.getPixelWidth(20),
             right: UIDefine.getPixelWidth(20),
             left: UIDefine.getPixelWidth(20),
             child: Row(
@@ -193,6 +194,7 @@ class _SwipeImageViewState extends State<SwipeImageView>
                     onTap: () => _buttonAnimate(false),
                     child: status == GramSetStatus.disLike
                         ? Container(
+                            alignment: Alignment.center,
                             width: UIDefine.getPixelWidth(50),
                             height: UIDefine.getPixelWidth(50),
                             decoration: BoxDecoration(
@@ -200,9 +202,14 @@ class _SwipeImageViewState extends State<SwipeImageView>
                                 color: AppColors.buttonDisLike
                                     .getColor()
                                     .withOpacity(0.8)),
-                            child: Image.asset(AppImagePath.btnDislike),
+                            child: Container(
+                              alignment: Alignment.center,
+                              width: UIDefine.getPixelWidth(25),
+                                height: UIDefine.getPixelWidth(25),
+                                child: Image.asset(AppImagePath.btnDislike,fit: BoxFit.cover,)),
                           )
                         : Container(
+                            alignment: Alignment.center,
                             width: UIDefine.getPixelWidth(50),
                             height: UIDefine.getPixelWidth(50),
                             decoration: BoxDecoration(
@@ -210,13 +217,18 @@ class _SwipeImageViewState extends State<SwipeImageView>
                                 color: AppColors.buttonCommon
                                     .getColor()
                                     .withOpacity(0.5)),
-                            child: Image.asset(AppImagePath.btnDislike),
+                            child: Container(
+                                alignment: Alignment.center,
+                                width: UIDefine.getPixelWidth(25),
+                                height: UIDefine.getPixelWidth(25),
+                                child: Image.asset(AppImagePath.btnDislike,fit: BoxFit.cover,)),
                           )),
                 SizedBox(width: UIDefine.getPixelWidth(40)),
                 GestureDetector(
                     onTap: () => _buttonAnimate(true),
                     child: status == GramSetStatus.like
                         ? Container(
+                            alignment: Alignment.center,
                             width: UIDefine.getPixelWidth(50),
                             height: UIDefine.getPixelWidth(50),
                             decoration: BoxDecoration(
@@ -224,12 +236,19 @@ class _SwipeImageViewState extends State<SwipeImageView>
                                 gradient: LinearGradient(
                                     colors: AppGradientColors.gradientColors
                                         .getColors())),
-                            child: Image.asset(
-                              AppImagePath.btnLike,
-                              color: Colors.white,
+                            child: Container(
+                              alignment: Alignment.center,
+                              width: UIDefine.getPixelWidth(25),
+                              height: UIDefine.getPixelWidth(25),
+                              child: Image.asset(
+                                AppImagePath.btnLike,
+                                color: Colors.white,
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           )
                         : Container(
+                            alignment: Alignment.center,
                             width: UIDefine.getPixelWidth(50),
                             height: UIDefine.getPixelWidth(50),
                             decoration: BoxDecoration(
@@ -237,7 +256,15 @@ class _SwipeImageViewState extends State<SwipeImageView>
                                 color: AppColors.buttonCommon
                                     .getColor()
                                     .withOpacity(0.5)),
-                            child: Image.asset(AppImagePath.btnLike),
+                            child: Container(
+                              alignment: Alignment.center,
+                              width: UIDefine.getPixelWidth(25),
+                              height: UIDefine.getPixelWidth(25),
+                              child: Image.asset(
+                                AppImagePath.btnLike,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                           )),
               ],
             ))

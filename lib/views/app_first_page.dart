@@ -59,30 +59,30 @@ class _AppFirstPageState extends State<AppFirstPage> {
                             ),
                           ))),
                   /// 底部圓角
-                  Positioned(
-                      top: UIDefine.getHeight() * 0.65,
-                      right: 0,
-                      left: 0,
-                      bottom: 0,
-                      child: Container(
-                        decoration: AppStyle().styleColorsRadiusBackground(
-                          color: AppColors.firstAppMarkBackground.getColor(),
-                          radius: 10,
-                        ),
-                      )),
+                  // Positioned(
+                  //     top: UIDefine.getHeight() * 0.65,
+                  //     right: 0,
+                  //     left: 0,
+                  //     bottom: 0,
+                  //     child: Container(
+                  //       decoration: AppStyle().styleColorsRadiusBackground(
+                  //         color: AppColors.firstAppMarkBackground.getColor(),
+                  //         radius: 10,
+                  //       ),
+                  //     )),
                   /// 遮罩
-                  Positioned(
-                    top: UIDefine.getViewHeight() * 0.6,
-                    child: Container(
-                      width: UIDefine.getWidth(),
-                      height: UIDefine.getViewHeight() * 0.4,
-                      decoration: const BoxDecoration(
-                          gradient: LinearGradient(
-                              begin: Alignment(0.0, -0.9),
-                              end: Alignment(0.0, 0.1),
-                              colors: [Colors.transparent, Colors.black])),
-                    ),
-                  ),
+                  // Positioned(
+                  //   top: UIDefine.getViewHeight() * 0.6,
+                  //   child: Container(
+                  //     width: UIDefine.getWidth(),
+                  //     height: UIDefine.getViewHeight() * 0.4,
+                  //     decoration: const BoxDecoration(
+                  //         gradient: LinearGradient(
+                  //             begin: Alignment(0.0, -0.9),
+                  //             end: Alignment(0.0, 0.1),
+                  //             colors: [Colors.transparent, Colors.black])),
+                  //   ),
+                  // ),
                   Positioned.fill(
                     child: Column(
                       children: [

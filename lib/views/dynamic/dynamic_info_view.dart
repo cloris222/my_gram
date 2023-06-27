@@ -180,7 +180,7 @@ class _DynamicInfoViewState extends State<DynamicInfoView> {
         width: UIDefine.getWidth(),
         clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
-            color: AppColors.dynamicButtonsBorder.getColor().withOpacity(0.1),
+            color: AppColors.dynamicButtonsBorder.getColor().withOpacity(0.05),
             borderRadius: BorderRadius.circular(15)
         ),
         child: BackdropFilter(
