@@ -99,10 +99,6 @@ class _MyAppState extends ConsumerState<MyApp> {
   void initState() {
     Future.delayed(Duration.zero).then((value) async {
       ref.read(globalThemeProvider.notifier).init();
-      if (GlobalData.userToken.isNotEmpty) {
-        /// 更新個人資料&聊天室
-        ref.read(userInfoProvider.notifier).updateUserInfo(ref);
-      }
     });
     if (GlobalData.userToken.isNotEmpty) {
       _initWebSocket();

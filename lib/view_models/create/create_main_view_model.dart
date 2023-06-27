@@ -7,6 +7,8 @@ import 'package:base_project/view_models/gobal_provider/global_tag_controller_pr
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../views/create/create_loading_page.dart';
+
 /// 對應特徵值 已選擇的選項
 final createChooseProvider =
     StateProvider.family.autoDispose<int, String>((ref, tag) {
@@ -30,7 +32,17 @@ class CreateMainViewModel extends BaseViewModel {
     });
   }
 
-  void onPressCreate(BuildContext context) {}
+  void onPressCreate(BuildContext context) {
+    List<String> feature = [];
+    for (var tag in tags) {
+      var list = ref.read(createTagDetailProvider(tag));
+      int index = ref.read(createChooseProvider(tag));
+      if (index != -1) {
+        feature.add(list[index].tag);
+      }
+    }
+    pushPage(context, CreateLoadingPage(features: feature));
+  }
 
   void onPressInfo(BuildContext context) {}
 

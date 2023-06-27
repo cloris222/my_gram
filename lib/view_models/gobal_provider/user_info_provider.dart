@@ -18,28 +18,30 @@ final userInfoProvider =
 class UserInfoNotifier extends StateNotifier<UserInfoData?> {
   UserInfoNotifier() : super(null);
 
-  Future<void> registerWithMail(WidgetRef ref,
-      {required RegisterData data}) async {
+  Future<void> registerWithMail({required RegisterData data}) async {
     var response = await UserAPI(addToken: false).registerWithEmail(data: data);
-    _saveUserData(ref, response);
+    _saveUserData(response);
   }
 
-  Future<void> loginWithMail(WidgetRef ref,
+  Future<void> loginWithMail(
       {required String email, required String password}) async {
     var response = await UserAPI(addToken: false)
         .loginWithEmail(email: email, password: password);
 
-    _saveUserData(ref, response);
+    _saveUserData(response);
   }
 
   Future<void> updateUserInfo(WidgetRef ref) async {
-    state = await UserAPI().uploadPersonalInfo();
-    await _chatRoom();
+    UserAPI().uploadPersonalInfo().then((value) {
+      state = value;
+      _chatRoom();
+    });
+
     _initCreateProvider(ref);
     _initUrlPrefix();
   }
 
-  void _saveUserData(WidgetRef ref, ApiResponse response) async {
+  void _saveUserData(ApiResponse response) async {
     GlobalData.userToken = response.data['token'];
     GlobalData.userMemberId = response.data['userId'];
     await AppSharedPreferences.setToken(GlobalData.userToken);
@@ -48,12 +50,10 @@ class UserInfoNotifier extends StateNotifier<UserInfoData?> {
 
     /// 更新連線
     GlobalData.userTokenNotifier.setUserToken = GlobalData.userToken;
-
-    await updateUserInfo(ref);
   }
 
   /// 預載創建資料
-  void _initCreateProvider(WidgetRef ref) async {
+  Future<void> _initCreateProvider(WidgetRef ref) async {
     await ref.read(createTagProvider.notifier).init();
     for (var element in ref.read(createTagProvider)) {
       ref.read(createTagDetailProvider(element).notifier).init();

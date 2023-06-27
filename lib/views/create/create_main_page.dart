@@ -172,7 +172,7 @@ class _CreateMainPageState extends ConsumerState<CreateMainPage> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         TextButtonWidget(
-            btnText: "已啟用隨機組合",
+            btnText: tr("createUseRandom"),
             setMainColor: AppColors.randomButton,
             backgroundHorizontal: UIDefine.getPixelWidth(12),
             backgroundVertical: UIDefine.getPixelWidth(12),

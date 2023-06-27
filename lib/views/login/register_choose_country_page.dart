@@ -127,7 +127,7 @@ class _RegisterChooseCountryPageState
                         if (countrySection.isNotEmpty) {
                           ref
                               .read(userInfoProvider.notifier)
-                              .registerWithMail(ref,
+                              .registerWithMail(
                                   data: ref.read(registerParamProvider))
                               .then((value) {
                             viewModel.pushPage(context, RegisterFinishPage());

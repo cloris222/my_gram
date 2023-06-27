@@ -1,6 +1,7 @@
 import 'package:base_project/constant/theme/app_image_path.dart';
 import 'package:base_project/constant/theme/app_style.dart';
 import 'package:base_project/constant/theme/app_text_style.dart';
+import 'package:base_project/constant/theme/global_data.dart';
 import 'package:base_project/constant/theme/ui_define.dart';
 import 'package:base_project/view_models/create/create_tag_detail_provider.dart';
 import 'package:base_project/view_models/create/create_tag_provider.dart';
@@ -59,7 +60,7 @@ class _CreateTagsViewState extends ConsumerState<CreateTagsView>
           radius: 20,
           hasBottomRight: false,
           hasBottomLef: false),
-      padding: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(20)),
+      padding: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(10)),
       child: Column(
         children: [
           _buildTags(),
@@ -140,7 +141,7 @@ class _CreateTagsViewState extends ConsumerState<CreateTagsView>
         children: [
           CommonNetworkImage(
             background: Colors.white,
-            imageUrl: "https://test-bucket.mygram.ai/${data.imgUrl}",
+            imageUrl: "${GlobalData.urlPrefix}${data.imgUrl}",
             width: UIDefine.getWidth(),
             height: UIDefine.getPixelWidth(120),
             cacheWidth: 480,

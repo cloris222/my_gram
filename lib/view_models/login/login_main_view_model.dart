@@ -57,7 +57,7 @@ class LoginMainViewModel extends CheckTextEditorViewModel {
     if (!checkNotEmpty()) return;
     ref
         .read(userInfoProvider.notifier)
-        .loginWithMail(ref,
+        .loginWithMail(
             email: emailController.text, password: passwordController.text)
         .then((value) async {
       pushAndRemoveUntil(context, const MainScreen());
