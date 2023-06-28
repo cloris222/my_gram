@@ -20,6 +20,9 @@ class AppImagePath {
 
   static const String demoImage = '$imgPath/img_check_01.png';
 
+  ///漸層背景圖
+  static const String gradientBg = '$assetPath/img_bg.png';
+
   ///login頁面icon&image
 
   static const String loginBgImage = '$imgPath/img_login_bg.png';
