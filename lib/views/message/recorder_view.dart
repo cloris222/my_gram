@@ -270,7 +270,7 @@ class _RecorderViewState extends ConsumerState<RecorderView> {
       if(e.duration.inMilliseconds>15010){
         setState(() {
           _recorderText = '00:15';
-          recordDuration = Duration(seconds: 17);
+          recordDuration = Duration(seconds: 16);
         });
         stopRecording();
       }else{
@@ -334,7 +334,7 @@ class _RecorderViewState extends ConsumerState<RecorderView> {
   }
 
   Future<void> playAudio() async {
-    _playerText = '00:00';
+    // _playerText = '00:00';
     setState(() {
       isPlayingSound = true;
     });
