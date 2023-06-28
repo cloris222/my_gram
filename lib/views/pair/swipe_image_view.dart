@@ -163,9 +163,9 @@ class _SwipeImageViewState extends State<SwipeImageView>
                                   style: AppTextStyle.getBaseStyle(
                                     fontSize: UIDefine.fontSize36,
                                     fontWeight: FontWeight.w400,
+                                    height: 3
                                     // shadowsType: AppTextShadows.common,
                                   )),
-                              SizedBox(height: UIDefine.getPixelWidth(15),),
                               Text(data.context,
                                   style: AppTextStyle.getBaseStyle(
                                     height: UIDefine.getPixelWidth(1.5),

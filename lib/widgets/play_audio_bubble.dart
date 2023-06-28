@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_audio_waveforms/flutter_audio_waveforms.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:io';
 import '../constant/theme/app_colors.dart';
 import '../constant/theme/app_gradient_colors.dart';
@@ -17,21 +18,24 @@ import 'package:flutter_audio_waveforms/flutter_audio_waveforms.dart'
     as flutterAudio;
 
 import '../constant/theme/app_image_path.dart';
+import '../view_models/message/message_private_message_view_model.dart';
 
-class PlayAudioBubble extends StatefulWidget {
+class PlayAudioBubble extends ConsumerStatefulWidget {
   final String path;
   final bool bSelf ;
-
+  final String contentId;
   const PlayAudioBubble({
     required this.path,
     required this.bSelf,
-    Key? key}) : super(key: key);
+    required this.contentId,
+    Key? key,
+  }) : super(key: key);
 
   @override
-  State<PlayAudioBubble> createState() => _PlayAudioBubbleState();
+  ConsumerState createState() => _PlayAudioBubbleState();
 }
 
-class _PlayAudioBubbleState extends State<PlayAudioBubble> {
+class _PlayAudioBubbleState extends ConsumerState<PlayAudioBubble> {
   Duration? currentPosition;
   late Duration maxDuration;
   late Duration elapsedDuration;
@@ -43,6 +47,8 @@ class _PlayAudioBubbleState extends State<PlayAudioBubble> {
 
   Duration? duration;
   var playerState;
+
+  String get currentPlayContentId =>ref.read(playingContentIdProvider);
 
   @override
   void initState() {
@@ -83,8 +89,9 @@ class _PlayAudioBubbleState extends State<PlayAudioBubble> {
 
   @override
   Widget build(BuildContext context) {
+    ref.watch(playingContentIdProvider);
     return Container(
-      height: UIDefine.getPixelWidth(50),
+      height: UIDefine.getPixelWidth(40),
       child: Row(
         children: [
           SizedBox(
@@ -154,6 +161,7 @@ class _PlayAudioBubbleState extends State<PlayAudioBubble> {
       return GestureDetector(
         onTap: () {
           setState(() {
+            ref.read(playingContentIdProvider.notifier).update((state) => widget.contentId);
             player.play(UrlSource(widget.path));
           });
         },
@@ -167,21 +175,42 @@ class _PlayAudioBubbleState extends State<PlayAudioBubble> {
         ),
       );
     } else if (playerState == audio.PlayerState.playing) {
-      return GestureDetector(
-        onTap: () {
-          setState(() {
-            player.pause();
-          });
-        },
-        child: Container(
-          width: UIDefine.getPixelWidth(30),
-          height: UIDefine.getPixelWidth(30),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(15)),
-              color: widget.bSelf?AppColors.buttonAudio.getColor().withOpacity(0.2):AppColors.buttonCommon.getColor().withOpacity(0.3)),
-          child: Image.asset(widget.bSelf?AppImagePath.pauseBlackIcon:AppImagePath.pauseWhiteIcon),
-        ),
-      );
+      if(currentPlayContentId != widget.contentId){
+        currentPosition = Duration.zero;
+        player.stop();
+        return GestureDetector(
+          onTap: () {
+            setState(() {
+              ref.read(playingContentIdProvider.notifier).update((state) => widget.contentId);
+              player.play(UrlSource(widget.path));
+            });
+          },
+          child: Container(
+            width: UIDefine.getPixelWidth(30),
+            height: UIDefine.getPixelWidth(30),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(15)),
+                color: widget.bSelf?AppColors.buttonAudio.getColor().withOpacity(0.2):AppColors.buttonCommon.getColor().withOpacity(0.3)),
+            child: Image.asset(widget.bSelf?AppImagePath.blackPlayIcon:AppImagePath.whitePlayIcon),
+          )
+        );
+      }else{
+        return GestureDetector(
+          onTap: () {
+            setState(() {
+              player.pause();
+            });
+          },
+          child: Container(
+            width: UIDefine.getPixelWidth(30),
+            height: UIDefine.getPixelWidth(30),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(15)),
+                color: widget.bSelf?AppColors.buttonAudio.getColor().withOpacity(0.2):AppColors.buttonCommon.getColor().withOpacity(0.3)),
+            child: Image.asset(widget.bSelf?AppImagePath.pauseBlackIcon:AppImagePath.pauseWhiteIcon),
+          ),
+        );
+      }
     } else if (playerState == audio.PlayerState.paused) {
       return GestureDetector(
         onTap: () {

@@ -1,4 +1,5 @@
 import 'package:base_project/constant/theme/app_animation_path.dart';
+import 'package:base_project/constant/theme/app_image_path.dart';
 import 'package:base_project/constant/theme/app_text_style.dart';
 import 'package:base_project/constant/theme/ui_define.dart';
 import 'package:base_project/models/http/api/create_ai_api.dart';
@@ -39,12 +40,7 @@ class _CreateLoadingPageState extends State<CreateLoadingPage> {
             },
             child: Container(
               width: UIDefine.getWidth(),
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: AppGradientColors.gradientBlackGoldColors
-                          .getColors())),
+              decoration: BoxDecoration(image: DecorationImage(image: AssetImage(AppImagePath.gradientBg),fit: BoxFit.fill)),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

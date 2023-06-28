@@ -32,6 +32,10 @@ final listImgNotiferProvider = StateNotifierProvider<ListImgNotifer, List<String
   return ListImgNotifer();
 });
 
+final playingContentIdProvider = StateProvider<String>((ref) {
+  return '';
+});
+
 class MessagePrivateGroupMessageViewModel extends BaseViewModel {
   final TextEditingController textController = TextEditingController();
   final FocusNode textFocusNode = FocusNode();
