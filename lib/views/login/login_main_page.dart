@@ -101,64 +101,64 @@ class _LoginMainPageState extends ConsumerState<LoginMainPage> {
                             onPressed: (){
                               viewModel.onPressLogin(context);
                             }),
-                        SizedBox(height: UIDefine.getPixelWidth(5),),
-                        TextButtonWidget(
-                            setHeight: UIDefine.getPixelWidth(40),
-                            radius: 4,
-                            isGradient: true,
-                            fontWeight: FontWeight.w600,
-                            btnText: tr('registerWithEmail'),
-                            onPressed: (){
-                              BaseViewModel().pushPage(context, const RegisterMainPage());
-                            }),
-                        SizedBox(height: UIDefine.getPixelWidth(5),),
-                        Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Divider(
-                              height: UIDefine.getPixelWidth(1),
-                              color: AppColors.textPrimary.getColor(),
-                            ),
-                            Container(
-                              alignment: Alignment.center,
-                              color: AppColors.mainBackground.getColor(),
-                              width: UIDefine.getPixelWidth(100),
-                              height: UIDefine.getPixelWidth(50),
-                              child: Text('or',style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize16),),
-                            )
-                          ],
-                        ),
-                        TextButtonWidget(
-                            setHeight: UIDefine.getPixelWidth(40),
-                            radius: 4,
-                            setMainColor: AppColors.textPrimary,
-                            textColor: AppColors.buttonPrimaryText,
-                            fontWeight: FontWeight.w600,
-                            btnText: tr('registerWithGoogle'),
-                            onPressed: (){}),
-                        SizedBox(height: UIDefine.getPixelWidth(5),),
-                        Visibility(
-                          visible: Platform.isIOS,
-                            child: TextButtonWidget(
-                            setHeight: UIDefine.getPixelWidth(40),
-                            radius: 4,
-                            setMainColor: AppColors.textPrimary,
-                            textColor: AppColors.buttonPrimaryText,
-                            fontWeight: FontWeight.w600,
-                            btnText: tr('registerWithApple'),
-                            onPressed: (){})),
+                        // SizedBox(height: UIDefine.getPixelWidth(5),),
+                        // TextButtonWidget(
+                        //     setHeight: UIDefine.getPixelWidth(40),
+                        //     radius: 4,
+                        //     isGradient: true,
+                        //     fontWeight: FontWeight.w600,
+                        //     btnText: tr('registerWithEmail'),
+                        //     onPressed: (){
+                        //       BaseViewModel().pushPage(context, const RegisterMainPage());
+                        //     }),
+                        // SizedBox(height: UIDefine.getPixelWidth(5),),
+                        // Stack(
+                        //   alignment: Alignment.center,
+                        //   children: [
+                        //     Divider(
+                        //       height: UIDefine.getPixelWidth(1),
+                        //       color: AppColors.textPrimary.getColor(),
+                        //     ),
+                        //     Container(
+                        //       alignment: Alignment.center,
+                        //       color: AppColors.mainBackground.getColor(),
+                        //       width: UIDefine.getPixelWidth(100),
+                        //       height: UIDefine.getPixelWidth(50),
+                        //       child: Text('or',style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize16),),
+                        //     )
+                        //   ],
+                        // ),
+                        // TextButtonWidget(
+                        //     setHeight: UIDefine.getPixelWidth(40),
+                        //     radius: 4,
+                        //     setMainColor: AppColors.textPrimary,
+                        //     textColor: AppColors.buttonPrimaryText,
+                        //     fontWeight: FontWeight.w600,
+                        //     btnText: tr('registerWithGoogle'),
+                        //     onPressed: (){}),
+                        // SizedBox(height: UIDefine.getPixelWidth(5),),
+                        // Visibility(
+                        //   visible: Platform.isIOS,
+                        //     child: TextButtonWidget(
+                        //     setHeight: UIDefine.getPixelWidth(40),
+                        //     radius: 4,
+                        //     setMainColor: AppColors.textPrimary,
+                        //     textColor: AppColors.buttonPrimaryText,
+                        //     fontWeight: FontWeight.w600,
+                        //     btnText: tr('registerWithApple'),
+                        //     onPressed: (){})),
                       ],
                     ),
                   ),
-                  SizedBox(height: UIDefine.getHeight()*0.05,),
-                  GestureDetector(
-                    onTap: (){
-                      BaseViewModel().pushPage(context, const ForgetPasswordPage());
-                      },
-                    child: Text(tr('forgetPassword'),style: AppTextStyle.getBaseStyle(
-                        fontSize: UIDefine.fontSize16,
-                        color: AppColors.textSubInfo),),
-                  )
+                  // SizedBox(height: UIDefine.getHeight()*0.05,),
+                  // GestureDetector(
+                  //   onTap: (){
+                  //     BaseViewModel().pushPage(context, const ForgetPasswordPage());
+                  //     },
+                  //   child: Text(tr('forgetPassword'),style: AppTextStyle.getBaseStyle(
+                  //       fontSize: UIDefine.fontSize16,
+                  //       color: AppColors.textSubInfo),),
+                  // )
                 ],
               ),
             ),
