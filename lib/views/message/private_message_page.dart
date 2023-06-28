@@ -138,7 +138,9 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
       appBar: CustomAppBar.chatRoomAppBar(context, nickName: friendName, avatar: viewModel.rebeccaImg),
       body: (isDark) => Container(
         width: UIDefine.getWidth(),
-        decoration: BoxDecoration(gradient: AppColors.messageLinearBg),
+        decoration:BoxDecoration(
+            image: DecorationImage(image: AssetImage(AppImagePath.gradientBg),fit: BoxFit.fill)
+        ),
         child: Stack(
           alignment: Alignment.topCenter,
           children: [

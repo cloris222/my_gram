@@ -85,10 +85,8 @@ class _DynamicMainPageState extends ConsumerState<DynamicMainPage> {
     ref.watch(isRebeccaProvider);
    return CommonScaffold(
        body: (isDark) => Container(
-         decoration: BoxDecoration(
-           gradient: LinearGradient(
-             colors: [AppColors.personalDarkBackground.getColor(),AppColors.personalLightBackground.getColor()]
-           )
+         decoration: const BoxDecoration(
+          image: DecorationImage(image: AssetImage(AppImagePath.gradientBg),fit: BoxFit.fill)
          ),
          child: NotificationListener<ScrollEndNotification>(
              onNotification: (scrollEnd){
@@ -121,13 +119,11 @@ class _DynamicMainPageState extends ConsumerState<DynamicMainPage> {
                    backgroundColor: Colors.transparent,
                    flexibleSpace: FlexibleSpaceBar(
                      background: Container(
-                       decoration: BoxDecoration(
-                         borderRadius: const BorderRadius.vertical(
+                       decoration: const BoxDecoration(
+                         borderRadius: BorderRadius.vertical(
                            bottom: Radius.circular(10)
                          ),
-                         gradient: LinearGradient(
-                           colors: [AppColors.personalDarkBackground.getColor(),AppColors.personalLightBackground.getColor()], // 渐变颜色列表
-                         ),
+                           image: DecorationImage(image: AssetImage(AppImagePath.gradientBg),fit: BoxFit.fill)
                        ),
                      ),
                    ),

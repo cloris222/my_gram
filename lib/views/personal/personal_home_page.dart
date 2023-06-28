@@ -164,19 +164,20 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
                     ),
                     Container(
                       width: UIDefine.getWidth(),
-                      padding: EdgeInsets.all(UIDefine.getPixelWidth(15)),
-                      decoration: BoxDecoration(
-                          gradient: LinearGradient(colors: [
-                        AppColors.personalDarkBackground.getColor(),
-                        AppColors.personalLightBackground.getColor()
-                      ])),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          _buildButton(),
-                          _buildTabBar(),
-                          _buildTabView()
-                        ],
+                      decoration:BoxDecoration(
+                          image: DecorationImage(image: AssetImage(AppImagePath.gradientBg),fit: BoxFit.fill)
+                      ),
+                      child: Container(
+                        width: UIDefine.getWidth(),
+                        padding: EdgeInsets.all(UIDefine.getPixelWidth(15)),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            _buildButton(),
+                            _buildTabBar(),
+                            _buildTabView()
+                          ],
+                        ),
                       ),
                     ),
                   ],

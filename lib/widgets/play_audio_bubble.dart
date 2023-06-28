@@ -48,6 +48,8 @@ class _PlayAudioBubbleState extends ConsumerState<PlayAudioBubble> {
   Duration? duration;
   var playerState;
 
+  String get currentPlayContentId =>ref.read(playingContentIdProvider);
+
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
@@ -87,6 +89,7 @@ class _PlayAudioBubbleState extends ConsumerState<PlayAudioBubble> {
 
   @override
   Widget build(BuildContext context) {
+    ref.watch(playingContentIdProvider);
     return Container(
       height: UIDefine.getPixelWidth(40),
       child: Row(
@@ -172,21 +175,42 @@ class _PlayAudioBubbleState extends ConsumerState<PlayAudioBubble> {
         ),
       );
     } else if (playerState == audio.PlayerState.playing) {
-      return GestureDetector(
-        onTap: () {
-          setState(() {
-            player.pause();
-          });
-        },
-        child: Container(
-          width: UIDefine.getPixelWidth(30),
-          height: UIDefine.getPixelWidth(30),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(15)),
-              color: widget.bSelf?AppColors.buttonAudio.getColor().withOpacity(0.2):AppColors.buttonCommon.getColor().withOpacity(0.3)),
-          child: Image.asset(widget.bSelf?AppImagePath.pauseBlackIcon:AppImagePath.pauseWhiteIcon),
-        ),
-      );
+      if(currentPlayContentId != widget.contentId){
+        currentPosition = Duration.zero;
+        player.stop();
+        return GestureDetector(
+          onTap: () {
+            setState(() {
+              ref.read(playingContentIdProvider.notifier).update((state) => widget.contentId);
+              player.play(UrlSource(widget.path));
+            });
+          },
+          child: Container(
+            width: UIDefine.getPixelWidth(30),
+            height: UIDefine.getPixelWidth(30),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(15)),
+                color: widget.bSelf?AppColors.buttonAudio.getColor().withOpacity(0.2):AppColors.buttonCommon.getColor().withOpacity(0.3)),
+            child: Image.asset(widget.bSelf?AppImagePath.blackPlayIcon:AppImagePath.whitePlayIcon),
+          )
+        );
+      }else{
+        return GestureDetector(
+          onTap: () {
+            setState(() {
+              player.pause();
+            });
+          },
+          child: Container(
+            width: UIDefine.getPixelWidth(30),
+            height: UIDefine.getPixelWidth(30),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(15)),
+                color: widget.bSelf?AppColors.buttonAudio.getColor().withOpacity(0.2):AppColors.buttonCommon.getColor().withOpacity(0.3)),
+            child: Image.asset(widget.bSelf?AppImagePath.pauseBlackIcon:AppImagePath.pauseWhiteIcon),
+          ),
+        );
+      }
     } else if (playerState == audio.PlayerState.paused) {
       return GestureDetector(
         onTap: () {
