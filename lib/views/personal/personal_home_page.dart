@@ -126,23 +126,31 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
                               left: UIDefine.getPixelWidth(10),
                               right: UIDefine.getPixelWidth(10),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                  GestureDetector(
                                    onTap:(){
                                     // Navigator.pop(context);
                                    BaseViewModel().changeMainScreenPage( AppNavigationBarType.typePair);
                                    },
-                                     child: Image.asset(AppImagePath.arrowLeft)),
+                                     child: Container(
+                                         width: UIDefine.getPixelWidth(24),
+                                         height: UIDefine.getPixelWidth(24),
+                                         child: Image.asset(AppImagePath.arrowLeft,fit: BoxFit.fill,))),
+                                  Expanded(child: Container()),
                                   Text(
                                     'Rebecca',
                                     style: AppTextStyle.getBaseStyle(
                                         fontSize: UIDefine.fontSize16,
                                         fontWeight: FontWeight.w600),
                                   ),
+                                  Expanded(child: Container()),
                                   GestureDetector(
                                     onTap: () {},
-                                    child: Image.asset(AppImagePath.hotIcon),
+                                    child: Container(
+                                      width: UIDefine.getPixelWidth(30),
+                                        height: UIDefine.getPixelWidth(30),
+                                        child: Image.asset(AppImagePath.hotIcon,fit: BoxFit.fill,)),
                                   )
                                 ],
                               )),
@@ -170,7 +178,7 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
                           _buildTabView()
                         ],
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -369,11 +377,11 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
           },
           labelStyle: AppTextStyle.getBaseStyle(
               fontSize: UIDefine.fontSize14,
-              fontWeight: FontWeight.w600),
+              fontWeight: FontWeight.w500),
           unselectedLabelStyle: AppTextStyle.getBaseStyle(
               fontSize: UIDefine.fontSize14,
               fontWeight: FontWeight.w400,
-              color: AppColors.bolderGrey),
+              color: AppColors.textWhiteOpacity5),
           tabs: [
             Tab(
               height: UIDefine.getPixelWidth(40),
@@ -397,7 +405,7 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
 
   Widget _buildTabView(){
     return SizedBox(
-      height: UIDefine.getPixelWidth(300),
+      height: UIDefine.getPixelWidth(350),
       child: TabBarView(
           controller: _tabController,
           physics: const NeverScrollableScrollPhysics(),
@@ -439,7 +447,7 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
                   // Text(data.totalPosts.toString(),
                   Text("100",
                     style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize20,fontWeight: FontWeight.w600),),
-                  Text(tr('posts'),style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize14,fontWeight: FontWeight.w400,color: AppColors.bolderGrey),),
+                  Text(tr('posts'),style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize12,fontWeight: FontWeight.w500,color:AppColors.textWhiteOpacity4),),
                 ],
               ),
               Container(
@@ -452,13 +460,13 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
                   // Text(data.fans.length.toString(),
                   Text("1.9M",
                     style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize20,fontWeight: FontWeight.w600),),
-                  Text(tr('fans'),style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize14,fontWeight: FontWeight.w400,color: AppColors.bolderGrey),),
+                  Text(tr('fans'),style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize12,fontWeight: FontWeight.w500,color: AppColors.textWhiteOpacity4),),
                 ],
               )
             ],
           ),
         ),
-        _buildInfoCard()
+        _buildInfoCard(),
       ],
     );
   }
@@ -474,15 +482,18 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(data.introduce,textAlign: TextAlign.start,style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize14,fontWeight: FontWeight.w400,height: 1.1),),
-          SizedBox(height: UIDefine.getPixelWidth(10),),
+          Text(data.introduce,textAlign: TextAlign.start,style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize14,fontWeight: FontWeight.w400,height: 1.4),),
+          SizedBox(height: UIDefine.getPixelWidth(15),),
           Visibility(
             visible: data.link!=null,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Image.asset(AppImagePath.linkIcon),
+                Container(
+                width: UIDefine.getPixelWidth(16),
+                    height: UIDefine.getPixelWidth(16),
+                    child: Image.asset(AppImagePath.linkIcon,fit: BoxFit.fill,)),
                 SizedBox(width: UIDefine.getPixelWidth(8)),
                 Flexible(
                   child: GestureDetector(

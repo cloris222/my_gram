@@ -27,6 +27,8 @@ enum AppColors {
   textWhite(dark: Color(0xFFFFFFFF), light: Color(0xFFFFFFFF)),
   textHintColor(dark: Color(0xFF837F7E), light: Color(0xFF837F7E)),
   textDetail(dark: Color.fromRGBO(255, 255, 255, 0.7), light: Color.fromRGBO(255, 255, 255, 0.7)),
+  textWhiteOpacity4(dark: Color.fromRGBO(255, 255, 255, 0.4), light: Color.fromRGBO(255, 255, 255, 0.4)),
+  textWhiteOpacity5(dark: Color.fromRGBO(255, 255, 255, 0.5), light: Color.fromRGBO(255, 255, 255, 0.5)),
 
   /// 按鈕顏色相關
   buttonPrimaryText(dark: Color(0xFF000000), light: Color(0xFFFFFFFF)),
