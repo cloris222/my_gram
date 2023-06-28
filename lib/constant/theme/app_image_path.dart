@@ -20,6 +20,9 @@ class AppImagePath {
 
   static const String demoImage = '$imgPath/img_check_01.png';
 
+  ///漸層背景圖
+  static const String gradientBg = '$assetPath/img_bg.png';
+
   ///login頁面icon&image
 
   static const String loginBgImage = '$imgPath/img_login_bg.png';
@@ -66,7 +69,7 @@ class AppImagePath {
   static const String whitePlayIcon = '$assetPath/ic_play_w.png';
   static const String delIcon = '$assetPath/ic_revord_delete.png';
   static const String sendIcon = '$assetPath/ic_record_send.png';
-  static const String pauseWhiteIcon = '$assetPath/ic_pause_W.png';
+  static const String pauseWhiteIcon = '$assetPath/ic_pause_w.png';
   static const String pauseBlackIcon = '$assetPath/ic_pause_B.png';
 
   /// 創建

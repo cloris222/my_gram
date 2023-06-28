@@ -13,6 +13,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../constant/theme/global_data.dart';
 import '../../models/http/data/store_info_data.dart';
+import '../../utils/observer_pattern/dynamic/dynamic_observer.dart';
 import '../../view_models/dynmaic/is_rebecca_provider.dart';
 import '../../widgets/dialog/common_custom_dialog.dart';
 import 'dynamic_info_view.dart';
@@ -36,13 +37,16 @@ class _DynamicMainPageState extends ConsumerState<DynamicMainPage> {
   BaseViewModel viewModel = BaseViewModel();
   List<StoreInfoData> stores = GlobalData.generateStoreData(10);
   TextEditingController controller = TextEditingController();
+
   bool get isRebecca => ref.read(isRebeccaProvider);
   late ScrollController scrollController;
 
+  late DynamicObserver observer;
 
   @override
   void initState() {
-    scrollController = ScrollController(initialScrollOffset: isRebecca? 0 : GlobalData.dynamicOffset);
+    scrollController = ScrollController(
+        initialScrollOffset: isRebecca ? GlobalData.dynamicRebeccaOffset : GlobalData.dynamicOffset);
     scrollController.addListener(_setScrollerListener);
     // Future.delayed(Duration.zero,(){
     //   setState(() {
@@ -55,17 +59,24 @@ class _DynamicMainPageState extends ConsumerState<DynamicMainPage> {
     // });
 
     /// 暫時先直接加入
-    if(isRebecca == true){
+    if (isRebecca == true) {
       list.addAll(isRebeccaList);
-    }else{
+    } else {
       list.addAll(notRebeccaList);
     }
+    observer = DynamicObserver("AA",
+        scrollTop: () => scrollController.animateTo(0,
+            duration: Duration(milliseconds: 200),
+            curve: Curves.fastLinearToSlowEaseIn));
+    GlobalData.dynamicSubject.registerObserver(observer);
     super.initState();
   }
+
   @override
   void dispose() {
     scrollController.removeListener(_setScrollerListener);
     scrollController.dispose();
+    GlobalData.dynamicSubject.clearObserver();
     super.dispose();
   }
 
@@ -74,10 +85,8 @@ class _DynamicMainPageState extends ConsumerState<DynamicMainPage> {
     ref.watch(isRebeccaProvider);
    return CommonScaffold(
        body: (isDark) => Container(
-         decoration: BoxDecoration(
-           gradient: LinearGradient(
-             colors: [AppColors.personalDarkBackground.getColor(),AppColors.personalLightBackground.getColor()]
-           )
+         decoration: const BoxDecoration(
+          image: DecorationImage(image: AssetImage(AppImagePath.gradientBg),fit: BoxFit.fill)
          ),
          child: NotificationListener<ScrollEndNotification>(
              onNotification: (scrollEnd){
@@ -110,13 +119,11 @@ class _DynamicMainPageState extends ConsumerState<DynamicMainPage> {
                    backgroundColor: Colors.transparent,
                    flexibleSpace: FlexibleSpaceBar(
                      background: Container(
-                       decoration: BoxDecoration(
-                         borderRadius: const BorderRadius.vertical(
+                       decoration: const BoxDecoration(
+                         borderRadius: BorderRadius.vertical(
                            bottom: Radius.circular(10)
                          ),
-                         gradient: LinearGradient(
-                           colors: [AppColors.personalDarkBackground.getColor(),AppColors.personalLightBackground.getColor()], // 渐变颜色列表
-                         ),
+                           image: DecorationImage(image: AssetImage(AppImagePath.gradientBg),fit: BoxFit.fill)
                        ),
                      ),
                    ),
@@ -127,13 +134,17 @@ class _DynamicMainPageState extends ConsumerState<DynamicMainPage> {
                        children: [
                          Image.asset(AppImagePath.logoTextImage),
                          Container(
-                           width: UIDefine.getPixelWidth(35),
-                           height: UIDefine.getPixelWidth(35),
+                           width: UIDefine.getPixelWidth(40),
+                           height: UIDefine.getPixelWidth(40),
                            decoration: BoxDecoration(
                              borderRadius: BorderRadius.circular(50),
                              color: AppColors.buttonCommon.getColor().withOpacity(0.5)
                            ),
-                           child: Image.asset(AppImagePath.shopIcon),
+                           child: Container(
+                            alignment: Alignment.center,
+                             width: UIDefine.getPixelWidth(15),
+                               height: UIDefine.getPixelWidth(17),
+                               child: Image.asset(AppImagePath.shopIcon,fit: BoxFit.fill,)),
                          )
                        ],
                      ),
@@ -430,7 +441,7 @@ class _DynamicMainPageState extends ConsumerState<DynamicMainPage> {
 
 
   void _setScrollerListener() {
-    if(!isRebecca){
+    if (!isRebecca) {
       GlobalData.dynamicOffset = scrollController.offset;
     }
   }

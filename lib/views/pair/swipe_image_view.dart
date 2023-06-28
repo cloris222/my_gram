@@ -103,32 +103,33 @@ class _SwipeImageViewState extends State<SwipeImageView>
                   child: Stack(
                     children: [
                       Container(
-                        color: AppColors.mainBackground.getColor(),
+                          color: AppColors.mainBackground.getColor(),
                           width: UIDefine.getWidth(),
                           height: UIDefine.getViewHeight()),
+
                       ///MARK:圖片本體
                       CommonNetworkImage(
                           imageUrl: data.images[currentIndex],
                           width: UIDefine.getWidth(),
-                          height: UIDefine.getViewHeight()*0.78,
+                          height: UIDefine.getViewHeight() * 0.8,
                           fit: BoxFit.cover),
 
                       Positioned(
-                          left: UIDefine.getPixelWidth(25),
-                          right: UIDefine.getPixelWidth(25),
+                          left: UIDefine.getPixelWidth(45),
+                          right: UIDefine.getPixelWidth(45),
                           top: UIDefine.getPixelWidth(40),
                           child: _buildImageIndex()),
 
                       ///漸層遮罩
                       Positioned(
-                        top: UIDefine.getViewHeight() * 0.6,
+                        top: UIDefine.getViewHeight() * 0.5,
                         child: Container(
                           width: UIDefine.getWidth(),
-                          height: UIDefine.getViewHeight() * 0.4,
+                          height: UIDefine.getViewHeight() * 0.5,
                           decoration: const BoxDecoration(
                               gradient: LinearGradient(
-                                  begin: Alignment(0.0, -0.9),
-                                  end: Alignment(0.0, 0.1),
+                                  begin: Alignment(0.0,-1.0),
+                                  end: Alignment(0.0,0.2),
                                   colors: [Colors.transparent, Colors.black])),
                         ),
                       ),
@@ -151,7 +152,7 @@ class _SwipeImageViewState extends State<SwipeImageView>
 
                       ///自介
                       Positioned(
-                          bottom: UIDefine.getPixelWidth(100),
+                          bottom: UIDefine.getPixelWidth(160),
                           left: UIDefine.getPixelWidth(15),
                           right: UIDefine.getPixelWidth(15),
                           child: Column(
@@ -162,10 +163,12 @@ class _SwipeImageViewState extends State<SwipeImageView>
                                   style: AppTextStyle.getBaseStyle(
                                     fontSize: UIDefine.fontSize36,
                                     fontWeight: FontWeight.w400,
+                                    height: 3
                                     // shadowsType: AppTextShadows.common,
                                   )),
                               Text(data.context,
                                   style: AppTextStyle.getBaseStyle(
+                                    height: UIDefine.getPixelWidth(1.5),
                                     fontSize: UIDefine.fontSize14,
                                     fontWeight: FontWeight.w400,
                                     // shadowsType: AppTextShadows.common,
@@ -182,7 +185,7 @@ class _SwipeImageViewState extends State<SwipeImageView>
 
         ///下方按鈕
         Positioned(
-            bottom: 0,
+            bottom: UIDefine.getPixelWidth(20),
             right: UIDefine.getPixelWidth(20),
             left: UIDefine.getPixelWidth(20),
             child: Row(
@@ -192,6 +195,7 @@ class _SwipeImageViewState extends State<SwipeImageView>
                     onTap: () => _buttonAnimate(false),
                     child: status == GramSetStatus.disLike
                         ? Container(
+                            alignment: Alignment.center,
                             width: UIDefine.getPixelWidth(50),
                             height: UIDefine.getPixelWidth(50),
                             decoration: BoxDecoration(
@@ -199,9 +203,14 @@ class _SwipeImageViewState extends State<SwipeImageView>
                                 color: AppColors.buttonDisLike
                                     .getColor()
                                     .withOpacity(0.8)),
-                            child: Image.asset(AppImagePath.btnDislike),
+                            child: Container(
+                              alignment: Alignment.center,
+                              width: UIDefine.getPixelWidth(25),
+                                height: UIDefine.getPixelWidth(25),
+                                child: Image.asset(AppImagePath.btnDislike,fit: BoxFit.cover,)),
                           )
                         : Container(
+                            alignment: Alignment.center,
                             width: UIDefine.getPixelWidth(50),
                             height: UIDefine.getPixelWidth(50),
                             decoration: BoxDecoration(
@@ -209,13 +218,18 @@ class _SwipeImageViewState extends State<SwipeImageView>
                                 color: AppColors.buttonCommon
                                     .getColor()
                                     .withOpacity(0.5)),
-                            child: Image.asset(AppImagePath.btnDislike),
+                            child: Container(
+                                alignment: Alignment.center,
+                                width: UIDefine.getPixelWidth(25),
+                                height: UIDefine.getPixelWidth(25),
+                                child: Image.asset(AppImagePath.btnDislike,fit: BoxFit.cover,)),
                           )),
                 SizedBox(width: UIDefine.getPixelWidth(40)),
                 GestureDetector(
                     onTap: () => _buttonAnimate(true),
                     child: status == GramSetStatus.like
                         ? Container(
+                            alignment: Alignment.center,
                             width: UIDefine.getPixelWidth(50),
                             height: UIDefine.getPixelWidth(50),
                             decoration: BoxDecoration(
@@ -223,12 +237,19 @@ class _SwipeImageViewState extends State<SwipeImageView>
                                 gradient: LinearGradient(
                                     colors: AppGradientColors.gradientColors
                                         .getColors())),
-                            child: Image.asset(
-                              AppImagePath.btnLike,
-                              color: Colors.white,
+                            child: Container(
+                              alignment: Alignment.center,
+                              width: UIDefine.getPixelWidth(25),
+                              height: UIDefine.getPixelWidth(25),
+                              child: Image.asset(
+                                AppImagePath.btnLike,
+                                color: Colors.white,
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           )
                         : Container(
+                            alignment: Alignment.center,
                             width: UIDefine.getPixelWidth(50),
                             height: UIDefine.getPixelWidth(50),
                             decoration: BoxDecoration(
@@ -236,7 +257,15 @@ class _SwipeImageViewState extends State<SwipeImageView>
                                 color: AppColors.buttonCommon
                                     .getColor()
                                     .withOpacity(0.5)),
-                            child: Image.asset(AppImagePath.btnLike),
+                            child: Container(
+                              alignment: Alignment.center,
+                              width: UIDefine.getPixelWidth(25),
+                              height: UIDefine.getPixelWidth(25),
+                              child: Image.asset(
+                                AppImagePath.btnLike,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                           )),
               ],
             ))
@@ -246,18 +275,20 @@ class _SwipeImageViewState extends State<SwipeImageView>
 
   Widget _buildImageIndex() {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: List<Widget>.generate(data.images.length, (index) {
         bool isCurrent = currentIndex == index;
         return Expanded(
-            child: Container(
-          height: UIDefine.getPixelWidth(2),
-          decoration: AppStyle().styleColorsRadiusBackground(
-              radius: 1,
-              color: isCurrent
-                  ? Colors.white.withOpacity(0.6)
-                  : const Color(0xFFE2E2E2).withOpacity(0.13)),
-          margin: const EdgeInsets.symmetric(horizontal: 1, vertical: 5),
-        ));
+          child: Container(
+            height: UIDefine.getPixelWidth(2),
+            decoration: AppStyle().styleColorsRadiusBackground(
+            radius: 2,
+            color: isCurrent
+                ? Colors.white
+                : Colors.white.withOpacity(0.4)),
+            margin: const EdgeInsets.symmetric(horizontal: 1, vertical: 5),
+          ),
+        );
       }),
     );
   }
@@ -331,21 +362,23 @@ class _SwipeImageViewState extends State<SwipeImageView>
   }
 
   void _onTapUp(TapUpDetails details) {
-    if (details.localPosition.dx / UIDefine.getWidth() >= 0.5) {
-      ///圖片是否已經到最底
-      if (currentIndex + 1 < data.images.length) {
-        setState(() {
+    setState(() {
+      if (details.localPosition.dx / UIDefine.getWidth() >= 0.5) {
+        ///圖片是否已經到最底
+        if (currentIndex + 1 < data.images.length) {
           currentIndex += 1;
-        });
-      }
-    } else {
-      ///圖片是否已經到最前面
-      if (currentIndex - 1 >= 0) {
-        setState(() {
+        } else {
+          currentIndex = 0;
+        }
+      } else {
+        ///圖片是否已經到最前面
+        if (currentIndex - 1 >= 0) {
           currentIndex -= 1;
-        });
+        } else {
+          currentIndex = data.images.length - 1;
+        }
       }
-    }
+    });
   }
 
   void _onPanUpdate(DragUpdateDetails tapInfo) {

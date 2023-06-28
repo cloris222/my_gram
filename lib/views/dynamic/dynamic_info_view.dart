@@ -21,6 +21,7 @@ import '../../widgets/custom_paint_text.dart';
 import '../../widgets/label/common_network_image.dart';
 import '../../widgets/label/custom_gradient_icon.dart';
 import '../personal/personal_home_page.dart';
+import 'package:flutter/rendering.dart';
 
 class DynamicInfoView extends StatefulWidget {
   DynamicInfoView({
@@ -51,10 +52,25 @@ final onGetIntFunction onShare;
 class _DynamicInfoViewState extends State<DynamicInfoView> {
   BaseViewModel viewModel = BaseViewModel();
   int currentIndex = 0;
-  double _left = 0.0;
   final PageController controller = PageController();
-  int lineCount = 0;
   late final Canvas canvas;
+  int lineCount = 0;
+  final textStyle = AppTextStyle.getBaseStyle(
+    fontSize: UIDefine.fontSize14,
+    fontWeight: FontWeight.w300,
+  );
+  final maxWidth = UIDefine.getWidth() - UIDefine.getPixelWidth(30);
+
+
+  @override
+  void initState() {
+    Future.delayed(Duration.zero,(){
+      setState(() {
+        lineCount = getLineCount(widget.data.context, textStyle, maxWidth);
+      });
+    });
+    super.initState();
+  }
 
 
   @override
@@ -119,7 +135,7 @@ class _DynamicInfoViewState extends State<DynamicInfoView> {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(15)),
               child: CommonNetworkImage(
-                imageUrl: widget.data.images[currentIndex],
+                imageUrl: widget.data.images[index],
                 width: UIDefine.getWidth(),
                 height: UIDefine.getHeight()*0.6,
                 fit: BoxFit.cover,
@@ -180,11 +196,11 @@ class _DynamicInfoViewState extends State<DynamicInfoView> {
         width: UIDefine.getWidth(),
         clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.2),
+            color: AppColors.dynamicButtonsBorder.getColor().withOpacity(0.05),
             borderRadius: BorderRadius.circular(15)
         ),
         child: BackdropFilter(
-          filter: ui.ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+          filter: ui.ImageFilter.blur(sigmaX: 10, sigmaY: 10),
           child: Container(
             padding: EdgeInsets.all(UIDefine.getPixelWidth(15)),
             child: Column(
@@ -208,8 +224,8 @@ class _DynamicInfoViewState extends State<DynamicInfoView> {
                                   viewModel.pushPage(context, MainScreen(type:AppNavigationBarType.typePersonal));
                                 },
                                 child: Text(widget.data.name,style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize16,fontWeight: FontWeight.w500),)),
-                            SizedBox(height:  UIDefine.getPixelWidth(3),),
-                            Text(_getTime(widget.data.time),style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize10,fontWeight: FontWeight.w500,color: AppColors.textPrimary),)
+                            SizedBox(height:  UIDefine.getPixelWidth(1),),
+                            Text(_getTime(widget.data.time),style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize10,fontWeight: FontWeight.w500,color: AppColors.textDetail),)
                           ],
                         ),
                       ],
@@ -224,22 +240,21 @@ class _DynamicInfoViewState extends State<DynamicInfoView> {
                   children: [
                     Text(widget.data.context,style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize14,fontWeight: FontWeight.w300),),
                     Visibility(
-                      visible:  widget.data.context.length>65,
+                      visible: lineCount>=3,
                       child: GestureDetector(
                           onTap: (){
                             widget.showLessContext(widget.index);
                           },
-                          child: Text(tr('hide'),style: AppTextStyle.getBaseStyle(color: AppColors.bolderGrey),)),
+                          child: Text(tr('hide'),style: AppTextStyle.getBaseStyle(color: AppColors.textDetail),)),
                     )
                   ],
                 ):
-                widget.data.context.length>65?
+                lineCount>=3?
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Container(
-                      width: UIDefine.getWidth()*0.8,
+                    Expanded(
                       child: Wrap(
                         children: [
                           Text(
@@ -255,7 +270,7 @@ class _DynamicInfoViewState extends State<DynamicInfoView> {
                       onTap: (){
                         widget.showFullContext(widget.index);
                       },
-                        child: Text(tr('seeMore'),style: AppTextStyle.getBaseStyle(color: AppColors.bolderGrey),))
+                        child: Text(tr('seeMore'),style: AppTextStyle.getBaseStyle(color: AppColors.textDetail),))
                   ],
                 ):
                 Text(widget.data.context,style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize14,fontWeight: FontWeight.w300),),
@@ -269,7 +284,7 @@ class _DynamicInfoViewState extends State<DynamicInfoView> {
 
   Widget _buildIconButton(String icon, {int? number}){
     return Container(
-      padding: EdgeInsets.symmetric(vertical:UIDefine.getPixelWidth(2),horizontal:UIDefine.getPixelWidth(4) ),
+      padding: EdgeInsets.symmetric(vertical:UIDefine.getPixelWidth(3),horizontal:UIDefine.getPixelWidth(8) ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         border: Border.all(color: AppColors.dynamicButtonsBorder.getColor().withOpacity(0.1),width: 1),
@@ -337,40 +352,6 @@ class _DynamicInfoViewState extends State<DynamicInfoView> {
     }
   }
 
-  // void _onPanUpdate(DragUpdateDetails tapInfo){
-  //   setState(() {
-  //     _left = tapInfo.delta.dx;
-  //     print('_left=${_left}');
-  //   });
-  // }
-  //
-  // void _onPanEnd(DragEndDetails tapInfo){
-  //   if(_left/ UIDefine.getWidth() >= 0.0){
-  //     _onSwipeRight();
-  //   }else{
-  //     _onSwipeLeft();
-  //
-  //
-  //   }
-  // }
-  //
-  //
-  // void _onSwipeLeft() {
-  //   setState(() {
-  //     if (currentIndex < widget.data.images.length - 1) {
-  //       currentIndex++;
-  //     }
-  //   });
-  // }
-  //
-  // void _onSwipeRight() {
-  //   setState(() {
-  //     if (currentIndex > 0) {
-  //       currentIndex--;
-  //     }
-  //   });
-  // }
-
 
   _getTime(String time){
     DateTime now = DateTime.now();
@@ -384,6 +365,18 @@ class _DynamicInfoViewState extends State<DynamicInfoView> {
       dataTime = '${duration.inHours}小時前';
     }
     return dataTime;
+  }
+
+  int getLineCount(String text, TextStyle style, double maxWidth) {
+    final textSpan = TextSpan(text: text, style: style);
+    final textPainter = TextPainter(
+      text: textSpan,
+      maxLines: null,
+      textDirection: ui.TextDirection.ltr,
+    );
+    textPainter.layout(maxWidth: maxWidth);
+    // print('linecount=${textPainter.computeLineMetrics().length}');
+    return textPainter.computeLineMetrics().length;
   }
 
 

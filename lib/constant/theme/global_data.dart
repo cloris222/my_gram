@@ -10,6 +10,7 @@ import '../../models/http/http_setting.dart';
 import '../../models/http/data/country_phone_data.dart';
 import '../../models/http/data/pair_image_data.dart';
 import '../../models/http/data/post_comment_data.dart';
+import '../../utils/observer_pattern/dynamic/dynamic_subject.dart';
 import '../../utils/observer_pattern/main_screen/main_screen_subject.dart';
 import '../../views/message/notifier/chat_msg_notifier.dart';
 import '../../views/message/notifier/userToken_notifier.dart';
@@ -31,20 +32,20 @@ class GlobalData {
   static String friendAvatarId = "1";
 
   /// USER
-  // static String userToken = '';
-  // static String userMemberId = '';
-  // static int selfAvatar = 0;
-  // static String roomId = "1";
+  static String userToken = '';
+  static String userMemberId = '';
+  static int selfAvatar = 0;
+  static String roomId = "1";
 
 
   /// andrew
-  static String userToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoibWVtYmVyIiwidXNlcklkIjoiTTAwSTYzOE9NSjkifQ.rBPeMwYepOsnNPMHEgqM7uw-Wrua7tFINO1e-0DU8jE';
-  static String userMemberId = 'M00I638OMJ9';
-  static int selfAvatar = 4;
-  static String roomId = "3";
+  // static String userToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoibWVtYmVyIiwidXNlcklkIjoiTTAwSTYzOE9NSjkifQ.rBPeMwYepOsnNPMHEgqM7uw-Wrua7tFINO1e-0DU8jE';
+  // static String userMemberId = 'M00I638OMJ9';
+  // static int selfAvatar = 4;
+  // static String roomId = "3";
 
   /// salt
-  // static String userToken="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoibWVtYmVyIiwidXNlcklkIjoiTTAwMDJYR1BEWkMifQ.b0U96pRGVnr9a6A99PARjSjY7dmo8h0BWdgSLnp5G34";
+  // static String userToken="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoibWVtYmVyIiwidXNlcklkIjoiTTAwMDJYR1BEWkMifQ.PtUSBFOhFhG4oZv4gvWtZfjnNS4YgStsaJ509sZDO_U";
   // static String userMemberId="M0002XGPDZC";
 
   /// salt001
@@ -68,6 +69,7 @@ class GlobalData {
 
   ///  主頁頁面切換的監聽
   static MainScreenSubject mainScreenSubject = MainScreenSubject();
+  static DynamicSubject dynamicSubject = DynamicSubject();
 
   static printLog(String? logMessage) {
     if (HttpSetting.debugMode) {
@@ -82,6 +84,7 @@ class GlobalData {
 
   /// dynamic 記住滑動位置
   static double dynamicOffset = 0;
+  static double dynamicRebeccaOffset = 0;
 
   /// 測試資料
   static final List<String> photos = [
@@ -173,17 +176,17 @@ class GlobalData {
   // }
 
   static List<PairImageData> generatePairImageData(int length) {
-   
+
    return PitchDataUtil().buildPairData();
   }
 
   static List<DynamicInfoData> generateIsRebeccaData(int length) {
-  
+
     return PitchDataUtil().buildSelf(length);
   }
 
   static List<DynamicInfoData> generateNotRebeccaData(int length) {
-  
+
     return PitchDataUtil().buildOther();
   }
 }

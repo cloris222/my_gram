@@ -1,3 +1,4 @@
+import 'package:base_project/constant/enum/app_param_enum.dart';
 import 'package:base_project/constant/theme/app_colors.dart';
 import 'package:base_project/constant/theme/app_image_path.dart';
 import 'package:base_project/constant/theme/app_text_style.dart';
@@ -136,7 +137,8 @@ class CustomAppBar {
         child: IconButton(
             onPressed: () {
               if (onPressBack == null) {
-                Navigator.pop(context);
+                // Navigator.pop(context);
+                BaseViewModel().changeMainScreenPage(AppNavigationBarType.typePair);
               } else {
                 onPressBack();
               }

@@ -7,6 +7,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../constant/theme/global_data.dart';
 import '../../models/app_shared_preferences.dart';
 import '../../models/http/data/register_data.dart';
+import '../create/create_tag_detail_provider.dart';
+import '../create/create_tag_provider.dart';
 
 final userInfoProvider =
     StateNotifierProvider<UserInfoNotifier, UserInfoData?>((ref) {
@@ -16,6 +18,11 @@ final userInfoProvider =
 class UserInfoNotifier extends StateNotifier<UserInfoData?> {
   UserInfoNotifier() : super(null);
 
+  Future<void> registerWithMail({required RegisterData data}) async {
+    var response = await UserAPI(addToken: false).registerWithEmail(data: data);
+    _saveUserData(response);
+  }
+
   Future<void> loginWithMail(
       {required String email, required String password}) async {
     var response = await UserAPI(addToken: false)
@@ -24,13 +31,14 @@ class UserInfoNotifier extends StateNotifier<UserInfoData?> {
     _saveUserData(response);
   }
 
-  Future<void> updateUserInfo() async {
-    state = await UserAPI().uploadPersonalInfo();
-  }
+  Future<void> updateUserInfo(WidgetRef ref) async {
+    UserAPI().uploadPersonalInfo().then((value) {
+      state = value;
+      _chatRoom();
+    });
 
-  Future<void> registerWithMail({required RegisterData data}) async {
-    var response = await UserAPI(addToken: false).registerWithEmail(data: data);
-    _saveUserData(response);
+    _initCreateProvider(ref);
+    _initUrlPrefix();
   }
 
   void _saveUserData(ApiResponse response) async {
@@ -42,10 +50,31 @@ class UserInfoNotifier extends StateNotifier<UserInfoData?> {
 
     /// 更新連線
     GlobalData.userTokenNotifier.setUserToken = GlobalData.userToken;
+  }
 
-    await updateUserInfo();
+  /// 預載創建資料
+  Future<void> _initCreateProvider(WidgetRef ref) async {
+    await ref.read(createTagProvider.notifier).init();
+    for (var element in ref.read(createTagProvider)) {
+      ref.read(createTagDetailProvider(element).notifier).init();
+    }
+  }
 
-    /// 更新使用者房號等資料
+  /// 更新前綴
+  void _initUrlPrefix() {
+    MessageApi().getFilePrefix().then((value) {
+      String url = value.data;
+      if (url.contains("http")) {
+        GlobalData.urlPrefix = url;
+      } else {
+        GlobalData.urlPrefix = "https://$url";
+      }
+      GlobalData.printLog("urlPrefix:${GlobalData.urlPrefix}");
+    });
+  }
+
+  /// 更新使用者房號等資料
+  Future<void> _chatRoom() async {
     GlobalData.selfAvatar = state?.avatars
             .where((element) => (element.type == "MEMBER"))
             .first
@@ -54,7 +83,6 @@ class UserInfoNotifier extends StateNotifier<UserInfoData?> {
         0;
     GlobalData.roomId =
         await MessageApi().createMessageRoom(GlobalData.friendAvatarId) ?? "0";
-
     GlobalData.printLog("self:${GlobalData.selfAvatar}");
     GlobalData.printLog("room:${GlobalData.roomId}");
   }

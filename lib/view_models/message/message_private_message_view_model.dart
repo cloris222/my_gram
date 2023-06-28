@@ -1,4 +1,3 @@
-import 'package:base_project/models/app_shared_preferences.dart';
 import 'package:base_project/models/http/data/dynamic_info_data.dart';
 import 'package:base_project/utils/pitch_data_util.dart';
 import 'package:base_project/view_models/message/websocket/web_socket_util.dart';
@@ -26,6 +25,10 @@ final imgListProvider = Provider<List<String>>((ref) {
 
 final showImageWallProvider = StateProvider<bool>((ref) => true);
 
+final playingContentIdProvider = StateProvider<String>((ref) {
+  return '';
+});
+
 class MessagePrivateGroupMessageViewModel extends BaseViewModel {
   final WidgetRef ref;
   MessagePrivateGroupMessageViewModel(this.ref);
@@ -33,7 +36,6 @@ class MessagePrivateGroupMessageViewModel extends BaseViewModel {
   final FocusNode textFocusNode = FocusNode();
   bool bShowReply = false; // 回覆
   bool isFocus = false;
-  // bool showImageWall = true;
   String roomId = GlobalData.roomId;
   String receiverAcatarId = GlobalData.friendAvatarId;
   String rebeccaImg = PitchDataUtil().getAvatar(MyGramAI.Rebecca);

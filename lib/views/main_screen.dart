@@ -8,6 +8,7 @@ import '../constant/theme/ui_define.dart';
 import '../utils/observer_pattern/main_screen/main_screen_observer.dart';
 import '../view_models/gobal_provider/main_bottom_bar_provider.dart';
 import '../view_models/dynmaic/is_rebecca_provider.dart';
+import '../view_models/gobal_provider/user_info_provider.dart';
 import '../widgets/appbar/custom_app_bar.dart';
 import 'common_scaffold.dart';
 
@@ -37,8 +38,17 @@ class _MainScreenState extends ConsumerState<MainScreen> {
   void initState() {
     controller = PageController(initialPage: widget.type.index);
     observer = MainScreenObserver("main",
-        changeMainPage: (AppNavigationBarType type,bool isRebecca) => _changePage(type,needRecover: !isRebecca));
+        changeMainPage: (AppNavigationBarType type, bool isRebecca) =>
+            _changePage(type, needRecover: !isRebecca));
     GlobalData.mainScreenSubject.registerObserver(observer);
+
+    /// 更新資料
+    Future.delayed(Duration.zero).then((value) async {
+      if (GlobalData.userToken.isNotEmpty) {
+        /// 更新個人資料&聊天室
+        ref.read(userInfoProvider.notifier).updateUserInfo(ref);
+      }
+    });
     super.initState();
   }
 
@@ -69,10 +79,16 @@ class _MainScreenState extends ConsumerState<MainScreen> {
             ));
   }
 
-  void _changePage(AppNavigationBarType type,{bool needRecover = true}) {
+  void _changePage(AppNavigationBarType type, {bool needRecover = true}) {
     setState(() {
-      if(needRecover) {
+      if (needRecover) {
         ref.read(isRebeccaProvider.notifier).update((state) => false);
+      }
+
+      /// 判斷是否在同一頁切換
+      if (type == AppNavigationBarType.typeDynamic &&
+          GlobalData.mainBottomType == AppNavigationBarType.typeDynamic) {
+        GlobalData.dynamicSubject.scrollTop();
       }
       GlobalData.mainBottomType = type;
       controller.jumpToPage(type.index);

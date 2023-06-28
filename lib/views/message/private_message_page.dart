@@ -10,6 +10,7 @@ import 'package:base_project/constant/theme/app_text_style.dart';
 import 'package:base_project/models/app_shared_preferences.dart';
 import 'package:base_project/models/http/data/dynamic_info_data.dart';
 import 'package:base_project/utils/pitch_data_util.dart';
+import 'package:base_project/constant/theme/global_data.dart';
 import 'package:base_project/views/message/recorder_view.dart';
 import 'package:base_project/view_models/message/websocketdata/ws_send_message_data.dart';
 import 'package:base_project/views/message/sqlite/chat_history_db.dart';
@@ -25,6 +26,7 @@ import 'package:photo_manager/photo_manager.dart';
 import 'package:rect_getter/rect_getter.dart';
 import '../../constant/theme/ui_define.dart';
 import '../../view_models/message/chat_room_provider.dart';
+import '../../widgets/play_audio_bubble.dart';
 import '../common_scaffold.dart';
 import 'package:base_project/constant/theme/global_data.dart';
 import 'data/message_chatroom_detail_response_data.dart';
@@ -72,6 +74,9 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
 
   @override
   initState() {
+    // Future.delayed(Duration.zero,()async{
+    //   final prefix = await viewModel.getFilePrefix();
+    // });
     viewModel = MessagePrivateGroupMessageViewModel(ref);
     viewModel.textFocusNode.addListener(() {
       setState(() {
@@ -130,7 +135,9 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
       appBar: CustomAppBar.chatRoomAppBar(ref, context, nickName: friendName, avatar: viewModel.rebeccaImg),
       body: (isDark) => Container(
         width: UIDefine.getWidth(),
-        decoration: BoxDecoration(gradient: AppColors.messageLinearBg),
+        decoration:BoxDecoration(
+            image: DecorationImage(image: AssetImage(AppImagePath.gradientBg),fit: BoxFit.fill)
+        ),
         child: Stack(
           alignment: Alignment.topCenter,
           children: [
@@ -227,7 +234,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                           )
                         : SizedBox(
                             height: 0,
-                          ),
+                          )
               ],
             ),
             ref.watch(showImageWallProvider)
@@ -367,7 +374,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                   viewModel.isFocus
                   ? Padding(
                     padding: EdgeInsets.fromLTRB(UIDefine.getPixelWidth(3), UIDefine.getPixelHeight(6), UIDefine.getPixelWidth(3), UIDefine.getPixelHeight(6)),
-                    child: GestureDetector(    
+                    child: GestureDetector(
                         onTap: () {
                           viewModel.onSendMessage(viewModel.textController.text, false, "TEXT");
                         },
@@ -376,7 +383,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                   : viewModel.textController.text.isNotEmpty?
                   Padding(
                     padding: EdgeInsets.fromLTRB(UIDefine.getPixelWidth(3), UIDefine.getPixelHeight(2), UIDefine.getPixelWidth(3), UIDefine.getPixelHeight(2)),
-                    child: GestureDetector(    
+                    child: GestureDetector(
                         onTap: () {
                           viewModel.onSendMessage(viewModel.textController.text, false, "TEXT");
                         },

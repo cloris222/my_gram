@@ -5,7 +5,7 @@ enum AppColors {
   ///MARK:主題色彩
   mainThemeButton(dark: Color(0xFFECB680), light: Color(0xFFECB680)),
   subThemePurple(dark: Color(0xFFE2C98E), light: Color(0xFFE2C98E)),
-  mainBackground(dark: Colors.black, light: Colors.white),
+  mainBackground(dark: Color(0xFF0C0503), light: Color(0xFFFFFFFF)),
   navigationBarSelect(dark: Colors.yellow, light: Color(0xFF3B82F6)),
   navigationBarUnSelect(dark: Colors.grey, light: Colors.grey),
 
@@ -26,6 +26,9 @@ enum AppColors {
   textBlack(dark: Color(0xFF000000), light: Color(0xFF000000)),
   textWhite(dark: Color(0xFFFFFFFF), light: Color(0xFFFFFFFF)),
   textHintColor(dark: Color(0xFF837F7E), light: Color(0xFF837F7E)),
+  textDetail(dark: Color.fromRGBO(255, 255, 255, 0.7), light: Color.fromRGBO(255, 255, 255, 0.7)),
+  textWhiteOpacity4(dark: Color.fromRGBO(255, 255, 255, 0.4), light: Color.fromRGBO(255, 255, 255, 0.4)),
+  textWhiteOpacity5(dark: Color.fromRGBO(255, 255, 255, 0.5), light: Color.fromRGBO(255, 255, 255, 0.5)),
 
   /// 按鈕顏色相關
   buttonPrimaryText(dark: Color(0xFF000000), light: Color(0xFFFFFFFF)),
@@ -35,9 +38,12 @@ enum AppColors {
   buttonDisLike(dark: Color(0xFFC11D11), light: Color(0xFFC11D11)),
   buttonMessageRed(dark: Colors.red, light: Colors.red),
   buttonCommon(dark: Color(0xFF9E9E9E), light: Color(0xFF9E9E9E)),
+  buttonAudio(dark: Color(0xFF0F0806), light: Color(0xFF0F0806)),
   buttonCameraBg(dark: Color.fromARGB(255, 105, 101, 100), light: Color(0xFF514E4D)),
   dynamicButtons(dark: Color(0xFF373737), light: Color(0xFF373737)),
   dynamicButtonsBorder(dark: Color(0xFFFEFEFE), light: Color(0xFFFEFEFE)),
+  randomButton(dark: Color(0xCC7AB15F),light: Color(0xCC7AB15F)),
+  recorderRed(dark: Color(0xFFC11D11),light: Color(0xFFC11D11)),
 
   ///背景顏色
   textFieldBackground(dark: Color(0xFF1F1F1F), light: Color(0xFFFFFFFF)),

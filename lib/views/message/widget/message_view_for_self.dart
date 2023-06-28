@@ -9,6 +9,7 @@ import '../../../views/message/sqlite/data/chat_history_sqlite.dart';
 import 'package:base_project/constant/theme/global_data.dart';
 import '../../../constant/theme/ui_define.dart';
 import '../../../views/message/data/message_chatroom_detail_response_data.dart';
+import '../../../widgets/play_audio_bubble.dart';
 
 class MessageViewForSelf extends ConsumerStatefulWidget {
   MessageViewForSelf({
@@ -101,7 +102,7 @@ class _MessageViewForSelf extends ConsumerState<MessageViewForSelf> with TickerP
             style: TextStyle(
               color: AppColors.textBlack.dark,
               fontSize: UIDefine.fontSize16),
-          ):SizedBox(width: 10,)
+          ):PlayAudioBubble(path: "${GlobalData.urlPrefix}${data.content}",bSelf: true,contentId: data.contentId,),
         )),
     );
   }

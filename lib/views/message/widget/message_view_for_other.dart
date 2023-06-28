@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../constant/theme/app_colors.dart';
 import 'package:base_project/constant/theme/global_data.dart';
 import '../../../constant/theme/ui_define.dart';
+import '../../../widgets/play_audio_bubble.dart';
 import '../sqlite/data/chat_history_sqlite.dart';
 
 class MessageViewForOther extends ConsumerStatefulWidget {
@@ -134,7 +135,7 @@ class _MessageViewForOthers extends ConsumerState<MessageViewForOther> with Tick
                 style: TextStyle(
                   color: AppColors.textWhite.light,
                   fontSize: UIDefine.fontSize16),
-              ):SizedBox(width: 10,)
+              ):PlayAudioBubble(path: "${GlobalData.urlPrefix}${data.content}",bSelf: false,contentId: data.contentId,)
             )
           ],
         ),

@@ -76,7 +76,7 @@
   "Shaped and Trimmed":"Shaped and Trimmed",
 
   "--//臉型":"---",
-  "Face Shape":"Face Shape",
+  "Face":"Face",
   "Oval Face":"Oval Face",
   "Round Face":"Round Face",
   "Square Face":"Square Face",
@@ -167,5 +167,9 @@
   "posts":"Post",
   "fans":"Fan",
   "success":"Success",
-  "hide":"Hide"
+  "hide":"Hide",
+  "clickToRecording":"Press button to record",
+  "confirm":"Confirm",
+  "cancel":"Cancel",
+  "error":"Error"
 }
