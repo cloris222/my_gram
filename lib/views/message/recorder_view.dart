@@ -8,6 +8,7 @@ import 'package:base_project/constant/theme/ui_define.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sound/public/flutter_sound_player.dart';
 import 'package:flutter_sound/public/flutter_sound_recorder.dart';
 import 'package:path_provider/path_provider.dart';
@@ -19,14 +20,14 @@ import 'package:circle_progress_bar/circle_progress_bar.dart';
 import '../../constant/theme/global_data.dart';
 import '../../view_models/message/message_private_message_view_model.dart';
 
-class RecorderView extends StatefulWidget {
+class RecorderView extends ConsumerStatefulWidget {
   const RecorderView({Key? key}) : super(key: key);
 
   @override
-  State<RecorderView> createState() => _RecorderViewState();
+  ConsumerState createState() => _RecorderViewState();
 }
 
-class _RecorderViewState extends State<RecorderView> {
+class _RecorderViewState extends ConsumerState<RecorderView> {
   bool isRecording = false;
   String _recorderText = '00:00';
   String _playerText = '00:00';
@@ -39,20 +40,20 @@ class _RecorderViewState extends State<RecorderView> {
   Duration? recordDuration;
   late Directory tempDir;
   late String timeStamp;
-  MessagePrivateGroupMessageViewModel viewModel = MessagePrivateGroupMessageViewModel();
+  late MessagePrivateGroupMessageViewModel viewModel;
+
   String audioFile = '';
 
   @override
   void initState() {
+    viewModel = MessagePrivateGroupMessageViewModel(ref);
     super.initState();
     // _initialize();
   }
 
   @override
   void didChangeDependencies() {
-    setState(() {
-
-    });
+    setState(() {});
     super.didChangeDependencies();
   }
 
@@ -95,11 +96,11 @@ class _RecorderViewState extends State<RecorderView> {
           ///正在錄音
           isRecording
               ? GestureDetector(
-                onTap: (){
-                  stopRecording();
-                },
-                child: Container(
-            alignment: Alignment.center,
+                  onTap: () {
+                    stopRecording();
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
                     width: UIDefine.getPixelWidth(100),
                     height: UIDefine.getPixelWidth(100),
                     decoration: BoxDecoration(
@@ -116,7 +117,7 @@ class _RecorderViewState extends State<RecorderView> {
                       ),
                     ),
                   ),
-              )
+                )
               :
 
               ///預覽畫面
@@ -125,9 +126,9 @@ class _RecorderViewState extends State<RecorderView> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         GestureDetector(
-                          onTap: (){
-                            _deleteRecording();
-                          },
+                            onTap: () {
+                              _deleteRecording();
+                            },
                             child: Image.asset(AppImagePath.delIcon)),
                         isPlayingSound?
                         Container(

@@ -14,34 +14,28 @@ import '../base_view_model.dart';
 import '../../constant/call_back_function.dart';
 import '../../views/message/data/message_chatroom_detail_response_data.dart';
 
-List<String> imageList = [];
-
-class ListImgNotifer extends StateNotifier<List<String>> {
-  ListImgNotifer() : super([]);
-  List<DynamicInfoData> dynamicList = PitchDataUtil().buildSelf(6);
-  void addData() {
-    print("dynamic List: ${dynamicList.length}");
-    for (var dynamicData in dynamicList) {
-      imageList.addAll(dynamicData.images);
-    }
-    print("llll: ${imageList}");
+final imgListProvider = Provider<List<String>>((ref) {
+  final dynamicList = PitchDataUtil().buildSelf(8);
+  final imgList = <String>[];
+  for (var dynamicData in dynamicList) {
+    imgList.add(dynamicData.images.first);
   }
-}
-
-final listImgNotiferProvider = StateNotifierProvider<ListImgNotifer, List<String>>((ref) {
-  return ListImgNotifer();
+  return imgList;
 });
+
+final showImageWallProvider = StateProvider<bool>((ref) => true);
 
 final playingContentIdProvider = StateProvider<String>((ref) {
   return '';
 });
 
 class MessagePrivateGroupMessageViewModel extends BaseViewModel {
+  final WidgetRef ref;
+  MessagePrivateGroupMessageViewModel(this.ref);
   final TextEditingController textController = TextEditingController();
   final FocusNode textFocusNode = FocusNode();
   bool bShowReply = false; // 回覆
   bool isFocus = false;
-  bool showImageWall = true;
   String roomId = GlobalData.roomId;
   String receiverAcatarId = GlobalData.friendAvatarId;
   String rebeccaImg = PitchDataUtil().getAvatar(MyGramAI.Rebecca);
@@ -61,6 +55,25 @@ class MessagePrivateGroupMessageViewModel extends BaseViewModel {
 
   final StateProvider<List<String>> imgList = StateProvider((ref) => []);
 
+  Future<void> checkImgWall() async {
+    AppSharedPreferences.checkWallClose(roomId).then((value) {
+      if (value == null) {
+        AppSharedPreferences.setWall(
+          roomId,
+          true,
+        );
+        ref.read(showImageWallProvider.notifier).update((state) => true);
+      } else {
+        ref.read(showImageWallProvider.notifier).update((state) => value);
+      }
+    });
+  }
+
+  Future<void> changeImgWallState(bool closeOrOpen) async {
+    ref.read(showImageWallProvider.notifier).update((state) => closeOrOpen);
+    AppSharedPreferences.setWall(roomId, closeOrOpen);
+  }
+
   bool checkInputEmpty(String sContent) {
     if (sContent.isEmpty) {
       return false;
@@ -73,14 +86,6 @@ class MessagePrivateGroupMessageViewModel extends BaseViewModel {
     }
     return false;
   }
-
-  // void addImage() {
-  //   List<DynamicInfoData> dynamicList = PitchDataUtil().buildSelf(6);
-  //   dynamicList.forEach((element) {
-  //     // ref.read(imgList.notifier)
-  //     // imgList = [...imageList, ...element.images];
-  //   });
-  // }
 
   void onSendMessage(String sContent, bool bImage, String type) {
     if (!bImage) {

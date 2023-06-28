@@ -8,8 +8,7 @@ import '../constant/theme/global_data.dart';
 class AppSharedPreferences {
   AppSharedPreferences._();
 
-  static Future<bool> checkKey(String key,
-      {required bool needEncryption, SharedPreferences? pref}) async {
+  static Future<bool> checkKey(String key, {required bool needEncryption, SharedPreferences? pref}) async {
     if (needEncryption) {
       return await _checkEncryptionKey(key);
     } else {
@@ -23,8 +22,7 @@ class AppSharedPreferences {
     return await SharedPreferences.getInstance();
   }
 
-  static Future<bool> _checkNormalKey(String key,
-      {SharedPreferences? pref}) async {
+  static Future<bool> _checkNormalKey(String key, {SharedPreferences? pref}) async {
     pref ??= await _getNormalPreferences();
     return pref.containsKey(key);
   }
@@ -37,11 +35,9 @@ class AppSharedPreferences {
     return FlutterSecureStorage(aOptions: _androidOptions);
   }
 
-  static AndroidOptions get _androidOptions =>
-      const AndroidOptions(encryptedSharedPreferences: true);
+  static AndroidOptions get _androidOptions => const AndroidOptions(encryptedSharedPreferences: true);
 
-  static Future<bool> _checkEncryptionKey(String key,
-      {FlutterSecureStorage? pref}) async {
+  static Future<bool> _checkEncryptionKey(String key, {FlutterSecureStorage? pref}) async {
     pref ??= await _getEncryptionPreferences();
     return pref.containsKey(key: key);
   }
@@ -51,8 +47,7 @@ class AppSharedPreferences {
     await pref.write(key: key, value: value);
   }
 
-  static Future<String> _getEncryptionValue(String key,
-      {required String defaultValue}) async {
+  static Future<String> _getEncryptionValue(String key, {required String defaultValue}) async {
     FlutterSecureStorage pref = await _getEncryptionPreferences();
     if (await _checkEncryptionKey(key, pref: pref)) {
       return (await pref.read(key: key)) as String;
@@ -65,8 +60,7 @@ class AppSharedPreferences {
 
   ///MARK: ----存取值 start ----
 
-  static Future<void> setString(String key, String value,
-      {required bool needEncryption}) async {
+  static Future<void> setString(String key, String value, {required bool needEncryption}) async {
     if (needEncryption) {
       await _setEncryptionValue(key, value);
     } else {
@@ -75,8 +69,7 @@ class AppSharedPreferences {
     }
   }
 
-  static Future<String> getString(String key,
-      {String defaultValue = '', required bool needEncryption}) async {
+  static Future<String> getString(String key, {String defaultValue = '', required bool needEncryption}) async {
     if (needEncryption) {
       return (await _getEncryptionValue(key, defaultValue: defaultValue));
     } else {
@@ -89,8 +82,7 @@ class AppSharedPreferences {
     }
   }
 
-  static Future<void> setStringList(String key, List<String> value,
-      {required bool needEncryption}) async {
+  static Future<void> setStringList(String key, List<String> value, {required bool needEncryption}) async {
     if (needEncryption) {
       await _setEncryptionValue(key, json.encode(value));
     } else {
@@ -100,11 +92,10 @@ class AppSharedPreferences {
   }
 
   static Future<List<String>> getStringList(String key,
-      {List<String> defaultValue = const [],
-      required bool needEncryption}) async {
+      {List<String> defaultValue = const [], required bool needEncryption}) async {
     if (needEncryption) {
-      return jsonDecode(await _getEncryptionValue(key,
-          defaultValue: jsonDecode(jsonEncode(defaultValue)))) as List<String>;
+      return jsonDecode(await _getEncryptionValue(key, defaultValue: jsonDecode(jsonEncode(defaultValue))))
+          as List<String>;
     } else {
       SharedPreferences pref = await _getNormalPreferences();
       if (await _checkNormalKey(key, pref: pref)) {
@@ -115,8 +106,7 @@ class AppSharedPreferences {
     }
   }
 
-  static Future<void> setInt(String key, int value,
-      {required bool needEncryption}) async {
+  static Future<void> setInt(String key, int value, {required bool needEncryption}) async {
     if (needEncryption) {
       await _setEncryptionValue(key, value.toString());
     } else {
@@ -125,11 +115,9 @@ class AppSharedPreferences {
     }
   }
 
-  static Future<int> getInt(String key,
-      {int defaultValue = 0, required bool needEncryption}) async {
+  static Future<int> getInt(String key, {int defaultValue = 0, required bool needEncryption}) async {
     if (needEncryption) {
-      return int.parse(
-          await _getEncryptionValue(key, defaultValue: "$defaultValue"));
+      return int.parse(await _getEncryptionValue(key, defaultValue: "$defaultValue"));
     } else {
       SharedPreferences pref = await _getNormalPreferences();
       if (await _checkNormalKey(key, pref: pref)) {
@@ -140,8 +128,7 @@ class AppSharedPreferences {
     }
   }
 
-  static Future<void> setDouble(String key, double value,
-      {required bool needEncryption}) async {
+  static Future<void> setDouble(String key, double value, {required bool needEncryption}) async {
     if (needEncryption) {
       await _setEncryptionValue(key, value.toString());
     } else {
@@ -150,11 +137,9 @@ class AppSharedPreferences {
     }
   }
 
-  static Future<double> getDouble(String key,
-      {double defaultValue = 0, required bool needEncryption}) async {
+  static Future<double> getDouble(String key, {double defaultValue = 0, required bool needEncryption}) async {
     if (needEncryption) {
-      return double.parse(
-          await _getEncryptionValue(key, defaultValue: "$defaultValue"));
+      return double.parse(await _getEncryptionValue(key, defaultValue: "$defaultValue"));
     } else {
       SharedPreferences pref = await _getNormalPreferences();
       if (await _checkNormalKey(key, pref: pref)) {
@@ -165,8 +150,7 @@ class AppSharedPreferences {
     }
   }
 
-  static Future<void> setBool(String key, bool value,
-      {required bool needEncryption}) async {
+  static Future<void> setBool(String key, bool value, {required bool needEncryption}) async {
     if (needEncryption) {
       await _setEncryptionValue(key, value ? "true" : "false");
     } else {
@@ -175,12 +159,9 @@ class AppSharedPreferences {
     }
   }
 
-  static Future<bool> getBool(String key,
-      {bool defaultValue = false, required bool needEncryption}) async {
+  static Future<bool> getBool(String key, {bool defaultValue = false, required bool needEncryption}) async {
     if (needEncryption) {
-      return (await _getEncryptionValue(key,
-              defaultValue: defaultValue ? "true" : "false")) ==
-          "true";
+      return (await _getEncryptionValue(key, defaultValue: defaultValue ? "true" : "false")) == "true";
     } else {
       SharedPreferences pref = await _getNormalPreferences();
       if (await _checkNormalKey(key, pref: pref)) {
@@ -191,14 +172,11 @@ class AppSharedPreferences {
     }
   }
 
-  static Future<void> setJson(String key, dynamic value,
-      {required bool needEncryption}) async {
-    await setString(key, json.encode(value).toString(),
-        needEncryption: needEncryption);
+  static Future<void> setJson(String key, dynamic value, {required bool needEncryption}) async {
+    await setString(key, json.encode(value).toString(), needEncryption: needEncryption);
   }
 
-  static Future<dynamic> getJson(String key,
-      {required bool needEncryption}) async {
+  static Future<dynamic> getJson(String key, {required bool needEncryption}) async {
     if (needEncryption) {
       var pref = await _getEncryptionPreferences();
       if (await _checkEncryptionKey(key, pref: pref)) {
@@ -249,12 +227,24 @@ class AppSharedPreferences {
   }
 
   static Future<ThemeMode> getTheme() async {
-    int index =
-        await getInt("userTheme", defaultValue: -1, needEncryption: false);
+    int index = await getInt("userTheme", defaultValue: -1, needEncryption: false);
     if (index == -1) {
       return ThemeMode.dark;
     }
     return ThemeMode.values[index];
+  }
+
+  /// Chat Room
+  /// 聊天室動態牆紀錄更改
+  static Future<void> setWall(String roomId, bool open) async {
+    await setBool("chatRoomWall${roomId}", open, needEncryption: false);
+  }
+
+  /// 檢查動態牆收起或開啟
+  static Future<bool> checkWallClose(
+    String roomId,
+  ) async {
+    return await getBool("chatRoomWall${roomId}", needEncryption: false);
   }
 
   /// MARK: 判斷是否登入過

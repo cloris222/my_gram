@@ -56,14 +56,35 @@ class _MessageViewForOthers extends ConsumerState<MessageViewForOther> with Tick
    
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: EdgeInsets.all(UIDefine.getScreenWidth(1.5)),
+          padding: EdgeInsets.only(top: UIDefine.getPixelHeight(5)),
+          child: ClipRRect(
+              borderRadius: BorderRadius.circular(100),
+              child: Image.asset("assets/icon/pitch/pair/01.Rebecca_01_01.png",
+              width: UIDefine.getPixelWidth(30),
+              height: UIDefine.getPixelHeight(30),
+              fit: BoxFit.fill,),
+              // child: CachedNetworkImage(
+              //   imageUrl: GlobalData.urlPrefix + data.replyByAvatar,
+                // width: UIDefine.getScreenWidth(7.5),
+                // height: UIDefine.getScreenWidth(7.5),
+              //   fit: BoxFit.cover,
+              //   memCacheWidth: (UIDefine.getWidth() * 0.5).toInt(),
+              // )
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.all(UIDefine.getScreenWidth(1)),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
+              
+              SizedBox(width: UIDefine.getPixelWidth(5),
+              ),
               Container(
                 decoration: BoxDecoration(
                   borderRadius: const BorderRadius.only(
@@ -83,14 +104,11 @@ class _MessageViewForOthers extends ConsumerState<MessageViewForOther> with Tick
                 ),
               ),
               SizedBox(width: 4),
-              Container(
-              color: Colors.transparent,
-                child: Text(
+              Text(
                   DateFormatUtil().timeStamptoDate(data.timestamp),
                   style: TextStyle(
                     color: AppColors.commentUnlike.light,
                     fontSize: UIDefine.fontSize8),
-                ),
               ),
             ],
           ),
