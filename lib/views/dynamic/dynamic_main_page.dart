@@ -138,7 +138,6 @@ class _DynamicMainPageState extends ConsumerState<DynamicMainPage> {
                        children: [
                          Image.asset(AppImagePath.logoTextImage),
                          Container(
-
                            width: UIDefine.getPixelWidth(40),
                            height: UIDefine.getPixelWidth(40),
                            decoration: BoxDecoration(
