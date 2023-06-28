@@ -210,9 +210,12 @@ class DateFormatUtil {
 
   /// 兩筆時間 比較是否為同一天
   bool compareSameDay(String t1, String t2) {
+    DateTime dateTime1 = DateTime.fromMillisecondsSinceEpoch(int.parse(t1) * 1000);
+    DateTime dateTime2 = DateTime.fromMillisecondsSinceEpoch(int.parse(t2) * 1000);
     DateFormat dateFormat = DateFormat("yyyy-MM-dd");
-    String date1 = dateFormat.format(dateFormat.parse(t1));
-    String date2 = dateFormat.format(dateFormat.parse(t2));
+    String date1 = dateFormat.format(dateTime1);
+    String date2 = dateFormat.format(dateTime2);
+    print('date1: ${date1}');
     return date1 == date2;
   }
 
@@ -228,10 +231,9 @@ class DateFormatUtil {
   String timeStamptoDate(String stamp) {
     if (stamp != '') {
       DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(int.parse(stamp));
-      stamp = DateFormat('hh:mm a','en_US').format(dateTime);
+      stamp = DateFormat('hh:mm a', 'en_US').format(dateTime);
       return stamp;
     }
     return '';
   }
-  
 }

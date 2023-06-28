@@ -7,6 +7,7 @@ import 'package:base_project/constant/theme/app_gradient_colors.dart';
 import 'package:base_project/constant/theme/app_image_path.dart';
 import 'package:base_project/constant/theme/app_gradient_colors.dart';
 import 'package:base_project/constant/theme/app_text_style.dart';
+import 'package:base_project/models/app_shared_preferences.dart';
 import 'package:base_project/models/http/data/dynamic_info_data.dart';
 import 'package:base_project/utils/pitch_data_util.dart';
 import 'package:base_project/views/message/recorder_view.dart';
@@ -47,18 +48,16 @@ class PrivateMessagePage extends ConsumerStatefulWidget {
 }
 
 class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
-  MessagePrivateGroupMessageViewModel viewModel = MessagePrivateGroupMessageViewModel();
-
+  late MessagePrivateGroupMessageViewModel viewModel;
   bool showGallery = false;
   bool sendImage = false;
   String friendName = "Rebecca";
-  // String friendAvatar = "1";
-  // String roomId = "3";
+  bool bScrolling = false;
   String sMyID = GlobalData.userMemberId;
-  // var listViewKey = RectGet
-  // bool bShowReply = false;
-  // bool bImage = false;
-  // bool bGroup = false;
+  String currentShowingDate = '';
+  StateSetter? dateViewSetState; // 漂浮日期View的獨立setState
+  int lastVisibleIndex = 0; // 螢幕上顯示的最後一個view
+
   ChatHistorySQLite replyByMessageData = ChatHistorySQLite();
   MessageChatroomDetailResponseData _chatroomDetailData = MessageChatroomDetailResponseData();
 
@@ -73,18 +72,19 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
 
   @override
   initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final updateList = ref.read(listImgNotiferProvider.notifier);
-      updateList.addData();
-      print("im List: ${imageList.length}");
-    });
+    viewModel = MessagePrivateGroupMessageViewModel(ref);
     viewModel.textFocusNode.addListener(() {
-      Future.delayed(Duration(milliseconds: 300)).then((value) {
-        setState(() {
-          viewModel.isFocus = viewModel.textFocusNode.hasFocus;
-        });
+      setState(() {
+        viewModel.isFocus = viewModel.textFocusNode.hasFocus;;
+        if (viewModel.isFocus == true) {
+          if (ref.watch(showImageWallProvider)) {
+            /// 若鍵盤彈起收起來
+            viewModel.changeImgWallState(false);
+          }
+        }
       });
     });
+    viewModel.checkImgWall();
     _getDbDataToShow();
     _onNotifierListener();
     super.initState();
@@ -127,7 +127,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
   @override
   Widget build(BuildContext context) {
     return CommonScaffold(
-      appBar: CustomAppBar.chatRoomAppBar(context, nickName: friendName, avatar: viewModel.rebeccaImg),
+      appBar: CustomAppBar.chatRoomAppBar(ref, context, nickName: friendName, avatar: viewModel.rebeccaImg),
       body: (isDark) => Container(
         width: UIDefine.getWidth(),
         decoration: BoxDecoration(gradient: AppColors.messageLinearBg),
@@ -137,61 +137,54 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
             Container(decoration: BoxDecoration(gradient: AppColors.messageLinearBg)),
             Column(
               children: [
-                // Consumer(
-                //   builder: (context, watch, child) {
-                //     final list = ref.watch(listImgNotiferProvider.notifier).state;
-                //     return list.length.
-                //     ListView.builder(
-                //       itemCount: imgList.length,
-                //       itemBuilder: (context, index) {
-                //         final item = imgList[index];
-                //         return
-                //       },
-                //     );
-                //   },
-                // ),
-
-                //   child: viewModel.showImageWall
-                //       ? viewModel.imageList.isEmpty
-                //           ? Container()
-                //           : Container(
-                //               height: UIDefine.getPixelHeight(100),
-                //               child: ListView.builder(
-                //                 itemCount: viewModel.imageList.length,
-                //                 itemBuilder: (context, index) {
-                //                   final image = imageList[index];
-                //                   return Container(
-                //                     color: Colors.blue,
-                //                     child: Text("test"),
-                //                   );
-                //                 },
-                //               ),
-                //             )
-                //       : Container(),
-                // ),
-                // viewModel.showImageWall
-                //     ? Container(
-                //         height: UIDefine.getPixelHeight(100),
-                //         child:
-                //         ListView.builder(
-                //           itemCount: ref.read(listImgNotiferProvider.notifier).state.length,
-                //           itemBuilder: (context, index) {
-                //             final image = imageList[index];
-                //             return Container(
-                //               color: Colors.blue,
-                //               child: Text("test"),
-                //             );
-                //           },
-                //         ),
-                //       )
-                // : Container(),
+                ref.watch(showImageWallProvider)
+                    ? Consumer(
+                        builder: (context, watch, child) {
+                          final imgList = ref.watch(imgListProvider);
+                          return imgList.length == 0
+                              ? Container()
+                              : Stack(
+                                  children: [
+                                    Container(
+                                      height: UIDefine.getPixelHeight(110),
+                                      child: ListView.builder(
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: imgList.length,
+                                        itemBuilder: (context, index) {
+                                          // final item = imgList[index];
+                                          return Container(
+                                            color: Colors.blue,
+                                            child: Image.asset(imgList[index]),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                );
+                        },
+                      )
+                    : Container(),
                 Consumer(
                   builder: (context, ref, child) {
                     ref.watch(chatRoomProvider);
                     return Expanded(
-                      child: Container(
-                        child: _buildListView(),
-                      ),
+                      // child: NotificationListener<ScrollNotification>(
+                      //   onNotification: (notification) {
+                      //     _updateDateViewByIndex();
+                      //     if (notification is ScrollStartNotification) {
+                      //       dateViewSetState!(() {
+                      //         bScrolling = true;
+                      //       });
+                      //     }
+                      //     if (notification is ScrollEndNotification) {
+                      //       dateViewSetState!(() {
+                      //         bScrolling = false;
+                      //       });
+                      //     }
+                      //     return true;
+                      //   },
+                      child: _buildListView(),
+                      // ),
                     );
                   },
                 ),
@@ -207,10 +200,11 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                                 ),
                                 Expanded(
                                   child: Container(
-                                      width: UIDefine.getWidth(),
-                                      child: GalleryView(
-                                        ps: ps,
-                                      )),
+                                    width: UIDefine.getWidth(),
+                                    child: GalleryView(
+                                      ps: ps,
+                                    ),
+                                  ),
                                 )
                               ],
                             )),
@@ -233,9 +227,25 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                           )
                         : SizedBox(
                             height: 0,
-                          )
+                          ),
               ],
             ),
+            ref.watch(showImageWallProvider)
+                ? Positioned(
+                    top: UIDefine.getPixelHeight(118),
+                    child: GestureDetector(
+                      child: Container(
+                          height: UIDefine.getPixelHeight(8),
+                          width: UIDefine.getWidth(),
+                          color: Colors.transparent,
+                          child: Image.asset("assets/icon/assets/ic_extent.png")),
+                      onTap: () {
+                        bool open = false;
+                        viewModel.changeImgWallState(open);
+                      },
+                    ),
+                  )
+                : Container()
           ],
         ),
       ),
@@ -257,30 +267,124 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
       child: Row(
         children: [
           Expanded(
-            child: TextField(
-              focusNode: viewModel.textFocusNode,
-              controller: viewModel.textController,
-              style: AppTextStyle.getBaseStyle(color: AppColors.textWhite, fontSize: UIDefine.fontSize12),
-              maxLines: viewModel.isFocus ? 5 : 1,
-              minLines: 1,
-              decoration: InputDecoration(
-                contentPadding: EdgeInsets.only(left: 20),
-                border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent), borderRadius: BorderRadius.circular(40)),
-                focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent), borderRadius: BorderRadius.circular(40)),
-                hintText: tr('writeAMessage'),
-                hintStyle: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize12, color: AppColors.textHintColor),
-                fillColor: Color(0xFF292322),
-                filled: true,
-                suffixIcon: viewModel.isFocus
-                    ? GestureDetector(
+            child: Container(
+              // alignment: Alignment.center,
+              padding: EdgeInsets.fromLTRB(
+                UIDefine.getPixelWidth(3), UIDefine.getPixelHeight(2), UIDefine.getPixelWidth(3), UIDefine.getPixelHeight(2)),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+                color: Color(0xFF292322)
+              ),
+              child: Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(right: UIDefine.getPixelWidth(16)),
+                    child: viewModel.isFocus ?
+                    Container():
+                    Container(
+                      padding: EdgeInsets.all(UIDefine.getPixelWidth(6)),
+                      decoration: BoxDecoration(
+                          color: AppColors.buttonCameraBg.light,
+                          borderRadius: BorderRadius.all(Radius.circular(30)),
+                          border: Border.all(color: AppColors.buttonCameraBg.dark, width: 1)),
+                      child: InkWell(
+                        onTap: () {},
+                        child: Icon(
+                          Icons.photo_camera,
+                          color: AppColors.textWhite.light,
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  Expanded(
+                    child: Container(
+                      // padding: viewModel.isFocus?
+                      // EdgeInsets.only(left: UIDefine.getPixelWidth(20), right: UIDefine.getPixelWidth(5)):
+                      // EdgeInsets.all(0),
+                      // alignment: Alignment.centerLeft,
+                      // height: UIDefine.getPixelHeight(36),
+                      child: TextField(
+                        textAlign: TextAlign.start,
+                        focusNode: viewModel.textFocusNode,
+                        controller: viewModel.textController,
+                        style: AppTextStyle.getBaseStyle(color: AppColors.textWhite, fontSize: UIDefine.fontSize12),
+                        maxLines: viewModel.isFocus ? 5 : 1,
+                        minLines: 1,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.zero,
+                          isDense: true,
+                          border: InputBorder.none,
+                          // contentPadding: EdgeInsets.only(left: 20,bottom: UIDefine.getPixelHeight(10),right: 20),
+                          // border: OutlineInputBorder(
+                          //     borderSide: BorderSide(color: Colors.transparent), borderRadius: BorderRadius.circular(40)),
+                          // focusedBorder: OutlineInputBorder(
+                          //     borderSide: BorderSide(color: Colors.transparent), borderRadius: BorderRadius.circular(40)),
+                          counterText: '',
+                          counterStyle: TextStyle(overflow: TextOverflow.ellipsis),
+                          hintText: tr('writeAMessage'),
+                          hintStyle: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize12, color: AppColors.textHintColor),
+                          fillColor: Colors.transparent,
+                          filled: true,
+                          // suffixIcon: viewModel.isFocus
+                          //     ? GestureDetector(
+                          //         onTap: () {
+                          //           viewModel.onSendMessage(viewModel.textController.text, false, "TEXT");
+                          //         },
+                          //         child: Icon(Icons.send))
+                          //     : GestureDetector(
+                          //         onTap: () {
+                          //           _onTapMicrophone();
+                          //         },
+                          //         child: Image.asset(
+                          //           AppImagePath.microphoneIcon,
+                          //           color: showRecorder ? Colors.blue : AppColors.textWhite.getColor(),
+                          //         ),
+                          //       ),
+                          // prefixIcon: viewModel.isFocus
+                          //     ? null
+                          //     : Padding(
+                          //         padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                          //         child: Container(
+                          //           padding: EdgeInsets.all(2),
+                          //           decoration: BoxDecoration(
+                          //               color: AppColors.buttonCameraBg.light,
+                          //               borderRadius: BorderRadius.all(Radius.circular(30)),
+                          //               border: Border.all(color: AppColors.buttonCameraBg.dark, width: 1)),
+                          //           child: InkWell(
+                          //             onTap: () {},
+                          //             child: Icon(
+                          //               Icons.photo_camera,
+                          //               color: AppColors.textWhite.light,
+                          //             ),
+                          //           ),
+                          //         ),
+                          //       ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  viewModel.isFocus
+                  ? Padding(
+                    padding: EdgeInsets.fromLTRB(UIDefine.getPixelWidth(3), UIDefine.getPixelHeight(6), UIDefine.getPixelWidth(3), UIDefine.getPixelHeight(6)),
+                    child: GestureDetector(    
                         onTap: () {
-                          GlobalData.printLog("send");
                           viewModel.onSendMessage(viewModel.textController.text, false, "TEXT");
                         },
-                        child: Icon(Icons.send))
-                    : GestureDetector(
+                        child: Image.asset("assets/icon/assets/ic_record_send.png")),
+                  )
+                  : viewModel.textController.text.isNotEmpty?
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(UIDefine.getPixelWidth(3), UIDefine.getPixelHeight(2), UIDefine.getPixelWidth(3), UIDefine.getPixelHeight(2)),
+                    child: GestureDetector(    
+                        onTap: () {
+                          viewModel.onSendMessage(viewModel.textController.text, false, "TEXT");
+                        },
+                        child: Image.asset("assets/icon/assets/ic_record_send.png")),
+                  ):
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(UIDefine.getPixelWidth(3), UIDefine.getPixelHeight(2), UIDefine.getPixelWidth(3), UIDefine.getPixelHeight(2)),
+                    child: GestureDetector(
                         onTap: () {
                           _onTapMicrophone();
                         },
@@ -289,25 +393,8 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                           color: showRecorder ? Colors.blue : AppColors.textWhite.getColor(),
                         ),
                       ),
-                prefixIcon: viewModel.isFocus
-                    ? null
-                    : Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-                        child: Container(
-                          padding: EdgeInsets.all(2),
-                          decoration: BoxDecoration(
-                              color: AppColors.buttonCameraBg.light,
-                              borderRadius: BorderRadius.all(Radius.circular(30)),
-                              border: Border.all(color: AppColors.buttonCameraBg.dark, width: 1)),
-                          child: InkWell(
-                            onTap: () {},
-                            child: Icon(
-                              Icons.photo_camera,
-                              color: AppColors.textWhite.light,
-                            ),
-                          ),
-                        ),
-                      ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -411,37 +498,6 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                               ),
                             ),
                           ),
-
-                          // Container(
-                          //   padding: EdgeInsets.symmetric(vertical: UIDefine.getPixelWidth(5)),
-                          //   width: UIDefine.getWidth() * 0.85,
-                          //   // height: UIDefine.getPixelWidth(40),
-                          //   decoration: BoxDecoration(
-                          //     borderRadius: BorderRadius.circular(14),
-                          //     color: AppColors.dialogBackground.getColor(),
-                          //   ),
-                          //   child: Row(
-                          //     mainAxisAlignment: MainAxisAlignment.start,
-                          //     crossAxisAlignment: CrossAxisAlignment.center,
-                          //     children: [
-                          //       ///工具列
-                          //       SizedBox(width: UIDefine.getPixelWidth(10)),
-                          //       Expanded(
-                          //         child: Container(
-                          //           // width: UIDefine.getPixelWidth(180),
-                          //           // height: UIDefine.getPixelWidth(40),
-                          //           child: Column(
-                          //             children: [
-                          //
-                          //             ],
-                          //           ),
-                          //         ),
-                          //       ),
-                          //
-                          //
-                          //     ],
-                          //   ),
-                          // ),
                         ],
                       ),
                     ),
@@ -509,7 +565,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
   }
 
   Widget _getTalkView(int index) {
-    if (showingList[index].timestamp == 0) {
+    if (showingList[index].timestamp.isEmpty) {
       // 空值為顯示日期的View
       return Container(
         padding: const EdgeInsets.all(5),
@@ -521,22 +577,51 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
           style: TextStyle(color: Colors.yellow, fontSize: UIDefine.fontSize12),
         ),
       );
+    }
+
+    // if (showingList.length > index + 1) {
+    //   if (showingList[index + 1].timestamp.isNotEmpty) {
+    //     bool nextSameDate =
+    //         DateFormatUtil().compareSameDay(showingList[index].timestamp, showingList[index + 1].timestamp);
+
+    //     if (!nextSameDate) {
+    //       showingList.insert(index + 1, ChatHistorySQLite());
+    //     }
+    //   }
+    // }
+    // bool bMe = showingList[index].receiverAvatarId == GlobalData.selfAvatar;
+    return showingList[index].receiverAvatarId != GlobalData.selfAvatar.toString()
+        ? MessageViewForSelf(
+            index: index,
+            bGroup: false,
+            bOnLongPress: false, //先false
+            data: showingList[index],
+            roomDetailData: _chatroomDetailData,
+          )
+        : MessageViewForOther(
+            index: index,
+            bGroup: false,
+            bOnLongPress: false,
+            data: showingList[index],
+          );
+  }
+
+  void _updateDateViewByIndex() {
+    var rect = RectGetter.getRectFromKey(listViewKey);
+    var items = <int>[];
+    _keys.forEach((index, key) {
+      var itemRect = RectGetter.getRectFromKey(key);
+      if (itemRect != null && !(itemRect.top > rect!.bottom || itemRect.bottom < rect.top)) {
+        items.add(index);
+      }
+    });
+
+    lastVisibleIndex = items.last;
+    if (currentShowingDate == _getDateFormat(lastVisibleIndex)) {
+      return;
     } else {
-      // bool bMe = showingList[index].receiverAvatarId == GlobalData.selfAvatar;
-      return showingList[index].receiverAvatarId != GlobalData.selfAvatar.toString()
-          ? MessageViewForSelf(
-              index: index,
-              bGroup: false,
-              bOnLongPress: false, //先false
-              data: showingList[index],
-              roomDetailData: _chatroomDetailData,
-            )
-          : MessageViewForOther(
-              index: index,
-              bGroup: false,
-              bOnLongPress: false,
-              data: showingList[index],
-            );
+      currentShowingDate = _getDateFormat(lastVisibleIndex);
+      dateViewSetState!(() {});
     }
   }
 

@@ -7,6 +7,7 @@ import 'package:base_project/view_models/call_back_function.dart';
 import 'package:base_project/view_models/message/message_private_message_view_model.dart';
 import 'package:base_project/views/login/register_main_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../label/avatar_icon_widget.dart';
 
@@ -118,8 +119,13 @@ class CustomAppBar {
     );
   }
 
-  static AppBar chatRoomAppBar(BuildContext context,
-      {required String nickName, required String avatar, onClickFunction? onPressBack}) {
+  static AppBar chatRoomAppBar(
+    WidgetRef ref,
+    BuildContext context, {
+    required String nickName,
+    required String avatar,
+    onClickFunction? onPressBack,
+  }) {
     return AppBar(
       elevation: 0,
       automaticallyImplyLeading: false,
@@ -147,14 +153,16 @@ class CustomAppBar {
             width: UIDefine.getPixelWidth(10),
           ),
           Text(nickName, style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize16)),
+          ref.watch(showImageWallProvider)?
+          Container():
           IconButton(
               icon: Icon(
                 Icons.keyboard_arrow_down,
                 color: AppColors.buttonCameraBg.light,
               ),
               onPressed: () {
-                MessagePrivateGroupMessageViewModel().showImageWall !=
-                    MessagePrivateGroupMessageViewModel().showImageWall;
+                bool open = true;
+                MessagePrivateGroupMessageViewModel(ref).changeImgWallState(open);
               })
         ],
       ),

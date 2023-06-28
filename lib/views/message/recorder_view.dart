@@ -10,6 +10,7 @@ import 'package:base_project/constant/theme/ui_define.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_sound/public/flutter_sound_player.dart';
 import 'package:flutter_sound/public/flutter_sound_recorder.dart';
 import 'package:path_provider/path_provider.dart';
@@ -23,14 +24,14 @@ import 'package:circle_progress_bar/circle_progress_bar.dart';
 
 import '../../view_models/message/message_private_message_view_model.dart';
 
-class RecorderView extends StatefulWidget {
+class RecorderView extends ConsumerStatefulWidget {
   const RecorderView({Key? key}) : super(key: key);
 
   @override
-  State<RecorderView> createState() => _RecorderViewState();
+  ConsumerState createState() => _RecorderViewState();
 }
 
-class _RecorderViewState extends State<RecorderView> {
+class _RecorderViewState extends ConsumerState<RecorderView> {
   bool isRecording = false;
   String _recorderText = '00:00';
   String _playerText = '00:00';
@@ -45,20 +46,20 @@ class _RecorderViewState extends State<RecorderView> {
   Duration? recordDuration;
   late Directory tempDir;
   late String timeStamp;
-  MessagePrivateGroupMessageViewModel viewModel = MessagePrivateGroupMessageViewModel();
+  late MessagePrivateGroupMessageViewModel viewModel;
+  
   String audioFile = '';
 
   @override
   void initState() {
+    viewModel = MessagePrivateGroupMessageViewModel(ref);
     super.initState();
     // _initialize();
   }
 
   @override
   void didChangeDependencies() {
-    setState(() {
-
-    });
+    setState(() {});
     super.didChangeDependencies();
   }
 
@@ -79,50 +80,40 @@ class _RecorderViewState extends State<RecorderView> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          (isRecording || isPlayAudio && isPlayingSound == false)?
-              Text(_recorderText,
-                  style: AppTextStyle.getBaseStyle(
-                      fontSize: UIDefine.fontSize14,
-                      fontWeight: FontWeight.w500))
-              :
-          isPlayingSound?
-          Text(_playerText,
-              style: AppTextStyle.getBaseStyle(
-                  fontSize: UIDefine.fontSize14,
-                  fontWeight: FontWeight.w500))
-              :
-          Text(tr('clickToRecording'),
-                  style: AppTextStyle.getBaseStyle(
-                      fontSize: UIDefine.fontSize14,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.bolderGrey)),
-          SizedBox(height: UIDefine.getPixelWidth(15),),
+          (isRecording || isPlayAudio && isPlayingSound == false)
+              ? Text(_recorderText,
+                  style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize14, fontWeight: FontWeight.w500))
+              : isPlayingSound
+                  ? Text(_playerText,
+                      style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize14, fontWeight: FontWeight.w500))
+                  : Text(tr('clickToRecording'),
+                      style: AppTextStyle.getBaseStyle(
+                          fontSize: UIDefine.fontSize14, fontWeight: FontWeight.w500, color: AppColors.bolderGrey)),
+          SizedBox(
+            height: UIDefine.getPixelWidth(15),
+          ),
 
           ///正在錄音
           isRecording
               ? GestureDetector(
-                onTap: (){
-                  stopRecording();
-                },
-                child: Container(
-            alignment: Alignment.center,
+                  onTap: () {
+                    stopRecording();
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
                     width: UIDefine.getPixelWidth(100),
                     height: UIDefine.getPixelWidth(100),
                     decoration: BoxDecoration(
                         color: AppColors.buttonCommon.getColor().withOpacity(0.3),
                         borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(50)),
-                        border: Border.all(
-                            color: Colors.red, width: UIDefine.getPixelWidth(3))),
+                        border: Border.all(color: Colors.red, width: UIDefine.getPixelWidth(3))),
                     child: Container(
                       width: UIDefine.getPixelWidth(15),
                       height: UIDefine.getPixelWidth(15),
-                      decoration: BoxDecoration(
-                          color: Colors.red,
-                          borderRadius: BorderRadius.circular(3)
-                      ),
+                      decoration: BoxDecoration(color: Colors.red, borderRadius: BorderRadius.circular(3)),
                     ),
                   ),
-              )
+                )
               :
 
               ///預覽畫面
@@ -131,62 +122,58 @@ class _RecorderViewState extends State<RecorderView> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         GestureDetector(
-                          onTap: (){
-                            _deleteRecording();
-                          },
+                            onTap: () {
+                              _deleteRecording();
+                            },
                             child: Image.asset(AppImagePath.delIcon)),
-                        isPlayingSound?
-                        Container(
-                          width: UIDefine.getPixelWidth(100),
-                          height: UIDefine.getPixelWidth(100),
-                          child: CircleProgressBar(
-                            animationDuration:recordDuration,
-                            foregroundColor:  AppColors.mainThemeButton.getColor(),
-                            backgroundColor: AppColors.mainBackground.getColor(),
-                            value: 1.0,
-                            child: Container(
-                              width: UIDefine.getPixelWidth(100),
-                              height: UIDefine.getPixelWidth(100),
-                              decoration: BoxDecoration(
-                                  color: AppColors.buttonCommon
-                                      .getColor()
-                                      .withOpacity(0.3),
-                                  borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(50)),
-                                  border: Border.all(
-                                      color: AppColors.mainThemeButton.getColor(),
-                                      width: UIDefine.getPixelWidth(3))),
-                              child: Image.asset(AppImagePath.whitePlayIcon),
-                            ),
-                          ),
-                        ):
-                       GestureDetector(
-                         onTap: (){
-                           setState(() {
-                             isPlayingSound = !isPlayingSound;
-                             playAudio();
-                           });
-                         },
-                          child: Container(
-                            width: UIDefine.getPixelWidth(100),
-                            height: UIDefine.getPixelWidth(100),
-                            decoration: BoxDecoration(
-                                color: AppColors.buttonCommon
-                                    .getColor()
-                                    .withOpacity(0.3),
-                                borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(50)),
-                                border: Border.all(
-                                    color: AppColors.mainThemeButton.getColor(),
-                                    width: UIDefine.getPixelWidth(3))),
-                            child: Image.asset(AppImagePath.whitePlayIcon),
-                          ),
-                        )
-
-                        ,
+                        isPlayingSound
+                            ? Container(
+                                width: UIDefine.getPixelWidth(100),
+                                height: UIDefine.getPixelWidth(100),
+                                child: CircleProgressBar(
+                                  animationDuration: recordDuration,
+                                  foregroundColor: AppColors.mainThemeButton.getColor(),
+                                  backgroundColor: AppColors.mainBackground.getColor(),
+                                  value: 1.0,
+                                  child: Container(
+                                    width: UIDefine.getPixelWidth(100),
+                                    height: UIDefine.getPixelWidth(100),
+                                    decoration: BoxDecoration(
+                                        color: AppColors.buttonCommon.getColor().withOpacity(0.3),
+                                        borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(50)),
+                                        border: Border.all(
+                                            color: AppColors.mainThemeButton.getColor(),
+                                            width: UIDefine.getPixelWidth(3))),
+                                    child: Image.asset(AppImagePath.whitePlayIcon),
+                                  ),
+                                ),
+                              )
+                            : GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    isPlayingSound = !isPlayingSound;
+                                    playAudio();
+                                  });
+                                },
+                                child: Container(
+                                  width: UIDefine.getPixelWidth(100),
+                                  height: UIDefine.getPixelWidth(100),
+                                  decoration: BoxDecoration(
+                                      color: AppColors.buttonCommon.getColor().withOpacity(0.3),
+                                      borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(50)),
+                                      border: Border.all(
+                                          color: AppColors.mainThemeButton.getColor(),
+                                          width: UIDefine.getPixelWidth(3))),
+                                  child: Image.asset(AppImagePath.whitePlayIcon),
+                                ),
+                              ),
                         GestureDetector(
-                          onTap: (){
-                            _onSend();
-                          },
-                            child: Image.asset(AppImagePath.sendIcon,)),
+                            onTap: () {
+                              _onSend();
+                            },
+                            child: Image.asset(
+                              AppImagePath.sendIcon,
+                            )),
                       ],
                     )
                   :
@@ -196,27 +183,27 @@ class _RecorderViewState extends State<RecorderView> {
                       width: UIDefine.getPixelWidth(100),
                       height: UIDefine.getPixelWidth(100),
                       decoration: BoxDecoration(
-                          color: AppColors.buttonCommon
-                              .getColor()
-                              .withOpacity(0.3),
+                          color: AppColors.buttonCommon.getColor().withOpacity(0.3),
                           borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(50)),
-                          border: Border.all(
-                              color: AppColors.buttonCommon.getColor(),
-                              width: UIDefine.getPixelWidth(1))),
+                          border:
+                              Border.all(color: AppColors.buttonCommon.getColor(), width: UIDefine.getPixelWidth(1))),
                       child: GestureDetector(
-                        onTap: (){
-                          _onTap();
-                        },
+                          onTap: () {
+                            _onTap();
+                          },
                           child: Image.asset(AppImagePath.goldenMicrophoneIcon)),
                     ),
-          SizedBox(height: UIDefine.getPixelWidth(15),),
+          SizedBox(
+            height: UIDefine.getPixelWidth(15),
+          ),
 
           Visibility(
-            visible: isPlayAudio == true && recordDuration!.inSeconds>=15,
-              child: Text(tr('recordMaxTime'),style: AppTextStyle.getBaseStyle(
-                  fontSize: UIDefine.fontSize14,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.bolderGrey),))
+              visible: isPlayAudio == true && recordDuration!.inSeconds >= 15,
+              child: Text(
+                tr('recordMaxTime'),
+                style: AppTextStyle.getBaseStyle(
+                    fontSize: UIDefine.fontSize14, fontWeight: FontWeight.w500, color: AppColors.bolderGrey),
+              ))
         ],
       ),
     );
@@ -242,18 +229,16 @@ class _RecorderViewState extends State<RecorderView> {
     if (!directory.existsSync()) {
       directory.createSync();
     }
-    await recorder.startRecorder(
-        toFile: '${tempDir.path}/$timeStamp.mp4', codec: Codec.aacMP4);
+    await recorder.startRecorder(toFile: '${tempDir.path}/$timeStamp.mp4', codec: Codec.aacMP4);
     _recorderSubscription = recorder.onProgress!.listen((e) {
-      if(e.duration.inSeconds>15){
+      if (e.duration.inSeconds > 15) {
         stopRecording();
         recordDuration = Duration(seconds: 17);
-      }else{
-        var date = DateTime.fromMillisecondsSinceEpoch(e.duration.inMilliseconds,
-            isUtc: true);
+      } else {
+        var date = DateTime.fromMillisecondsSinceEpoch(e.duration.inMilliseconds, isUtc: true);
         var timeText = DateFormat('mm:ss:SS', 'en_GB').format(date);
         setState(() {
-          recordDuration = Duration(seconds: (e.duration.inSeconds +1));
+          recordDuration = Duration(seconds: (e.duration.inSeconds + 1));
           _recorderText = timeText.substring(0, 5);
           // GlobalData.printLog('_recorderText${timeText}');
         });
@@ -313,23 +298,20 @@ class _RecorderViewState extends State<RecorderView> {
       isPlayingSound = true;
     });
     player.startPlayer(
-      fromURI: '${tempDir.path}/$timeStamp.mp4',
-      codec: Codec.aacMP4, //_codec,
-      numChannels: 1,
-      whenFinished: (){
-        setState(() {
-          isPlayingSound = false;
+        fromURI: '${tempDir.path}/$timeStamp.mp4',
+        codec: Codec.aacMP4, //_codec,
+        numChannels: 1,
+        whenFinished: () {
+          setState(() {
+            isPlayingSound = false;
+          });
         });
-      }
-    );
     _addListeners();
   }
 
-
   void _addListeners() {
     _playerSubscription = player.onProgress!.listen((e) {
-      var date = DateTime.fromMillisecondsSinceEpoch(e.position.inMilliseconds,
-          isUtc: true);
+      var date = DateTime.fromMillisecondsSinceEpoch(e.position.inMilliseconds, isUtc: true);
       var txt = DateFormat('mm:ss:SS', 'en_GB').format(date);
       setState(() {
         // GlobalData.printLog('_playerText${_playerText}');
@@ -372,8 +354,8 @@ class _RecorderViewState extends State<RecorderView> {
       _playerText = '00:00';
     });
   }
-  
-  Future<void> _onSend()async{
+
+  Future<void> _onSend() async {
     audioFile = await viewModel.uploadFile('audio', '${tempDir.path}/$timeStamp.mp4');
     if (await File('${tempDir.path}/$timeStamp.mp4').exists()) {
       await File('${tempDir.path}/$timeStamp.mp4').delete();
