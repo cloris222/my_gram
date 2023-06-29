@@ -44,12 +44,7 @@ class _CreateMainPageState extends ConsumerState<CreateMainPage> {
       SizedBox(width: UIDefine.getWidth(), height: UIDefine.getViewHeight()),
 
       /// 中間主要展示圖
-      Positioned(
-          top: 0,
-          bottom: UIDefine.getPixelWidth(250),
-          right: 0,
-          left: 0,
-          child: _buildDemoImageView()),
+      Positioned(top: 0, right: 0, left: 0, child: _buildDemoImageView()),
 
       /// 標籤
       Positioned(
@@ -116,7 +111,10 @@ class _CreateMainPageState extends ConsumerState<CreateMainPage> {
   }
 
   Widget _buildDemoImageView() {
-    return CommonNetworkImage(imageUrl: mainAsset, fit: BoxFit.cover);
+    return CommonNetworkImage(
+        imageUrl: mainAsset,
+        fit: BoxFit.fitWidth,
+        height: UIDefine.getPixelWidth(500));
   }
 
   Widget _buildTagsView() {

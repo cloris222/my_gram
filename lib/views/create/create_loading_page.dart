@@ -4,12 +4,13 @@ import 'package:base_project/constant/theme/app_text_style.dart';
 import 'package:base_project/constant/theme/ui_define.dart';
 import 'package:base_project/models/http/api/create_ai_api.dart';
 import 'package:base_project/view_models/base_view_model.dart';
+import 'package:base_project/views/create/create_success_page.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../constant/theme/app_colors.dart';
-import '../../constant/theme/app_gradient_colors.dart';
+import '../../models/http/data/create_ai_info.dart';
 
 class CreateLoadingPage extends StatefulWidget {
   const CreateLoadingPage({Key? key, required this.features}) : super(key: key);
@@ -22,6 +23,7 @@ class CreateLoadingPage extends StatefulWidget {
 class _CreateLoadingPageState extends State<CreateLoadingPage> {
   bool isAnimationFinish = false;
   bool isCreateFinish = false;
+  CreateAiInfo? resultInfo;
 
   @override
   void initState() {
@@ -32,15 +34,16 @@ class _CreateLoadingPageState extends State<CreateLoadingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.black,
         body: WillPopScope(
             onWillPop: () async {
-              // return false;
-              return true;
+              return false;
             },
             child: Container(
               width: UIDefine.getWidth(),
-              decoration: BoxDecoration(image: DecorationImage(image: AssetImage(AppImagePath.gradientBg),fit: BoxFit.fill)),
+              decoration: const BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage(AppImagePath.gradientBg),
+                      fit: BoxFit.fill)),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -66,18 +69,42 @@ class _CreateLoadingPageState extends State<CreateLoadingPage> {
 
   void _startCreate() {
     /// 5秒動畫
-    Future.delayed(const Duration(seconds: 5)).then((value) => _checkFinish());
-    CreateAiAPI(onConnectFail: _onFail)
-        .createAi(widget.features)
-        .then((value) => _checkFinish());
+    Future.delayed(const Duration(seconds: 5)).then((value) {
+      isAnimationFinish = true;
+      _checkFinish();
+    });
+
+    CreateAiAPI(onConnectFail: _onTmpFail).createAi(widget.features).then((value) {
+      isCreateFinish = true;
+      resultInfo = value;
+      _checkFinish();
+    });
   }
 
   void _checkFinish() {
     if (isAnimationFinish && isCreateFinish) {
-      Navigator.of(context).pop();
+      if (resultInfo != null) {
+        BaseViewModel().pushReplacement(
+            context, CreateSuccessPage(resultInfo: resultInfo!));
+      } else {
+        _onFail("create fail");
+      }
     }
   }
 
+  // 暫時假資料
+  void _onTmpFail(String errorMessage) {
+    isCreateFinish = true;
+    resultInfo = CreateAiInfo(
+      id: '6490235f7df0a90bb9a10d7a',
+      avatarId: '3',
+      feature: [],
+      prompt: '',
+      type: '',
+      imgUrl: 'admin/sd/feature/SD324202306211535150808SW.png',
+    );
+    _checkFinish();
+  }
   void _onFail(String errorMessage) {
     Future.delayed(const Duration(milliseconds: 1500)).then((value) {
       Navigator.of(context).pop();
