@@ -71,6 +71,8 @@ class AppImagePath {
   static const String sendIcon = '$assetPath/ic_record_send.png';
   static const String pauseWhiteIcon = '$assetPath/ic_pause_w.png';
   static const String pauseBlackIcon = '$assetPath/ic_pause_B.png';
+  static const String closeWallButton = '$assetPath/ic_extent.png';
+  static const String otherIcon = '$assetPath/ic_others-1.png';
 
   /// 創建
   static const String unChoose = "$assetPath/default.png";
