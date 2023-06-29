@@ -22,6 +22,8 @@ class AppImagePath {
 
   ///漸層背景圖
   static const String gradientBg = '$assetPath/img_bg.png';
+  ///模糊背景圖
+  static const String blurBg = '$assetPath/overlay_blur_bg_home.png';
 
   ///login頁面icon&image
 

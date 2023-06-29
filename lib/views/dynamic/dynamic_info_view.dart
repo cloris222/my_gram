@@ -22,6 +22,7 @@ import '../../widgets/label/common_network_image.dart';
 import '../../widgets/label/custom_gradient_icon.dart';
 import '../personal/personal_home_page.dart';
 import 'package:flutter/rendering.dart';
+import 'package:glassmorphism_widgets/glassmorphism_widgets.dart';
 
 class DynamicInfoView extends StatefulWidget {
   DynamicInfoView({
@@ -103,7 +104,14 @@ class _DynamicInfoViewState extends State<DynamicInfoView> {
             bottom: UIDefine.getViewHeight()*0.1,
             left: 0,
             right: 0,
-            child: _buildInfoCard()),
+            child: Container(
+              width: UIDefine.getWidth(),
+              child: Row(
+                children: [
+                  _buildInfoCard(),
+                ],
+              ),
+            )),
         Positioned(
             bottom: UIDefine.getViewHeight()*0.04,
             left: UIDefine.getPixelWidth(10),
@@ -190,97 +198,195 @@ class _DynamicInfoViewState extends State<DynamicInfoView> {
   }
 
   Widget _buildInfoCard(){
-    return ClipRRect(
-      borderRadius:BorderRadius.circular(15),
-      child: Container(
+    return Container(
+      width: UIDefine.getWidth(),
+      clipBehavior: Clip.antiAlias,
+      decoration: BoxDecoration(
+          color: AppColors.dynamicButtonsBorder.getColor().withOpacity(0.1),
+          borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(15))
+      ),
+      child: GlassContainer(
         width: UIDefine.getWidth(),
-        clipBehavior: Clip.antiAlias,
-        decoration: BoxDecoration(
-            color: AppColors.dynamicButtonsBorder.getColor().withOpacity(0.05),
-            borderRadius: BorderRadius.circular(15)
+        border: 0.0,
+        blur: 5,
+        linearGradient: LinearGradient(
+            colors: [AppColors.dynamicButtons.getColor().withOpacity(0.2),AppColors.dynamicButtons.getColor().withOpacity(0.2)]
         ),
-        child: BackdropFilter(
-          filter: ui.ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-          child: Container(
-            padding: EdgeInsets.all(UIDefine.getPixelWidth(15)),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        GestureDetector(
+        borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(15)),
+        child: Container(
+          padding: EdgeInsets.all(UIDefine.getPixelWidth(15)),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      GestureDetector(
                           onTap: (){
                             viewModel.pushPage(context, MainScreen(type:AppNavigationBarType.typePersonal));
                           },
-                            child: CircleAvatarWidget(imageUrl: widget.data.avatar,)),
-                        SizedBox(width: UIDefine.getPixelWidth(10),),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            GestureDetector(
-                                onTap: (){
-                                  viewModel.pushPage(context, MainScreen(type:AppNavigationBarType.typePersonal));
-                                },
-                                child: Text(widget.data.name,style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize16,fontWeight: FontWeight.w500),)),
-                            SizedBox(height:  UIDefine.getPixelWidth(1),),
-                            Text(_getTime(widget.data.time),style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize10,fontWeight: FontWeight.w500,color: AppColors.textDetail),)
-                          ],
-                        ),
-                      ],
-                    ),
-                    Text(tr('following'),style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize14,fontWeight: FontWeight.w400),)
-                  ],
-                ),
-                SizedBox(height: UIDefine.getPixelWidth(15),),
-                widget.data.isShowMore?
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(widget.data.context,style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize14,fontWeight: FontWeight.w300),),
-                    Visibility(
-                      visible: lineCount>=3,
-                      child: GestureDetector(
-                          onTap: (){
-                            widget.showLessContext(widget.index);
-                          },
-                          child: Text(tr('hide'),style: AppTextStyle.getBaseStyle(color: AppColors.textDetail),)),
-                    )
-                  ],
-                ):
-                lineCount>=3?
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Expanded(
-                      child: Wrap(
+                          child: CircleAvatarWidget(imageUrl: widget.data.avatar,)),
+                      SizedBox(width: UIDefine.getPixelWidth(10),),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          GestureDetector(
+                              onTap: (){
+                                viewModel.pushPage(context, MainScreen(type:AppNavigationBarType.typePersonal));
+                              },
+                              child: Text(widget.data.name,style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize16,fontWeight: FontWeight.w500),)),
+                          SizedBox(height:  UIDefine.getPixelWidth(1),),
+                          Text(_getTime(widget.data.time),style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize10,fontWeight: FontWeight.w500,color: AppColors.textDetail),)
+                        ],
+                      ),
+                    ],
+                  ),
+                  Text(tr('following'),style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize14,fontWeight: FontWeight.w400),)
+                ],
+              ),
+              SizedBox(height: UIDefine.getPixelWidth(15),),
+              widget.data.isShowMore?
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(widget.data.context,style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize14,fontWeight: FontWeight.w300),),
+                  Visibility(
+                    visible: lineCount>=3,
+                    child: GestureDetector(
+                        onTap: (){
+                          widget.showLessContext(widget.index);
+                        },
+                        child: Text(tr('hide'),style: AppTextStyle.getBaseStyle(color: AppColors.textDetail),)),
+                  )
+                ],
+              ):
+              lineCount>=3?
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Expanded(
+                    child: Wrap(
+                      children: [
+                        Text(
                             widget.data.context,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
-                              style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize14,fontWeight: FontWeight.w300)
-                          ),
-                        ],
-                      ),
+                            style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize14,fontWeight: FontWeight.w300)
+                        ),
+                      ],
                     ),
-                    GestureDetector(
+                  ),
+                  GestureDetector(
                       onTap: (){
                         widget.showFullContext(widget.index);
                       },
-                        child: Text(tr('seeMore'),style: AppTextStyle.getBaseStyle(color: AppColors.textDetail),))
-                  ],
-                ):
-                Text(widget.data.context,style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize14,fontWeight: FontWeight.w300),),
-              ],
-            ),
+                      child: Text(tr('seeMore'),style: AppTextStyle.getBaseStyle(color: AppColors.textDetail),))
+                ],
+              ):
+              Text(widget.data.context,style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize14,fontWeight: FontWeight.w300),),
+            ],
           ),
         ),
       ),
     );
   }
+
+
+  // Widget _buildInfoCard(){
+  //   return ClipRRect(
+  //     borderRadius:BorderRadius.circular(15),
+  //     child: Container(
+  //       width: UIDefine.getWidth(),
+  //       clipBehavior: Clip.antiAlias,
+  //       decoration: BoxDecoration(
+  //           color: AppColors.dynamicButtonsBorder.getColor().withOpacity(0.05),
+  //           borderRadius: BorderRadius.circular(15)
+  //       ),
+  //       child: BackdropFilter(
+  //         filter: ui.ImageFilter.blur(sigmaX: 10, sigmaY: 10,tileMode: TileMode.mirror),
+  //         child:
+  //         Container(
+  //           padding: EdgeInsets.all(UIDefine.getPixelWidth(15)),
+  //           child: Column(
+  //             children: [
+  //               Row(
+  //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                 children: [
+  //                   Row(
+  //                     children: [
+  //                       GestureDetector(
+  //                         onTap: (){
+  //                           viewModel.pushPage(context, MainScreen(type:AppNavigationBarType.typePersonal));
+  //                         },
+  //                           child: CircleAvatarWidget(imageUrl: widget.data.avatar,)),
+  //                       SizedBox(width: UIDefine.getPixelWidth(10),),
+  //                       Column(
+  //                         crossAxisAlignment: CrossAxisAlignment.start,
+  //                         children: [
+  //                           GestureDetector(
+  //                               onTap: (){
+  //                                 viewModel.pushPage(context, MainScreen(type:AppNavigationBarType.typePersonal));
+  //                               },
+  //                               child: Text(widget.data.name,style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize16,fontWeight: FontWeight.w500),)),
+  //                           SizedBox(height:  UIDefine.getPixelWidth(1),),
+  //                           Text(_getTime(widget.data.time),style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize10,fontWeight: FontWeight.w500,color: AppColors.textDetail),)
+  //                         ],
+  //                       ),
+  //                     ],
+  //                   ),
+  //                   Text(tr('following'),style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize14,fontWeight: FontWeight.w400),)
+  //                 ],
+  //               ),
+  //               SizedBox(height: UIDefine.getPixelWidth(15),),
+  //               widget.data.isShowMore?
+  //               Column(
+  //                 crossAxisAlignment: CrossAxisAlignment.start,
+  //                 children: [
+  //                   Text(widget.data.context,style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize14,fontWeight: FontWeight.w300),),
+  //                   Visibility(
+  //                     visible: lineCount>=3,
+  //                     child: GestureDetector(
+  //                         onTap: (){
+  //                           widget.showLessContext(widget.index);
+  //                         },
+  //                         child: Text(tr('hide'),style: AppTextStyle.getBaseStyle(color: AppColors.textDetail),)),
+  //                   )
+  //                 ],
+  //               ):
+  //               lineCount>=3?
+  //               Row(
+  //                 mainAxisAlignment: MainAxisAlignment.center,
+  //                 crossAxisAlignment: CrossAxisAlignment.end,
+  //                 children: [
+  //                   Expanded(
+  //                     child: Wrap(
+  //                       children: [
+  //                         Text(
+  //                           widget.data.context,
+  //                           maxLines: 2,
+  //                           overflow: TextOverflow.ellipsis,
+  //                             style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize14,fontWeight: FontWeight.w300)
+  //                         ),
+  //                       ],
+  //                     ),
+  //                   ),
+  //                   GestureDetector(
+  //                     onTap: (){
+  //                       widget.showFullContext(widget.index);
+  //                     },
+  //                       child: Text(tr('seeMore'),style: AppTextStyle.getBaseStyle(color: AppColors.textDetail),))
+  //                 ],
+  //               ):
+  //               Text(widget.data.context,style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize14,fontWeight: FontWeight.w300),),
+  //             ],
+  //           ),
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget _buildIconButton(String icon, {int? number}){
     return Container(
