@@ -119,12 +119,26 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
                             fit: BoxFit.cover,
                             imageUrl: data.posts[selectedCardIndex].images[0],
                             width: UIDefine.getWidth(),
-                            height: UIDefine.getViewHeight() - UIDefine.getPixelWidth(120),
+                            height: UIDefine.getViewHeight() - UIDefine.getPixelWidth(150),
                           ),
                           Positioned(
-                              top: UIDefine.getStatusBarHeight(),
-                              left: UIDefine.getPixelWidth(10),
-                              right: UIDefine.getPixelWidth(10),
+                              top: 0,
+                              left:0,
+                              right: 0,
+                              child: Container(
+                                height:UIDefine.getPixelWidth(91),
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    begin: Alignment.center,
+                                    end: Alignment.bottomCenter,
+                                    colors: [AppColors.textBlack.getColor().withOpacity(0.5),Colors.transparent]
+                                  )
+                                ),
+                              )),
+                          Positioned(
+                              top: UIDefine.getStatusBarHeight() + UIDefine.getPixelWidth(10),
+                              left: UIDefine.getPixelWidth(16),
+                              right: UIDefine.getPixelWidth(16),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -173,8 +187,11 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
+                            SizedBox(height: UIDefine.getPixelWidth(32),),
                             _buildButton(),
+                            SizedBox(height: UIDefine.getPixelWidth(32),),
                             _buildTabBar(),
+                            SizedBox(height: UIDefine.getPixelWidth(32),),
                             _buildTabView()
                           ],
                         ),
@@ -188,6 +205,13 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
 
   Widget _buildSwiperCards(){
     return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.center,
+          end: Alignment.topCenter,
+          colors: [AppColors.textBlack.getColor().withOpacity(0.8),Colors.transparent]
+        )
+      ),
       height: UIDefine.getPixelWidth(150),alignment: Alignment.bottomCenter,
       // color: Colors.blue,
       child: Swiper(
@@ -298,13 +322,13 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
 
   Widget _buildButton() {
     return SizedBox(
-      width: UIDefine.getWidth() * 0.9,
+      width: UIDefine.getWidth(),
       // height: UIDefine.getPixelWidth(45),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SizedBox(
-            width: UIDefine.getPixelWidth(15),
+            width: UIDefine.getPixelWidth(20),
           ),
           Expanded(
             child: TextButtonWidget(
@@ -321,7 +345,7 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
             ),
           ),
           SizedBox(
-            width: UIDefine.getPixelWidth(20),
+            width: UIDefine.getPixelWidth(17),
           ),
           Expanded(
             child: TextButtonWidget(
@@ -341,7 +365,7 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
             ),
           ),
           SizedBox(
-            width: UIDefine.getPixelWidth(15),
+            width: UIDefine.getPixelWidth(20),
           ),
         ],
       ),
