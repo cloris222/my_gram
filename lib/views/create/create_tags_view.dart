@@ -193,7 +193,7 @@ class _CreateTagsViewState extends ConsumerState<CreateTagsView>
                       Colors.transparent,
                       Colors.black.withOpacity(0.8)
                     ])),
-                child: Text(tr(data.name),
+                child: Text(tr(data.prompt),
                     style: AppTextStyle.getBaseStyle(
                         fontSize: UIDefine.fontSize12,
                         fontWeight: FontWeight.w500)),

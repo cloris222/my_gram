@@ -38,7 +38,7 @@ class CreateMainViewModel extends BaseViewModel {
       var list = ref.read(createTagDetailProvider(tag));
       int index = ref.read(createChooseProvider(tag));
       if (index != -1) {
-        feature.add(list[index].tag);
+        feature.add(list[index].prompt);
       }
     }
     pushPage(context, CreateLoadingPage(features: feature));

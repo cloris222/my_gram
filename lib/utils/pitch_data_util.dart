@@ -65,7 +65,7 @@ class PitchDataUtil {
     return List<PostInfoData>.generate(
         length,
         (index) => PostInfoData(context: 'GGGGGG', images: [
-              "assets/icon/pitch/chart/0${index + 1}.${MyGramAI.Rebecca.assetsName}_0${index + 1}_01.png"
+              "assets/icon/pitch/dynamic/self/0${index + 1}.${MyGramAI.Rebecca.assetsName}_0${index + 1}_01.png"
             ]));
   }
 
@@ -106,20 +106,20 @@ class PitchDataUtil {
       case 0:
         return "探索新風格，讓今日的你與眾不同🌟👗。讓衣櫃裡的舊衣活出新意，你準備好挑戰了嗎？#OOTD #StyleChallenge";
       case 1:
-        return "回歸經典，感受丹寧的魅力👖💙。輕鬆自在，卻不失風範，你的丹寧故事是什麼？#DenimVibes #ClassicChic";
+        return "穿上我的洋裝，我就是我，自信的女神💃👗✨。 #DressUp #ConfidentMe #MyStyle";
       case 2:
-        return "在泳池邊，讓陽光為你打造魅力光環👙☀️。這個夏天，妳是最閃亮的風景。#PoolsideGlam #SummerVibes";
+        return "淺色調穿搭，就像一陣清新的微風，讓人心情明媚，無論任何季節都可以輕鬆駕馭🍃👕👖 #LightTones #FreshStyle #AllSeasonFashion";
       case 3:
-        return "黑色的魅力，簡單又神秘⚫✨。從頭到腳都是風格，你的黑色故事是什麼？#AllBlackEverything #FashionStatement";
+        return "T恤不只是基本款，是你悠遊生活的時尚宣言👕🤘#TshirtFashion #StylingFun #LaidbackLifestyle";
       case 4:
         return "找到你的最佳角度，捕捉最真實的你📸⭐。無論從哪個角度看，你都是最閃亮的那一顆。#PerfectAngle #PicturePerfect";
       case 5:
-        return "行李已經打包，心情已經出發🧳🌍。生活中的小確幸，就是期待的度假旅行！#HolidayModeOn #VacayVibes";
+        return "有時候，最簡單的快樂就是心情好😊☀️。不忘初心，對生活充滿熱情！#HappyDays #SimpleJoy";
       case 6:
         return "換上最愛的衣服，就是最好的自我表達💖👗。每一件都是你的故事，每一款都是你的風格。#FavoriteOutfit #ExpressYourself";
       case 7:
       default:
-        return "運動的熱情，健康的生活💪🍏。每一次的汗水都是我們向更好的自己進發的腳步。#HealthyLiving #FitnessGoals";
+        return "游泳或是任一種運動，都是我塑造完美身材的祕訣。讓每一次的動作，都讓我與理想身材更近一步🏊‍♀️💪🔥 #SportyFit #FitnessGoals #PerfectBodyJourney";
     }
   }
 
@@ -135,7 +135,7 @@ class PitchDataUtil {
           "$pre/07.rebecca_07_03.png"
         ];
         context =
-            "換上最愛的衣服，就是最好的自我表達💖👗。每一件都是你的故事，每一款都是你的風格。#FavoriteOutfit #ExpressYourself";
+            "游泳或是任一種運動，都是我塑造完美身材的祕訣。讓每一次的動作，都讓我與理想身材更近一步🏊‍♀️💪🔥 #SportyFit #FitnessGoals #PerfectBodyJourney";
         break;
       case MyGramAI.Sophie:
         images = ["$pre/07.${ai.name}_01_01.png"];
