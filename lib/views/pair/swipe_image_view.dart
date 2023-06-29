@@ -82,105 +82,15 @@ class _SwipeImageViewState extends State<SwipeImageView>
           width: UIDefine.getWidth(),
           height: UIDefine.getViewHeight(),
         ),
-        Positioned(
-          left: _left,
-          top: _top,
-          child: Transform.rotate(
-            angle: _angle,
-            child: GestureDetector(
-              /// 判斷觸碰點，是否要切換上下分頁
-              onTapUp: _onTapUp,
-
-              /// 監聽滑動
-              onPanStart: _onPanStart,
-              onPanUpdate: _onPanUpdate,
-              onPanEnd: _onPanEnd,
-
-              child: Container(
-                margin: EdgeInsets.all(UIDefine.getPixelWidth(5)),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Stack(
-                    children: [
-                      Container(
-                          color: AppColors.mainBackground.getColor(),
-                          width: UIDefine.getWidth(),
-                          height: UIDefine.getViewHeight()),
-
-                      ///MARK:圖片本體
-                      CommonNetworkImage(
-                          imageUrl: data.images[currentIndex],
-                          width: UIDefine.getWidth(),
-                          height: UIDefine.getViewHeight() * 0.8,
-                          fit: BoxFit.cover),
-
-                      Positioned(
-                          left: UIDefine.getPixelWidth(45),
-                          right: UIDefine.getPixelWidth(45),
-                          top: UIDefine.getPixelWidth(40),
-                          child: _buildImageIndex()),
-
-                      ///漸層遮罩
-                      Positioned(
-                        top: UIDefine.getViewHeight() * 0.5,
-                        child: Container(
-                          width: UIDefine.getWidth(),
-                          height: UIDefine.getViewHeight() * 0.5,
-                          decoration: const BoxDecoration(
-                              gradient: LinearGradient(
-                                  begin: Alignment(0.0,-1.0),
-                                  end: Alignment(0.0,0.2),
-                                  colors: [Colors.transparent, Colors.black])),
-                        ),
-                      ),
-
-                      ///不喜歡的icon顯示
-                      Positioned(
-                          top: UIDefine.getPixelWidth(100),
-                          right: UIDefine.getPixelWidth(15),
-                          child: Visibility(
-                              visible: status == GramSetStatus.disLike,
-                              child: Image.asset(AppImagePath.imgDislike))),
-
-                      ///喜歡的icon顯示
-                      Positioned(
-                          top: UIDefine.getPixelWidth(100),
-                          left: UIDefine.getPixelWidth(15),
-                          child: Visibility(
-                              visible: status == GramSetStatus.like,
-                              child: Image.asset(AppImagePath.imgLike))),
-
-                      ///自介
-                      Positioned(
-                          bottom: UIDefine.getPixelWidth(160),
-                          left: UIDefine.getPixelWidth(15),
-                          right: UIDefine.getPixelWidth(15),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("${data.name} ${data.age}",
-                                  style: AppTextStyle.getBaseStyle(
-                                    fontSize: UIDefine.fontSize36,
-                                    fontWeight: FontWeight.w400,
-                                    height: 3
-                                    // shadowsType: AppTextShadows.common,
-                                  )),
-                              Text(data.context,
-                                  style: AppTextStyle.getBaseStyle(
-                                    height: UIDefine.getPixelWidth(1.5),
-                                    fontSize: UIDefine.fontSize14,
-                                    fontWeight: FontWeight.w400,
-                                    // shadowsType: AppTextShadows.common,
-                                  )),
-                            ],
-                          )),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
+        Draggable(
+          feedback: Transform.rotate(angle: _angle, child: _buildPair()),
+          onDragUpdate: _onPanUpdate,
+          onDragEnd: _onPanEnd,
+          child: _buildPair(),
+          // /// 監聽滑動
+          // onPanStart: _onPanStart,
+          // onPanUpdate: _onPanUpdate,
+          // onPanEnd: _onPanEnd,
         ),
 
         ///下方按鈕
@@ -204,10 +114,13 @@ class _SwipeImageViewState extends State<SwipeImageView>
                                     .getColor()
                                     .withOpacity(0.8)),
                             child: Container(
-                              alignment: Alignment.center,
-                              width: UIDefine.getPixelWidth(25),
+                                alignment: Alignment.center,
+                                width: UIDefine.getPixelWidth(25),
                                 height: UIDefine.getPixelWidth(25),
-                                child: Image.asset(AppImagePath.btnDislike,fit: BoxFit.cover,)),
+                                child: Image.asset(
+                                  AppImagePath.btnDislike,
+                                  fit: BoxFit.cover,
+                                )),
                           )
                         : Container(
                             alignment: Alignment.center,
@@ -222,7 +135,10 @@ class _SwipeImageViewState extends State<SwipeImageView>
                                 alignment: Alignment.center,
                                 width: UIDefine.getPixelWidth(25),
                                 height: UIDefine.getPixelWidth(25),
-                                child: Image.asset(AppImagePath.btnDislike,fit: BoxFit.cover,)),
+                                child: Image.asset(
+                                  AppImagePath.btnDislike,
+                                  fit: BoxFit.cover,
+                                )),
                           )),
                 SizedBox(width: UIDefine.getPixelWidth(40)),
                 GestureDetector(
@@ -282,14 +198,99 @@ class _SwipeImageViewState extends State<SwipeImageView>
           child: Container(
             height: UIDefine.getPixelWidth(2),
             decoration: AppStyle().styleColorsRadiusBackground(
-            radius: 2,
-            color: isCurrent
-                ? Colors.white
-                : Colors.white.withOpacity(0.4)),
+                radius: 2,
+                color:
+                    isCurrent ? Colors.white : Colors.white.withOpacity(0.4)),
             margin: const EdgeInsets.symmetric(horizontal: 1, vertical: 5),
           ),
         );
       }),
+    );
+  }
+
+  Widget _buildPair() {
+    return Container(
+      margin: EdgeInsets.all(UIDefine.getPixelWidth(5)),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: Stack(
+          children: [
+            Container(
+                color: AppColors.mainBackground.getColor(),
+                width: UIDefine.getWidth(),
+                height: UIDefine.getViewHeight()),
+
+            ///MARK:圖片本體
+            CommonNetworkImage(
+                imageUrl: data.images[currentIndex],
+                width: UIDefine.getWidth(),
+                height: UIDefine.getViewHeight() * 0.8,
+                fit: BoxFit.cover),
+
+            Positioned(
+                left: UIDefine.getPixelWidth(45),
+                right: UIDefine.getPixelWidth(45),
+                top: UIDefine.getPixelWidth(40),
+                child: _buildImageIndex()),
+
+            ///漸層遮罩
+            Positioned(
+              top: UIDefine.getViewHeight() * 0.5,
+              child: Container(
+                width: UIDefine.getWidth(),
+                height: UIDefine.getViewHeight() * 0.5,
+                decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: Alignment(0.0, -1.0),
+                        end: Alignment(0.0, 0.2),
+                        colors: [Colors.transparent, Colors.black])),
+              ),
+            ),
+
+            ///不喜歡的icon顯示
+            Positioned(
+                top: UIDefine.getPixelWidth(100),
+                right: UIDefine.getPixelWidth(15),
+                child: Visibility(
+                    visible: status == GramSetStatus.disLike,
+                    child: Image.asset(AppImagePath.imgDislike))),
+
+            ///喜歡的icon顯示
+            Positioned(
+                top: UIDefine.getPixelWidth(100),
+                left: UIDefine.getPixelWidth(15),
+                child: Visibility(
+                    visible: status == GramSetStatus.like,
+                    child: Image.asset(AppImagePath.imgLike))),
+
+            ///自介
+            Positioned(
+                bottom: UIDefine.getPixelWidth(160),
+                left: UIDefine.getPixelWidth(15),
+                right: UIDefine.getPixelWidth(15),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("${data.name} ${data.age}",
+                        style: AppTextStyle.getBaseStyle(
+                            fontSize: UIDefine.fontSize36,
+                            fontWeight: FontWeight.w400,
+                            height: 3
+                            // shadowsType: AppTextShadows.common,
+                            )),
+                    Text(data.context,
+                        style: AppTextStyle.getBaseStyle(
+                          height: UIDefine.getPixelWidth(1.5),
+                          fontSize: UIDefine.fontSize14,
+                          fontWeight: FontWeight.w400,
+                          // shadowsType: AppTextShadows.common,
+                        )),
+                  ],
+                )),
+          ],
+        ),
+      ),
     );
   }
 
@@ -309,7 +310,7 @@ class _SwipeImageViewState extends State<SwipeImageView>
   }
 
   /// 檢查滑動停止的動作
-  void _onHorizontalEnd(DragEndDetails details) {
+  void _onHorizontalEnd() {
     switch (status) {
       case GramSetStatus.none:
         {
@@ -393,7 +394,7 @@ class _SwipeImageViewState extends State<SwipeImageView>
     });
   }
 
-  void _onPanEnd(DragEndDetails tapInfo) {
+  void _onPanEnd(DraggableDetails tapInfo) {
     _tapOnTop = false;
     _onEndAnimation(tapInfo);
   }
@@ -419,8 +420,8 @@ class _SwipeImageViewState extends State<SwipeImageView>
     }
   }
 
-  void _onEndAnimation(DragEndDetails tapInfo) {
-    _onHorizontalEnd(tapInfo);
+  void _onEndAnimation(DraggableDetails tapInfo) {
+    _onHorizontalEnd();
   }
 
   //moves the card back to starting position

@@ -1,5 +1,4 @@
 import 'package:base_project/constant/theme/app_animation_path.dart';
-import 'package:base_project/constant/theme/global_data.dart';
 import 'package:base_project/constant/theme/ui_define.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
@@ -24,6 +23,11 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
       vsync: this,
     );
     super.initState();
+  }
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override

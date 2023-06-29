@@ -35,6 +35,11 @@ class _CreateLoadingPageState extends State<CreateLoadingPage>
     _startCreate();
     super.initState();
   }
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,17 +60,19 @@ class _CreateLoadingPageState extends State<CreateLoadingPage>
                   SizedBox(
                       width: UIDefine.getPixelWidth(150),
                       height: UIDefine.getPixelWidth(150),
-                      child: Lottie.asset(AppAnimationPath.createLoading,
-                          fit: BoxFit.contain,
-                          controller: _controller,
-                          animate: true, onLoaded: (composition) {
-                        _controller
-                          ..duration = composition.duration
-                          ..forward().whenComplete(() {
-                            isAnimationFinish = true;
-                            _checkFinish();
-                          });
-                      })),
+                      child: Lottie.asset(
+                        AppAnimationPath.createLoading,
+                        fit: BoxFit.contain,
+                        controller: _controller,
+                        onLoaded: (composition) {
+                          _controller
+                            ..duration = composition.duration
+                            ..forward().whenComplete(() {
+                              isAnimationFinish = true;
+                              _checkFinish();
+                            });
+                        },
+                      )),
                   SizedBox(height: UIDefine.getPixelWidth(10)),
                   Opacity(
                       opacity: 0.5,
@@ -99,6 +106,11 @@ class _CreateLoadingPageState extends State<CreateLoadingPage>
       } else {
         _onFail("create fail");
       }
+    } else if (isAnimationFinish) {
+      _controller.reset();
+      _controller.forward().whenComplete(() {
+        _checkFinish();
+      });
     }
   }
 
@@ -106,12 +118,12 @@ class _CreateLoadingPageState extends State<CreateLoadingPage>
   void _onTmpFail(String errorMessage) {
     isCreateFinish = true;
     resultInfo = CreateAiInfo(
-      id: '6490235f7df0a90bb9a10d7a',
+      id: '649d5361aa440f21722d513e',
       avatarId: '3',
       feature: [],
       prompt: '',
-      type: '',
-      imgUrl: 'admin/sd/feature/SD324202306211535150808SW.png',
+      type: 'USER_CREATE',
+      imgUrl: 'app/avatar/SD3O72023062917481719212K.png',
     );
     _checkFinish();
   }
