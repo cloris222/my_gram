@@ -11,6 +11,7 @@ import 'package:base_project/view_models/base_view_model.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:glassmorphism_widgets/glassmorphism_widgets.dart';
 import '../../view_models/dynmaic/is_rebecca_provider.dart';
 import '../../widgets/button/text_button_widget.dart';
 import '../../widgets/label/common_network_image.dart';
@@ -474,40 +475,49 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
 
   Widget _buildInfoCard(){
     return Container(
-      width: UIDefine.getWidth(),
-      padding: EdgeInsets.symmetric(vertical:UIDefine.getPixelWidth(20),horizontal: UIDefine.getPixelWidth(15)),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: AppColors.commentUnlike.getColor().withOpacity(0.2)
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(data.introduce,textAlign: TextAlign.start,style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize14,fontWeight: FontWeight.w400,height: 1.4),),
-          SizedBox(height: UIDefine.getPixelWidth(15),),
-          Visibility(
-            visible: data.link!=null,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+        decoration: BoxDecoration(
+          color: AppColors.commentUnlike.getColor().withOpacity(0.2),
+          borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(23)),
+        ),
+        child: GlassContainer(
+          border: 0.0,
+          blur: 10,
+          linearGradient: LinearGradient(
+              colors: [ AppColors.dynamicButtonsBorder.getColor().withOpacity(0.05),AppColors.dynamicButtonsBorder.getColor().withOpacity(0.05)]
+          ),
+          borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(23)),
+          child: Container(
+            padding: EdgeInsets.symmetric(vertical:UIDefine.getPixelWidth(20),horizontal: UIDefine.getPixelWidth(15)),
+          child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                width: UIDefine.getPixelWidth(16),
-                    height: UIDefine.getPixelWidth(16),
-                    child: Image.asset(AppImagePath.linkIcon,fit: BoxFit.fill,)),
-                SizedBox(width: UIDefine.getPixelWidth(8)),
-                Flexible(
-                  child: GestureDetector(
-                    onTap: (){},
-                    child: Text(data.link!,style: AppTextStyle.getBaseStyle(color: AppColors.textLink,fontSize: UIDefine.fontSize14,fontWeight: FontWeight.w400),),
+                Text(data.introduce,textAlign: TextAlign.start,style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize14,fontWeight: FontWeight.w400,height: 1.4),),
+                SizedBox(height: UIDefine.getPixelWidth(15),),
+                Visibility(
+                  visible: data.link!=null,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                          width: UIDefine.getPixelWidth(16),
+                          height: UIDefine.getPixelWidth(16),
+                          child: Image.asset(AppImagePath.linkIcon,fit: BoxFit.fill,)),
+                      SizedBox(width: UIDefine.getPixelWidth(8)),
+                      Flexible(
+                        child: GestureDetector(
+                          onTap: (){},
+                          child: Text(data.link!,style: AppTextStyle.getBaseStyle(color: AppColors.textLink,fontSize: UIDefine.fontSize14,fontWeight: FontWeight.w400),),
+                        ),
+                      )
+                    ],
                   ),
                 )
               ],
             ),
-          )
-        ],
-      ),
-    );
+          ),
+        ),
+      );
   }
 
 }
