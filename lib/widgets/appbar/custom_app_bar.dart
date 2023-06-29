@@ -199,7 +199,7 @@ class CustomAppBar {
                     borderRadius: BorderRadius.all(Radius.circular(30)),
                     border: Border.all(color: AppColors.buttonCameraBg.dark, width: 1)),
                 child: GestureDetector(
-                  child: Image.asset("assets/icon/assets/ic_others-1.png"),
+                  child: Image.asset(AppImagePath.otherIcon),
                 ),
               ),
             ],

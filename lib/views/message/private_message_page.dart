@@ -147,25 +147,25 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                         builder: (context, watch, child) {
                           final imgList = ref.watch(imgListProvider);
                           return imgList.length == 0
-                              ? Container()
-                              : Stack(
-                                  children: [
-                                    Container(
-                                      height: UIDefine.getPixelHeight(110),
-                                      child: ListView.builder(
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: imgList.length,
-                                        itemBuilder: (context, index) {
-                                          // final item = imgList[index];
-                                          return Container(
-                                            color: Colors.blue,
-                                            child: Image.asset(imgList[index]),
-                                          );
-                                        },
-                                      ),
-                                    ),
-                                  ],
-                                );
+                            ? Container()
+                            : Stack(
+                            children: [
+                              Container(
+                                height: UIDefine.getPixelHeight(110),
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: imgList.length,
+                                  itemBuilder: (context, index) {
+                                    // final item = imgList[index];
+                                    return Container(
+                                      color: Colors.blue,
+                                      child: Image.asset(imgList[index]),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
+                          );
                         },
                       )
                     : Container(),
@@ -243,7 +243,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                       height: UIDefine.getPixelHeight(8),
                       width: UIDefine.getWidth(),
                       color: Colors.transparent,
-                      child: Image.asset("assets/icon/assets/ic_extent.png")),
+                      child: Image.asset(AppImagePath.closeWallButton)),
                   onTap: () {
                     bool open = false;
                     viewModel.changeImgWallState(open);
@@ -336,7 +336,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                               onTap: () {
                                 viewModel.onSendMessage(viewModel.textController.text, false, "TEXT");
                               },
-                              child: Image.asset("assets/icon/assets/ic_record_send.png")),
+                              child: Image.asset(AppImagePath.sendIcon)),
                         )
                       : viewModel.textController.text.isNotEmpty
                           ? Padding(
@@ -346,7 +346,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                                   onTap: () {
                                     viewModel.onSendMessage(viewModel.textController.text, false, "TEXT");
                                   },
-                                  child: Image.asset("assets/icon/assets/ic_record_send.png")),
+                                  child: Image.asset(AppImagePath.sendIcon)),
                             )
                           : Padding(
                               padding: EdgeInsets.fromLTRB(UIDefine.getPixelWidth(3), UIDefine.getPixelHeight(2),
@@ -411,7 +411,6 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
 
   void _onTapMicrophone() {
     setState(() {
-      print('showRecorder');
       showRecorder = !showRecorder;
     });
   }
