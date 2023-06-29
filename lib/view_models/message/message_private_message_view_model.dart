@@ -160,9 +160,10 @@ class MessagePrivateGroupMessageViewModel extends BaseViewModel {
     sType = '';
   }
 
-  Future<void> getFilePrefix() async {
+  Future<String> getFilePrefix() async {
     final data = await MessageApi().getFilePrefix();
-    filePrefix = data.data;
+    // filePrefix = data.data;
+    return data.data;
   }
 
   Future<String> uploadFile(String fileType, String filePath) async {
