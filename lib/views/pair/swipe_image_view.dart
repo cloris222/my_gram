@@ -340,7 +340,7 @@ class _SwipeImageViewState extends State<SwipeImageView>
       ).animate(_animationController);
       _topAnimation = Tween<double>(
         begin: _top,
-        end: MediaQuery.of(context).size.width * 0.1,
+        end: _top + _top,
       ).animate(_animationController);
       _scaleAnimation = Tween<double>(
         begin: _scale,

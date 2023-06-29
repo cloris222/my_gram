@@ -6,4 +6,5 @@ class AppAnimationPath {
 
   /// 創建 animation
   static const String createLoading = '$animationPathJson/create_loading.json';
+  static const String launchLoading = '$animationPathJson/launch.json';
 }

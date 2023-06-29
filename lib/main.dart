@@ -8,6 +8,7 @@ import 'package:base_project/view_models/message/websocket/web_socket_util.dart'
 import 'package:base_project/views/app_first_page.dart';
 import 'package:base_project/views/message/notifier/userToken_notifier.dart';
 import 'package:base_project/views/message/sqlite/chat_history_db.dart';
+import 'package:base_project/views/splash_page.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -122,7 +123,7 @@ class _MyAppState extends ConsumerState<MyApp> {
       navigatorKey: GlobalData.globalKey,
       title: 'MyGram',
       builder: AppTextStyle.setMainTextBuilder(),
-      home: const AppFirstPage(),
+      home: const SplashPage(),
       // home:  Demo(),
       // home: widget.isLogin ? const MainScreen() : const AppFirstPage(),
     );

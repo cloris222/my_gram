@@ -20,13 +20,18 @@ class CreateLoadingPage extends StatefulWidget {
   State<CreateLoadingPage> createState() => _CreateLoadingPageState();
 }
 
-class _CreateLoadingPageState extends State<CreateLoadingPage> {
+class _CreateLoadingPageState extends State<CreateLoadingPage>
+    with TickerProviderStateMixin {
   bool isAnimationFinish = false;
   bool isCreateFinish = false;
   CreateAiInfo? resultInfo;
+  late AnimationController _controller;
 
   @override
   void initState() {
+    _controller = AnimationController(
+      vsync: this,
+    );
     _startCreate();
     super.initState();
   }
@@ -51,7 +56,16 @@ class _CreateLoadingPageState extends State<CreateLoadingPage> {
                       width: UIDefine.getPixelWidth(150),
                       height: UIDefine.getPixelWidth(150),
                       child: Lottie.asset(AppAnimationPath.createLoading,
-                          fit: BoxFit.contain)),
+                          fit: BoxFit.contain,
+                          controller: _controller,
+                          animate: true, onLoaded: (composition) {
+                        _controller
+                          ..duration = composition.duration
+                          ..forward().whenComplete(() {
+                            isAnimationFinish = true;
+                            _checkFinish();
+                          });
+                      })),
                   SizedBox(height: UIDefine.getPixelWidth(10)),
                   Opacity(
                       opacity: 0.5,
@@ -68,13 +82,9 @@ class _CreateLoadingPageState extends State<CreateLoadingPage> {
   }
 
   void _startCreate() {
-    /// 5秒動畫
-    Future.delayed(const Duration(seconds: 5)).then((value) {
-      isAnimationFinish = true;
-      _checkFinish();
-    });
-
-    CreateAiAPI(onConnectFail: _onTmpFail).createAi(widget.features).then((value) {
+    CreateAiAPI(onConnectFail: _onTmpFail)
+        .createAi(widget.features)
+        .then((value) {
       isCreateFinish = true;
       resultInfo = value;
       _checkFinish();
@@ -105,6 +115,7 @@ class _CreateLoadingPageState extends State<CreateLoadingPage> {
     );
     _checkFinish();
   }
+
   void _onFail(String errorMessage) {
     Future.delayed(const Duration(milliseconds: 1500)).then((value) {
       Navigator.of(context).pop();
