@@ -42,8 +42,8 @@ enum AppColors {
   buttonCameraBg(dark: Color.fromARGB(255, 105, 101, 100), light: Color(0xFF514E4D)),
   dynamicButtons(dark: Color(0xFF373737), light: Color(0xFF373737)),
   dynamicButtonsBorder(dark: Color(0xFFFEFEFE), light: Color(0xFFFEFEFE)),
-  randomButton(dark: Color(0xCC7AB15F),light: Color(0xCC7AB15F)),
-  recorderRed(dark: Color(0xFFC11D11),light: Color(0xFFC11D11)),
+  randomButton(dark: Color(0xCC7AB15F), light: Color(0xCC7AB15F)),
+  recorderRed(dark: Color(0xFFC11D11), light: Color(0xFFC11D11)),
 
   ///背景顏色
   textFieldBackground(dark: Color(0xFF1F1F1F), light: Color(0xFFFFFFFF)),
@@ -57,8 +57,9 @@ enum AppColors {
   messageOtherBg(dark: Color(0xFF595451), light: Color(0xFF6A615C)),
   recordBackground(dark: Color(0xFF140B07), light: Color(0xFF140B07)),
   createFunctionBackground(dark: Color(0x33000000), light: Color(0x33FFFFFF)),
-  firstAppMarkBackground(dark: Color(0x333D2B17),light: Color(0x333D2B17)),
+  firstAppMarkBackground(dark: Color(0x333D2B17), light: Color(0x333D2B17)),
   messageTextBg(dark: Color(0xFF18100C), light: Color(0xFF36302E)),
+  tryOtherSheet(dark: Color.fromARGB(255, 33, 36, 32), light: Color.fromARGB(255, 146, 144, 143)),
 
   /// 基本顏色
   transparent(dark: Colors.transparent, light: Colors.transparent);
@@ -71,9 +72,20 @@ enum AppColors {
   //     center: Alignment.centerLeft
   //   );
   static LinearGradient messageLinearBg = LinearGradient(
-      colors: [Color(0xFF433125),Color(0xFF1D140F),Color(0xFF0D0806), Color(0xFF1D140F), Color(0xFF433125)],
+      colors: [Color(0xFF433125), Color(0xFF1D140F), Color(0xFF0D0806), Color(0xFF1D140F), Color(0xFF433125)],
       begin: Alignment.topRight,
       end: Alignment.bottomRight);
+
+  /// 創建背景色
+  ///
+  static LinearGradient sheetBarrier = LinearGradient(
+      colors: [Color.fromARGB(255, 45, 33, 20), Color.fromARGB(255, 80, 59, 36)],
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter);
+
+  /// TabBar底線漸層
+  static LinearGradient tabBarGradient =
+      LinearGradient(colors: [Color.fromARGB(255, 233, 189, 140), Color.fromARGB(255, 233, 207, 163)]);
 
   final Color dark;
   final Color light;

@@ -10,8 +10,7 @@ import '../../models/http/data/register_data.dart';
 import '../create/create_tag_detail_provider.dart';
 import '../create/create_tag_provider.dart';
 
-final userInfoProvider =
-    StateNotifierProvider<UserInfoNotifier, UserInfoData?>((ref) {
+final userInfoProvider = StateNotifierProvider<UserInfoNotifier, UserInfoData?>((ref) {
   return UserInfoNotifier();
 });
 
@@ -23,10 +22,8 @@ class UserInfoNotifier extends StateNotifier<UserInfoData?> {
     _saveUserData(response);
   }
 
-  Future<void> loginWithMail(
-      {required String email, required String password}) async {
-    var response = await UserAPI(addToken: false)
-        .loginWithEmail(email: email, password: password);
+  Future<void> loginWithMail({required String email, required String password}) async {
+    var response = await UserAPI(addToken: false).loginWithEmail(email: email, password: password);
 
     _saveUserData(response);
   }
@@ -75,14 +72,9 @@ class UserInfoNotifier extends StateNotifier<UserInfoData?> {
 
   /// 更新使用者房號等資料
   Future<void> _chatRoom() async {
-    GlobalData.selfAvatar = state?.avatars
-            .where((element) => (element.type == "MEMBER"))
-            .first
-            .avatarIds
-            .first ??
-        0;
-    GlobalData.roomId =
-        await MessageApi().createMessageRoom(GlobalData.friendAvatarId) ?? "0";
+    GlobalData.selfAvatar = state?.avatars.where((element) => (element.type == "MEMBER")).first.avatarIds.first ?? 0;
+    GlobalData.roomId = await MessageApi().createMessageRoom(GlobalData.friendAvatarId) ?? "0";
+    await AppSharedPreferences.setWall(GlobalData.roomId, true);
     GlobalData.printLog("self:${GlobalData.selfAvatar}");
     GlobalData.printLog("room:${GlobalData.roomId}");
   }

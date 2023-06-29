@@ -318,7 +318,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                           //     borderSide: BorderSide(color: Colors.transparent), borderRadius: BorderRadius.circular(40)),
                           counterText: '',
                           counterStyle: TextStyle(overflow: TextOverflow.ellipsis),
-                          hintText: tr('writeAMessage'),
+                          hintText: 'writeAMessage'.tr(),
                           hintStyle:
                               AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize12, color: AppColors.textHintColor),
                           fillColor: Colors.transparent,
@@ -366,13 +366,13 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
             ),
           ),
           SizedBox(
-            width: UIDefine.getPixelWidth(19),
+            width: viewModel.isFocus?0: UIDefine.getPixelWidth(19),
           ),
           viewModel.isFocus
               ? Container()
               : InkWell(
                   onTap: () {
-                    _openGallery();
+                    // _openGallery();
                   },
                   child: Icon(
                     Icons.photo,
