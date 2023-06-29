@@ -82,16 +82,21 @@ class _SwipeImageViewState extends State<SwipeImageView>
           width: UIDefine.getWidth(),
           height: UIDefine.getViewHeight(),
         ),
-        Draggable(
-          feedback: Transform.rotate(angle: _angle, child: _buildPair()),
-          onDragUpdate: _onPanUpdate,
-          onDragEnd: _onPanEnd,
-          child: _buildPair(),
-          // /// 監聽滑動
-          // onPanStart: _onPanStart,
-          // onPanUpdate: _onPanUpdate,
-          // onPanEnd: _onPanEnd,
-        ),
+        Positioned(
+            left: _left,
+            top: _top,
+            child: Transform.rotate(
+                angle: _angle,
+                child: GestureDetector(
+                  /// 判斷觸碰點，是否要切換上下分頁
+                  onTapUp: _onTapUp,
+
+                  /// 監聽滑動
+                  onPanStart: _onPanStart,
+                  onPanUpdate: _onPanUpdate,
+                  onPanEnd: _onPanEnd,
+                  child: _buildPair(),
+                ))),
 
         ///下方按鈕
         Positioned(
@@ -394,9 +399,9 @@ class _SwipeImageViewState extends State<SwipeImageView>
     });
   }
 
-  void _onPanEnd(DraggableDetails tapInfo) {
+  void _onPanEnd(DragEndDetails tapInfo) {
     _tapOnTop = false;
-    _onEndAnimation(tapInfo);
+    _onEndAnimation();
   }
 
   void _calculateAngle() {
@@ -420,7 +425,7 @@ class _SwipeImageViewState extends State<SwipeImageView>
     }
   }
 
-  void _onEndAnimation(DraggableDetails tapInfo) {
+  void _onEndAnimation() {
     _onHorizontalEnd();
   }
 
