@@ -84,38 +84,32 @@ class _AppFirstPageState extends State<AppFirstPage> {
                         SizedBox(
                           height: UIDefine.getViewHeight() * 0.377,
                         ),
-                        Container(
-                          width: UIDefine.getPixelWidth(90),
-                          height: UIDefine.getPixelWidth(90),
-                          child: Image.asset(
-                            AppImagePath.logoImage,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        SizedBox(
-                          height: UIDefine.getPixelWidth(15),
-                        ),
-                        Container(
-                          width: UIDefine.getPixelWidth(120),
-                          child: Image.asset(
-                            AppImagePath.logoTextImage,
-                            fit: BoxFit.cover,
-                          ),
+                        Image.asset(
+                          AppImagePath.fullLogo,
                         ),
                         SizedBox(
                           height: UIDefine.getViewHeight() * 0.03,
                         ),
-                        Expanded(
-                          child:
-                          GlassContainer(
+                        Container(
+                          clipBehavior: Clip.antiAlias,
+                          decoration: BoxDecoration(
+                              color: AppColors.dynamicButtonsBorder.getColor().withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(40))
+                          ),
+                          child: GlassContainer(
                             width: UIDefine.getWidth()* 0.85,
+                            constraints: BoxConstraints(
+                              minHeight: UIDefine.getHeight()*0.1,
+                                maxHeight: UIDefine.getPixelWidth(300)
+                            ),
                             border: 0.0,
                             blur: 10,
                             linearGradient: LinearGradient(
-                                colors: [ AppColors.textWhite.getColor().withOpacity(0.15),AppColors.textWhite.getColor().withOpacity(0.15)]
+                                colors: [ AppColors.dynamicButtons.getColor().withOpacity(0.2),AppColors.dynamicButtons.getColor().withOpacity(0.2)]
                             ),
                             borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(40)),
                             child: Container(
+                              padding: EdgeInsets.all(UIDefine.getPixelWidth(15)),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
