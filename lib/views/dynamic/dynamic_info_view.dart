@@ -1,27 +1,18 @@
 import 'dart:ui' as ui;
 import 'package:base_project/views/main_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:base_project/constant/extension/int_extension.dart';
 import 'package:base_project/constant/theme/app_colors.dart';
 import 'package:base_project/constant/theme/app_image_path.dart';
 import 'package:base_project/constant/theme/app_text_style.dart';
 import 'package:base_project/constant/theme/ui_define.dart';
 import 'package:base_project/view_models/base_view_model.dart';
-import 'package:base_project/widgets/button/text_button_widget.dart';
 import 'package:easy_localization/easy_localization.dart';
 import '../../constant/enum/app_param_enum.dart';
-import '../../constant/theme/app_gradient_colors.dart';
 import '../../constant/theme/app_style.dart';
 import '../../models/http/data/dynamic_info_data.dart';
 import '../../utils/number_format_util.dart';
 import '../../view_models/call_back_function.dart';
 import '../../widgets/circlie_avatar_widget.dart';
-import '../../widgets/custom_paint_text.dart';
-import '../../widgets/label/common_network_image.dart';
-import '../../widgets/label/custom_gradient_icon.dart';
-import '../personal/personal_home_page.dart';
-import 'package:flutter/rendering.dart';
 
 class DynamicInfoView extends StatefulWidget {
   DynamicInfoView({
@@ -61,12 +52,23 @@ class _DynamicInfoViewState extends State<DynamicInfoView> {
   );
   final maxWidth = UIDefine.getWidth() - UIDefine.getPixelWidth(30);
 
+  List<Image> preImages = [];
 
   @override
   void initState() {
-    Future.delayed(Duration.zero,(){
+    /// 預載
+    for (var element in widget.data.images) {
+      preImages.add(Image.asset(element, width: UIDefine.getWidth(),
+        height: UIDefine.getHeight() * 0.6,
+        fit: BoxFit.cover));
+    }
+
+    Future.delayed(Duration.zero, () {
       setState(() {
         lineCount = getLineCount(widget.data.context, textStyle, maxWidth);
+        for(var element in preImages){
+          precacheImage(element.image, context);
+        }
       });
     });
     super.initState();
@@ -134,12 +136,13 @@ class _DynamicInfoViewState extends State<DynamicInfoView> {
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(15)),
-              child: CommonNetworkImage(
-                imageUrl: widget.data.images[index],
-                width: UIDefine.getWidth(),
-                height: UIDefine.getHeight()*0.6,
-                fit: BoxFit.cover,
-              ),
+              child: preImages[index]
+              // CommonNetworkImage(
+              //   imageUrl: widget.data.images[index],
+              //   width: UIDefine.getWidth(),
+              //   height: UIDefine.getHeight()*0.6,
+              //   fit: BoxFit.cover,
+              // ),
             ),
           );
         }),

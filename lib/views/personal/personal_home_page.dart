@@ -81,13 +81,25 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
         "音樂家／樂團 \nPoppyCakes 主Rapper/副舞者 \nPop the world with PoppyCakes! \n#poppycakes #rebeccamusic #rapper \n#rapperlife #dance #dancerlife",
   );
 
-
+  List<Image> preImages = [];
 
   @override
   void initState() {
     data.posts=PitchDataUtil().buildSelfPostData();
     data.avatar=PitchDataUtil().getAvatar(MyGramAI.Rebecca);
     _tabController = TabController(length: 2, vsync: this, initialIndex: 0);
+
+    /// 預載圖片
+    for (var element in data.posts) {
+      preImages.add(Image.asset(element.images.first,fit: BoxFit.cover));
+    }
+    Future.delayed(Duration.zero, () {
+      setState(() {
+        for(var element in preImages){
+          precacheImage(element.image, context);
+        }
+      });
+    });
     super.initState();
   }
 
@@ -115,11 +127,16 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
                             width: UIDefine.getWidth(),
                             height: UIDefine.getHeight(),
                           ),
-                          CommonNetworkImage(
-                            fit: BoxFit.cover,
-                            imageUrl: data.posts[selectedCardIndex].images[0],
+                          // CommonNetworkImage(
+                          //   fit: BoxFit.cover,
+                          //   imageUrl: data.posts[selectedCardIndex].images[0],
+                          //   width: UIDefine.getWidth(),
+                          //   height: UIDefine.getViewHeight() - UIDefine.getPixelWidth(120),
+                          // ),
+                          SizedBox(
                             width: UIDefine.getWidth(),
                             height: UIDefine.getViewHeight() - UIDefine.getPixelWidth(120),
+                            child: preImages[selectedCardIndex],
                           ),
                           Positioned(
                               top: UIDefine.getStatusBarHeight(),
@@ -237,10 +254,12 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: CommonNetworkImage(
-                            fit: BoxFit.cover,
-                            imageUrl: data.posts[index].images[0],
-                          ),
+                          child:
+                          preImages[index],
+                          // CommonNetworkImage(
+                          //   fit: BoxFit.cover,
+                          //   imageUrl: data.posts[index].images[0],
+                          // ),
                         ),
                       ),
                     ),
