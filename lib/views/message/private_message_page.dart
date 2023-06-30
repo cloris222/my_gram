@@ -53,7 +53,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
   late MessagePrivateGroupMessageViewModel viewModel;
   bool showGallery = false;
   bool sendImage = false;
-  String friendName = "Rebeccaaaaaaaaaa";
+  String friendName = "Rebecca";
   bool bScrolling = false;
   String sMyID = GlobalData.userMemberId;
   String currentShowingDate = '';
