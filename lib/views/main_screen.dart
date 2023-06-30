@@ -1,4 +1,5 @@
 import 'package:base_project/constant/theme/global_data.dart';
+import 'package:base_project/view_models/base_view_model.dart';
 import 'package:base_project/widgets/app_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -84,11 +85,11 @@ class _MainScreenState extends ConsumerState<MainScreen> {
       if (needRecover) {
         ref.read(isRebeccaProvider.notifier).update((state) => false);
       }
-
       /// 判斷是否在同一頁切換
-      if (type == AppNavigationBarType.typeDynamic &&
+      if(type == AppNavigationBarType.typeDynamic &&
           GlobalData.mainBottomType == AppNavigationBarType.typeDynamic) {
-        GlobalData.dynamicSubject.scrollTop();
+          GlobalData.dynamicSubject.scrollTop();
+
       }
       GlobalData.mainBottomType = type;
       controller.jumpToPage(type.index);
