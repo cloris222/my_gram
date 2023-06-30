@@ -497,7 +497,8 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
       padding: EdgeInsets.symmetric(vertical:UIDefine.getPixelWidth(20),horizontal: UIDefine.getPixelWidth(15)),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color: AppColors.commentUnlike.getColor().withOpacity(0.2)
+        border: Border.all(color: AppColors.dynamicButtonsBorder.getColor().withOpacity(0.05),width: UIDefine.getPixelWidth(0.5)),
+        color: AppColors.textWhite.getColor().withOpacity(0.08)
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

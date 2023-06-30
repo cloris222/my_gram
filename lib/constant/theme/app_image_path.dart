@@ -23,11 +23,13 @@ class AppImagePath {
   ///漸層背景圖
   static const String gradientBg = '$assetPath/img_bg.png';
 
+
   ///login頁面icon&image
 
   static const String loginBgImage = '$imgPath/img_login_bg.png';
   static const String logoTextImage = '$assetPath/logo_Mygram.png';
   static const String logoImage = '$assetPath/logo_Vector.png';
+  static const String fullLogo = '$assetPath/Vector.png';
   static const String googleIcon = '$assetPath/icon_google.png';
   static const String fbIcon = '$assetPath/icon_fb.png';
   static const String appleIcon = '$assetPath/icon_apple.png';
