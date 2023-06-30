@@ -53,7 +53,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
   late MessagePrivateGroupMessageViewModel viewModel;
   bool showGallery = false;
   bool sendImage = false;
-  String friendName = "Rebecca";
+  String friendName = "Rebeccaaaaaaaaaa";
   bool bScrolling = false;
   String sMyID = GlobalData.userMemberId;
   String currentShowingDate = '';
@@ -195,7 +195,10 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                     );
                   },
                 ),
-                _getBottomTextField(),
+                Container(
+                  child: _getBottomTextField(),
+                ),
+                
                 showGallery
                     ? Flexible(
                         child: Visibility(
@@ -261,7 +264,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
 
   _getBottomTextField() {
     return Container(
-      height: showGallery || ref.watch(showRecordProvider) ? UIDefine.getHeight() * 0.08 : null,
+      // height: showGallery || ref.watch(showRecordProvider) ?  : null,
       padding: EdgeInsets.all(5),
       decoration: BoxDecoration(color: Color(0xFF18100C), boxShadow: [
         BoxShadow(
@@ -284,9 +287,9 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                   Padding(
                     padding: EdgeInsets.only(right: UIDefine.getPixelWidth(10)),
                     child: viewModel.isFocus
-                        ? Container()
-                        : Container(
-                            padding: EdgeInsets.all(UIDefine.getPixelWidth(6)),
+                        ? Container():
+                        Container(
+                            padding: EdgeInsets.all(UIDefine.getPixelWidth(5)),
                             decoration: BoxDecoration(
                                 color: AppColors.buttonCameraBg.light,
                                 borderRadius: BorderRadius.all(Radius.circular(30)),
@@ -380,6 +383,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                   child: Icon(
                     Icons.photo,
                     color: AppColors.textWhite.light,
+                    size: 24,
                   ),
                 ),
           viewModel.isFocus ? Container() : SizedBox(width: UIDefine.getPixelWidth(10)),
@@ -390,8 +394,9 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                   child: InkWell(
                     onTap: () {},
                     child: Icon(
-                      Icons.add,
+                      Icons.add_rounded,
                       color: AppColors.textWhite.light,
+                      size: 24,
                     ),
                   ),
                 ),
@@ -431,7 +436,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
               child: Padding(
                 padding: index == showingList.length - 1
                     ? EdgeInsets.fromLTRB(UIDefine.getScreenWidth(5), UIDefine.getScreenWidth(1),
-                        UIDefine.getScreenWidth(5), UIDefine.getScreenWidth(0.5))
+                        UIDefine.getScreenWidth(1), UIDefine.getScreenWidth(0.5))
                     : EdgeInsets.fromLTRB(UIDefine.getScreenWidth(1), UIDefine.getScreenWidth(0.5),
                         UIDefine.getScreenWidth(1), UIDefine.getScreenWidth(0.5)),
                 child: _getTalkView(index),

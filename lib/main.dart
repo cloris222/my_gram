@@ -144,9 +144,7 @@ class _MyAppState extends ConsumerState<MyApp> {
   void _onWebSocketListen() {
     _streamSubscription = WebSocketUtil().streamController.stream.listen((message) async {
       WsAckSendMessageData data = WebSocketUtil().getACKData(message);
-      GlobalData.printLog("get socket");
       if (data.message == 'SUCCESS') {
-        GlobalData.printLog("is Success");
         if (data.action == 'MSG') {
           bool isSelfACK = data.chatData.receiverAvatarId == GlobalData.selfAvatar;
           // await viewModel.updateChatroomData(data, isSelfACK); // 存進列表DB

@@ -12,15 +12,15 @@ import '../sqlite/data/chat_history_sqlite.dart';
 
 class MessageViewForOther extends ConsumerStatefulWidget {
   MessageViewForOther({
-  super.key,
-  required this.index,
-  required this.bGroup,
-  required this.bOnLongPress,
-  required this.data,
-  // required this.userData,
-  // required this.messageActionCallBack,
-  // required this.clickImageCallBack,
-  // required this.clickAvatarCallBack,
+    super.key,
+    required this.index,
+    required this.bGroup,
+    required this.bOnLongPress,
+    required this.data,
+    // required this.userData,
+    // required this.messageActionCallBack,
+    // required this.clickImageCallBack,
+    // required this.clickAvatarCallBack,
   });
 
   final int index;
@@ -36,10 +36,9 @@ class MessageViewForOther extends ConsumerStatefulWidget {
   ConsumerState<ConsumerStatefulWidget> createState() => _MessageViewForOthers();
 }
 
-enum MessageAction{Copy, Reply, Share, Report, Recall, Emoji}
+enum MessageAction { Copy, Reply, Share, Report, Recall, Emoji }
 
 class _MessageViewForOthers extends ConsumerState<MessageViewForOther> with TickerProviderStateMixin {
-
   bool bReply = false;
   bool bLast = true;
 
@@ -53,7 +52,7 @@ class _MessageViewForOthers extends ConsumerState<MessageViewForOther> with Tick
 
     // bReply = data.action == 'messageReply';
   }
-   
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -62,18 +61,20 @@ class _MessageViewForOthers extends ConsumerState<MessageViewForOther> with Tick
         Padding(
           padding: EdgeInsets.only(top: UIDefine.getPixelHeight(5)),
           child: ClipRRect(
-              borderRadius: BorderRadius.circular(100),
-              child: Image.asset("assets/icon/pitch/pair/01.Rebecca_01_01.png",
+            borderRadius: BorderRadius.circular(100),
+            child: Image.asset(
+              "assets/icon/pitch/pair/01.Rebecca_01_01.png",
               width: UIDefine.getPixelWidth(30),
               height: UIDefine.getPixelHeight(30),
-              fit: BoxFit.fill,),
-              // child: CachedNetworkImage(
-              //   imageUrl: GlobalData.urlPrefix + data.replyByAvatar,
-                // width: UIDefine.getScreenWidth(7.5),
-                // height: UIDefine.getScreenWidth(7.5),
-              //   fit: BoxFit.cover,
-              //   memCacheWidth: (UIDefine.getWidth() * 0.5).toInt(),
-              // )
+              fit: BoxFit.cover,
+            ),
+            // child: CachedNetworkImage(
+            //   imageUrl: GlobalData.urlPrefix + data.replyByAvatar,
+            // width: UIDefine.getScreenWidth(7.5),
+            // height: UIDefine.getScreenWidth(7.5),
+            //   fit: BoxFit.cover,
+            //   memCacheWidth: (UIDefine.getWidth() * 0.5).toInt(),
+            // )
           ),
         ),
         Padding(
@@ -82,33 +83,21 @@ class _MessageViewForOthers extends ConsumerState<MessageViewForOther> with Tick
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              
-              SizedBox(width: UIDefine.getPixelWidth(5),
+              SizedBox(
+                width: UIDefine.getPixelWidth(8),
               ),
               Container(
+                alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(12),
-                      topRight: Radius.circular(12),
-                      bottomRight: Radius.circular(12)),
-                  gradient: LinearGradient(colors: AppGradientColors.gradientOtherMessage.getColors())
-                ),
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(
-                    UIDefine.getScreenWidth(3),
-                    UIDefine.getScreenWidth(1.5),
-                    UIDefine.getScreenWidth(3),
-                    UIDefine.getScreenWidth(1.5),
-                  ),
-                      child: _getOthersTalkBubble(),
-                ),
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(15), topRight: Radius.circular(15), bottomRight: Radius.circular(15)),
+                    gradient: LinearGradient(colors: AppGradientColors.gradientOtherMessage.getColors())),
+                child: _getOthersTalkBubble(),
               ),
               SizedBox(width: 4),
               Text(
-                  DateFormatUtil().timeStamptoDate(data.timestamp),
-                  style: TextStyle(
-                    color: AppColors.commentUnlike.light,
-                    fontSize: UIDefine.fontSize8),
+                DateFormatUtil().timeStamptoDate(data.timestamp),
+                style: TextStyle(color: AppColors.commentUnlike.light, fontSize: UIDefine.fontSize8),
               ),
             ],
           ),
@@ -117,28 +106,60 @@ class _MessageViewForOthers extends ConsumerState<MessageViewForOther> with Tick
     );
   }
 
-  /// 別人的泡泡 
+  /// 別人的泡泡
   Widget _getOthersTalkBubble() {
-      return IntrinsicWidth(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            ConstrainedBox(
-              constraints: BoxConstraints(
-                  maxWidth: UIDefine.getScreenWidth(50)),
-            ),
-            ConstrainedBox(
-              constraints: BoxConstraints(maxWidth: UIDefine.getScreenWidth(48)),
-              child: data.msgType == "TEXT"?
-              Text(
-                data.content,
-                style: TextStyle(
-                  color: AppColors.textWhite.light,
-                  fontSize: UIDefine.fontSize16),
-              ):PlayAudioBubble(path: "${GlobalData.urlPrefix}${data.content}",bSelf: false,contentId: data.contentId,)
-            )
-          ],
+    return Container(
+      // alignment: Alignment.centerLeft,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(12),
+            topRight: Radius.circular(12),
+            bottomRight: Radius.circular(12),
+          ),
+          gradient: LinearGradient(colors: AppGradientColors.gradientOtherMessage.getColors())),
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(
+          UIDefine.getPixelWidth(10),
+          UIDefine.getPixelHeight(8),
+          UIDefine.getPixelWidth(10),
+          UIDefine.getPixelHeight(8),),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: UIDefine.getScreenWidth(50)),
+          child: data.msgType == "TEXT"?
+          Text(
+            data.content,
+            style: TextStyle(color: AppColors.textWhite.light, fontSize: UIDefine.fontSize14),
+          )
+          : PlayAudioBubble(
+            path: "${GlobalData.urlPrefix}${data.content}",
+            bSelf: false,
+            contentId: data.contentId,
+          ),
         ),
-      );
+      ),
+    );
+    // IntrinsicWidth(
+    //   child: Column(
+    //     crossAxisAlignment: CrossAxisAlignment.center,
+    //     children: [
+    //       // ConstrainedBox(
+    //       //   constraints: BoxConstraints(
+    //       //       maxWidth: UIDefine.getScreenWidth(50)),
+    //       // ),
+    //       ConstrainedBox(
+    //           constraints: BoxConstraints(maxWidth: UIDefine.getScreenWidth(48)),
+    //           child: data.msgType == "TEXT"
+    //               ? Text(
+    //                   data.content,
+    //                   style: TextStyle(color: AppColors.textWhite.light, fontSize: UIDefine.fontSize14),
+    //                 )
+    //               : PlayAudioBubble(
+    //                   path: "${GlobalData.urlPrefix}${data.content}",
+    //                   bSelf: false,
+    //                   contentId: data.contentId,
+    //                 ))
+    //     ],
+    //   ),
+    // );
   }
 }

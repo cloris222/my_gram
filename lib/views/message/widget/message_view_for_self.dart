@@ -61,8 +61,6 @@ class _MessageViewForSelf extends ConsumerState<MessageViewForSelf> with TickerP
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Container(
-              // height: 5,
-              // width: 5,
               color: Colors.transparent,
                 child: Text(
                   DateFormatUtil().timeStamptoDate(data.timestamp),
@@ -92,16 +90,20 @@ class _MessageViewForSelf extends ConsumerState<MessageViewForSelf> with TickerP
           gradient: LinearGradient(colors: AppGradientColors.gradientBaseColorBg.getColors())
       ),
       child: Padding(
-        padding: EdgeInsets.fromLTRB(UIDefine.getScreenWidth(3), UIDefine.getScreenWidth(1.5),
-          UIDefine.getScreenWidth(3), UIDefine.getScreenWidth(1.5)),
+        padding: EdgeInsets.fromLTRB(
+          UIDefine.getPixelWidth(10),
+          UIDefine.getPixelHeight(8),
+          UIDefine.getPixelWidth(10),
+          UIDefine.getPixelHeight(8),
+        ),
         child: ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: UIDefine.getScreenWidth(48)),
+          constraints: BoxConstraints(maxWidth: UIDefine.getScreenWidth(50)),
           child: data.msgType == "TEXT"?
           Text(
             data.content,
             style: TextStyle(
               color: AppColors.textBlack.dark,
-              fontSize: UIDefine.fontSize16),
+              fontSize: UIDefine.fontSize14),
           ):PlayAudioBubble(path: "${GlobalData.urlPrefix}${data.content}",bSelf: true,contentId: data.contentId,),
         )),
     );

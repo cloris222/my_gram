@@ -47,6 +47,7 @@ class AppTextStyle {
     double height = 1.4,
     TextDecoration? textDecoration,
     AppTextShadows shadowsType = AppTextShadows.none,
+    TextOverflow? overflow,
   }) {
     return TextStyle(
         color: color.getColor(),
@@ -57,7 +58,8 @@ class AppTextStyle {
         height: height,
         decoration: textDecoration,
         letterSpacing: 0.2,
-        shadows: getTextShadow(shadowsType));
+        shadows: getTextShadow(shadowsType),
+        overflow: overflow);
   }
 
   static List<BoxShadow>? getTextShadow(AppTextShadows type) {

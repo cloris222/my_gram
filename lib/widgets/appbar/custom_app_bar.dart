@@ -150,30 +150,34 @@ class CustomAppBar {
       title: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          AvatarIconWidget(
-            imageUrl: avatar,
+          Padding(
+            padding: EdgeInsets.only(right: UIDefine.getPixelWidth(8)),
+            child: AvatarIconWidget(
+              imageUrl: avatar,
+            ),
           ),
-          SizedBox(
-            width: UIDefine.getPixelWidth(10),
-          ),
-          Text(nickName, style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize16)),
+          Flexible(child: Container(child: Text(nickName, style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize16, overflow: TextOverflow.ellipsis)))),
           ref.watch(showImageWallProvider)?
           Container():
-          IconButton(
-            icon: Icon(
-              Icons.keyboard_arrow_down,
-              color: AppColors.buttonCameraBg.light,
+          Container(
+            alignment: Alignment.center,
+            width: UIDefine.getPixelWidth(24),
+            child: 
+            GestureDetector(
+              child: Icon(Icons.keyboard_arrow_down,
+              color: AppColors.buttonCameraBg.light,),
+              onTap: (){
+                bool open = true;
+                MessagePrivateGroupMessageViewModel(ref).changeImgWallState(open);
+              },
             ),
-            onPressed: () {
-              bool open = true;
-              MessagePrivateGroupMessageViewModel(ref).changeImgWallState(open);
-            })
+          ),
         ],
       ),
       actions: <Widget>[
         Padding(
           padding: EdgeInsets.fromLTRB(
-            UIDefine.getPixelWidth(5),
+            UIDefine.getPixelWidth(30),
             UIDefine.getPixelHeight(7),
             UIDefine.getPixelWidth(16),
             UIDefine.getPixelHeight(7),),
