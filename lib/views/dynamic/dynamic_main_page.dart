@@ -88,7 +88,6 @@ class _DynamicMainPageState extends ConsumerState<DynamicMainPage> {
         if (next == true) {
           list = isRebeccaList;
         } else {
-          scrollController.jumpTo(0);
           list = notRebeccaList ;
         }
       });
@@ -171,7 +170,6 @@ class _DynamicMainPageState extends ConsumerState<DynamicMainPage> {
                            bDownloading = false;
                          }
                          return DynamicInfoView(
-                           key: UniqueKey(),
                            data: list[index],
                            index:index,
                            onComment: (index){

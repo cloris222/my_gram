@@ -81,12 +81,27 @@ class _DynamicInfoViewState extends State<DynamicInfoView> {
   }
 
 
-  @override
-  void didChangeDependencies() {
-    setState(() {
+ @override
+  void didUpdateWidget(covariant DynamicInfoView oldWidget) {
+   setState(() {
+     preImages=[];
+     /// 預載
+     for (var element in widget.data.images) {
+       preImages.add(Image.asset(element, width: UIDefine.getWidth(),
+           height: UIDefine.getHeight() * 0.6,
+           fit: BoxFit.cover));
+     }
 
-    });
-    super.didChangeDependencies();
+     Future.delayed(Duration.zero, () {
+       setState(() {
+         lineCount = getLineCount(widget.data.context, textStyle, maxWidth);
+         for(var element in preImages){
+           precacheImage(element.image, context);
+         }
+       });
+     });
+   });
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
