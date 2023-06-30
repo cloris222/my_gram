@@ -59,6 +59,7 @@ enum AppColors {
   createFunctionBackground(dark: Color(0x33000000), light: Color(0x33FFFFFF)),
   firstAppMarkBackground(dark: Color(0x333D2B17),light: Color(0x333D2B17)),
   messageTextBg(dark: Color(0xFF18100C), light: Color(0xFF36302E)),
+  launchBackground(dark: Color(0xFF010101), light: Color(0xFF010101)),
 
   /// 基本顏色
   transparent(dark: Colors.transparent, light: Colors.transparent);

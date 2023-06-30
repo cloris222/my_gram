@@ -8,6 +8,7 @@ import 'package:base_project/view_models/message/websocket/web_socket_util.dart'
 import 'package:base_project/views/app_first_page.dart';
 import 'package:base_project/views/message/notifier/userToken_notifier.dart';
 import 'package:base_project/views/message/sqlite/chat_history_db.dart';
+import 'package:base_project/views/splash_page.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -34,8 +35,7 @@ void main() async {
   if (Platform.isAndroid) {
     ///MARK:
     /// 以下兩行 設定android狀態列為透明的沉浸。寫在元件渲染之後，是為了在渲染後進行set賦值，覆蓋狀態列，寫在渲染之前MaterialApp元件會覆蓋掉這個值。
-    SystemUiOverlayStyle systemUiOverlayStyle =
-        const SystemUiOverlayStyle(statusBarColor: Colors.transparent);
+    SystemUiOverlayStyle systemUiOverlayStyle = const SystemUiOverlayStyle(statusBarColor: Colors.transparent);
     SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
   }
   initApp();
@@ -57,8 +57,7 @@ Future<void> initApp() async {
     if (false && await AppSharedPreferences.getLogIn()) {
       GlobalData.userToken = await AppSharedPreferences.getToken();
       GlobalData.userMemberId = await AppSharedPreferences.getMemberID();
-      if (GlobalData.userToken.isNotEmpty &&
-          GlobalData.userMemberId.isNotEmpty) {
+      if (GlobalData.userToken.isNotEmpty && GlobalData.userMemberId.isNotEmpty) {
         isLogin = true;
         if (isLogin) {}
 
@@ -124,7 +123,7 @@ class _MyAppState extends ConsumerState<MyApp> {
       navigatorKey: GlobalData.globalKey,
       title: 'MyGram',
       builder: AppTextStyle.setMainTextBuilder(),
-      home: const AppFirstPage(),
+      home: const SplashPage(),
       // home:  Demo(),
       // home: widget.isLogin ? const MainScreen() : const AppFirstPage(),
     );
@@ -147,17 +146,13 @@ class _MyAppState extends ConsumerState<MyApp> {
   }
 
   void _onWebSocketListen() {
-    _streamSubscription =
-        WebSocketUtil().streamController.stream.listen((message) async {
+    _streamSubscription = WebSocketUtil().streamController.stream.listen((message) async {
       WsAckSendMessageData data = WebSocketUtil().getACKData(message);
+      GlobalData.printLog("get socket");
       if (data.message == 'SUCCESS') {
+        GlobalData.printLog("is Success");
         if (data.action == 'MSG') {
-          GlobalData.printLog("the data: ${data.chatData.contentId}");
-          GlobalData.printLog("in MSG");
-          // isSelfACK true的話, 代表是我自己訊息的ACK
-          bool isSelfACK =
-              data.chatData.receiverAvatarId == GlobalData.selfAvatar;
-
+          bool isSelfACK = data.chatData.receiverAvatarId == GlobalData.selfAvatar;
           // await viewModel.updateChatroomData(data, isSelfACK); // 存進列表DB
           viewModel.addHistoryToDb(data, isSelfACK); // 單則訊息 存進聊天記錄DB
         }
