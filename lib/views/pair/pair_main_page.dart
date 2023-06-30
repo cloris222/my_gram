@@ -61,11 +61,7 @@ class _PairMainPageState extends State<PairMainPage> {
   void _onRemove(PairImageData data, GramSetStatus status) {
     setState(() {
       if (status == GramSetStatus.like) {
-        BaseViewModel().pushPage(
-            context,
-            const MainScreen(
-              type: AppNavigationBarType.typePersonal,
-            ));
+        BaseViewModel().changeMainScreenPage(AppNavigationBarType.typePersonal);
       } else {}
 
       /// MARK: 移除後，新增一筆到底部
