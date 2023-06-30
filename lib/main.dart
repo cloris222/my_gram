@@ -1,11 +1,7 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:base_project/view_models/create/create_tag_detail_provider.dart';
-import 'package:base_project/view_models/create/create_tag_provider.dart';
 import 'package:base_project/view_models/global_theme_provider.dart';
-import 'package:base_project/view_models/gobal_provider/user_info_provider.dart';
 import 'package:base_project/view_models/message/websocket/web_socket_util.dart';
-import 'package:base_project/views/app_first_page.dart';
 import 'package:base_project/views/message/notifier/userToken_notifier.dart';
 import 'package:base_project/views/message/sqlite/chat_history_db.dart';
 import 'package:base_project/views/splash_page.dart';
@@ -18,7 +14,6 @@ import 'constant/theme/app_routes.dart';
 import 'constant/theme/app_text_style.dart';
 import 'constant/theme/global_data.dart';
 import 'models/app_shared_preferences.dart';
-import 'models/database/chat_history_database.dart';
 import 'utils/language_util.dart';
 import 'view_models/base_view_model.dart';
 import 'view_models/message/websocketdata/ws_ack_send_message_data.dart';
@@ -27,16 +22,17 @@ import '../../view_models/main_view_model.dart';
 MainViewModel viewModel = MainViewModel();
 
 void main() async {
-  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
   //FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await EasyLocalization.ensureInitialized();
   debugPaintSizeEnabled = false;
-
   if (Platform.isAndroid) {
     ///MARK:
     /// 以下兩行 設定android狀態列為透明的沉浸。寫在元件渲染之後，是為了在渲染後進行set賦值，覆蓋狀態列，寫在渲染之前MaterialApp元件會覆蓋掉這個值。
     SystemUiOverlayStyle systemUiOverlayStyle = const SystemUiOverlayStyle(statusBarColor: Colors.transparent);
     SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
+    /// 隱藏下方function列用的
+    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,overlays: []);
   }
   initApp();
 }
