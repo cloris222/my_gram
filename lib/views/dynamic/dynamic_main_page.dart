@@ -29,7 +29,7 @@ class DynamicMainPage extends ConsumerStatefulWidget {
 }
 
 class _DynamicMainPageState extends ConsumerState<DynamicMainPage> {
-  final List<DynamicInfoData> list = [];
+  List<DynamicInfoData> list = [];
   List<DynamicInfoData> isRebeccaList = GlobalData.generateIsRebeccaData(8);
   List<DynamicInfoData> notRebeccaList = GlobalData.generateNotRebeccaData(8);
   int clickLikeTimes = 1;
@@ -45,6 +45,7 @@ class _DynamicMainPageState extends ConsumerState<DynamicMainPage> {
 
   @override
   void initState() {
+    print('initState');
     scrollController = ScrollController(
         initialScrollOffset: isRebecca ? GlobalData.dynamicRebeccaOffset : GlobalData.dynamicOffset);
     scrollController.addListener(_setScrollerListener);
@@ -57,8 +58,8 @@ class _DynamicMainPageState extends ConsumerState<DynamicMainPage> {
     //     }
     //   });
     // });
-
     /// 暫時先直接加入
+
     if (isRebecca == true) {
       list.addAll(isRebeccaList);
     } else {
@@ -82,7 +83,15 @@ class _DynamicMainPageState extends ConsumerState<DynamicMainPage> {
 
   @override
   Widget build(BuildContext context) {
-    ref.watch(isRebeccaProvider);
+    ref.listen(isRebeccaProvider,( previous,  next){
+      setState(() {
+        if (next == true) {
+          list = isRebeccaList;
+        } else {
+          list = notRebeccaList ;
+        }
+      });
+    });
    return CommonScaffold(
        body: (isDark) => Container(
          decoration: const BoxDecoration(
@@ -358,7 +367,7 @@ class _DynamicMainPageState extends ConsumerState<DynamicMainPage> {
       },
     );
   }
-  
+
   Future<void>_addStore(BuildContext context)async{
     await showDialog(
         context: context,

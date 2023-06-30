@@ -5,6 +5,7 @@ import 'package:base_project/view_models/message/websocketdata/ws_send_message_d
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../constant/enum/app_param_enum.dart';
 import '../../constant/theme/global_data.dart';
 import '../../models/app_shared_preferences.dart';
 import '../../models/http/api/message_api.dart';
@@ -15,6 +16,7 @@ import '../base_view_model.dart';
 import '../../constant/call_back_function.dart';
 import '../../views/message/data/message_chatroom_detail_response_data.dart';
 import '../../models/app_shared_preferences.dart';
+import '../dynmaic/is_rebecca_provider.dart';
 
 final imgListProvider = Provider<List<String>>((ref) {
   final dynamicList = PitchDataUtil().buildSelf(8);
@@ -26,7 +28,7 @@ final imgListProvider = Provider<List<String>>((ref) {
 });
 
 final showImageWallProvider = StateProvider<bool>((ref) => true);
-final showRecordProvider = StateProvider<bool>((ref) => false);
+final showRecordProvider = StateProvider.autoDispose<bool>((ref) => false);
 
 final playingContentIdProvider = StateProvider<String>((ref) {
   return '';
@@ -179,5 +181,10 @@ class MessagePrivateGroupMessageViewModel extends BaseViewModel {
   Future<String> uploadFile(String fileType, String filePath) async {
     final data = await MessageApi().uploadFile(fileType, filePath);
     return data.data;
+  }
+
+ void onShowSelfDynamic(BuildContext context, int index) {
+    ref.read(isRebeccaProvider.notifier).update((state) => true);
+    BaseViewModel().changeMainScreenPage(AppNavigationBarType.typeDynamic,isRebecca: true,index: index);
   }
 }

@@ -82,7 +82,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
       setState(() {
         viewModel.isFocus = viewModel.textFocusNode.hasFocus;
         if (viewModel.isFocus == true) {
-          ref.read(showRecordProvider.notifier).update((state) => false);
+          // ref.read(showRecordProvider.notifier).update((state) => false);
           if (ref.watch(showImageWallProvider)) {
             /// 若鍵盤彈起收起來
             viewModel.changeImgWallState(false);
@@ -159,9 +159,14 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                                         itemCount: imgList.length,
                                         itemBuilder: (context, index) {
                                           // final item = imgList[index];
-                                          return Container(
-                                            color: Colors.blue,
-                                            child: Image.asset(imgList[index]),
+                                          return GestureDetector(
+                                            onTap: ()
+                                            =>  viewModel.onShowSelfDynamic(context,index),
+                                            behavior: HitTestBehavior.translucent,
+                                            child: Container(
+                                              color: Colors.blue,
+                                              child: Image.asset(imgList[index]),
+                                            ),
                                           );
                                         },
                                       ),
@@ -304,7 +309,19 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                           ),
                   ),
                   Expanded(
-                    child: Container(
+                    child: GestureDetector(
+                      onTap: (){
+                        if(ref.read(showRecordProvider))
+                        {
+                          ref
+                              .read(showRecordProvider.notifier)
+                              .update((state) => false);
+                        Future.delayed(const Duration(milliseconds: 100)).then((value) {
+                          FocusScope.of(context).requestFocus(
+                              viewModel.textFocusNode);
+                        });
+                        }
+                      },
                       child: TextField(
                         textAlign: TextAlign.start,
                         focusNode: viewModel.textFocusNode,
@@ -312,6 +329,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                         style: AppTextStyle.getBaseStyle(color: AppColors.textWhite, fontSize: UIDefine.fontSize12),
                         maxLines: viewModel.isFocus ? 5 : 1,
                         minLines: 1,
+                        enabled: !ref.watch(showRecordProvider),
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.zero,
                           isDense: true,
