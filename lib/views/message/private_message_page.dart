@@ -159,9 +159,14 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                                         itemCount: imgList.length,
                                         itemBuilder: (context, index) {
                                           // final item = imgList[index];
-                                          return Container(
-                                            color: Colors.blue,
-                                            child: Image.asset(imgList[index]),
+                                          return GestureDetector(
+                                            onTap: ()
+                                            =>  viewModel.onShowSelfDynamic(context,index),
+                                            behavior: HitTestBehavior.translucent,
+                                            child: Container(
+                                              color: Colors.blue,
+                                              child: Image.asset(imgList[index]),
+                                            ),
                                           );
                                         },
                                       ),

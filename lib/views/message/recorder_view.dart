@@ -31,8 +31,8 @@ class _RecorderViewState extends ConsumerState<RecorderView> {
   bool isRecording = false;
   String _recorderText = '00:00';
   String _playerText = '00:00';
-  late FlutterSoundPlayer player;
-  late FlutterSoundRecorder recorder;
+   FlutterSoundPlayer? player;
+   FlutterSoundRecorder? recorder;
   bool isPlayAudio = false;
   bool isPlayingSound = false;
   StreamSubscription? _recorderSubscription;
@@ -267,8 +267,8 @@ class _RecorderViewState extends ConsumerState<RecorderView> {
     if (!directory.existsSync()) {
       directory.createSync();
     }
-    await recorder.startRecorder(toFile: '${tempDir.path}/$timeStamp.wav', codec: Codec.pcm16WAV);
-    _recorderSubscription = recorder.onProgress!.listen((e) {
+    await recorder?.startRecorder(toFile: '${tempDir.path}/$timeStamp.wav', codec: Codec.pcm16WAV);
+    _recorderSubscription = recorder?.onProgress!.listen((e) {
       if (e.duration.inMilliseconds > 15010) {
         setState(() {
           _recorderText = '00:15';
@@ -292,9 +292,9 @@ class _RecorderViewState extends ConsumerState<RecorderView> {
       isRecording = false;
       isPlayAudio = true;
       cancelRecorderSubscriptions();
-      recorder.closeRecorder();
+      recorder?.closeRecorder();
     });
-    return await recorder.stopRecorder();
+    return await recorder?.stopRecorder();
   }
 
   Future<bool> getPermissionStatus(Permission category) async {
@@ -325,12 +325,12 @@ class _RecorderViewState extends ConsumerState<RecorderView> {
     _recorderText = '00:00';
     player = FlutterSoundPlayer();
     recorder = FlutterSoundRecorder();
-    await recorder.openRecorder();
-    await recorder.setSubscriptionDuration(Duration(milliseconds: 10));
-    await player.closePlayer();
-    await player.openPlayer();
+    await recorder?.openRecorder();
+    await recorder?.setSubscriptionDuration(Duration(milliseconds: 10));
+    await player?.closePlayer();
+    await player?.openPlayer();
     // await player.setSpeed(1.0);
-    await player.setSubscriptionDuration(Duration(milliseconds: 10));
+    await player?.setSubscriptionDuration(Duration(milliseconds: 10));
     await initializeDateFormatting();
   }
 
@@ -339,7 +339,7 @@ class _RecorderViewState extends ConsumerState<RecorderView> {
     setState(() {
       isPlayingSound = true;
     });
-    player.startPlayer(
+    player?.startPlayer(
         fromURI: '${tempDir.path}/$timeStamp.wav',
         codec: Codec.pcm16WAV, //_codec,
         whenFinished: () {
@@ -351,7 +351,7 @@ class _RecorderViewState extends ConsumerState<RecorderView> {
   }
 
   void _addListeners() {
-    _playerSubscription = player.onProgress!.listen((e) {
+    _playerSubscription = player?.onProgress!.listen((e) {
       GlobalData.printLog('e.position=${e.position}');
       var date = DateTime.fromMillisecondsSinceEpoch(e.position.inMilliseconds, isUtc: true);
       var txt = DateFormat('mm:ss:SS', 'en_GB').format(date);
@@ -378,10 +378,10 @@ class _RecorderViewState extends ConsumerState<RecorderView> {
 
   Future<void> releaseFlauto() async {
     try {
-      await player.closePlayer();
-      await recorder.closeRecorder();
+      await player?.closePlayer();
+      await recorder?.closeRecorder();
     } on Exception {
-      player.logger.e('Released unsuccessful');
+      player?.logger.e('Released unsuccessful');
     }
   }
 
@@ -390,7 +390,7 @@ class _RecorderViewState extends ConsumerState<RecorderView> {
       await File('${tempDir.path}/$timeStamp.wav').delete();
     }
     if (isPlayingSound) {
-      player.stopPlayer();
+      player?.stopPlayer();
     }
     setState(() {
       isPlayAudio = false;

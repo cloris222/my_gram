@@ -126,7 +126,7 @@ class BaseViewModel {
     if(isRebecca){
       GlobalData.dynamicRebeccaOffset=UIDefine.getViewHeight()*0.85*index;
     }
-    GlobalData.mainScreenSubject.changeMainScreenPage( type,isRebecca:isRebecca);
+    GlobalData.mainScreenSubject.changeMainScreenPage(type,isRebecca:isRebecca);
   }
 
   String _buildDataFormat(

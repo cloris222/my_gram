@@ -74,22 +74,6 @@ class _DynamicMainPageState extends ConsumerState<DynamicMainPage> {
   }
 
   @override
-  void didChangeDependencies() {
-    setState(() {
-      list = [];
-      if (isRebecca == true) {
-        list.addAll(isRebeccaList);
-      } else {
-        list.addAll(notRebeccaList);
-      }
-    });
-    super.didChangeDependencies();
-  }
-
-
-
-
-  @override
   void dispose() {
     scrollController.removeListener(_setScrollerListener);
     scrollController.dispose();
@@ -101,10 +85,11 @@ class _DynamicMainPageState extends ConsumerState<DynamicMainPage> {
   Widget build(BuildContext context) {
     ref.listen(isRebeccaProvider,( previous,  next){
       setState(() {
-        if (isRebecca == true) {
-          list= isRebeccaList;
+        if (next == true) {
+          list = isRebeccaList;
         } else {
-          list=  notRebeccaList ;
+          scrollController.jumpTo(0);
+          list = notRebeccaList ;
         }
       });
     });
@@ -186,6 +171,7 @@ class _DynamicMainPageState extends ConsumerState<DynamicMainPage> {
                            bDownloading = false;
                          }
                          return DynamicInfoView(
+                           key: UniqueKey(),
                            data: list[index],
                            index:index,
                            onComment: (index){
@@ -383,7 +369,7 @@ class _DynamicMainPageState extends ConsumerState<DynamicMainPage> {
       },
     );
   }
-  
+
   Future<void>_addStore(BuildContext context)async{
     await showDialog(
         context: context,
