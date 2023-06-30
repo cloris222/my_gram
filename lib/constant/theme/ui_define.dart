@@ -26,6 +26,7 @@ class UIDefine {
   static double fontSize18 = 0.0; // 18sp
   static double fontSize16 = 0.0; // 16sp
   static double fontSize14 = 0.0; // 14sp
+  static double fontSize13 = 0.0; // 13sp
   static double fontSize12 = 0.0; // 12sp
   static double fontSize10 = 0.0; // 10sp
   static double fontSize8 = 0.0; // 8sp
@@ -62,6 +63,7 @@ class UIDefine {
     fontSize18 = _getFontSize(5.0);
     fontSize16 = _getFontSize(4.5);
     fontSize14 = _getFontSize(3.88);
+    fontSize13 = _getFontSize(3.61);
     fontSize12 = _getFontSize(3.33);
     fontSize10 = _getFontSize(3.0);
     fontSize8 = _getFontSize(2.23);
