@@ -49,8 +49,10 @@ class CustomAppBar {
         automaticallyImplyLeading: false,
         backgroundColor: AppColors.mainBackground.getColor(),
         centerTitle: true,
-        title: Text("MyGram", style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize36)),
-        actions: <Widget>[IconButton(onPressed: () {}, icon: const Icon(Icons.language))]);
+        title: Image.asset(AppImagePath.logoTextImage),
+        // title: Text("MyGram", style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize36)),
+        // actions: <Widget>[IconButton(onPressed: () {}, icon: const Icon(Icons.language))]
+    );
   }
 
   static AppBar mainAppBar(BuildContext context) {

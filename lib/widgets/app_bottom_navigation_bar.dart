@@ -117,8 +117,7 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar>
     return Container(
         alignment: Alignment.center,
         color: Colors.transparent,
-        child: Image.asset(isSelect ? type.onIcon : type.icon,
-            height: UIDefine.getPixelWidth(25), fit: BoxFit.fitHeight));
+        child: Image.asset(isSelect ? type.onIcon : type.icon));
   }
 
   _navigationTapped(int index, void Function(VoidCallback fn) setState) {

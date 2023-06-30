@@ -42,15 +42,15 @@ class CreateAiAPI extends HttpManager {
 
   /// 創建ai
   Future<CreateAiInfo> createAi(List<String> features) async {
-    String feature = "";
-    for (var element in features) {
-      feature+="$element,";
-    }
-    if(feature.isNotEmpty){
-      feature=feature.substring(0,feature.length-1);
-    }
+    // String feature = "";
+    // for (var element in features) {
+    //   feature+="$element,";
+    // }
+    // if(feature.isNotEmpty){
+    //   feature=feature.substring(0,feature.length-1);
+    // }
     var response = await post("/createAvatar/createImg",
-        data: {"feature": feature, "sdRequestParamSettingId": 1});
+        data: {"feature": features, "sdRequestParamSettingId": 1});
     return CreateAiInfo.fromJson(response.data);
   }
 }

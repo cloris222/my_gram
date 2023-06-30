@@ -109,7 +109,10 @@ class _CreateMainPageState extends ConsumerState<CreateMainPage> with TickerProv
   }
 
   Widget _buildDemoImageView() {
-    return CommonNetworkImage(imageUrl: mainAsset, fit: BoxFit.cover);
+    return CommonNetworkImage(
+        imageUrl: mainAsset,
+        fit: BoxFit.fitWidth,
+        height: UIDefine.getPixelWidth(500));
   }
 
   Widget _buildTagsView() {

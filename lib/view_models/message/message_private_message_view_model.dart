@@ -14,6 +14,7 @@ import '../../views/message/sqlite/chat_history_db.dart';
 import '../base_view_model.dart';
 import '../../constant/call_back_function.dart';
 import '../../views/message/data/message_chatroom_detail_response_data.dart';
+import '../../models/app_shared_preferences.dart';
 
 final imgListProvider = Provider<List<String>>((ref) {
   final dynamicList = PitchDataUtil().buildSelf(8);
