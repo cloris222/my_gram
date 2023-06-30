@@ -172,24 +172,23 @@ class CustomAppBar {
       ),
       actions: <Widget>[
         Padding(
-          padding: EdgeInsets.symmetric(vertical: UIDefine.getPixelWidth(7), horizontal: UIDefine.getPixelWidth(16)),
+          padding: EdgeInsets.fromLTRB(
+            UIDefine.getPixelWidth(5),
+            UIDefine.getPixelHeight(7),
+            UIDefine.getPixelWidth(16),
+            UIDefine.getPixelHeight(7),),
           child: Row(
             children: [
               Container(
                 width: UIDefine.getPixelWidth(40),
-                // height: UIDefine.getPixelWidth(40),
                 padding: EdgeInsets.all(0),
                 decoration: BoxDecoration(
-                  color: AppColors.buttonCameraBg.light,
-                  borderRadius: BorderRadius.all(Radius.circular(30)),
-                  border: Border.all(color: AppColors.buttonCameraBg.dark, width: 1)),
-                child: IconButton(
-                  // iconSize: ,
-                  onPressed: () {
-                    // BaseViewModel().pushPage(context, RegisterMainPage());
-                  },
-                  icon: Icon(Icons.search),
-                )
+                    color: AppColors.buttonCameraBg.light,
+                    borderRadius: BorderRadius.all(Radius.circular(30)),
+                    border: Border.all(color: AppColors.buttonCameraBg.dark, width: 1)),
+                child: GestureDetector(
+                  child: Image.asset(AppImagePath.searchIcon),
+                ),
               ),
               SizedBox(width: UIDefine.getPixelWidth(16),),
               Container(

@@ -13,7 +13,9 @@ class CommonScaffold extends ConsumerWidget {
     this.resizeToAvoidBottomInset,
     this.extendBody = false,
     this.bottomNavigationBar,
-    this.backgroundColor
+    this.backgroundColor,
+    this.canPop = true,
+    this.onTap,
   }) : super(key: key);
   final Widget Function(bool isDark) body;
   final PreferredSizeWidget? appBar;
@@ -21,17 +23,30 @@ class CommonScaffold extends ConsumerWidget {
   final bool extendBody;
   final Widget? bottomNavigationBar;
   final Color? backgroundColor;
+  final bool canPop;
+  final Function()? onTap;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     GlobalData.isDark = (ref.read(globalThemeProvider) == ThemeMode.dark);
     return Scaffold(
-      body: GestureDetector(
-          onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-          behavior: HitTestBehavior.translucent,
-          child: body(ref.watch(globalThemeProvider) == ThemeMode.dark)),
+      body: WillPopScope(
+        onWillPop: () async {
+          return canPop;
+        },
+        child: GestureDetector(
+            onTap: () async {
+              FocusManager.instance.primaryFocus?.unfocus();
+
+              if (onTap != null) {
+                onTap!();
+              }
+            },
+            behavior: HitTestBehavior.translucent,
+            child: body(ref.watch(globalThemeProvider) == ThemeMode.dark)),
+      ),
       appBar: appBar,
-      backgroundColor: backgroundColor??AppColors.mainBackground.getColor(),
+      backgroundColor: backgroundColor ?? AppColors.mainBackground.getColor(),
       resizeToAvoidBottomInset: resizeToAvoidBottomInset,
       extendBody: extendBody,
       bottomNavigationBar: bottomNavigationBar,

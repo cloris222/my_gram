@@ -4,12 +4,13 @@ import 'package:base_project/constant/theme/app_text_style.dart';
 import 'package:base_project/constant/theme/ui_define.dart';
 import 'package:base_project/models/http/api/create_ai_api.dart';
 import 'package:base_project/view_models/base_view_model.dart';
+import 'package:base_project/views/create/create_success_page.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../constant/theme/app_colors.dart';
-import '../../constant/theme/app_gradient_colors.dart';
+import '../../models/http/data/create_ai_info.dart';
 
 class CreateLoadingPage extends StatefulWidget {
   const CreateLoadingPage({Key? key, required this.features}) : super(key: key);
@@ -19,36 +20,59 @@ class CreateLoadingPage extends StatefulWidget {
   State<CreateLoadingPage> createState() => _CreateLoadingPageState();
 }
 
-class _CreateLoadingPageState extends State<CreateLoadingPage> {
+class _CreateLoadingPageState extends State<CreateLoadingPage>
+    with TickerProviderStateMixin {
   bool isAnimationFinish = false;
   bool isCreateFinish = false;
+  CreateAiInfo? resultInfo;
+  late AnimationController _controller;
 
   @override
   void initState() {
+    _controller = AnimationController(
+      vsync: this,
+    );
     _startCreate();
     super.initState();
+  }
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.black,
         body: WillPopScope(
             onWillPop: () async {
-              // return false;
-              return true;
+              return false;
             },
             child: Container(
               width: UIDefine.getWidth(),
-              decoration: BoxDecoration(image: DecorationImage(image: AssetImage(AppImagePath.gradientBg),fit: BoxFit.fill)),
+              decoration: const BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage(AppImagePath.gradientBg),
+                      fit: BoxFit.fill)),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
                       width: UIDefine.getPixelWidth(150),
                       height: UIDefine.getPixelWidth(150),
-                      child: Lottie.asset(AppAnimationPath.createLoading,
-                          fit: BoxFit.contain)),
+                      child: Lottie.asset(
+                        AppAnimationPath.createLoading,
+                        fit: BoxFit.contain,
+                        controller: _controller,
+                        onLoaded: (composition) {
+                          _controller
+                            ..duration = composition.duration
+                            ..forward().whenComplete(() {
+                              isAnimationFinish = true;
+                              _checkFinish();
+                            });
+                        },
+                      )),
                   SizedBox(height: UIDefine.getPixelWidth(10)),
                   Opacity(
                       opacity: 0.5,
@@ -65,17 +89,43 @@ class _CreateLoadingPageState extends State<CreateLoadingPage> {
   }
 
   void _startCreate() {
-    /// 5秒動畫
-    Future.delayed(const Duration(seconds: 5)).then((value) => _checkFinish());
-    CreateAiAPI(onConnectFail: _onFail)
+    CreateAiAPI(onConnectFail: _onTmpFail)
         .createAi(widget.features)
-        .then((value) => _checkFinish());
+        .then((value) {
+      isCreateFinish = true;
+      resultInfo = value;
+      _checkFinish();
+    });
   }
 
   void _checkFinish() {
     if (isAnimationFinish && isCreateFinish) {
-      Navigator.of(context).pop();
+      if (resultInfo != null) {
+        BaseViewModel().pushReplacement(
+            context, CreateSuccessPage(resultInfo: resultInfo!));
+      } else {
+        _onFail("create fail");
+      }
+    } else if (isAnimationFinish) {
+      _controller.reset();
+      _controller.forward().whenComplete(() {
+        _checkFinish();
+      });
     }
+  }
+
+  // 暫時假資料
+  void _onTmpFail(String errorMessage) {
+    isCreateFinish = true;
+    resultInfo = CreateAiInfo(
+      id: '649d5361aa440f21722d513e',
+      avatarId: '3',
+      feature: [],
+      prompt: '',
+      type: 'USER_CREATE',
+      imgUrl: 'app/avatar/SD3O72023062917481719212K.png',
+    );
+    _checkFinish();
   }
 
   void _onFail(String errorMessage) {

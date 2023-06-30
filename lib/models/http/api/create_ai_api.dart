@@ -1,3 +1,4 @@
+import 'package:base_project/models/http/data/popular_create_data.dart';
 import 'package:base_project/models/http/http_manager.dart';
 
 import '../data/create_ai_info.dart';
@@ -6,6 +7,13 @@ import '../data/feature_detail_data.dart';
 /// ai 創建相關
 class CreateAiAPI extends HttpManager {
   CreateAiAPI({super.onConnectFail});
+
+  /// 查詢近期、熱門
+  // Future<List<PopularCreateData>> queryPopular() async {
+  //   var response = await get("/createAvatar/getPromptByType");
+  //   return 
+  // }
+
   /// 查詢身體特徵列表
   Future<List<String>> queryBodyFeature() async {
     var response = await get("/createAvatar/bodyFeature");

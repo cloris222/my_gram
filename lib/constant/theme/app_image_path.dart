@@ -23,11 +23,13 @@ class AppImagePath {
   ///漸層背景圖
   static const String gradientBg = '$assetPath/img_bg.png';
 
+
   ///login頁面icon&image
 
   static const String loginBgImage = '$imgPath/img_login_bg.png';
   static const String logoTextImage = '$assetPath/logo_Mygram.png';
   static const String logoImage = '$assetPath/logo_Vector.png';
+  static const String fullLogo = '$assetPath/Vector.png';
   static const String googleIcon = '$assetPath/icon_google.png';
   static const String fbIcon = '$assetPath/icon_fb.png';
   static const String appleIcon = '$assetPath/icon_apple.png';
@@ -73,6 +75,7 @@ class AppImagePath {
   static const String pauseBlackIcon = '$assetPath/ic_pause_B.png';
   static const String closeWallButton = '$assetPath/ic_extent.png';
   static const String otherIcon = '$assetPath/ic_others-1.png';
+  static const String searchIcon = '$assetPath/ic_search.png';
 
   /// 創建
   static const String unChoose = "$assetPath/default.png";
@@ -83,4 +86,5 @@ class AppImagePath {
   static const String spotlightIcon = "$assetPath/ic_spotlight.png";
   static const String arIcon = "$assetPath/ic_view-in-ar.png";
   static const String success = "$assetPath/img_create_success.png";
+  static const String closeSheet = "$btnPath/btn_cancel_01_nor.png";
 }

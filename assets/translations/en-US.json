@@ -76,7 +76,7 @@
   "Shaped and Trimmed":"Shaped and Trimmed",
 
   "--//臉型":"---",
-  "Face":"Face",
+  "Face Shape":"Face Shape",
   "Oval Face":"Oval Face",
   "Round Face":"Round Face",
   "Square Face":"Square Face",
@@ -162,14 +162,16 @@
   "seeMore":"More",
   "otherRegisterWay":"Other registration methods",
   "message":"Message",
-  "aboutMe":"About me",
-  "allPost":"All posts",
-  "posts":"Post",
-  "fans":"Fan",
+  "aboutMe":"About",
+  "allPost":"Posts",
+  "posts":"Posts",
+  "fans":"Followers",
   "success":"Success",
   "hide":"Hide",
   "clickToRecording":"Press button to record",
   "confirm":"Confirm",
   "cancel":"Cancel",
-  "error":"Error"
+  "error":"Error",
+  "recordMaxTime":"Recording time limit reached",
+  "writeAMessage":"Enter a message"
 }
