@@ -25,6 +25,7 @@ final imgListProvider = Provider<List<String>>((ref) {
 });
 
 final showImageWallProvider = StateProvider<bool>((ref) => true);
+final showRecordProvider = StateProvider<bool>((ref) => false);
 
 final playingContentIdProvider = StateProvider<String>((ref) {
   return '';
@@ -55,6 +56,14 @@ class MessagePrivateGroupMessageViewModel extends BaseViewModel {
   final showingListProvider = StateProvider<List<ChatHistorySQLite>>((ref) => []);
 
   final StateProvider<List<String>> imgList = StateProvider((ref) => []);
+
+  Future<void> onTapMicrophone(bool isOnTab) async {
+    if (isOnTab) {
+      ref.read(showRecordProvider.notifier).update((state) => false);
+    } else {
+      ref.read(showRecordProvider.notifier).update((state) => !state);
+    }
+  }
 
   Future<void> checkImgWall() async {
     AppSharedPreferences.checkWallClose(roomId).then((value) {
