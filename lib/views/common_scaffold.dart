@@ -15,6 +15,7 @@ class CommonScaffold extends ConsumerWidget {
     this.bottomNavigationBar,
     this.backgroundColor,
     this.canPop = true,
+    this.onTap,
   }) : super(key: key);
   final Widget Function(bool isDark) body;
   final PreferredSizeWidget? appBar;
@@ -23,6 +24,7 @@ class CommonScaffold extends ConsumerWidget {
   final Widget? bottomNavigationBar;
   final Color? backgroundColor;
   final bool canPop;
+  final Function()? onTap;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -33,7 +35,13 @@ class CommonScaffold extends ConsumerWidget {
           return canPop;
         },
         child: GestureDetector(
-            onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+            onTap: () async {
+              FocusManager.instance.primaryFocus?.unfocus();
+
+              if (onTap != null) {
+                onTap!();
+              }
+            },
             behavior: HitTestBehavior.translucent,
             child: body(ref.watch(globalThemeProvider) == ThemeMode.dark)),
       ),

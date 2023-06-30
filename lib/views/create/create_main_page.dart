@@ -24,12 +24,19 @@ class CreateMainPage extends ConsumerStatefulWidget {
   ConsumerState createState() => _CreateMainPageState();
 }
 
-class _CreateMainPageState extends ConsumerState<CreateMainPage> {
+class _CreateMainPageState extends ConsumerState<CreateMainPage> with TickerProviderStateMixin {
   String mainAsset = "";
   late CreateMainViewModel viewModel;
+  late TabController _tabController;
 
   @override
   void initState() {
+    _tabController = TabController(length: 2, vsync: this);
+    _tabController.addListener(() {
+      setState(() {
+        viewModel.selectedIndex = _tabController.index;
+      });
+    });
     mainAsset = PitchDataUtil().getRandomCreateDemo();
     viewModel = CreateMainViewModel(ref);
     viewModel.init();
@@ -38,21 +45,16 @@ class _CreateMainPageState extends ConsumerState<CreateMainPage> {
 
   @override
   Widget build(BuildContext context) {
-    bool showRandomDialog =
-        ref.watch(globalBoolProvider(viewModel.randomDialog));
+    bool showRandomDialog = ref.watch(globalBoolProvider(viewModel.randomDialog));
     return Stack(children: [
       SizedBox(width: UIDefine.getWidth(), height: UIDefine.getViewHeight()),
 
       /// 中間主要展示圖
-      Positioned(top: 0, right: 0, left: 0, child: _buildDemoImageView()),
+      Positioned(top: 0, bottom: UIDefine.getPixelWidth(250), right: 0, left: 0, child: _buildDemoImageView()),
 
       /// 標籤
       Positioned(
-          bottom: 0,
-          right: 0,
-          left: 0,
-          child: SizedBox(
-              height: UIDefine.getPixelWidth(300), child: _buildTagsView())),
+          bottom: 0, right: 0, left: 0, child: SizedBox(height: UIDefine.getPixelWidth(300), child: _buildTagsView())),
 
       /// 右側功能鍵
       Positioned(
@@ -61,10 +63,7 @@ class _CreateMainPageState extends ConsumerState<CreateMainPage> {
           child: _buildRightFunction()),
 
       /// 左下功能鍵
-      Positioned(
-          bottom: UIDefine.getPixelWidth(320),
-          left: UIDefine.getPixelWidth(10),
-          child: _buildLeftFunction()),
+      Positioned(bottom: UIDefine.getPixelWidth(320), left: UIDefine.getPixelWidth(10), child: _buildLeftFunction()),
 
       /// 中間成功彈窗
       Positioned(
@@ -93,8 +92,7 @@ class _CreateMainPageState extends ConsumerState<CreateMainPage> {
         GestureDetector(
             onTap: () {
               // Navigator.pop(context);
-              BaseViewModel()
-                  .changeMainScreenPage(AppNavigationBarType.typeDynamic);
+              BaseViewModel().changeMainScreenPage(AppNavigationBarType.typeDynamic);
             },
             child: Image.asset(AppImagePath.arrowLeft)),
         const Spacer(),
@@ -124,34 +122,26 @@ class _CreateMainPageState extends ConsumerState<CreateMainPage> {
   Widget _buildRightFunction() {
     return Container(
       padding: EdgeInsets.all(UIDefine.getPixelWidth(5)),
-      decoration: AppStyle().styleColorsRadiusBackground(
-          color: AppColors.createFunctionBackground.getColor(), radius: 28),
+      decoration:
+          AppStyle().styleColorsRadiusBackground(color: AppColors.createFunctionBackground.getColor(), radius: 28),
       child: Column(
         children: [
-          _buildFunctionIcon(
-              AppImagePath.infoIcon, () => viewModel.onPressInfo(context)),
-          _buildFunctionIcon(AppImagePath.spotlightIcon,
-              () => viewModel.onPressSpotlight(context)),
-          _buildFunctionIcon(
-              AppImagePath.faceArIcon, () => viewModel.onPressFaceAR(context)),
-          _buildFunctionIcon(
-              AppImagePath.randomIcon, () => viewModel.onPressRandom(context)),
+          _buildFunctionIcon(AppImagePath.infoIcon, () => viewModel.onPressInfo(context)),
+          _buildFunctionIcon(AppImagePath.spotlightIcon, () => _otherCreateSheet()),
+          _buildFunctionIcon(AppImagePath.faceArIcon, () => viewModel.onPressFaceAR(context)),
+          _buildFunctionIcon(AppImagePath.randomIcon, () => viewModel.onPressRandom(context)),
         ],
       ),
     );
   }
 
-  Widget _buildFunctionIcon(String assetPath, Function() onPress,
-      {double? vertical}) {
+  Widget _buildFunctionIcon(String assetPath, Function() onPress, {double? vertical}) {
     return Padding(
-      padding:
-          EdgeInsets.symmetric(vertical: vertical ?? UIDefine.getPixelWidth(5)),
+      padding: EdgeInsets.symmetric(vertical: vertical ?? UIDefine.getPixelWidth(5)),
       child: GestureDetector(
         onTap: () => onPress(),
         behavior: HitTestBehavior.translucent,
-        child: Image.asset(assetPath,
-            width: UIDefine.getPixelWidth(24),
-            height: UIDefine.getPixelWidth(24)),
+        child: Image.asset(assetPath, width: UIDefine.getPixelWidth(24), height: UIDefine.getPixelWidth(24)),
       ),
     );
   }
@@ -159,10 +149,9 @@ class _CreateMainPageState extends ConsumerState<CreateMainPage> {
   Widget _buildLeftFunction() {
     return Container(
         padding: EdgeInsets.all(UIDefine.getPixelWidth(5)),
-        decoration: AppStyle().styleColorsRadiusBackground(
-            color: AppColors.createFunctionBackground.getColor(), radius: 28),
-        child:
-            _buildFunctionIcon(AppImagePath.arIcon, () => null, vertical: 0));
+        decoration:
+            AppStyle().styleColorsRadiusBackground(color: AppColors.createFunctionBackground.getColor(), radius: 28),
+        child: _buildFunctionIcon(AppImagePath.arIcon, () => null, vertical: 0));
   }
 
   Widget _buildRandomDialog() {
@@ -178,5 +167,103 @@ class _CreateMainPageState extends ConsumerState<CreateMainPage> {
             onPressed: () {}),
       ],
     );
+  }
+
+  _otherCreateSheet() {
+    showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: AppColors.tryOtherSheet.dark,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        constraints: BoxConstraints.tight(Size(UIDefine.getWidth(), UIDefine.getPixelHeight(700))),
+        builder: (BuildContext context) {
+          return Padding(
+            padding: EdgeInsets.only(
+                top: UIDefine.getPixelHeight(20), left: UIDefine.getPixelWidth(16), right: UIDefine.getPixelWidth(16)),
+            child: Column(
+              children: [
+                Container(
+                  width: UIDefine.getWidth(),
+                  child: Row(
+                    children: [
+                      Container(
+                        height: UIDefine.getPixelHeight(24),
+                        width: UIDefine.getPixelWidth(24),
+                        child: Image.asset(
+                          AppImagePath.closeSheet,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: Text(
+                            "tryOtherCreate".tr(),
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: UIDefine.getPixelHeight(13)),
+                  child: Container(
+                    child: Text(
+                      "otherCreaterMessage".tr(),
+                      style: TextStyle(color: AppColors.tryOtherSheet.light),
+                    ),
+                  ),
+                ),
+                _buildTabBar(context)
+                // TabBar(
+                //   controller: _tabController,
+                //   tabs: [
+                //     Container(
+                //       child: Text("最近"),
+                //     ),
+                //     Container(
+                //       child: Text("熱門"),
+                //     )
+                // ])
+              ],
+            ),
+          );
+          // height: UIDefine.getScreenHeight(500),
+        });
+  }
+
+  Widget _buildTabBar(BuildContext context) {
+    return Container(
+      height: UIDefine.getPixelHeight(36),
+      decoration:  BoxDecoration(
+          color: Colors.transparent,
+          border: Border(
+            bottom: BorderSide(
+              color: Colors.white.withOpacity(0.2),
+              width: 1.0,
+            ),
+          )),
+      child: TabBar(
+        indicator: UnderlineTabIndicator(
+          borderRadius: const BorderRadius.all(Radius.circular(5)),
+          borderSide: BorderSide(width: 3,color: AppColors.mainThemeButton.getColor()),
+          insets: EdgeInsets.symmetric(horizontal: UIDefine.getScreenWidth(28))
+        ),
+        controller: _tabController,
+        tabs: [
+          Container(
+            child: Text("test1"),
+          ),
+          Container(
+            child: Text("test2"),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTabView() {
+    return Container();
   }
 }

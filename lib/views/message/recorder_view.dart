@@ -117,7 +117,6 @@ class _RecorderViewState extends ConsumerState<RecorderView> {
                   ),
                 )
               :
-
               ///預覽畫面
               isPlayAudio
                   ? Row(

@@ -10,8 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../views/create/create_loading_page.dart';
 
 /// 對應特徵值 已選擇的選項
-final createChooseProvider =
-    StateProvider.family.autoDispose<int, String>((ref, tag) {
+final createChooseProvider = StateProvider.family.autoDispose<int, String>((ref, tag) {
   return -1;
 });
 
@@ -20,6 +19,7 @@ class CreateMainViewModel extends BaseViewModel {
 
   final WidgetRef ref;
   final String randomDialog = "randomDialog";
+  int selectedIndex = 0;
 
   List<String> get tags => ref.read(createTagProvider);
 
@@ -60,8 +60,7 @@ class CreateMainViewModel extends BaseViewModel {
       ref.read(createChooseProvider(tag).notifier).update((state) => random);
     }
     ref.read(globalBoolProvider(randomDialog).notifier).update((state) => true);
-    Future.delayed(const Duration(milliseconds: 1500)).then((value) => ref
-        .read(globalBoolProvider(randomDialog).notifier)
-        .update((state) => false));
+    Future.delayed(const Duration(milliseconds: 1500))
+        .then((value) => ref.read(globalBoolProvider(randomDialog).notifier).update((state) => false));
   }
 }

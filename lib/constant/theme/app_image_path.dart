@@ -75,6 +75,7 @@ class AppImagePath {
   static const String pauseBlackIcon = '$assetPath/ic_pause_B.png';
   static const String closeWallButton = '$assetPath/ic_extent.png';
   static const String otherIcon = '$assetPath/ic_others-1.png';
+  static const String searchIcon = '$assetPath/ic_search.png';
 
   /// 創建
   static const String unChoose = "$assetPath/default.png";
@@ -85,4 +86,5 @@ class AppImagePath {
   static const String spotlightIcon = "$assetPath/ic_spotlight.png";
   static const String arIcon = "$assetPath/ic_view-in-ar.png";
   static const String success = "$assetPath/img_create_success.png";
+  static const String closeSheet = "$btnPath/btn_cancel_01_nor.png";
 }
