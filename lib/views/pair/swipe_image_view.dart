@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:base_project/constant/theme/app_style.dart';
 import 'package:base_project/constant/theme/app_text_style.dart';
 import 'package:base_project/constant/theme/ui_define.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '../../constant/enum/pair_enum.dart';
@@ -95,6 +96,7 @@ class _SwipeImageViewState extends State<SwipeImageView>
                   onPanStart: _onPanStart,
                   onPanUpdate: _onPanUpdate,
                   onPanEnd: _onPanEnd,
+                  dragStartBehavior: DragStartBehavior.down,
                   child: _buildPair(),
                 ))),
 

@@ -9,7 +9,6 @@ import '../utils/observer_pattern/main_screen/main_screen_observer.dart';
 import '../view_models/gobal_provider/main_bottom_bar_provider.dart';
 import '../view_models/dynmaic/is_rebecca_provider.dart';
 import '../view_models/gobal_provider/user_info_provider.dart';
-import '../widgets/appbar/custom_app_bar.dart';
 import 'common_scaffold.dart';
 
 /// App一開啟後的主頁
@@ -65,6 +64,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
       _changePage(AppNavigationBarType.values[next]);
     });
     return CommonScaffold(
+        canPop: false,
         // appBar: CustomAppBar.mainAppBar(context),
         bottomNavigationBar: AppBottomNavigationBar(
           initType: widget.type,
