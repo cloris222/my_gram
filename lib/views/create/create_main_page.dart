@@ -127,7 +127,7 @@ class _CreateMainPageState extends ConsumerState<CreateMainPage> with TickerProv
       child: Column(
         children: [
           _buildFunctionIcon(AppImagePath.infoIcon, () => viewModel.onPressInfo(context)),
-          _buildFunctionIcon(AppImagePath.spotlightIcon, () => _otherCreateSheet()),
+          _buildFunctionIcon(AppImagePath.spotlightIcon, () => viewModel.onPressSpotlight(context)),
           _buildFunctionIcon(AppImagePath.faceArIcon, () => viewModel.onPressFaceAR(context)),
           _buildFunctionIcon(AppImagePath.randomIcon, () => viewModel.onPressRandom(context)),
         ],
@@ -174,8 +174,8 @@ class _CreateMainPageState extends ConsumerState<CreateMainPage> with TickerProv
         context: context,
         isScrollControlled: true,
         backgroundColor: AppColors.tryOtherSheet.dark,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        constraints: BoxConstraints.tight(Size(UIDefine.getWidth(), UIDefine.getPixelHeight(700))),
+        // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        // constraints: BoxConstraints.tight(Size(UIDefine.getWidth(), UIDefine.getPixelHeight(700))),
         builder: (BuildContext context) {
           return Padding(
             padding: EdgeInsets.only(

@@ -128,7 +128,9 @@ class _MessageViewForOthers extends ConsumerState<MessageViewForOther> with Tick
           child: data.msgType == "TEXT"?
           Text(
             data.content,
-            style: TextStyle(color: AppColors.textWhite.light, fontSize: UIDefine.fontSize14),
+            style: TextStyle(
+              height: 1.5,
+              color: AppColors.textWhite.light, fontSize: UIDefine.fontSize15),
           )
           : PlayAudioBubble(
             path: "${GlobalData.urlPrefix}${data.content}",

@@ -52,11 +52,11 @@ class _PlayAudioBubbleState extends ConsumerState<PlayAudioBubble> {
 
   @override
   void initState() {
-    GlobalData.printLog('widget.path${widget.path}');
+    GlobalData.printLog('widget.path: ${widget.path}');
     Future.delayed(Duration.zero, () async {
       await player.setSourceUrl(widget.path);
       duration = await player.getDuration();
-      totalDurationText = duration.toString().substring(2, 7);
+      totalDurationText = duration.toString().substring(2, 7); 
       playerState = player.state;
       player.onPlayerStateChanged.listen((audio.PlayerState s) {
         print('Current player state: $s');

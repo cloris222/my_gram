@@ -59,7 +59,6 @@ class BaseViewModel {
     // ConfirmDialog(context, mainText: message, callOkFunction: () {}).show();
   }
 
-
   ///MARK: 推頁面 偷懶用
   void popPage(BuildContext context) {
     Navigator.pop(context);
@@ -67,8 +66,7 @@ class BaseViewModel {
 
   ///MARK: 推新的一頁
   Future<void> pushPage(BuildContext context, Widget page) async {
-    await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => page));
+    await Navigator.push(context, MaterialPageRoute(builder: (context) => page));
 
     // /// 由下而上的推頁方式
     // await Navigator.of(context).push( PageRouteBuilder(
@@ -90,8 +88,7 @@ class BaseViewModel {
 
   ///MARK: 取代當前頁面
   Future<void> pushReplacement(BuildContext context, Widget page) async {
-    await Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => page));
+    await Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => page));
   }
 
   ///MARK: 將前面的頁面全部清除只剩此頁面
@@ -122,20 +119,35 @@ class BaseViewModel {
   }
 
   /// 切換主頁頁面
-  void changeMainScreenPage(AppNavigationBarType type,{bool isRebecca=false,int index=0}){
-    if(isRebecca){
-      GlobalData.dynamicRebeccaOffset=UIDefine.getViewHeight()*0.85*index;
+  void changeMainScreenPage(AppNavigationBarType type, {bool isRebecca = false, int index = 0}) {
+    if (isRebecca) {
+      GlobalData.dynamicRebeccaOffset = UIDefine.getViewHeight() * 0.85 * index;
     }
-    GlobalData.mainScreenSubject.changeMainScreenPage(type,isRebecca:isRebecca);
+    GlobalData.mainScreenSubject.changeMainScreenPage(type, isRebecca: isRebecca);
   }
 
-  String _buildDataFormat(
-      {required String strFormat,
-      required DateTime time,
-      bool needLocale = false}) {
-    return DateFormat(
-            strFormat, needLocale ? LanguageUtil.getTimeLocale() : "en")
-        .format(time);
+  /// 側邊滑入換頁
+  void changePageFromRight(BuildContext context, Widget page) {
+    Navigator.push(
+        context,
+        PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) => page,
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            const begin = Offset(1.0, 0.0);
+            const end = Offset.zero;
+            const curve = Curves.ease;
+
+            var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            return SlideTransition(
+              position: animation.drive(tween),
+              child: child,
+            );
+          },
+        ));
+  }
+
+  String _buildDataFormat({required String strFormat, required DateTime time, bool needLocale = false}) {
+    return DateFormat(strFormat, needLocale ? LanguageUtil.getTimeLocale() : "en").format(time);
   }
 
   DateTime _getNow() {
@@ -148,10 +160,7 @@ class BaseViewModel {
   }
 
   ///MARK: 更新使用者資料
-  Future<void> saveUserLoginInfo(
-      {required bool isLogin,
-      required ApiResponse response,
-      required WidgetRef ref}) async {
+  Future<void> saveUserLoginInfo({required bool isLogin, required ApiResponse response, required WidgetRef ref}) async {
     await AppSharedPreferences.setLogIn(true);
     await AppSharedPreferences.setMemberID(response.data['id']);
     await AppSharedPreferences.setToken(response.data['token']);
@@ -191,8 +200,7 @@ class BaseViewModel {
   }
 
   ///MARK: 使用者資料
-  Future<bool> uploadPersonalInfo(
-      {required bool isLogin, required WidgetRef ref}) async {
+  Future<bool> uploadPersonalInfo({required bool isLogin, required WidgetRef ref}) async {
     ///MARK: 判斷有無讀取失敗
     bool connectFail = false;
     onFail(message) => connectFail = true;
@@ -206,8 +214,7 @@ class BaseViewModel {
       //     .update(onConnectFail: onFail, onFinish: () => checkList[0] = true);
 
       await checkFutureTime(
-          logKey: 'uploadPersonalInfo',
-          onCheckFinish: () => !checkList.contains(false) || connectFail);
+          logKey: 'uploadPersonalInfo', onCheckFinish: () => !checkList.contains(false) || connectFail);
 
       ///MARK: 判斷有無讀取失敗
       return !connectFail;
@@ -222,8 +229,7 @@ class BaseViewModel {
   /// 簡易timer
   Future<void> checkFutureTime(
       {required bool Function() onCheckFinish,
-      Duration timeOut =
-          const Duration(milliseconds: HttpSetting.connectionTimeout),
+      Duration timeOut = const Duration(milliseconds: HttpSetting.connectionTimeout),
       String logKey = 'checkFutureTime',
       bool printLog = true}) async {
     if (printLog) GlobalData.printLog('$logKey: ---timeStart!!!!');
