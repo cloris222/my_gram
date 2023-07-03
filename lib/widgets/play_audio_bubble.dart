@@ -24,7 +24,7 @@ class PlayAudioBubble extends ConsumerStatefulWidget {
   final String path;
   final bool bSelf;
   final String contentId;
-  const PlayAudioBubble({
+  PlayAudioBubble({
     required this.path,
     required this.bSelf,
     required this.contentId,
@@ -39,9 +39,19 @@ class _PlayAudioBubbleState extends ConsumerState<PlayAudioBubble> {
   Duration? currentPosition;
   late Duration maxDuration;
   late Duration elapsedDuration;
-  final audio.AudioPlayer player = audio.AudioPlayer();
-  String totalDurationText = '00:00';
+  final audio.AudioPlayer? player = audio.AudioPlayer();
   String playerText = '00:00';
+  Map<String,String> get durationList => ref.read(durationListProvider);
+  String get totalDurationText {
+    String text;
+    if(durationList[widget.contentId] == null){
+      text = '00:00';
+    }else{
+      text = durationList[widget.contentId]!;
+    }
+    return text;
+  }
+
 
   late List<String> audioData;
 
@@ -52,24 +62,27 @@ class _PlayAudioBubbleState extends ConsumerState<PlayAudioBubble> {
 
   @override
   void initState() {
-    GlobalData.printLog('widget.path: ${widget.path}');
+    GlobalData.printLog('widget.path${widget.path}');
+    print('totalDurationText=$totalDurationText');
     Future.delayed(Duration.zero, () async {
-      await player.setSourceUrl(widget.path);
-      duration = await player.getDuration();
-      totalDurationText = duration.toString().substring(2, 7); 
-      playerState = player.state;
-      player.onPlayerStateChanged.listen((audio.PlayerState s) {
-        print('Current player state: $s');
-        setState(() => playerState = s);
+      await player!.setSourceUrl(widget.path);
+      duration = await player!.getDuration();
+      durationList[widget.contentId.toString()] = duration.toString().substring(2, 7);
+      playerState = player!.state;
+      player!.onPlayerStateChanged.listen((audio.PlayerState s) {
+        if(mounted) setState(() => playerState = s);
       });
-      player.onPositionChanged.listen((position) {
-        print('position=$position');
-        setState(() {
-          currentPosition = position;
-          playerText = currentPosition.toString().substring(2, 7);
-        });
+      player!.onPositionChanged.listen((position) {
+        if(mounted){
+          setState(() {
+            currentPosition = position;
+            playerText = currentPosition.toString().substring(2, 7);
+          });
+        }
       });
-      setState(() {});
+      if(mounted && player!=null){
+        setState(() {});
+      }
     });
     super.initState();
   }
@@ -82,7 +95,9 @@ class _PlayAudioBubbleState extends ConsumerState<PlayAudioBubble> {
 
   @override
   void dispose() {
-    // player.dispose();
+    if(player != null){
+      player!.dispose();
+    }
     super.dispose();
   }
 
@@ -109,7 +124,7 @@ class _PlayAudioBubbleState extends ConsumerState<PlayAudioBubble> {
                       fontWeight: FontWeight.w400),
                 )
               : Text(
-                  totalDurationText,
+                  totalDurationText!,
                   style: AppTextStyle.getBaseStyle(
                       color: widget.bSelf ? AppColors.textBlack : AppColors.textWhite,
                       fontSize: UIDefine.fontSize14,
@@ -163,7 +178,7 @@ class _PlayAudioBubbleState extends ConsumerState<PlayAudioBubble> {
         onTap: () {
           setState(() {
             ref.read(playingContentIdProvider.notifier).update((state) => widget.contentId);
-            player.play(UrlSource(widget.path));
+            player!.play(UrlSource(widget.path));
           });
         },
         child: Container(
@@ -180,12 +195,12 @@ class _PlayAudioBubbleState extends ConsumerState<PlayAudioBubble> {
     } else if (playerState == audio.PlayerState.playing) {
       if (currentPlayContentId != widget.contentId) {
         currentPosition = Duration.zero;
-        player.stop();
+        player!.stop();
         return GestureDetector(
             onTap: () {
               setState(() {
                 ref.read(playingContentIdProvider.notifier).update((state) => widget.contentId);
-                player.play(UrlSource(widget.path));
+                player!.play(UrlSource(widget.path));
               });
             },
             child: Container(
@@ -202,7 +217,7 @@ class _PlayAudioBubbleState extends ConsumerState<PlayAudioBubble> {
         return GestureDetector(
           onTap: () {
             setState(() {
-              player.pause();
+              player!.pause();
             });
           },
           child: Container(
@@ -220,7 +235,7 @@ class _PlayAudioBubbleState extends ConsumerState<PlayAudioBubble> {
     } else if (playerState == audio.PlayerState.paused) {
       return GestureDetector(
         onTap: () {
-          player.resume();
+          player!.resume();
         },
         child: Container(
           width: UIDefine.getPixelWidth(30),
@@ -237,7 +252,7 @@ class _PlayAudioBubbleState extends ConsumerState<PlayAudioBubble> {
       return GestureDetector(
         onTap: () {
           setState(() {
-            player.play(UrlSource(widget.path));
+            player!.play(UrlSource(widget.path));
           });
         },
         child: Container(
@@ -250,37 +265,5 @@ class _PlayAudioBubbleState extends ConsumerState<PlayAudioBubble> {
         ),
       );
     }
-  }
-
-  Map<String, dynamic> loadparseJson(Map<String, dynamic> audioDataMap) {
-    final data = jsonDecode(audioDataMap["json"]);
-
-    final List<int> rawSamples = List<int>.from(data['data']);
-    List<int> filteredData = [];
-    // Change this value to number of audio samples you want.
-    // Values between 256 and 1024 are good for showing [RectangleWaveform] and [SquigglyWaveform]
-    // While the values above them are good for showing [PolygonWaveform]
-    final int totalSamples = audioDataMap["totalSamples"];
-    final double blockSize = rawSamples.length / totalSamples;
-
-    for (int i = 0; i < totalSamples; i++) {
-      final double blockStart = blockSize * i; // the location of the first sample in the block
-      int sum = 0;
-      for (int j = 0; j < blockSize; j++) {
-        sum = sum + rawSamples[(blockStart + j).toInt()].toInt(); // find the sum of all the samples in the block
-      }
-      filteredData.add((sum / blockSize)
-          .round() // take the average of the block and add it to the filtered data
-          .toInt()); // divide the sum by the block size to get the average
-    }
-    final maxNum = filteredData.reduce((a, b) => math.max(a.abs(), b.abs()));
-
-    final double multiplier = math.pow(maxNum, -1).toDouble();
-
-    final samples = filteredData.map<double>((e) => (e * multiplier)).toList();
-
-    return {
-      "samples": samples,
-    };
   }
 }

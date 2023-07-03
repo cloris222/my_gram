@@ -116,6 +116,7 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
         body: (isDark) => Container(
               width: UIDefine.getWidth(),
               child: SingleChildScrollView(
+                padding: EdgeInsets.only(bottom: UIDefine.getNavigationBarHeight()),
                 child: Column(
                   children: [
                     SizedBox(
@@ -195,19 +196,18 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
                     ),
                     Container(
                       width: UIDefine.getWidth(),
-                      decoration:BoxDecoration(
+                      decoration:const BoxDecoration(
                           image: DecorationImage(image: AssetImage(AppImagePath.gradientBg),fit: BoxFit.fill)
                       ),
                       child: Container(
                         width: UIDefine.getWidth(),
-                        padding: EdgeInsets.all(UIDefine.getPixelWidth(15)),
+                        padding: EdgeInsets.symmetric(horizontal:UIDefine.getPixelWidth(20)),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            SizedBox(height: UIDefine.getPixelWidth(32),),
                             _buildButton(),
                             _buildTabBar(),
-                            SizedBox(height: UIDefine.getPixelWidth(32),),
+                            SizedBox(height: UIDefine.getPixelWidth(32)),
                             _buildTabView()
                           ],
                         ),
@@ -339,20 +339,18 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
   }
 
   Widget _buildButton() {
-    return SizedBox(
+    return Container(
       width: UIDefine.getWidth(),
-      // height: UIDefine.getPixelWidth(45),
+      padding: EdgeInsets.symmetric(vertical: UIDefine.getPixelWidth(32)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(
-            width: UIDefine.getPixelWidth(20),
-          ),
           Expanded(
             child: TextButtonWidget(
               backgroundVertical:0,
               backgroundHorizontal: 0,
               setHeight: UIDefine.getPixelWidth(38),
+              margin: EdgeInsets.zero,
               isFillWidth: true,
               btnText: tr('following'),
               setMainColor: AppColors.buttonUnable,
@@ -370,6 +368,7 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
               backgroundVertical:0,
               backgroundHorizontal: 0,
               setHeight: UIDefine.getPixelWidth(38),
+              margin: EdgeInsets.zero,
               isFillWidth: true,
               isGradient: true,
               btnText: tr('message'),
@@ -382,9 +381,7 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
               },
             ),
           ),
-          SizedBox(
-            width: UIDefine.getPixelWidth(20),
-          ),
+
         ],
       ),
     );
@@ -392,7 +389,6 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
 
   Widget _buildTabBar() {
     return Container(
-      margin: EdgeInsets.only(top: UIDefine.getPixelWidth(12),left:UIDefine.getPixelWidth(15),right: UIDefine.getPixelWidth(15) ),
       decoration:  BoxDecoration(
           color: Colors.transparent,
           border: Border(
@@ -428,17 +424,17 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
               color: AppColors.textWhiteOpacity5),
           tabs: [
             Tab(
-              height: UIDefine.getPixelWidth(40),
+              height: UIDefine.getPixelWidth(38),
               child: Container(
-                alignment: Alignment.center,
+                alignment: Alignment.topCenter,
                 //height: 40,
                 child: Text( tr('aboutMe')),
               ),
             ),
             Tab(
-              height: UIDefine.getPixelWidth(40),
+              height: UIDefine.getPixelWidth(38),
               child: Container(
-                alignment: Alignment.center,
+                alignment: Alignment.topCenter,
                // height: 40,
                 child: Text( tr('allPost')),
               ),
@@ -461,60 +457,57 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
   }
 
   Widget _aboutMeView(){
-    return Padding(
-      padding:EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(15)),
-      child: Column(
-        children: [
-          Container(
-            width: UIDefine.getWidth()*0.9,
-            padding: EdgeInsets.only(bottom: UIDefine.getPixelWidth(24)),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Container(
-                  width: UIDefine.getPixelWidth(60),
-                  height: UIDefine.getPixelWidth(60),
-                  clipBehavior: Clip.antiAlias,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50)
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(50),
-                    child: CommonNetworkImage(
-                      imageUrl: data.avatar,
-                      width: UIDefine.getPixelWidth(60),
-                      height: UIDefine.getPixelWidth(60),
-                      fit: BoxFit.cover,
-                    ),
+    return Column(
+      children: [
+        Container(
+          width: UIDefine.getWidth(),
+          padding: EdgeInsets.only(bottom: UIDefine.getPixelWidth(24)),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Container(
+                width: UIDefine.getPixelWidth(60),
+                height: UIDefine.getPixelWidth(60),
+                clipBehavior: Clip.antiAlias,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50)
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(50),
+                  child: CommonNetworkImage(
+                    imageUrl: data.avatar,
+                    width: UIDefine.getPixelWidth(60),
+                    height: UIDefine.getPixelWidth(60),
+                    fit: BoxFit.cover,
                   ),
                 ),
-                Column(
-                  children: [
-                    // Text(data.totalPosts.toString(),
-                    Text("100",
-                      style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize20,fontWeight: FontWeight.w600),),
-                    Text(tr('posts'),style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize12,fontWeight: FontWeight.w500,color:AppColors.textWhiteOpacity4),),
-                  ],
-                ),
-                Container(
-                  width: UIDefine.getPixelWidth(1),
-                  height: UIDefine.getPixelWidth(30),
-                  color: AppColors.bolderGrey.getColor(),
-                ),
-                Column(
-                  children: [
-                    // Text(data.fans.length.toString(),
-                    Text("1.9M",
-                      style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize20,fontWeight: FontWeight.w600),),
-                    Text(tr('fans'),style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize12,fontWeight: FontWeight.w500,color: AppColors.textWhiteOpacity4),),
-                  ],
-                )
-              ],
-            ),
+              ),
+              Column(
+                children: [
+                  // Text(data.totalPosts.toString(),
+                  Text("100",
+                    style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize20,fontWeight: FontWeight.w600),),
+                  Text(tr('posts'),style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize12,fontWeight: FontWeight.w500,color:AppColors.textWhiteOpacity4),),
+                ],
+              ),
+              Container(
+                width: UIDefine.getPixelWidth(1),
+                height: UIDefine.getPixelWidth(30),
+                color: AppColors.bolderGrey.getColor(),
+              ),
+              Column(
+                children: [
+                  // Text(data.fans.length.toString(),
+                  Text("1.9M",
+                    style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize20,fontWeight: FontWeight.w600),),
+                  Text(tr('fans'),style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize12,fontWeight: FontWeight.w500,color: AppColors.textWhiteOpacity4),),
+                ],
+              )
+            ],
           ),
-          _buildInfoCard(),
-        ],
-      ),
+        ),
+        _buildInfoCard(),
+      ],
     );
   }
 
