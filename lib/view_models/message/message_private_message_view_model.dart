@@ -34,6 +34,10 @@ final playingContentIdProvider = StateProvider<String>((ref) {
   return '';
 });
 
+final durationListProvider = StateProvider<Map<String,String>>((ref) {
+  return {};
+});
+
 class MessagePrivateGroupMessageViewModel extends BaseViewModel {
   final WidgetRef ref;
   MessagePrivateGroupMessageViewModel(this.ref);

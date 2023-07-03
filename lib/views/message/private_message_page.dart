@@ -79,6 +79,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
     // });
     viewModel = MessagePrivateGroupMessageViewModel(ref);
     viewModel.textFocusNode.addListener(() {
+      print('textFocusNode');
       setState(() {
         viewModel.isFocus = viewModel.textFocusNode.hasFocus;
         if (viewModel.isFocus == true) {
@@ -449,9 +450,11 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
           reverse: true, // 倒序
           itemCount: showingList.length,
           itemBuilder: (context, index) {
-            _keys[index] = RectGetter.createGlobalKey();
+            var key = showingList[index].contentId;
+            _keys[key] = _keys[key]??RectGetter.createGlobalKey();
+            print("${index}:${_keys[key]}");
             return RectGetter(
-              key: _keys[index],
+              key: _keys[key],
               child: Padding(
                 padding: index == showingList.length - 1
                     ? EdgeInsets.fromLTRB(UIDefine.getScreenWidth(5), UIDefine.getScreenWidth(1),
@@ -493,7 +496,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
     // bool bMe = showingList[index].receiverAvatarId == GlobalData.selfAvatar;
     return showingList[index].receiverAvatarId != GlobalData.selfAvatar.toString()
         ? MessageViewForSelf(
-            key: UniqueKey(),
+            key: ValueKey(showingList[index].contentId),
             index: index,
             bGroup: false,
             bOnLongPress: false, //先false
@@ -501,7 +504,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
             roomDetailData: _chatroomDetailData,
           )
         : MessageViewForOther(
-            key: UniqueKey(),
+            key: ValueKey(showingList[index].contentId),
             index: index,
             bGroup: false,
             bOnLongPress: false,
