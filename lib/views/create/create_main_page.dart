@@ -46,15 +46,21 @@ class _CreateMainPageState extends ConsumerState<CreateMainPage> with TickerProv
   @override
   Widget build(BuildContext context) {
     bool showRandomDialog = ref.watch(globalBoolProvider(viewModel.randomDialog));
+    double bottomView = UIDefine.getViewHeight()*0.45 > UIDefine.getPixelWidth(300)
+        ? UIDefine.getPixelWidth(300) : UIDefine.getViewHeight() * 0.45;
+
+    // double topView = UIDefine.getPixelWidth(500);
     return Stack(children: [
       SizedBox(width: UIDefine.getWidth(), height: UIDefine.getViewHeight()),
 
       /// 中間主要展示圖
-      Positioned(top: 0, bottom: UIDefine.getPixelWidth(250), right: 0, left: 0, child: _buildDemoImageView()),
+      Positioned(top: 0, right: 0, left: 0, child: _buildDemoImageView()),
 
       /// 標籤
       Positioned(
-          bottom: 0, right: 0, left: 0, child: SizedBox(height: UIDefine.getPixelWidth(300), child: _buildTagsView())),
+          bottom: 0, right: 0, left: 0,
+          child: SizedBox(height: bottomView,
+              child: _buildTagsView())),
 
       /// 右側功能鍵
       Positioned(
@@ -111,8 +117,7 @@ class _CreateMainPageState extends ConsumerState<CreateMainPage> with TickerProv
   Widget _buildDemoImageView() {
     return CommonNetworkImage(
         imageUrl: mainAsset,
-        fit: BoxFit.fitWidth,
-        height: UIDefine.getPixelWidth(500));
+        fit: BoxFit.fitWidth);
   }
 
   Widget _buildTagsView() {
