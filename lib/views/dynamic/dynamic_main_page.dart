@@ -164,7 +164,7 @@ class _DynamicMainPageState extends ConsumerState<DynamicMainPage> {
                        shrinkWrap: true,
                        physics: const NeverScrollableScrollPhysics(),
                        itemCount: list.length,
-                       padding: EdgeInsets.zero,
+                       padding: EdgeInsets.only(bottom: UIDefine.getNavigationBarHeight()),
                        itemBuilder: (context,index){
                          if(index == list.length-1){
                            bDownloading = false;

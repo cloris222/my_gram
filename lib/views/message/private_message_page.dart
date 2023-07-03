@@ -138,6 +138,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
       body: (isDark) => Container(
         width: UIDefine.getWidth(),
         decoration: BoxDecoration(image: DecorationImage(image: AssetImage(AppImagePath.gradientBg), fit: BoxFit.fill)),
+        padding: EdgeInsets.only(bottom: UIDefine.getNavigationBarHeight()),
         child: Stack(
           alignment: Alignment.topCenter,
           children: [

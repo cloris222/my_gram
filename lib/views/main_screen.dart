@@ -67,16 +67,23 @@ class _MainScreenState extends ConsumerState<MainScreen> {
     return CommonScaffold(
         canPop: false,
         // appBar: CustomAppBar.mainAppBar(context),
-        bottomNavigationBar: AppBottomNavigationBar(
-          initType: widget.type,
-          bottomFunction: _changePage,
-        ),
-        body: (isDark) => PageView(
-              controller: controller,
-              physics: const NeverScrollableScrollPhysics(),
-              children: List<Widget>.generate(
-                  AppNavigationBarType.values.length,
-                  (index) => AppNavigationBarType.values[index].typePage),
+        // bottomNavigationBar: ,
+        body: (isDark) => Stack(
+              children: [
+                PageView(
+                  controller: controller,
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: List<Widget>.generate(
+                      AppNavigationBarType.values.length,
+                      (index) => AppNavigationBarType.values[index].typePage),
+                ),
+                Positioned(
+                    bottom: 0,
+                    child: AppBottomNavigationBar(
+                      initType: widget.type,
+                      bottomFunction: _changePage,
+                    ))
+              ],
             ));
   }
 
@@ -85,11 +92,11 @@ class _MainScreenState extends ConsumerState<MainScreen> {
       if (needRecover) {
         ref.read(isRebeccaProvider.notifier).update((state) => false);
       }
-      /// 判斷是否在同一頁切換
-      if(type == AppNavigationBarType.typeDynamic &&
-          GlobalData.mainBottomType == AppNavigationBarType.typeDynamic) {
-          GlobalData.dynamicSubject.scrollTop();
 
+      /// 判斷是否在同一頁切換
+      if (type == AppNavigationBarType.typeDynamic &&
+          GlobalData.mainBottomType == AppNavigationBarType.typeDynamic) {
+        GlobalData.dynamicSubject.scrollTop();
       }
       GlobalData.mainBottomType = type;
       controller.jumpToPage(type.index);
