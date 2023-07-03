@@ -124,7 +124,7 @@ class BaseViewModel {
   /// 切換主頁頁面
   void changeMainScreenPage(AppNavigationBarType type,{bool isRebecca=false,int index=0}){
     if(isRebecca){
-      GlobalData.dynamicRebeccaOffset=UIDefine.getViewHeight()*0.85*index;
+      GlobalData.dynamicRebeccaOffset=(UIDefine.getViewHeight()>600?UIDefine.getViewHeight()*0.85:UIDefine.getViewHeight()*1.1)*index;
     }
     GlobalData.mainScreenSubject.changeMainScreenPage(type,isRebecca:isRebecca);
   }
