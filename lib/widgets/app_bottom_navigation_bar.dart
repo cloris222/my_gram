@@ -78,12 +78,11 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar>
   Widget _barBuilder(BuildContext context) {
     return Container(
         color: AppColors.mainBackground.getColor(),
-        height: UIDefine.getPixelWidth(Platform.isIOS ? 50 : 40),
+        height: UIDefine.getPixelWidth(Platform.isIOS ? 58 : 48),
         padding: EdgeInsets.only(
-            right: UIDefine.getPixelWidth(10),
-            left: UIDefine.getPixelWidth(10),
-            top: UIDefine.getPixelWidth(8),
-            bottom: UIDefine.getPixelWidth(Platform.isIOS ? 15 : 5)),
+            right: UIDefine.getPixelWidth(24),
+            left: UIDefine.getPixelWidth(24),
+            bottom: UIDefine.getPixelWidth(Platform.isIOS ? 10 : 0)),
         child: Row(
           children: [
             buildButton(AppNavigationBarType.typeDynamic),
@@ -101,7 +100,9 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar>
             onTap: () => _navigationTapped(
                 AppNavigationBarType.values.indexOf(type), setState),
             behavior: HitTestBehavior.translucent,
-            child: Center(
+            child: Container(
+              alignment: Alignment.center,
+              padding: EdgeInsets.symmetric(vertical: UIDefine.getPixelWidth(8)),
               child: getIcon(type),
             )));
   }
@@ -117,7 +118,7 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar>
     return Container(
         alignment: Alignment.center,
         color: Colors.transparent,
-        child: Image.asset(isSelect ? type.onIcon : type.icon));
+        child: Image.asset(isSelect ? type.onIcon : type.icon,fit: BoxFit.contain));
   }
 
   _navigationTapped(int index, void Function(VoidCallback fn) setState) {

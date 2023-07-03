@@ -108,30 +108,23 @@ class _AppFirstPageState extends State<AppFirstPage> {
                               borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(40)),
                               child: Container(
                                 width: UIDefine.getHeight()>600?UIDefine.getWidth():UIDefine.getWidth()*0.85,
+                                padding: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(32)),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.center,
-                                      children: [
-                                        TextButtonWidget(
-                                            textColor:
-                                            AppColors.mainBackground,
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: UIDefine.fontSize14,
-                                            isFillWidth: false,
-                                            setWidth:
-                                            UIDefine.getWidth() * 0.6,
-                                            setHeight:
-                                            UIDefine.getPixelWidth(44),
-                                            isGradient: true,
-                                            btnText: tr('registerWithEmail'),
-                                            onPressed: _onPress),
-                                      ],
-                                    ),
-                                    Container(
-                                      width: UIDefine.getWidth() * 0.6,
+                                    TextButtonWidget(
+                                        textColor:
+                                        AppColors.mainBackground,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: UIDefine.fontSize14,
+                                        isFillWidth: true,
+                                        setHeight:
+                                        UIDefine.getPixelWidth(44),
+                                        isGradient: true,
+                                        btnText: tr('registerWithEmail'),
+                                        onPressed: _onPress),
+                                    SizedBox(
+                                      width: UIDefine.getWidth(),
                                       child: Row(
                                         children: [
                                           Expanded(
@@ -165,7 +158,7 @@ class _AppFirstPageState extends State<AppFirstPage> {
                                     ),
                                     Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.center,
+                                      MainAxisAlignment.spaceBetween,
                                       children: [
                                         _buildIconButton(AppImagePath.googleIcon),
                                         _buildIconButton(AppImagePath.fbIcon),
@@ -195,7 +188,7 @@ class _AppFirstPageState extends State<AppFirstPage> {
       child: Container(
         width: UIDefine.getPixelWidth(63),
         height: UIDefine.getPixelWidth(63),
-        margin: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(15)),
+        // margin: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(15)),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(50),
         ),
