@@ -17,12 +17,10 @@ class BarShadow extends StatelessWidget {
       blur: 0.7,
       radius: 0,
         linearGradient: LinearGradient(
-              begin: Alignment.topCenter,
+              begin: Alignment.center,
               end: Alignment.bottomCenter,
               colors: [
-            AppColors.textBlack.getColor().withOpacity(0.6),
-                AppColors.textBlack.getColor().withOpacity(0.6),
-                AppColors.textBlack.getColor().withOpacity(0.078),
+            AppColors.textBlack.getColor().withOpacity(0.5),
             AppColors.textBlack.getColor().withOpacity(0),
           ]),
     );
