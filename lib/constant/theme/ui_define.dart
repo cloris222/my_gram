@@ -28,6 +28,7 @@ class UIDefine {
   static double fontSize18 = 0.0; // 18sp
   static double fontSize16 = 0.0; // 16sp
   static double fontSize14 = 0.0; // 14sp
+  static double fontSize15 = 0.0; // 15sp
   static double fontSize13 = 0.0; // 13sp
   static double fontSize12 = 0.0; // 12sp
   static double fontSize10 = 0.0; // 10sp
@@ -45,12 +46,9 @@ class UIDefine {
     _screenHeight = mediaQueryData.size.height;
 
     _screenWidthUnit = _screenWidth / 100;
-    _screenHeightUnit =
-        (_screenHeight - _statusBarHeight - _navigationBarHeight) / 100;
+    _screenHeightUnit = (_screenHeight - _statusBarHeight - _navigationBarHeight) / 100;
 
-    _fontUnit = _screenWidthUnit < _screenHeightUnit
-        ? _screenWidthUnit
-        : _screenHeightUnit;
+    _fontUnit = _screenWidthUnit < _screenHeightUnit ? _screenWidthUnit : _screenHeightUnit;
 
     /// 算法約為：字體sp / 360 * 100%
     fontSize36 = _getFontSize(10);
@@ -64,6 +62,7 @@ class UIDefine {
     fontSize20 = _getFontSize(5.5);
     fontSize18 = _getFontSize(5.0);
     fontSize16 = _getFontSize(4.5);
+    fontSize15 = _getFontSize(4.16);
     fontSize14 = _getFontSize(3.88);
     fontSize13 = _getFontSize(3.61);
     fontSize12 = _getFontSize(3.33);
@@ -131,10 +130,7 @@ class UIDefine {
   }
 
   /// get screen height
-  static double getViewHeight(
-      {bool needAppBar = true, bool needAppNavBar = true}) {
-    return _screenHeight -
-        (needAppBar ? _statusBarHeight : 0) -
-        (needAppNavBar ? _navigationBarHeight : 0);
+  static double getViewHeight({bool needAppBar = true, bool needAppNavBar = true}) {
+    return _screenHeight - (needAppBar ? _statusBarHeight : 0) - (needAppNavBar ? _navigationBarHeight : 0);
   }
 }

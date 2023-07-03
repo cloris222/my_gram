@@ -4,6 +4,7 @@ import 'package:base_project/view_models/base_view_model.dart';
 import 'package:base_project/view_models/create/create_tag_detail_provider.dart';
 import 'package:base_project/view_models/create/create_tag_provider.dart';
 import 'package:base_project/view_models/gobal_provider/global_tag_controller_provider.dart';
+import 'package:base_project/views/create/other_create_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -46,7 +47,10 @@ class CreateMainViewModel extends BaseViewModel {
 
   void onPressInfo(BuildContext context) {}
 
-  void onPressSpotlight(BuildContext context) {}
+  void onPressSpotlight(BuildContext context) {
+    changePageFromRight(context, OtherCreatePage());
+    // pushStackPage(context, OtherCreatePage());
+  }
 
   void onPressFaceAR(BuildContext context) {}
 

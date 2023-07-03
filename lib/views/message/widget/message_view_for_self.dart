@@ -102,8 +102,9 @@ class _MessageViewForSelf extends ConsumerState<MessageViewForSelf> with TickerP
           Text(
             data.content,
             style: TextStyle(
+              height: 1.5,
               color: AppColors.textBlack.dark,
-              fontSize: UIDefine.fontSize14),
+              fontSize: UIDefine.fontSize15),
           ):PlayAudioBubble(path: "${GlobalData.urlPrefix}${data.content}",bSelf: true,contentId: data.contentId,),
         )),
     );
