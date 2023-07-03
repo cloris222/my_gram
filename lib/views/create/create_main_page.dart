@@ -1,5 +1,6 @@
 import 'package:base_project/constant/theme/app_style.dart';
 import 'package:base_project/utils/pitch_data_util.dart';
+import 'package:base_project/widgets/label/bar_shadow.dart';
 import 'package:base_project/widgets/label/common_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -57,6 +58,9 @@ class _CreateMainPageState extends ConsumerState<CreateMainPage> with TickerProv
 
         /// 中間主要展示圖
         Positioned(top: 0, right: 0, left: 0, child: _buildDemoImageView()),
+
+        /// 中間主要展示圖（陰影)
+        const Positioned(top: 0, right: 0, left: 0, child: BarShadow()),
 
         /// 標籤
         Positioned(
@@ -135,7 +139,7 @@ class _CreateMainPageState extends ConsumerState<CreateMainPage> with TickerProv
       child: Column(
         children: [
           _buildFunctionIcon(AppImagePath.infoIcon, () => viewModel.onPressInfo(context)),
-          _buildFunctionIcon(AppImagePath.spotlightIcon, () => _otherCreateSheet()),
+          _buildFunctionIcon(AppImagePath.spotlightIcon, () => viewModel.onPressSpotlight(context)),
           _buildFunctionIcon(AppImagePath.faceArIcon, () => viewModel.onPressFaceAR(context)),
           _buildFunctionIcon(AppImagePath.randomIcon, () => viewModel.onPressRandom(context)),
         ],
@@ -182,8 +186,8 @@ class _CreateMainPageState extends ConsumerState<CreateMainPage> with TickerProv
         context: context,
         isScrollControlled: true,
         backgroundColor: AppColors.tryOtherSheet.dark,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        constraints: BoxConstraints.tight(Size(UIDefine.getWidth(), UIDefine.getPixelHeight(700))),
+        // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        // constraints: BoxConstraints.tight(Size(UIDefine.getWidth(), UIDefine.getPixelHeight(700))),
         builder: (BuildContext context) {
           return Padding(
             padding: EdgeInsets.only(

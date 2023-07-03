@@ -79,6 +79,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
     // });
     viewModel = MessagePrivateGroupMessageViewModel(ref);
     viewModel.textFocusNode.addListener(() {
+      print('textFocusNode');
       setState(() {
         viewModel.isFocus = viewModel.textFocusNode.hasFocus;
         if (viewModel.isFocus == true) {
@@ -289,6 +290,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                   UIDefine.getPixelWidth(3), UIDefine.getPixelHeight(2)),
               decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(20)), color: Color(0xFF292322)),
               child: Row(
+                crossAxisAlignment: viewModel.isFocus? CrossAxisAlignment.end: CrossAxisAlignment.center,
                 children: [
                   Padding(
                     padding: EdgeInsets.only(right: UIDefine.getPixelWidth(10)),
@@ -312,11 +314,8 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                   Expanded(
                     child: GestureDetector(
                       onTap: (){
-                        if(ref.read(showRecordProvider))
-                        {
-                          ref
-                              .read(showRecordProvider.notifier)
-                              .update((state) => false);
+                        if(ref.read(showRecordProvider)){
+                          ref.read(showRecordProvider.notifier).update((state) => false);
                         Future.delayed(const Duration(milliseconds: 100)).then((value) {
                           FocusScope.of(context).requestFocus(
                               viewModel.textFocusNode);
@@ -327,12 +326,12 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                         textAlign: TextAlign.start,
                         focusNode: viewModel.textFocusNode,
                         controller: viewModel.textController,
-                        style: AppTextStyle.getBaseStyle(color: AppColors.textWhite, fontSize: UIDefine.fontSize12),
+                        style: AppTextStyle.getBaseStyle(color: AppColors.textWhite, fontSize: UIDefine.fontSize15),
                         maxLines: viewModel.isFocus ? 5 : 1,
                         minLines: 1,
                         enabled: !ref.watch(showRecordProvider),
                         decoration: InputDecoration(
-                          contentPadding: EdgeInsets.zero,
+                          contentPadding: EdgeInsets.only(bottom: UIDefine.getPixelHeight(3)),
                           isDense: true,
                           border: InputBorder.none,
                           // contentPadding: EdgeInsets.only(left: 20,bottom: UIDefine.getPixelHeight(10),right: 20),
@@ -353,39 +352,48 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                     ),
                   ),
                   viewModel.isFocus
+                  ? Padding(
+                      padding: EdgeInsets.fromLTRB(UIDefine.getPixelWidth(3), UIDefine.getPixelHeight(2),
+                          UIDefine.getPixelWidth(3), UIDefine.getPixelHeight(2)),
+                      child: Container(
+                        width: UIDefine.getPixelWidth(24),
+                        child: GestureDetector(
+                            onTap: () {
+                              viewModel.onSendMessage(viewModel.textController.text, false, "TEXT");
+                            },
+                            child: Image.asset(AppImagePath.sendIcon)),
+                      ),
+                    )
+                  : viewModel.textController.text.isNotEmpty
                       ? Padding(
                           padding: EdgeInsets.fromLTRB(UIDefine.getPixelWidth(3), UIDefine.getPixelHeight(2),
                               UIDefine.getPixelWidth(3), UIDefine.getPixelHeight(2)),
-                          child: GestureDetector(
-                              onTap: () {
-                                viewModel.onSendMessage(viewModel.textController.text, false, "TEXT");
-                              },
-                              child: Image.asset(AppImagePath.sendIcon)),
-                        )
-                      : viewModel.textController.text.isNotEmpty
-                          ? Padding(
-                              padding: EdgeInsets.fromLTRB(UIDefine.getPixelWidth(3), UIDefine.getPixelHeight(2),
-                                  UIDefine.getPixelWidth(3), UIDefine.getPixelHeight(2)),
-                              child: GestureDetector(
-                                  onTap: () {
-                                    viewModel.onSendMessage(viewModel.textController.text, false, "TEXT");
-                                  },
-                                  child: Image.asset(AppImagePath.sendIcon)),
-                            )
-                          : Padding(
-                              padding: EdgeInsets.fromLTRB(UIDefine.getPixelWidth(3), UIDefine.getPixelHeight(2),
-                                  UIDefine.getPixelWidth(3), UIDefine.getPixelHeight(2)),
-                              child: GestureDetector(
+                          child: Container(
+                            width: UIDefine.getPixelWidth(24),
+                            child: GestureDetector(
                                 onTap: () {
-                                  viewModel.onTapMicrophone(false);
-                                  // _onTapMicrophone();
+                                  viewModel.onSendMessage(viewModel.textController.text, false, "TEXT");
                                 },
-                                child: Image.asset(
-                                  AppImagePath.microphoneIcon,
-                                  color: ref.watch(showRecordProvider) ? Colors.blue : AppColors.textWhite.getColor(),
-                                ),
-                              ),
+                                child: Image.asset(AppImagePath.sendIcon)),
+                          ),
+                        )
+                      : Padding(
+                        padding: EdgeInsets.fromLTRB(UIDefine.getPixelWidth(3), UIDefine.getPixelHeight(2),
+                          UIDefine.getPixelWidth(3), UIDefine.getPixelHeight(2)),
+                        child: Container(
+                          width: UIDefine.getPixelWidth(24),
+                          child: GestureDetector(
+                            onTap: () {
+                              viewModel.onTapMicrophone(false);
+                              // _onTapMicrophone();
+                            },
+                            child: Image.asset(
+                              AppImagePath.microphoneIcon,
+                              color: ref.watch(showRecordProvider) ? Colors.blue : AppColors.textWhite.getColor(),
                             ),
+                          ),
+                        ),
+                      ),
                 ],
               ),
             ),
@@ -449,9 +457,11 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
           reverse: true, // 倒序
           itemCount: showingList.length,
           itemBuilder: (context, index) {
-            _keys[index] = RectGetter.createGlobalKey();
+            var key = showingList[index].contentId;
+            _keys[key] = _keys[key]??RectGetter.createGlobalKey();
+            print("${index}:${_keys[key]}");
             return RectGetter(
-              key: _keys[index],
+              key: _keys[key],
               child: Padding(
                 padding: index == showingList.length - 1
                     ? EdgeInsets.fromLTRB(UIDefine.getScreenWidth(5), UIDefine.getScreenWidth(1),
@@ -493,7 +503,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
     // bool bMe = showingList[index].receiverAvatarId == GlobalData.selfAvatar;
     return showingList[index].receiverAvatarId != GlobalData.selfAvatar.toString()
         ? MessageViewForSelf(
-            key: UniqueKey(),
+            key: ValueKey(showingList[index].contentId),
             index: index,
             bGroup: false,
             bOnLongPress: false, //先false
@@ -501,7 +511,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
             roomDetailData: _chatroomDetailData,
           )
         : MessageViewForOther(
-            key: UniqueKey(),
+            key: ValueKey(showingList[index].contentId),
             index: index,
             bGroup: false,
             bOnLongPress: false,

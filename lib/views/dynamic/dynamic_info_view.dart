@@ -1,4 +1,5 @@
 import 'dart:ui' as ui;
+import 'package:base_project/utils/date_format_util.dart';
 import 'package:base_project/views/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:base_project/constant/theme/app_colors.dart';
@@ -14,6 +15,7 @@ import '../../utils/number_format_util.dart';
 import '../../view_models/call_back_function.dart';
 import '../../widgets/circlie_avatar_widget.dart';
 import '../../widgets/custom_paint_text.dart';
+import '../../widgets/label/bar_shadow.dart';
 import '../../widgets/label/common_network_image.dart';
 import '../../widgets/label/custom_gradient_icon.dart';
 import '../personal/personal_home_page.dart';
@@ -191,6 +193,13 @@ class _DynamicInfoViewState extends State<DynamicInfoView> {
           //   height: UIDefine.getHeight()*0.6,
           // ),
           _buildImageView(),
+           Positioned(
+              top: 0,
+              left:0,
+              right: 0,
+              child: Visibility(
+                  visible: widget.data.images.length>=2,
+                  child: BarShadow(height: UIDefine.getPixelWidth(64)))),
           Positioned(
               left: UIDefine.getPixelWidth(90),
               right: UIDefine.getPixelWidth(90),
@@ -212,9 +221,7 @@ class _DynamicInfoViewState extends State<DynamicInfoView> {
                 height: UIDefine.getPixelWidth(2),
                 decoration: AppStyle().styleColorsRadiusBackground(
                     radius: 1,
-                    color: isCurrent
-                        ? Colors.white.withOpacity(0.6)
-                        : const Color(0xFFE2E2E2).withOpacity(0.13)),
+                    color: isCurrent ? Colors.white : Colors.white.withOpacity(0.4)),
                 margin: const EdgeInsets.symmetric(horizontal: 1, vertical: 5),
               ));
         }),
@@ -396,9 +403,9 @@ class _DynamicInfoViewState extends State<DynamicInfoView> {
     String dataTime;
 
     if(duration.inHours>= 24){
-      dataTime = '${publicTime.year}年${publicTime.month}月${publicTime.day}日';
+      dataTime = DateFormatUtil().buildDataFormat(strFormat:"MMM dd, yyyy",time: publicTime);
     }else{
-      dataTime = '${duration.inHours}小時前';
+      dataTime = '${duration.inHours} hours ago';
     }
     return dataTime;
   }
