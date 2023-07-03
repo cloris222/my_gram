@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:base_project/views/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:format/format.dart';
+import 'package:glassmorphism_widgets/glassmorphism_widgets.dart';
 import '../constant/enum/app_param_enum.dart';
 import '../constant/theme/app_colors.dart';
 import '../constant/theme/app_image_path.dart';
@@ -76,22 +77,31 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar>
   }
 
   Widget _barBuilder(BuildContext context) {
-    return Container(
-        color: AppColors.mainBackground.getColor(),
-        height: UIDefine.getPixelWidth(Platform.isIOS ? 58 : 48),
-        padding: EdgeInsets.only(
-            right: UIDefine.getPixelWidth(24),
-            left: UIDefine.getPixelWidth(24),
-            bottom: UIDefine.getPixelWidth(Platform.isIOS ? 10 : 0)),
-        child: Row(
-          children: [
-            buildButton(AppNavigationBarType.typeDynamic),
-            buildButton(AppNavigationBarType.typeExplore),
-            buildButton(AppNavigationBarType.typePair),
-            buildButton(AppNavigationBarType.typeMessage),
-            buildButton(AppNavigationBarType.typeCreate),
-          ],
-        ));
+    return GlassContainer(
+      width: UIDefine.getWidth(),
+      border: 0.0,
+      blur: 8,
+      radius: 0,
+      linearGradient: LinearGradient(
+          colors: [AppColors.mainBackground.getColor().withOpacity(0.8),AppColors.mainBackground.getColor().withOpacity(0.8)]
+      ),
+      child: Container(
+          // color: AppColors.mainBackground.getColor().withOpacity(0.8),
+          height: UIDefine.getNavigationBarHeight(),
+          padding: EdgeInsets.only(
+              right: UIDefine.getPixelWidth(6),
+              left: UIDefine.getPixelWidth(6),
+              bottom: UIDefine.getPixelWidth(Platform.isIOS ? 10 : 0)),
+          child: Row(
+            children: [
+              buildButton(AppNavigationBarType.typeDynamic),
+              buildButton(AppNavigationBarType.typeExplore),
+              buildButton(AppNavigationBarType.typePair),
+              buildButton(AppNavigationBarType.typeMessage),
+              buildButton(AppNavigationBarType.typeCreate),
+            ],
+          )),
+    );
   }
 
   Widget buildButton(AppNavigationBarType type) {

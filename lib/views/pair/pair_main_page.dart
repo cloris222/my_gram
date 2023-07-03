@@ -55,7 +55,9 @@ class _PairMainPageState extends State<PairMainPage> {
               width: UIDefine.getWidth(),
               height: UIDefine.getViewHeight()));
     }
-    return Stack(children: widgetList);
+    return Padding(
+        padding: EdgeInsets.only(bottom: UIDefine.getNavigationBarHeight()),
+        child: Stack(children: widgetList));
   }
 
   void _onRemove(PairImageData data, GramSetStatus status) {

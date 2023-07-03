@@ -50,45 +50,48 @@ class _CreateMainPageState extends ConsumerState<CreateMainPage> with TickerProv
         ? UIDefine.getPixelWidth(300) : UIDefine.getViewHeight() * 0.45;
 
     // double topView = UIDefine.getPixelWidth(500);
-    return Stack(children: [
-      SizedBox(width: UIDefine.getWidth(), height: UIDefine.getViewHeight()),
+    return Padding(
+      padding: EdgeInsets.only(bottom: UIDefine.getNavigationBarHeight()),
+      child: Stack(children: [
+        SizedBox(width: UIDefine.getWidth(), height: UIDefine.getViewHeight()),
 
-      /// 中間主要展示圖
-      Positioned(top: 0, right: 0, left: 0, child: _buildDemoImageView()),
+        /// 中間主要展示圖
+        Positioned(top: 0, right: 0, left: 0, child: _buildDemoImageView()),
 
-      /// 標籤
-      Positioned(
-          bottom: 0, right: 0, left: 0,
-          child: SizedBox(height: bottomView,
-              child: _buildTagsView())),
+        /// 標籤
+        Positioned(
+            bottom: 0, right: 0, left: 0,
+            child: SizedBox(height: bottomView,
+                child: _buildTagsView())),
 
-      /// 右側功能鍵
-      Positioned(
-          top: UIDefine.getStatusBarHeight() + UIDefine.getPixelWidth(50),
-          right: UIDefine.getPixelWidth(10),
-          child: _buildRightFunction()),
+        /// 右側功能鍵
+        Positioned(
+            top: UIDefine.getStatusBarHeight() + UIDefine.getPixelWidth(50),
+            right: UIDefine.getPixelWidth(10),
+            child: _buildRightFunction()),
 
-      /// 左下功能鍵
-      Positioned(bottom: UIDefine.getPixelWidth(320), left: UIDefine.getPixelWidth(10), child: _buildLeftFunction()),
+        /// 左下功能鍵
+        Positioned(bottom: UIDefine.getPixelWidth(320), left: UIDefine.getPixelWidth(10), child: _buildLeftFunction()),
 
-      /// 中間成功彈窗
-      Positioned(
-          bottom: UIDefine.getPixelWidth(320),
-          right: 0,
-          left: 0,
-          child: AnimatedOpacity(
-            opacity: showRandomDialog ? 1.0 : 0.0,
-            duration: const Duration(milliseconds: 500),
-            child: _buildRandomDialog(),
-          )),
+        /// 中間成功彈窗
+        Positioned(
+            bottom: UIDefine.getPixelWidth(320),
+            right: 0,
+            left: 0,
+            child: AnimatedOpacity(
+              opacity: showRandomDialog ? 1.0 : 0.0,
+              duration: const Duration(milliseconds: 500),
+              child: _buildRandomDialog(),
+            )),
 
-      /// appbar
-      Positioned(
-          top: UIDefine.getStatusBarHeight(),
-          left: UIDefine.getPixelWidth(10),
-          right: UIDefine.getPixelWidth(10),
-          child: _buildAppBar()),
-    ]);
+        /// appbar
+        Positioned(
+            top: UIDefine.getStatusBarHeight(),
+            left: UIDefine.getPixelWidth(10),
+            right: UIDefine.getPixelWidth(10),
+            child: _buildAppBar()),
+      ]),
+    );
   }
 
   Widget _buildAppBar() {

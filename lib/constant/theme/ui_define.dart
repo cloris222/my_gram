@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 
@@ -87,7 +89,7 @@ class UIDefine {
 
   /// 取得導航列高度
   static double getNavigationBarHeight() {
-    return _navigationBarHeight;
+    return UIDefine.getPixelWidth(Platform.isIOS ? 58 : 48);
   }
 
   /// 取得螢幕寬度的百分之P, P: 像素 / UI出圖之寬度依據 * 100%
