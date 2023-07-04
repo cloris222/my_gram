@@ -77,16 +77,18 @@ class _CreateTagsViewState extends ConsumerState<CreateTagsView>
 
   Widget _buildTags() {
     return Container(
-      height: UIDefine.getPixelWidth(50),
-      padding: EdgeInsets.symmetric(vertical: UIDefine.getPixelWidth(5)),
+      height: UIDefine.getPixelWidth(58),
+      padding: EdgeInsets.symmetric(vertical: UIDefine.getPixelWidth(16),horizontal: UIDefine.getPixelWidth(8)),
       child: TabBar(
         isScrollable: true,
         labelPadding: EdgeInsets.symmetric(
-            horizontal: UIDefine.getPixelWidth(5),
+            horizontal: UIDefine.getPixelWidth(12),
             vertical: UIDefine.getPixelWidth(2)),
         controller: _tabController,
         indicator: AppStyle().styleColorsRadiusBackground(
+          border: Border.all(color: AppColors.buttonCommon.getColor().withOpacity(0.3)),
             color: AppColors.buttonUnable.getColor()),
+
         labelStyle: AppTextStyle.getBaseStyle(),
         tabs: List<Widget>.generate(
             _tabController.length,
@@ -178,9 +180,9 @@ class _CreateTagsViewState extends ConsumerState<CreateTagsView>
 
           /// 底部遮罩
           Positioned(
-              bottom: 0,
-              right: 0,
-              left: 0,
+              bottom: -UIDefine.getPixelWidth(1),
+              right: -UIDefine.getPixelWidth(1),
+              left: -UIDefine.getPixelWidth(1),
               child: Container(
                 padding:
                     EdgeInsets.symmetric(vertical: UIDefine.getPixelWidth(5)),
