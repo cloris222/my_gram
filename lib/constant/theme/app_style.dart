@@ -140,12 +140,14 @@ class AppStyle {
   BoxDecoration styleColorsRadiusBackground({
     Color color = Colors.white,
     double radius = 15,
+    Border? border,
     bool hasTopLeft = true,
     bool hasTopRight = true,
     bool hasBottomLef = true,
     bool hasBottomRight = true,
   }) {
     return BoxDecoration(
+      border: border,
       borderRadius: BorderRadius.only(
         topLeft:
             hasTopLeft ? Radius.circular(radius) : const Radius.circular(0),
@@ -208,7 +210,7 @@ class AppStyle {
       double spreadRadius = 0}) {
     return BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(radius)),
-        color: Colors.white,
+        color: borderBgColor,
         border: Border.all(color: borderColor, width: borderWidth),
         boxShadow: [
           BoxShadow(

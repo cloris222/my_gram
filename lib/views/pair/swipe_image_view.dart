@@ -12,6 +12,7 @@ import '../../constant/theme/app_gradient_colors.dart';
 import '../../constant/theme/app_image_path.dart';
 import '../../models/http/data/pair_image_data.dart';
 
+import '../../widgets/label/bar_shadow.dart';
 import '../../widgets/label/common_network_image.dart';
 
 class SwipeImageView extends StatefulWidget {
@@ -227,7 +228,11 @@ class _SwipeImageViewState extends State<SwipeImageView>
                 width: UIDefine.getWidth(),
                 height: UIDefine.getViewHeight() * 0.8,
                 fit: BoxFit.cover),
-
+            const Positioned(
+                top: 0,
+                left:0,
+                right: 0,
+                child: BarShadow(typeIndex:1)),
             Positioned(
                 left: UIDefine.getPixelWidth(45),
                 right: UIDefine.getPixelWidth(45),

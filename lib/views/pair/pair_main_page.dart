@@ -2,6 +2,7 @@ import 'package:base_project/constant/enum/app_param_enum.dart';
 import 'package:base_project/constant/enum/pair_enum.dart';
 import 'package:base_project/constant/theme/global_data.dart';
 import 'package:flutter/material.dart';
+import '../../constant/theme/app_colors.dart';
 import '../../constant/theme/ui_define.dart';
 import '../../models/http/data/pair_image_data.dart';
 import '../../view_models/base_view_model.dart';
@@ -55,8 +56,9 @@ class _PairMainPageState extends State<PairMainPage> {
               width: UIDefine.getWidth(),
               height: UIDefine.getViewHeight()));
     }
-    return Padding(
+    return Container(
         padding: EdgeInsets.only(bottom: UIDefine.getNavigationBarHeight()),
+        color: AppColors.textBlack.getColor(),
         child: Stack(children: widgetList));
   }
 

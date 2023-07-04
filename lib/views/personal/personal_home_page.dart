@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../view_models/dynmaic/is_rebecca_provider.dart';
 import '../../widgets/button/text_button_widget.dart';
+import '../../widgets/label/bar_shadow.dart';
 import '../../widgets/label/common_network_image.dart';
 import '../common_scaffold.dart';
 import 'package:card_swiper/card_swiper.dart';
@@ -140,19 +141,18 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
                             child: preImages[selectedCardIndex],
                           ),
                           Positioned(
+                              left:0,
+                              right: 0,
+                              bottom: 0,
+                              child: Container(
+                                height:UIDefine.getPixelWidth(40),
+                                color: AppColors.textBlack.getColor(),
+                              )),
+                          const Positioned(
                               top: 0,
                               left:0,
                               right: 0,
-                              child: Container(
-                                height:UIDefine.getPixelWidth(91),
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    begin: Alignment.center,
-                                    end: Alignment.bottomCenter,
-                                    colors: [AppColors.textBlack.getColor().withOpacity(0.5),Colors.transparent]
-                                  )
-                                ),
-                              )),
+                              child: BarShadow()),
                           Positioned(
                               top: UIDefine.getStatusBarHeight() + UIDefine.getPixelWidth(10),
                               left: UIDefine.getPixelWidth(16),
@@ -461,9 +461,9 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
       children: [
         Container(
           width: UIDefine.getWidth(),
-          padding: EdgeInsets.only(bottom: UIDefine.getPixelWidth(24)),
+          padding: EdgeInsets.only(bottom: UIDefine.getPixelWidth(24),right: UIDefine.getPixelWidth(24),left: UIDefine.getPixelWidth(24)),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
                 width: UIDefine.getPixelWidth(60),
@@ -514,7 +514,7 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
   Widget _buildInfoCard(){
     return Container(
       width: UIDefine.getWidth(),
-      padding: EdgeInsets.symmetric(vertical:UIDefine.getPixelWidth(20),horizontal: UIDefine.getPixelWidth(15)),
+      padding: EdgeInsets.symmetric(vertical:UIDefine.getPixelWidth(19),horizontal: UIDefine.getPixelWidth(16)),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: AppColors.dynamicButtonsBorder.getColor().withOpacity(0.05),width: UIDefine.getPixelWidth(0.5)),

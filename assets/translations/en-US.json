@@ -76,7 +76,7 @@
   "Shaped and Trimmed":"Shaped and Trimmed",
 
   "--//臉型":"---",
-  "Face Shape":"Face Shape",
+  "Face":"Face",
   "Oval Face":"Oval Face",
   "Round Face":"Round Face",
   "Square Face":"Square Face",
@@ -173,5 +173,17 @@
   "cancel":"Cancel",
   "error":"Error",
   "recordMaxTime":"Recording time limit reached",
-  "writeAMessage":"Enter a message"
+  "writeAMessage":"Enter a message",
+  "createAI":"Create",
+  "createAILoading":"Creating your AI character, please wait..",
+  "createUseRandom":"Random selection activated.",
+  "createFail":"Create Fail",
+  "createSuccessTitle":"Your personalized AI character",
+  "ReCreate":"Rebuild",
+  "tryOtherCreate":"Try the creations of others",
+  "otherCreaterMessage":"Explore the creations of others, available for direct use as your AI template.",
+  "apply":"Apply",
+  "recent":"Recently",
+  "popular":"Trending",
+  "done":"Done"
 }

@@ -1,5 +1,6 @@
 import 'package:base_project/constant/theme/app_style.dart';
 import 'package:base_project/utils/pitch_data_util.dart';
+import 'package:base_project/widgets/label/bar_shadow.dart';
 import 'package:base_project/widgets/label/common_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -58,6 +59,9 @@ class _CreateMainPageState extends ConsumerState<CreateMainPage> with TickerProv
         /// 中間主要展示圖
         Positioned(top: 0, right: 0, left: 0, child: _buildDemoImageView()),
 
+        /// 中間主要展示圖（陰影)
+        Positioned(top: -UIDefine.getPixelWidth(5), right: 0, left: 0, child: BarShadow(typeIndex: 11)),
+
         /// 標籤
         Positioned(
             bottom: 0, right: 0, left: 0,
@@ -71,7 +75,7 @@ class _CreateMainPageState extends ConsumerState<CreateMainPage> with TickerProv
             child: _buildRightFunction()),
 
         /// 左下功能鍵
-        Positioned(bottom: UIDefine.getPixelWidth(320), left: UIDefine.getPixelWidth(10), child: _buildLeftFunction()),
+        Positioned(bottom: UIDefine.getPixelWidth(312), left: UIDefine.getPixelWidth(10), child: _buildLeftFunction()),
 
         /// 中間成功彈窗
         Positioned(
@@ -106,10 +110,14 @@ class _CreateMainPageState extends ConsumerState<CreateMainPage> with TickerProv
             child: Image.asset(AppImagePath.arrowLeft)),
         const Spacer(),
         TextButtonWidget(
+          radius: UIDefine.getPixelWidth(15),
           isFillWidth: false,
-          backgroundVertical: UIDefine.getPixelWidth(1),
+          backgroundVertical: UIDefine.getPixelWidth(2),
+          backgroundHorizontal:  UIDefine.getPixelWidth(11),
           isGradient: true,
           btnText: tr('createAI'),
+          fontSize: UIDefine.fontSize14,
+          fontWeight: FontWeight.w500,
           textColor: AppColors.textBlack,
           onPressed: () => viewModel.onPressCreate(context),
         ),
@@ -129,7 +137,7 @@ class _CreateMainPageState extends ConsumerState<CreateMainPage> with TickerProv
 
   Widget _buildRightFunction() {
     return Container(
-      padding: EdgeInsets.all(UIDefine.getPixelWidth(5)),
+      padding: EdgeInsets.symmetric(vertical:UIDefine.getPixelWidth(8),horizontal: UIDefine.getPixelWidth(6)),
       decoration:
           AppStyle().styleColorsRadiusBackground(color: AppColors.createFunctionBackground.getColor(), radius: 28),
       child: Column(
@@ -145,7 +153,7 @@ class _CreateMainPageState extends ConsumerState<CreateMainPage> with TickerProv
 
   Widget _buildFunctionIcon(String assetPath, Function() onPress, {double? vertical}) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: vertical ?? UIDefine.getPixelWidth(5)),
+      padding: EdgeInsets.symmetric(vertical: vertical ?? UIDefine.getPixelWidth(8)),
       child: GestureDetector(
         onTap: () => onPress(),
         behavior: HitTestBehavior.translucent,
