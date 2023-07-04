@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:base_project/constant/enum/app_param_enum.dart';
 import 'package:base_project/constant/theme/app_text_style.dart';
 import 'package:base_project/constant/theme/global_data.dart';
 import 'package:base_project/models/http/data/create_ai_info.dart';
+import 'package:base_project/view_models/base_view_model.dart';
 import 'package:base_project/widgets/label/common_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -113,6 +115,7 @@ class CreateSuccessPage extends StatelessWidget {
   }
 
   void _onConfirm(BuildContext context) {
+    BaseViewModel().changeMainScreenPage(AppNavigationBarType.typeMessage);
     Navigator.of(context).pop();
   }
 }

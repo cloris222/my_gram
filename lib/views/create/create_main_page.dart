@@ -1,4 +1,5 @@
 import 'package:base_project/constant/theme/app_style.dart';
+import 'package:base_project/constant/theme/global_data.dart';
 import 'package:base_project/utils/pitch_data_util.dart';
 import 'package:base_project/widgets/label/bar_shadow.dart';
 import 'package:base_project/widgets/label/common_network_image.dart';
@@ -105,7 +106,7 @@ class _CreateMainPageState extends ConsumerState<CreateMainPage> with TickerProv
         GestureDetector(
             onTap: () {
               // Navigator.pop(context);
-              BaseViewModel().changeMainScreenPage(AppNavigationBarType.typeDynamic);
+              BaseViewModel().changeMainScreenPage(GlobalData.preBottomType);
             },
             child: Image.asset(AppImagePath.arrowLeft)),
         const Spacer(),

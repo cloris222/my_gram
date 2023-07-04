@@ -74,9 +74,9 @@ class CreateMainViewModel extends BaseViewModel {
 
   void init() {
     Future.delayed(Duration.zero).then((value) async {
-      await ref.read(createTagProvider.notifier).init();
+      await ref.read(createTagProvider.notifier).update();
       for (var element in tags) {
-        ref.read(createTagDetailProvider(element).notifier).init();
+        ref.read(createTagDetailProvider(element).notifier).update();
       }
     });
   }

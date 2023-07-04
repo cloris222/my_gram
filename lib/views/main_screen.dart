@@ -88,6 +88,10 @@ class _MainScreenState extends ConsumerState<MainScreen> {
   }
 
   void _changePage(AppNavigationBarType type, {bool needRecover = true}) {
+    if (type == AppNavigationBarType.typeCreate) {
+      GlobalData.preBottomType = type;
+    }
+
     setState(() {
       if (needRecover) {
         ref.read(isRebeccaProvider.notifier).update((state) => false);
