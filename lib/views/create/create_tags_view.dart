@@ -78,7 +78,9 @@ class _CreateTagsViewState extends ConsumerState<CreateTagsView>
   Widget _buildTags() {
     return Container(
       height: UIDefine.getPixelWidth(58),
-      padding: EdgeInsets.symmetric(vertical: UIDefine.getPixelWidth(16),horizontal: UIDefine.getPixelWidth(8)),
+      padding: EdgeInsets.symmetric(
+          vertical: UIDefine.getPixelWidth(16),
+          horizontal: UIDefine.getPixelWidth(8)),
       child: TabBar(
         isScrollable: true,
         labelPadding: EdgeInsets.symmetric(
@@ -86,9 +88,9 @@ class _CreateTagsViewState extends ConsumerState<CreateTagsView>
             vertical: UIDefine.getPixelWidth(2)),
         controller: _tabController,
         indicator: AppStyle().styleColorsRadiusBackground(
-          border: Border.all(color: AppColors.buttonCommon.getColor().withOpacity(0.3)),
+            border: Border.all(
+                color: AppColors.buttonCommon.getColor().withOpacity(0.3)),
             color: AppColors.buttonUnable.getColor()),
-
         labelStyle: AppTextStyle.getBaseStyle(),
         tabs: List<Widget>.generate(
             _tabController.length,
@@ -134,9 +136,13 @@ class _CreateTagsViewState extends ConsumerState<CreateTagsView>
 
     return GestureDetector(
       onTap: () {
-        ref
-            .read(createChooseProvider(tag).notifier)
-            .update((state) => itemIndex);
+        if (ref.read(createChooseProvider(tag)) == itemIndex) {
+          ref.read(createChooseProvider(tag).notifier).update((state) => -1);
+        } else {
+          ref
+              .read(createChooseProvider(tag).notifier)
+              .update((state) => itemIndex);
+        }
       },
       behavior: HitTestBehavior.translucent,
       child: Stack(
