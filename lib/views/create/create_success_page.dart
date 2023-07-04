@@ -35,34 +35,26 @@ class CreateSuccessPage extends StatelessWidget {
                   top: UIDefine.getStatusBarHeight() +
                       UIDefine.getPixelWidth(20),
                   bottom: Platform.isIOS
-                      ? UIDefine.getPixelWidth(25)
-                      : UIDefine.getPixelWidth(20)),
+                      ? UIDefine.getPixelWidth(10)
+                      : UIDefine.getPixelWidth(0)),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset(
-                    AppImagePath.success,
-                    width: UIDefine.getPixelWidth(60),
-                    height: UIDefine.getPixelWidth(60),
-                  ),
+                  Image.asset(AppImagePath.success),
                   Text(tr("createSuccessTitle"),
                       style: AppTextStyle.getBaseStyle(
                           fontSize: UIDefine.fontSize16,
                           fontWeight: FontWeight.w500)),
+                  SizedBox(height: UIDefine.getPixelWidth(32)),
                   Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                          vertical: UIDefine.getPixelWidth(32)),
-                      child: CommonNetworkImage(
+                    child: CommonNetworkImage(
                         background: Colors.transparent,
                         imageUrl: "${GlobalData.urlPrefix}${resultInfo.imgUrl}",
                         width: UIDefine.getWidth(),
                         fit: UIDefine.getViewHeight() * 0.75 >=
                                 UIDefine.getPixelWidth(500)
                             ? BoxFit.fitWidth
-                            : BoxFit.contain,
-                      ),
-                    ),
+                            : BoxFit.contain)
                   ),
                   _buildButton(context),
                 ],
@@ -72,7 +64,9 @@ class CreateSuccessPage extends StatelessWidget {
 
   Widget _buildButton(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(20)),
+      padding: EdgeInsets.symmetric(
+          horizontal: UIDefine.getPixelWidth(20),
+          vertical: UIDefine.getPixelWidth(32)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -81,6 +75,7 @@ class CreateSuccessPage extends StatelessWidget {
               backgroundVertical: 0,
               backgroundHorizontal: 0,
               setHeight: UIDefine.getPixelWidth(40),
+              margin: EdgeInsets.zero,
               isFillWidth: true,
               btnText: tr('ReCreate'),
               setMainColor: AppColors.buttonUnable,
@@ -98,9 +93,10 @@ class CreateSuccessPage extends StatelessWidget {
               backgroundVertical: 0,
               backgroundHorizontal: 0,
               setHeight: UIDefine.getPixelWidth(40),
+              margin: EdgeInsets.zero,
               isFillWidth: true,
               isGradient: true,
-              btnText: tr('confirm'),
+              btnText: tr('done'),
               textColor: AppColors.textBlack,
               fontWeight: FontWeight.w500,
               fontSize: UIDefine.fontSize14,
