@@ -11,6 +11,7 @@ import 'package:base_project/view_models/base_view_model.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../constant/theme/app_style.dart';
 import '../../view_models/dynmaic/is_rebecca_provider.dart';
 import '../../widgets/button/text_button_widget.dart';
 import '../../widgets/label/bar_shadow.dart';
@@ -221,13 +222,13 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
 
   Widget _buildSwiperCards(){
     return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.center,
-          end: Alignment.topCenter,
-          colors: [AppColors.textBlack.getColor().withOpacity(0.8),Colors.transparent]
-        )
-      ),
+      // decoration: BoxDecoration(
+      //   gradient: LinearGradient(
+      //     begin: Alignment.center,
+      //     end: Alignment.topCenter,
+      //     colors: [AppColors.textBlack.getColor().withOpacity(0.8),Colors.transparent]
+      //   )
+      // ),
       height: UIDefine.getPixelWidth(150),alignment: Alignment.bottomCenter,
       // color: Colors.blue,
       child: Swiper(
@@ -274,9 +275,13 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
                         child: Container(
                           width: imageWidth,
                           height: imageHeight,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
+                          decoration: AppStyle().styleShadowBorderBackground(
+                              borderBgColor: Colors.transparent,
+                              shadowColor: AppColors.textBlack.getColor(),
+                              radius: 10,
+                              offsetX: -10,
+                              offsetY: -10,
+                              blurRadius: 50),
                           child:
                           preImages[index],
                           // CommonNetworkImage(
@@ -424,7 +429,7 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
               color: AppColors.textWhiteOpacity5),
           tabs: [
             Tab(
-              height: UIDefine.getPixelWidth(38),
+              height: UIDefine.getPixelWidth(28),
               child: Container(
                 alignment: Alignment.topCenter,
                 //height: 40,

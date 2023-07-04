@@ -71,7 +71,7 @@ class _CreateMainPageState extends ConsumerState<CreateMainPage> with TickerProv
 
         /// 右側功能鍵
         Positioned(
-            top: UIDefine.getStatusBarHeight() + UIDefine.getPixelWidth(50),
+            top: UIDefine.getStatusBarHeight() + UIDefine.getPixelWidth(60),
             right: UIDefine.getPixelWidth(10),
             child: _buildRightFunction()),
 
@@ -91,9 +91,9 @@ class _CreateMainPageState extends ConsumerState<CreateMainPage> with TickerProv
 
         /// appbar
         Positioned(
-            top: UIDefine.getStatusBarHeight(),
-            left: UIDefine.getPixelWidth(10),
-            right: UIDefine.getPixelWidth(10),
+            top: UIDefine.getStatusBarHeight() + UIDefine.getPixelWidth(10),
+            left: UIDefine.getPixelWidth(16),
+            right: UIDefine.getPixelWidth(16),
             child: _buildAppBar()),
       ]),
     );
