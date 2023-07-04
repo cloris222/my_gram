@@ -126,7 +126,8 @@ class _DynamicInfoViewState extends State<DynamicInfoView> {
             top:0,
             bottom:0,child: _buildPhotoImage()),
         Positioned(
-            bottom: UIDefine.getViewHeight()*0.1,
+          bottom: UIDefine.getPixelWidth(80),
+            // bottom: UIDefine.getViewHeight()*0.1,
             left: 0,
             right: 0,
             child: Container(
@@ -138,7 +139,8 @@ class _DynamicInfoViewState extends State<DynamicInfoView> {
               ),
             )),
         Positioned(
-            bottom: UIDefine.getViewHeight()>600?UIDefine.getViewHeight()*0.04:UIDefine.getViewHeight()*0.02,
+          bottom: UIDefine.getPixelWidth(34),
+            // bottom: UIDefine.getViewHeight()>600?UIDefine.getViewHeight()*0.04:UIDefine.getViewHeight()*0.02,
             left: UIDefine.getPixelWidth(10),
             right: UIDefine.getPixelWidth(10),
             child: _buildActionButtons())
