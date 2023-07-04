@@ -210,7 +210,7 @@ class AppStyle {
       double spreadRadius = 0}) {
     return BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(radius)),
-        color: Colors.white,
+        color: borderBgColor,
         border: Border.all(color: borderColor, width: borderWidth),
         boxShadow: [
           BoxShadow(
