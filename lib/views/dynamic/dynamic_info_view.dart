@@ -67,8 +67,8 @@ class _DynamicInfoViewState extends State<DynamicInfoView> {
     /// 預載
     for (var element in widget.data.images) {
       preImages.add(Image.asset(element, width: UIDefine.getWidth(),
-        height: UIDefine.getHeight() * 0.6,
-        fit: BoxFit.cover));
+        // height: UIDefine.getHeight() * 0.6,
+        fit: BoxFit.fitWidth));
     }
 
     Future.delayed(Duration.zero, () {
@@ -90,8 +90,8 @@ class _DynamicInfoViewState extends State<DynamicInfoView> {
      /// 預載
      for (var element in widget.data.images) {
        preImages.add(Image.asset(element, width: UIDefine.getWidth(),
-           height: UIDefine.getHeight() * 0.6,
-           fit: BoxFit.cover));
+           // height: UIDefine.getHeight() * 0.6,
+           fit: BoxFit.fitWidth));
      }
 
      Future.delayed(Duration.zero, () {
@@ -119,11 +119,12 @@ class _DynamicInfoViewState extends State<DynamicInfoView> {
       children: [
         Container(
           width: UIDefine.getWidth(),
-          height: UIDefine.getViewHeight()*0.85,
+          height:UIDefine.getViewHeight()>600?UIDefine.getViewHeight()*0.85:UIDefine.getViewHeight()*1.2,
           // color: Colors.blue,
         ),
         Positioned(
-            top:0,child: _buildPhotoImage()),
+            top:0,
+            bottom:0,child: _buildPhotoImage()),
         Positioned(
             bottom: UIDefine.getViewHeight()*0.1,
             left: 0,
@@ -137,7 +138,7 @@ class _DynamicInfoViewState extends State<DynamicInfoView> {
               ),
             )),
         Positioned(
-            bottom: UIDefine.getViewHeight()*0.04,
+            bottom: UIDefine.getViewHeight()>600?UIDefine.getViewHeight()*0.04:UIDefine.getViewHeight()*0.02,
             left: UIDefine.getPixelWidth(10),
             right: UIDefine.getPixelWidth(10),
             child: _buildActionButtons())
@@ -145,51 +146,52 @@ class _DynamicInfoViewState extends State<DynamicInfoView> {
     );
   }
 
-  Widget _buildImageView(){
+  //
+
+  Widget _buildImageView() {
     return Container(
       width: UIDefine.getWidth(),
-      height: UIDefine.getHeight()*0.6,
-      child: PageView(
-        controller: controller,
-        onPageChanged: (int index){
-          setState(() {
-            currentIndex = index;
-          });
-        },
-        children: List<Widget>.generate(widget.data.images.length, (index){
-          return Container(
-            width: UIDefine.getWidth(),
-            height: UIDefine.getHeight()*0.6,
-            clipBehavior: Clip.antiAlias,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(15)),
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(15)),
-              child: preImages[index]
-              // CommonNetworkImage(
-              //   imageUrl: widget.data.images[index],
-              //   width: UIDefine.getWidth(),
-              //   height: UIDefine.getHeight()*0.6,
-              //   fit: BoxFit.cover,
-              // ),
-            ),
-          );
-        }),
+      child: AspectRatio(
+        aspectRatio: 3 / 4,
+        child: PageView.builder(
+          controller: controller,
+          onPageChanged: (int index) {
+            setState(() {
+              currentIndex = index;
+            });
+          },
+          itemCount: widget.data.images.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Container(
+              clipBehavior: Clip.antiAlias,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(15)),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(15)),
+                child: preImages[index],
+                // CommonNetworkImage(
+                //   imageUrl: widget.data.images[index],
+                //   fit: BoxFit.cover,
+                // ),
+              ),
+            );
+          },
+        ),
       ),
     );
   }
+
 
   Widget _buildPhotoImage(){
     return GestureDetector(
       onTapUp: _onTapUp,
       child: Stack(
         children: [
-          Container(
-            // color: Colors.red,
-            width: UIDefine.getWidth(),
-            height: UIDefine.getHeight()*0.6,
-          ),
+          // Container(
+          //   width: UIDefine.getWidth(),
+          //   height: UIDefine.getHeight()*0.6,
+          // ),
           _buildImageView(),
            Positioned(
               top: 0,
