@@ -329,7 +329,7 @@ class _DynamicInfoViewState extends State<DynamicInfoView> {
 
   Widget _buildIconButton(String icon, {int? number}){
     return Container(
-      padding: EdgeInsets.symmetric(vertical:UIDefine.getPixelWidth(3),horizontal:UIDefine.getPixelWidth(8) ),
+      padding: EdgeInsets.symmetric(vertical:UIDefine.getPixelWidth(2),horizontal:UIDefine.getPixelWidth(8) ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         border: Border.all(color: AppColors.dynamicButtonsBorder.getColor().withOpacity(0.1),width: 1),

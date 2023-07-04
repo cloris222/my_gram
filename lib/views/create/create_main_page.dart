@@ -60,7 +60,7 @@ class _CreateMainPageState extends ConsumerState<CreateMainPage> with TickerProv
         Positioned(top: 0, right: 0, left: 0, child: _buildDemoImageView()),
 
         /// 中間主要展示圖（陰影)
-        const Positioned(top: 0, right: 0, left: 0, child: BarShadow(typeIndex: 1)),
+        Positioned(top: -UIDefine.getPixelWidth(5), right: 0, left: 0, child: BarShadow(typeIndex: 11)),
 
         /// 標籤
         Positioned(

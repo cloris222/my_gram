@@ -6,7 +6,7 @@ import '../../constant/theme/app_colors.dart';
 import '../../constant/theme/ui_define.dart';
 
 class BarShadow extends StatelessWidget {
-  const BarShadow({Key? key, this.height, this.typeIndex = 0})
+  const BarShadow({Key? key, this.height, this.typeIndex = 1})
       : super(key: key);
   final double? height;
   final int typeIndex;
@@ -14,17 +14,31 @@ class BarShadow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     switch (typeIndex) {
+      /// 通用
       case 1:
         return Container(
-            height: height ?? UIDefine.getPixelWidth(50),
+            height: height ?? UIDefine.getPixelWidth(80),
             width: UIDefine.getWidth(),
             decoration: AppStyle().styleShadowBorderBackground(
                 borderBgColor: Colors.transparent,
-                shadowColor: AppColors.textBlack.getColor().withOpacity(0.6),
-                radius: 20,
+                shadowColor: AppColors.textBlack.getColor().withOpacity(0.4),
+                radius: 0,
                 offsetX: 0,
                 offsetY: 0.5,
-                blurRadius: 80));
+                blurRadius: 40));
+
+      /// for創建使用
+      case 11:
+        return Container(
+            height: height ?? UIDefine.getPixelWidth(80),
+            width: UIDefine.getWidth(),
+            decoration: AppStyle().styleShadowBorderBackground(
+                borderBgColor: Colors.transparent,
+                shadowColor: AppColors.textBlack.getColor().withOpacity(0.4),
+                radius: 5,
+                offsetX: 0,
+                offsetY: 0.5,
+                blurRadius: 70));
       case 2:
         return GlassContainer(
             height: height ?? UIDefine.getPixelWidth(91),
@@ -76,6 +90,7 @@ class BarShadow extends StatelessWidget {
                     .withOpacity(opacity > 0 ? opacity : 0);
               }),
             )));
+
       default:
         return Container(
           height: height ?? UIDefine.getPixelWidth(91),

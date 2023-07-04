@@ -232,7 +232,7 @@ class _SwipeImageViewState extends State<SwipeImageView>
                 top: 0,
                 left:0,
                 right: 0,
-                child: BarShadow()),
+                child: BarShadow(typeIndex:1)),
             Positioned(
                 left: UIDefine.getPixelWidth(45),
                 right: UIDefine.getPixelWidth(45),
