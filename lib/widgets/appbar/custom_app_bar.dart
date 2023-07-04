@@ -3,6 +3,7 @@ import 'package:base_project/constant/theme/app_colors.dart';
 import 'package:base_project/constant/theme/app_image_path.dart';
 import 'package:base_project/constant/theme/app_text_style.dart';
 import 'package:base_project/constant/theme/ui_define.dart';
+import 'package:base_project/main.dart';
 import 'package:base_project/view_models/base_view_model.dart';
 import 'package:base_project/view_models/call_back_function.dart';
 import 'package:base_project/view_models/message/message_private_message_view_model.dart';
@@ -125,11 +126,11 @@ class CustomAppBar {
 
   static AppBar actionWordAppBar(
     BuildContext context, {
-      required String title,
-      required String actionWord,
-      onClickFunction? pressApply,
-      onClickFunction? onPressBack,
-    }) {
+    required String title,
+    required String actionWord,
+    onClickFunction? pressApply,
+    onClickFunction? onPressBack,
+  }) {
     return AppBar(
       elevation: 0,
       automaticallyImplyLeading: false,
@@ -175,8 +176,9 @@ class CustomAppBar {
           child: IconButton(
               onPressed: () {
                 if (onPressBack == null) {
+                  FocusScope.of(context).unfocus();
                   // Navigator.pop(context);
-                  BaseViewModel().changeMainScreenPage(AppNavigationBarType.typePair);
+                  BaseViewModel().changeMainScreenPage(AppNavigationBarType.typePersonal);
                 } else {
                   onPressBack();
                 }
@@ -194,28 +196,29 @@ class CustomAppBar {
             ),
           ),
           Flexible(
-            child: Container(
-              child: Text(nickName,
-                style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize16, overflow: TextOverflow.ellipsis)))),
+              child: Container(
+                  child: Text(nickName,
+                      style:
+                          AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize16, overflow: TextOverflow.ellipsis)))),
           ref.watch(showImageWallProvider)
-          ? Container()
-          : Padding(
-            padding: EdgeInsets.only(left: UIDefine.getPixelWidth(8)),
-            child: Container(
-                alignment: Alignment.center,
-                width: UIDefine.getPixelWidth(24),
-                child: GestureDetector(
-                  child: Icon(
-                    Icons.keyboard_arrow_down,
-                    color: AppColors.buttonCameraBg.light,
+              ? Container()
+              : Padding(
+                  padding: EdgeInsets.only(left: UIDefine.getPixelWidth(8)),
+                  child: Container(
+                    alignment: Alignment.center,
+                    width: UIDefine.getPixelWidth(24),
+                    child: GestureDetector(
+                      child: Icon(
+                        Icons.keyboard_arrow_down,
+                        color: AppColors.buttonCameraBg.light,
+                      ),
+                      onTap: () {
+                        bool open = true;
+                        MessagePrivateGroupMessageViewModel(ref).changeImgWallState(open);
+                      },
+                    ),
                   ),
-                  onTap: () {
-                    bool open = true;
-                    MessagePrivateGroupMessageViewModel(ref).changeImgWallState(open);
-                  },
                 ),
-              ),
-          ),
         ],
       ),
       actions: <Widget>[

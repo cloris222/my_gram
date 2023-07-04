@@ -5,7 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../constant/theme/app_colors.dart';
 import '../../constant/theme/app_image_path.dart';
+import '../../constant/theme/global_data.dart';
 import '../../constant/theme/ui_define.dart';
+import '../../view_models/create/create_main_view_model.dart';
 import '../common_scaffold.dart';
 
 class OtherCreatePage extends ConsumerStatefulWidget {
@@ -17,24 +19,33 @@ class OtherCreatePage extends ConsumerStatefulWidget {
   ConsumerState createState() => _OtherCreatePageState();
 }
 
-class _OtherCreatePageState extends ConsumerState<OtherCreatePage> with TickerProviderStateMixin{
+class _OtherCreatePageState extends ConsumerState<OtherCreatePage> with TickerProviderStateMixin {
   late TabController _tabController;
+  late CreateMainViewModel viewModel;
 
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
+    viewModel = CreateMainViewModel(ref);
+    // Future.delayed(Duration(milliseconds: 100)).then(
+    //   (value) {
+
+    //   },
+    // );
+    // setState(() {
+    viewModel.getPrompt(() {
+      setState(() {});
+    });
+    // });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return CommonScaffold(
-      appBar: CustomAppBar.actionWordAppBar(
-        context, title: "tryOtherCreate".tr(), 
-        actionWord: "apply".tr()),
-      body: (isDark) =>
-       Container(
-         child: Column(
+      appBar: CustomAppBar.actionWordAppBar(context, title: "tryOtherCreate".tr(), actionWord: "apply".tr()),
+      body: (isDark) => Container(
+        child: Column(
           children: [
             // Container(
             //   width: UIDefine.getWidth(),
@@ -74,27 +85,23 @@ class _OtherCreatePageState extends ConsumerState<OtherCreatePage> with TickerPr
                 ),
               ),
             ),
-            _buildTabBar(context)
-            // TabBar(
-            //   controller: _tabController,
-            //   tabs: [
-            //     Container(
-            //       child: Text("最近"),
-            //     ),
-            //     Container(
-            //       child: Text("熱門"),
-            //     )
-            // ])
+            _buildTabBar(context),
+            Expanded(
+              child: Container(
+                // height: 10,
+                child: _buildTabView(),
+              ),
+            )
           ],
-             ),
-       ),
+        ),
+      ),
     );
   }
 
   Widget _buildTabBar(BuildContext context) {
     return Container(
       height: UIDefine.getPixelHeight(36),
-      decoration:  BoxDecoration(
+      decoration: BoxDecoration(
           color: Colors.transparent,
           border: Border(
             bottom: BorderSide(
@@ -104,17 +111,16 @@ class _OtherCreatePageState extends ConsumerState<OtherCreatePage> with TickerPr
           )),
       child: TabBar(
         indicator: UnderlineTabIndicator(
-          borderRadius: const BorderRadius.all(Radius.circular(5)),
-          borderSide: BorderSide(width: 3,color: AppColors.mainThemeButton.getColor()),
-          insets: EdgeInsets.symmetric(horizontal: UIDefine.getScreenWidth(28))
-        ),
+            borderRadius: const BorderRadius.all(Radius.circular(5)),
+            borderSide: BorderSide(width: 3, color: AppColors.mainThemeButton.getColor()),
+            insets: EdgeInsets.symmetric(horizontal: UIDefine.getScreenWidth(28))),
         controller: _tabController,
         tabs: [
           Container(
-            child: Text("test1"),
+            child: Text("recent".tr()),
           ),
           Container(
-            child: Text("test2"),
+            child: Text("popular".tr()),
           )
         ],
       ),
@@ -122,6 +128,18 @@ class _OtherCreatePageState extends ConsumerState<OtherCreatePage> with TickerPr
   }
 
   Widget _buildTabView() {
-    return Container();
+    return Consumer(builder: (context, ref, child) {
+      final popularCreateDataList = ref.watch(popularCreateDataProvider);
+      return GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 10,
+          ),
+          itemCount: popularCreateDataList.length,
+          itemBuilder: (BuildContext context, index) {
+            return Container(child: Image.network(
+              "${GlobalData.urlPrefix}${popularCreateDataList[index].imgUrl}"));
+          });
+    });
   }
 }

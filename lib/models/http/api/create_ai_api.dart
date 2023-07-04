@@ -9,10 +9,14 @@ class CreateAiAPI extends HttpManager {
   CreateAiAPI({super.onConnectFail});
 
   /// 查詢近期、熱門
-  // Future<List<PopularCreateData>> queryPopular() async {
-  //   var response = await get("/createAvatar/getPromptByType");
-  //   return 
-  // }
+  Future popularFeature(String type) async {
+    var response = await get("/createAvatar/getPromptByType?type=${type}");
+    List<PopularCreateData> result = [];
+    for (Map<String, dynamic> json in response.data["pageList"]) {
+      result.add(PopularCreateData.fromJson(json));
+    }
+    return result;
+  }
 
   /// 查詢身體特徵列表
   Future<List<String>> queryBodyFeature() async {
@@ -28,8 +32,7 @@ class CreateAiAPI extends HttpManager {
 
   /// 查詢特徵詳細列表
   Future<List<FeatureDetailData>> queryFeatureDetail(String feature) async {
-    var response = await get("/createAvatar/bodyFeatureDetail",
-        queryParameters: {"feature": feature});
+    var response = await get("/createAvatar/bodyFeatureDetail", queryParameters: {"feature": feature});
     List<FeatureDetailData> list = [];
     for (Map<String, dynamic> json in response.data) {
       var data = FeatureDetailData.fromJson(json);
@@ -49,8 +52,7 @@ class CreateAiAPI extends HttpManager {
     // if(feature.isNotEmpty){
     //   feature=feature.substring(0,feature.length-1);
     // }
-    var response = await post("/createAvatar/createImg",
-        data: {"feature": features, "sdRequestParamSettingId": 1});
+    var response = await post("/createAvatar/createImg", data: {"feature": features, "sdRequestParamSettingId": 1});
     return CreateAiInfo.fromJson(response.data);
   }
 }
