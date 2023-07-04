@@ -98,29 +98,41 @@ class CustomAppBar {
     );
   }
 
-  static AppBar personalAppBar(BuildContext context, {required String title, onClickFunction? onPressBack}) {
+  static AppBar personalAppBar(BuildContext context, {required double height}) {
     return AppBar(
       elevation: 0,
       automaticallyImplyLeading: false,
       backgroundColor: Colors.transparent,
-      centerTitle: true,
-      leading: GestureDetector(
-        onTap: () {
-          if (onPressBack == null) {
-            Navigator.pop(context);
-          } else {
-            onPressBack();
-          }
-        },
-        child: Image.asset(AppImagePath.arrowLeft),
+      toolbarHeight: height,
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          GestureDetector(
+              onTap:(){
+                // Navigator.pop(context);
+                BaseViewModel().changeMainScreenPage( AppNavigationBarType.typePair);
+              },
+              child: Container(
+                  width: UIDefine.getPixelWidth(24),
+                  height: UIDefine.getPixelWidth(24),
+                  child: Image.asset(AppImagePath.arrowLeft,fit: BoxFit.fill,))),
+          Expanded(child: Container()),
+          Text(
+            'Rebecca',
+            style: AppTextStyle.getBaseStyle(
+                fontSize: UIDefine.fontSize16,
+                fontWeight: FontWeight.w600),
+          ),
+          Expanded(child: Container()),
+          GestureDetector(
+            onTap: () {},
+            child: Container(
+                width: UIDefine.getPixelWidth(30),
+                height: UIDefine.getPixelWidth(30),
+                child: Image.asset(AppImagePath.hotIcon,fit: BoxFit.fill,)),
+          )
+        ],
       ),
-      title: Text(title, style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize16, fontWeight: FontWeight.w600)),
-      actions: [
-        GestureDetector(
-          onTap: () {},
-          child: Image.asset(AppImagePath.hotIcon),
-        )
-      ],
     );
   }
 
