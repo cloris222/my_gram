@@ -1,4 +1,7 @@
+import 'package:base_project/constant/theme/app_style.dart';
+import 'package:base_project/constant/theme/app_text_style.dart';
 import 'package:base_project/widgets/appbar/custom_app_bar.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -22,79 +25,72 @@ class OtherCreatePage extends ConsumerStatefulWidget {
 class _OtherCreatePageState extends ConsumerState<OtherCreatePage> with TickerProviderStateMixin {
   late TabController _tabController;
   late CreateMainViewModel viewModel;
+  
+  List list = [];
 
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
     viewModel = CreateMainViewModel(ref);
-    // Future.delayed(Duration(milliseconds: 100)).then(
-    //   (value) {
-
-    //   },
-    // );
-    // setState(() {
-    viewModel.getPrompt(() {
-      setState(() {});
+    Future.delayed(
+      Duration(milliseconds: 100),
+    ).then((value) {
+      ref.read(popularSelectIdProvider.notifier).update((state) => "");
+      ref.read(hotSelectIdProvider.notifier).update((state) => "");
+      viewModel.getPrompt();
     });
-    // });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return CommonScaffold(
-      appBar: CustomAppBar.actionWordAppBar(context, title: "tryOtherCreate".tr(), actionWord: "apply".tr()),
+      appBar: CustomAppBar.popularCreateAppBar(ref, context, title: "tryOtherCreate".tr(), actionWord: "apply".tr(),
+          pressApply: () {
+        viewModel.applyAi();
+      }),
       body: (isDark) => Container(
-        child: Column(
-          children: [
-            // Container(
-            //   width: UIDefine.getWidth(),
-            //   child: Row(
-            //     children: [
-            //       Container(
-            //         height: UIDefine.getPixelHeight(24),
-            //         width: UIDefine.getPixelWidth(24),
-            //         child: Image.asset(
-            //           AppImagePath.closeSheet,
-            //           color: Colors.white,
-            //         ),
-            //       ),
-            //       Expanded(
-            //         child: Container(
-            //           alignment: Alignment.center,
-            //           child: Text(
-            //             "tryOtherCreate".tr(),
-            //             style: TextStyle(color: Colors.white),
-            //           ),
-            //         ),
-            //       ),
-            //       Container(
-            //         child: GestureDetector(
-            //           child: Text("apply".tr()),
-            //         ),
-            //       )
-            //     ],
-            //   ),
-            // ),
-            Padding(
-              padding: EdgeInsets.only(top: UIDefine.getPixelHeight(13)),
-              child: Container(
-                child: Text(
-                  "otherCreaterMessage".tr(),
-                  style: TextStyle(color: AppColors.tryOtherSheet.light),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(20)),
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(top: UIDefine.getPixelHeight(13),bottom: UIDefine.getPixelHeight(8)),
+                child: Container(
+                  alignment: Alignment.center,
+                  child: Text(
+                    "otherCreaterMessage".tr(),
+                    textAlign: TextAlign.center,
+                    style: AppTextStyle.getBaseStyle(
+                      color: AppColors.textWhiteOpacity5,
+                      fontSize: UIDefine.fontSize13,
+                    ),
+                  ),
                 ),
               ),
-            ),
-            _buildTabBar(context),
-            Expanded(
-              child: Container(
-                // height: 10,
-                child: _buildTabView(),
-              ),
-            )
-          ],
+              _buildTabBar(context),
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.only(top: UIDefine.getPixelHeight(16)),
+                  child: Container(
+                    child: _buildTabBarView(),
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
+    );
+  }
+
+  Widget _buildTabBarView() {
+    return TabBarView(
+      controller: _tabController,
+      children: [
+        _recentTabView(),
+        _hotTabView(),
+      ],
     );
   }
 
@@ -110,35 +106,109 @@ class _OtherCreatePageState extends ConsumerState<OtherCreatePage> with TickerPr
             ),
           )),
       child: TabBar(
+        labelStyle: TextStyle(fontSize: UIDefine.fontSize14),
         indicator: UnderlineTabIndicator(
             borderRadius: const BorderRadius.all(Radius.circular(5)),
-            borderSide: BorderSide(width: 3, color: AppColors.mainThemeButton.getColor()),
+            borderSide: BorderSide(width: 2, color: AppColors.mainThemeButton.getColor()),
             insets: EdgeInsets.symmetric(horizontal: UIDefine.getScreenWidth(28))),
         controller: _tabController,
-        tabs: [
-          Container(
-            child: Text("recent".tr()),
-          ),
-          Container(
-            child: Text("popular".tr()),
-          )
-        ],
+        tabs: viewModel.tabs.map((e) => Tab(text: e)).toList(),
       ),
     );
   }
 
-  Widget _buildTabView() {
+  Widget _recentTabView() {
     return Consumer(builder: (context, ref, child) {
       final popularCreateDataList = ref.watch(popularCreateDataProvider);
+      final popularSelect = ref.watch(popularSelectIdProvider);
       return GridView.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
-            crossAxisSpacing: 10,
+            mainAxisExtent: UIDefine.getPixelHeight(203),
+            mainAxisSpacing: UIDefine.getPixelHeight(13),
+            crossAxisSpacing: UIDefine.getPixelWidth(8),
           ),
           itemCount: popularCreateDataList.length,
           itemBuilder: (BuildContext context, index) {
-            return Container(child: Image.network(
-              "${GlobalData.urlPrefix}${popularCreateDataList[index].imgUrl}"));
+            final item = popularCreateDataList[index];
+            return GestureDetector(
+              onTap: () {
+                if (ref.watch(hotSelectIdProvider.notifier).state.isNotEmpty) {
+                  ref.read(hotSelectIdProvider.notifier).update((state) => "");
+                  ref.read(popularSelectIdProvider.notifier).update((state) => item.id);
+                } else {
+                  ref.read(popularSelectIdProvider.notifier).update((state) => item.id);
+                }
+                viewModel.selectData = item.feature;
+                print("after: ${viewModel.selectData}");
+                print("item: ${item.prompt}");
+                print("typeis: ${item.prompt.runtimeType}");
+              },
+              child: Container(
+                alignment: Alignment.topRight,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                  image: CachedNetworkImageProvider("${GlobalData.urlPrefix}${item.imgUrl}"),
+                )),
+                child: Padding(
+                  padding: EdgeInsets.only(top: UIDefine.getPixelHeight(9), right: UIDefine.getPixelWidth(9)),
+                  child: Container(
+                    // color: Colors.red,
+                    // height: UIDefine.getPixelWidth(21),
+                    // width: UIDefine.getPixelWidth(21),
+                    child: ref.watch(popularSelectIdProvider.notifier).state == item.id?
+                    Image.asset(AppImagePath.choose,):
+                    Image.asset(AppImagePath.unChoose),
+                  ),
+                ),
+              ),
+            );
+          });
+    });
+  }
+
+  Widget _hotTabView() {
+    return Consumer(builder: (context, ref, child) {
+      final hotCreateDataList = ref.watch(hotCreateDataProvider);
+      final hotSelect = ref.watch(hotSelectIdProvider);
+      return GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            mainAxisExtent: UIDefine.getPixelHeight(203),
+            mainAxisSpacing: UIDefine.getPixelHeight(13),
+            crossAxisSpacing: UIDefine.getPixelWidth(8),
+          ),
+          itemCount: hotCreateDataList.length,
+          itemBuilder: (BuildContext context, index) {
+            final item = hotCreateDataList[index];
+            return GestureDetector(
+              onTap: () {
+                if (ref.watch(popularSelectIdProvider.notifier).state.isNotEmpty) {
+                  ref.read(popularSelectIdProvider.notifier).update((state) => "");
+                  ref.read(hotSelectIdProvider.notifier).update((state) => item.id);
+                } else {
+                  ref.read(hotSelectIdProvider.notifier).update((state) => item.id);
+                }
+                viewModel.selectData = item.feature;
+              },
+              child: Container(
+                alignment: Alignment.topRight,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                  image: CachedNetworkImageProvider("${GlobalData.urlPrefix}${item.imgUrl}"),
+                )),
+                child: Padding(
+                  padding: EdgeInsets.only(top: UIDefine.getPixelHeight(9), right: UIDefine.getPixelWidth(9)),
+                  child: Container(
+                    // height: UIDefine.getPixelWidth(21),
+                    // width: UIDefine.getPixelWidth(21),
+                    child: ref.watch(hotSelectIdProvider.notifier).state == item.id?
+                    Image.asset(AppImagePath.choose,):
+                    Image.asset(AppImagePath.unChoose),
+                  ),
+                ),
+              ),
+            );
           });
     });
   }

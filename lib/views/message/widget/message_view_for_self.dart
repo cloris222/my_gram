@@ -1,4 +1,5 @@
 import 'package:base_project/constant/theme/app_gradient_colors.dart';
+import 'package:base_project/constant/theme/app_text_style.dart';
 import 'package:base_project/utils/date_format_util.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -51,12 +52,12 @@ class _MessageViewForSelf extends ConsumerState<MessageViewForSelf> with TickerP
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-    // 時間+對話框框
-        Padding(
-          padding: EdgeInsets.all(UIDefine.getScreenWidth(1.66)),
-          child: Row(
+    return Padding(
+      padding: EdgeInsets.only(top: UIDefine.getPixelHeight(3)),
+      child: Stack(
+        children: [
+      // 時間+對話框框
+          Row(
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
@@ -64,9 +65,9 @@ class _MessageViewForSelf extends ConsumerState<MessageViewForSelf> with TickerP
               color: Colors.transparent,
                 child: Text(
                   DateFormatUtil().timeStamptoDate(data.timestamp),
-                  style: TextStyle(
-                    color: AppColors.commentUnlike.light,
-                    fontSize: UIDefine.fontSize8),
+                  style: AppTextStyle.getBaseStyle(
+                    color: AppColors.commentUnlike,
+                    fontSize: UIDefine.fontSize10),
                 ),
               ),
               SizedBox(width: 8),
@@ -75,8 +76,8 @@ class _MessageViewForSelf extends ConsumerState<MessageViewForSelf> with TickerP
               )
             ],
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -85,26 +86,31 @@ class _MessageViewForSelf extends ConsumerState<MessageViewForSelf> with TickerP
     return Container(
       alignment: Alignment.centerRight,
       decoration: BoxDecoration(
+        color: Colors.blue,
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(12), topRight: Radius.circular(12), bottomLeft: Radius.circular(12)),
           gradient: LinearGradient(colors: AppGradientColors.gradientBaseColorBg.getColors())
       ),
       child: Padding(
-        padding: EdgeInsets.fromLTRB(
-          UIDefine.getPixelWidth(10),
-          UIDefine.getPixelHeight(8),
-          UIDefine.getPixelWidth(10),
-          UIDefine.getPixelHeight(8),
-        ),
+        padding: EdgeInsets.all(UIDefine.getPixelWidth(8)),
+          // UIDefine.getPixelWidth(10),
+          // UIDefine.getPixelHeight(8),
+          // UIDefine.getPixelWidth(10),
+          // UIDefine.getPixelHeight(8),
+        // ),
         child: ConstrainedBox(
           constraints: BoxConstraints(maxWidth: UIDefine.getScreenWidth(50)),
           child: data.msgType == "TEXT"?
           Text(
-            data.content,
-            style: TextStyle(
-              height: 1.5,
-              color: AppColors.textBlack.dark,
-              fontSize: UIDefine.fontSize15),
+            data.content.replaceAll(' ', ''),
+            style: AppTextStyle.getBaseStyle(
+              color: AppColors.textBlack,
+              fontSize: UIDefine.fontSize15)
+            // TextStyle(
+              
+            //   height: 1.5,
+            //   color: AppColors.textBlack.dark,
+            //   fontSize: UIDefine.fontSize15),
           ):PlayAudioBubble(path: "${GlobalData.urlPrefix}${data.content}",bSelf: true,contentId: data.contentId,),
         )),
     );

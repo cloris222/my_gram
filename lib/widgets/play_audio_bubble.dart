@@ -105,7 +105,7 @@ class _PlayAudioBubbleState extends ConsumerState<PlayAudioBubble> {
   Widget build(BuildContext context) {
     ref.watch(playingContentIdProvider);
     return Container(
-      height: UIDefine.getPixelWidth(40),
+      height: UIDefine.getPixelWidth(25),
       child: Row(
         children: [
           SizedBox(
@@ -150,7 +150,7 @@ class _PlayAudioBubbleState extends ConsumerState<PlayAudioBubble> {
             borderWidth: 0,
           ),
           SizedBox(
-            width: UIDefine.getPixelWidth(10),
+            width: UIDefine.getPixelWidth(0),
           ),
           // _buildWaveform()
         ],
@@ -256,10 +256,10 @@ class _PlayAudioBubbleState extends ConsumerState<PlayAudioBubble> {
           });
         },
         child: Container(
-          width: UIDefine.getPixelWidth(30),
-          height: UIDefine.getPixelWidth(30),
+          width: UIDefine.getPixelWidth(24),
+          height: UIDefine.getPixelWidth(24),
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(15)),
+              borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(30)),
               color: AppColors.buttonAudio.getColor().withOpacity(0.2)),
           child: Image.asset(widget.bSelf ? AppImagePath.blackPlayIcon : AppImagePath.whitePlayIcon),
         ),

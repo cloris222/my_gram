@@ -26,7 +26,7 @@ enum AppColors {
   textBlack(dark: Color(0xFF000000), light: Color(0xFF000000)),
   textWhite(dark: Color(0xFFFFFFFF), light: Color(0xFFFFFFFF)),
   textHintColor(dark: Color(0xFF837F7E), light: Color(0xFF837F7E)),
-  textDetail(dark: Color.fromRGBO(255, 255, 255, 0.7), light: Color.fromRGBO(255, 255, 255, 0.7)),
+  textDetail(dark: Color(0xB1FFFFFF), light: Color(0xB1FFFFFF)),
   textWhiteOpacity4(dark: Color.fromRGBO(255, 255, 255, 0.4), light: Color.fromRGBO(255, 255, 255, 0.4)),
   textWhiteOpacity5(dark: Color.fromRGBO(255, 255, 255, 0.5), light: Color.fromRGBO(255, 255, 255, 0.5)),
 
@@ -44,6 +44,7 @@ enum AppColors {
   dynamicButtonsBorder(dark: Color(0xFFFEFEFE), light: Color(0xFFFEFEFE)),
   randomButton(dark: Color(0xCC7AB15F), light: Color(0xCC7AB15F)),
   recorderRed(dark: Color(0xFFC11D11), light: Color(0xFFC11D11)),
+  checkBoxGrey(dark:Color.fromARGB(185, 59, 55, 46),light: Color.fromARGB(255, 137, 135, 129)),
 
   ///背景顏色
   textFieldBackground(dark: Color(0xFF1F1F1F), light: Color(0xFFFFFFFF)),
@@ -61,6 +62,7 @@ enum AppColors {
   messageTextBg(dark: Color(0xFF18100C), light: Color(0xFF36302E)),
   launchBackground(dark: Color(0xFF010101), light: Color(0xFF010101)),
   tryOtherSheet(dark: Color.fromARGB(255, 33, 36, 32), light: Color.fromARGB(255, 146, 144, 143)),
+  
 
   /// 基本顏色
   transparent(dark: Colors.transparent, light: Colors.transparent);

@@ -6,6 +6,7 @@ import 'package:base_project/constant/theme/ui_define.dart';
 import 'package:base_project/main.dart';
 import 'package:base_project/view_models/base_view_model.dart';
 import 'package:base_project/view_models/call_back_function.dart';
+import 'package:base_project/view_models/create/create_main_view_model.dart';
 import 'package:base_project/view_models/message/message_private_message_view_model.dart';
 import 'package:base_project/views/login/register_main_page.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -124,7 +125,8 @@ class CustomAppBar {
     );
   }
 
-  static AppBar actionWordAppBar(
+  static AppBar popularCreateAppBar(
+    WidgetRef ref,
     BuildContext context, {
     required String title,
     required String actionWord,
@@ -132,24 +134,58 @@ class CustomAppBar {
     onClickFunction? onPressBack,
   }) {
     return AppBar(
+      centerTitle: true,
       elevation: 0,
       automaticallyImplyLeading: false,
-      backgroundColor: AppColors.mainBackground.dark,
+      backgroundColor: Colors.transparent,
       titleSpacing: 0,
       leading: Padding(
-        padding: EdgeInsets.all(0),
+        padding: EdgeInsets.only(left: UIDefine.getPixelWidth(16)),
         child: IconButton(
-          onPressed: () {},
-          icon: Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            if (onPressBack == null) {
+              FocusScope.of(context).unfocus();
+              Navigator.pop(context);
+              // BaseViewModel().changeMainScreenPage(AppNavigationBarType.typeCreate);
+            } else {
+              onPressBack();
+            }
+          },
+          icon: Icon(
+            Icons.arrow_back_ios,
+            size: 24,
+          ),
         ),
       ),
       title: Container(
-        child: Text("$title"),
+        child: Text(
+          "$title",
+          style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize16, color: AppColors.textPrimary),
+        ),
       ),
       actions: [
-        Container(
-          child: GestureDetector(
-            child: Text("$actionWord").tr(),
+        Padding(
+          padding: EdgeInsets.only(right: UIDefine.getPixelWidth(16)),
+          child: Container(
+            alignment: Alignment.center,
+            child: GestureDetector(
+              child: Text(
+                "$actionWord".tr(),
+                style: AppTextStyle.getBaseStyle(
+                  color: ref.watch(popularSelectIdProvider).isNotEmpty || ref.watch(hotSelectIdProvider).isNotEmpty
+                      ? AppColors.subThemePurple
+                      : AppColors.textWhiteOpacity5,
+                  fontSize: UIDefine.fontSize16,
+                ),
+              ),
+              onTap: () {
+                if (pressApply != null) {
+                  pressApply();
+                }
+                // ref.read(popularSelectIdProvider.notifier).update((state) => "");
+                // ref.read(hotSelectIdProvider.notifier).update((state) => "");
+              },
+            ),
           ),
         )
       ],
@@ -172,18 +208,16 @@ class CustomAppBar {
         padding: EdgeInsets.only(left: 10.0),
         child: Container(
           width: UIDefine.getPixelWidth(24),
-          // height: UIDefine.getPixelHeight(24),
-          child: IconButton(
-              onPressed: () {
-                if (onPressBack == null) {
-                  FocusScope.of(context).unfocus();
-                  // Navigator.pop(context);
-                  BaseViewModel().changeMainScreenPage(AppNavigationBarType.typePersonal);
-                } else {
-                  onPressBack();
-                }
-              },
-              icon: Icon(Icons.arrow_back_ios, color: AppColors.iconPrimary.getColor())),
+          child: GestureDetector(
+            child: Image.asset(AppImagePath.arrowLeft),
+            onTap: () {
+              if (onPressBack == null) {
+                BaseViewModel().changeMainScreenPage(AppNavigationBarType.typePersonal);
+              } else {
+                onPressBack();
+              }
+            },
+          ),
         ),
       ),
       title: Row(
@@ -191,8 +225,12 @@ class CustomAppBar {
         children: [
           Padding(
             padding: EdgeInsets.only(right: UIDefine.getPixelWidth(8)),
-            child: AvatarIconWidget(
-              imageUrl: avatar,
+            child: Container(
+              height: UIDefine.getPixelWidth(32),
+              width: UIDefine.getPixelWidth(32),
+              child: AvatarIconWidget(
+                imageUrl: avatar,
+              ),
             ),
           ),
           Flexible(
@@ -235,9 +273,9 @@ class CustomAppBar {
                 width: UIDefine.getPixelWidth(32),
                 padding: EdgeInsets.all(0),
                 decoration: BoxDecoration(
-                    color: AppColors.buttonCameraBg.light,
+                    color: Color.fromARGB(65, 255, 255, 255),
                     borderRadius: BorderRadius.all(Radius.circular(30)),
-                    border: Border.all(color: AppColors.buttonCameraBg.dark, width: 1)),
+                    border: Border.all(color: AppColors.buttonCameraBg.dark, width: 0.5)),
                 child: GestureDetector(
                   child: Image.asset(AppImagePath.searchIcon),
                 ),
@@ -250,9 +288,9 @@ class CustomAppBar {
                 // height: UIDefine.getPixelWidth(40),
                 padding: EdgeInsets.all(0),
                 decoration: BoxDecoration(
-                    color: AppColors.buttonCameraBg.light,
+                    color: Color.fromARGB(65, 255, 255, 255),
                     borderRadius: BorderRadius.all(Radius.circular(30)),
-                    border: Border.all(color: AppColors.buttonCameraBg.dark, width: 1)),
+                    border: Border.all(color: AppColors.buttonCameraBg.dark, width: 0.5)),
                 child: GestureDetector(
                   child: Image.asset(AppImagePath.otherIcon),
                 ),

@@ -66,7 +66,7 @@ class UIDefine {
     fontSize14 = _getFontSize(3.88);
     fontSize13 = _getFontSize(3.61);
     fontSize12 = _getFontSize(3.33);
-    fontSize10 = _getFontSize(3.0);
+    fontSize10 = _getFontSize(2.77);
     fontSize8 = _getFontSize(2.23);
 
     if (kDebugMode) {
