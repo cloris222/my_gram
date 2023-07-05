@@ -45,7 +45,6 @@ class _DynamicMainPageState extends ConsumerState<DynamicMainPage> {
 
   @override
   void initState() {
-    print('initState');
     scrollController = ScrollController(
         initialScrollOffset: isRebecca ? GlobalData.dynamicRebeccaOffset : GlobalData.dynamicOffset);
     scrollController.addListener(_setScrollerListener);

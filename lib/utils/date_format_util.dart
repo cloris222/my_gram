@@ -215,7 +215,6 @@ class DateFormatUtil {
     DateFormat dateFormat = DateFormat("yyyy-MM-dd");
     String date1 = dateFormat.format(dateTime1);
     String date2 = dateFormat.format(dateTime2);
-    print('date1: ${date1}');
     return date1 == date2;
   }
 

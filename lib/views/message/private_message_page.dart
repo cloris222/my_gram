@@ -79,7 +79,6 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
     // });
     viewModel = MessagePrivateGroupMessageViewModel(ref);
     viewModel.textFocusNode.addListener(() {
-      print('textFocusNode');
       setState(() {
         viewModel.isFocus = viewModel.textFocusNode.hasFocus;
         if (viewModel.isFocus == true) {
@@ -459,7 +458,6 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
           itemBuilder: (context, index) {
             var key = showingList[index].contentId;
             _keys[key] = _keys[key]??RectGetter.createGlobalKey();
-            print("${index}:${_keys[key]}");
             return RectGetter(
               key: _keys[key],
               child: Padding(

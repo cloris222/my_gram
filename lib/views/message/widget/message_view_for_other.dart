@@ -114,9 +114,9 @@ class _MessageViewForOthers extends ConsumerState<MessageViewForOther> with Tick
       // alignment: Alignment.centerLeft,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(12),
-            topRight: Radius.circular(12),
-            bottomRight: Radius.circular(12),
+            topLeft: Radius.circular(15),
+            topRight: Radius.circular(15),
+            bottomRight: Radius.circular(15),
           ),
           gradient: LinearGradient(colors: AppGradientColors.gradientOtherMessage.getColors())),
       child: Container(
@@ -126,7 +126,7 @@ class _MessageViewForOthers extends ConsumerState<MessageViewForOther> with Tick
           // UIDefine.getPixelWidth(10),
           // UIDefine.getPixelHeight(8),),
         child: ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: UIDefine.getScreenWidth(50)),
+          constraints: BoxConstraints(maxWidth: UIDefine.getPixelWidth(160)),
           child: data.msgType == "TEXT"?
           Container(
             child: Text(

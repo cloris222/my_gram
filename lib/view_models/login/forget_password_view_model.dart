@@ -72,7 +72,6 @@ class ForgetPasswordViewModel extends CheckTextEditorViewModel {
     checkEmptyController(tagValidate, validateController);
     
     if(!checkValidateResult(tagEmail) || !checkValidateResult(tagValidate)) return;
-    print('onpressnext${emailController.text}${validateController.text}');
     pushPage(context, ResetPasswordPage(
       emailAddress: emailController.text,
       validate: validateController.text,

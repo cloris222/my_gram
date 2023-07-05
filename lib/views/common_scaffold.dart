@@ -12,6 +12,7 @@ class CommonScaffold extends ConsumerWidget {
     this.appBar,
     this.resizeToAvoidBottomInset,
     this.extendBody = false,
+    this.extendBodyBehindAppBar = false,
     this.bottomNavigationBar,
     this.backgroundColor,
     this.canPop = true,
@@ -21,6 +22,7 @@ class CommonScaffold extends ConsumerWidget {
   final PreferredSizeWidget? appBar;
   final bool? resizeToAvoidBottomInset;
   final bool extendBody;
+  final bool extendBodyBehindAppBar;
   final Widget? bottomNavigationBar;
   final Color? backgroundColor;
   final bool canPop;
@@ -49,6 +51,7 @@ class CommonScaffold extends ConsumerWidget {
       backgroundColor: backgroundColor ?? AppColors.mainBackground.getColor(),
       resizeToAvoidBottomInset: resizeToAvoidBottomInset,
       extendBody: extendBody,
+      extendBodyBehindAppBar:extendBodyBehindAppBar ,
       bottomNavigationBar: bottomNavigationBar,
     );
   }

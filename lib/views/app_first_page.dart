@@ -84,6 +84,8 @@ class _AppFirstPageState extends State<AppFirstPage> {
                       children: [
                         Image.asset(
                           AppImagePath.fullLogo,
+                          width: UIDefine.getPixelWidth(106),
+                          fit: BoxFit.fitWidth,
                         ),
                         SizedBox(
                           height: UIDefine.getPixelWidth(32),
@@ -199,7 +201,7 @@ class _AppFirstPageState extends State<AppFirstPage> {
             child: Container(
               width: UIDefine.getPixelWidth(24),
               height: UIDefine.getPixelWidth(24),
-              color: Colors.grey.withOpacity(0.5),
+              color: Colors.grey.withOpacity(0.3),
               child: Image.asset(
                 image,
               ),

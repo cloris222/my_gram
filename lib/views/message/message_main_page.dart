@@ -104,7 +104,6 @@ class _MessageMainPageState extends State<MessageMainPage> {
                     _pinChat(index);
                   },
                   onLongPress:(index){
-                    print('onLongPress');
                      _onLongPress(context,index).then((value) => setState((){}));
                   },
                   onTap: (index){

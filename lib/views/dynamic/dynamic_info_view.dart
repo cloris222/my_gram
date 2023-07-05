@@ -119,31 +119,31 @@ class _DynamicInfoViewState extends State<DynamicInfoView> {
       children: [
         Container(
           width: UIDefine.getWidth(),
-          height:UIDefine.getViewHeight()>600?UIDefine.getViewHeight()*0.85:UIDefine.getViewHeight()*1.2,
+          // height:UIDefine.getViewHeight()*0.85
+          height:UIDefine.getViewHeight()>600?UIDefine.getViewHeight()*0.85:UIDefine.getViewHeight()*1.1,
           // color: Colors.blue,
         ),
         Positioned(
             top:0,
             bottom:0,child: _buildPhotoImage()),
         Positioned(
-          bottom: UIDefine.getPixelWidth(80),
-            // bottom: UIDefine.getViewHeight()*0.1,
+          // bottom: UIDefine.getViewHeight()*0.02,
+            bottom: UIDefine.getViewHeight()>600?UIDefine.getViewHeight()*0.02:UIDefine.getViewHeight()*0.05,
             left: 0,
             right: 0,
             child: Container(
               width: UIDefine.getWidth(),
-              child: Row(
+              child: Column(
                 children: [
                   _buildInfoCard(),
+                  SizedBox(height: UIDefine.getPixelWidth(16),),
+                  Padding(
+                    padding:EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(16)),
+                    child: _buildActionButtons(),
+                  )
                 ],
               ),
             )),
-        Positioned(
-          bottom: UIDefine.getPixelWidth(34),
-            // bottom: UIDefine.getViewHeight()>600?UIDefine.getViewHeight()*0.04:UIDefine.getViewHeight()*0.02,
-            left: UIDefine.getPixelWidth(10),
-            right: UIDefine.getPixelWidth(10),
-            child: _buildActionButtons())
       ],
     );
   }

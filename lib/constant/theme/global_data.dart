@@ -25,6 +25,7 @@ class GlobalData {
   static bool firstLaunch = true;
   static List<CountryPhoneData> country = [];
   static AppNavigationBarType mainBottomType = AppNavigationBarType.typePair;
+  static AppNavigationBarType preBottomType = AppNavigationBarType.typePair;
 
   /// 樣式
   static bool isDark = false;

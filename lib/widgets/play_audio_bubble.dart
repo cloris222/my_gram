@@ -104,57 +104,48 @@ class _PlayAudioBubbleState extends ConsumerState<PlayAudioBubble> {
   @override
   Widget build(BuildContext context) {
     ref.watch(playingContentIdProvider);
-    return Container(
-      height: UIDefine.getPixelWidth(25),
-      child: Row(
-        children: [
-          SizedBox(
-            width: UIDefine.getPixelWidth(5),
-          ),
-          _buildActionButton(),
-          SizedBox(
-            width: UIDefine.getPixelWidth(10),
-          ),
-          playerState == audio.PlayerState.playing || playerState == audio.PlayerState.paused
-              ? Text(
-                  playerText,
-                  style: AppTextStyle.getBaseStyle(
-                      color: widget.bSelf ? AppColors.textBlack : AppColors.textWhite,
-                      fontSize: UIDefine.fontSize14,
-                      fontWeight: FontWeight.w400),
-                )
-              : Text(
-                  totalDurationText!,
-                  style: AppTextStyle.getBaseStyle(
-                      color: widget.bSelf ? AppColors.textBlack : AppColors.textWhite,
-                      fontSize: UIDefine.fontSize14,
-                      fontWeight: FontWeight.w400),
-                ),
-          SizedBox(
-            width: UIDefine.getPixelWidth(15),
-          ),
-          RectangleWaveform(
-            maxDuration: duration ?? Duration(seconds: 1),
-            elapsedDuration: currentPosition ?? Duration.zero,
-            samples: [0, -2, 3, 10, 4, 10, 6, 3, 10, 0, 4, 14, 4, 10, 6, 3, 10, 0, 4, 6, 4, 10, 6, 3, 10, 8, 5, 3],
-            height: UIDefine.getPixelWidth(30),
-            width: UIDefine.getPixelWidth(70),
-            inactiveColor:
-                widget.bSelf ? AppColors.buttonAudio.getColor().withOpacity(0.3) : Colors.white.withOpacity(0.5),
-            activeColor: widget.bSelf ? AppColors.textBlack.getColor() : AppColors.textWhite.getColor(),
-            activeBorderColor: Colors.transparent,
-            inactiveBorderColor: Colors.transparent,
-            showActiveWaveform: true,
-            isRoundedRectangle: true,
-            isCentered: true,
-            borderWidth: 0,
-          ),
-          SizedBox(
-            width: UIDefine.getPixelWidth(0),
-          ),
-          // _buildWaveform()
-        ],
-      ),
+    return Row(
+      children: [
+        _buildActionButton(),
+        SizedBox(
+          width: UIDefine.getPixelWidth(10),
+        ),
+        playerState == audio.PlayerState.playing || playerState == audio.PlayerState.paused
+            ? Text(
+                playerText,
+                style: AppTextStyle.getBaseStyle(
+                    color: widget.bSelf ? AppColors.textBlack : AppColors.textWhite,
+                    fontSize: UIDefine.fontSize14,
+                    fontWeight: FontWeight.w400),
+              )
+            : Text(
+                totalDurationText!,
+                style: AppTextStyle.getBaseStyle(
+                    color: widget.bSelf ? AppColors.textBlack : AppColors.textWhite,
+                    fontSize: UIDefine.fontSize14,
+                    fontWeight: FontWeight.w400),
+              ),
+        SizedBox(
+          width: UIDefine.getPixelWidth(10),
+        ),
+        RectangleWaveform(
+          maxDuration: duration ?? Duration(seconds: 1),
+          elapsedDuration: currentPosition ?? Duration.zero,
+          samples: [0, -2, 3, 10, 4, 10, 6, 3, 10, 0, 4, 14, 4, 10, 6, 3, 10, 0, 4, 6, 4, 10, 6, 3, 10, 8, 5, 3],
+          height: UIDefine.getPixelWidth(30),
+          width: UIDefine.getPixelWidth(65),
+          inactiveColor:
+              widget.bSelf ? AppColors.buttonAudio.getColor().withOpacity(0.3) : Colors.white.withOpacity(0.5),
+          activeColor: widget.bSelf ? AppColors.textBlack.getColor() : AppColors.textWhite.getColor(),
+          activeBorderColor: Colors.transparent,
+          inactiveBorderColor: Colors.transparent,
+          showActiveWaveform: true,
+          isRoundedRectangle: true,
+          isCentered: true,
+          borderWidth: 0,
+        ),
+        // _buildWaveform()
+      ],
     );
   }
 

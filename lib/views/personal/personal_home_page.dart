@@ -8,9 +8,11 @@ import 'package:base_project/models/http/data/personal_info_data.dart';
 import 'package:base_project/models/http/data/post_info_data.dart';
 import 'package:base_project/utils/pitch_data_util.dart';
 import 'package:base_project/view_models/base_view_model.dart';
+import 'package:base_project/widgets/appbar/custom_app_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../constant/theme/app_style.dart';
 import '../../view_models/dynmaic/is_rebecca_provider.dart';
 import '../../widgets/button/text_button_widget.dart';
 import '../../widgets/label/bar_shadow.dart';
@@ -83,6 +85,7 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
   );
 
   List<Image> preImages = [];
+  bool isScrollDown = true;
 
   @override
   void initState() {
@@ -105,6 +108,14 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
   }
 
   @override
+  void didChangeDependencies() {
+    setState(() {
+
+    });
+    super.didChangeDependencies();
+  }
+
+  @override
   void dispose() {
     _tabController.dispose();
     super.dispose();
@@ -114,122 +125,107 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
   Widget build(BuildContext context) {
     return CommonScaffold(
         backgroundColor: Colors.transparent,
+        extendBodyBehindAppBar: true,
+        extendBody: true,
+        appBar: CustomAppBar.personalAppBar(
+            context,
+          height:isScrollDown == true?UIDefine.getPixelWidth(96):0,
+            ),
         body: (isDark) => Container(
               width: UIDefine.getWidth(),
-              child: SingleChildScrollView(
-                padding: EdgeInsets.only(bottom: UIDefine.getNavigationBarHeight()),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      width: UIDefine.getWidth(),
-                      height: UIDefine.getViewHeight() - UIDefine.getPixelWidth(140),
-                      child: Stack(
-                        children: [
-                          SizedBox(
-                            width: UIDefine.getWidth(),
-                            height: UIDefine.getHeight(),
-                          ),
-                          // CommonNetworkImage(
-                          //   fit: BoxFit.cover,
-                          //   imageUrl: data.posts[selectedCardIndex].images[0],
-                          //   width: UIDefine.getWidth(),
-                          //   height: UIDefine.getViewHeight() - UIDefine.getPixelWidth(120),
-                          // ),
-                          SizedBox(
-                            width: UIDefine.getWidth(),
-                            height: UIDefine.getViewHeight() - UIDefine.getPixelWidth(120),
-                            child: preImages[selectedCardIndex],
-                          ),
-                          Positioned(
-                              left:0,
-                              right: 0,
-                              bottom: 0,
-                              child: Container(
-                                height:UIDefine.getPixelWidth(40),
-                                color: AppColors.textBlack.getColor(),
-                              )),
-                          const Positioned(
-                              top: 0,
-                              left:0,
-                              right: 0,
-                              child: BarShadow()),
-                          Positioned(
-                              top: UIDefine.getStatusBarHeight() + UIDefine.getPixelWidth(10),
-                              left: UIDefine.getPixelWidth(16),
-                              right: UIDefine.getPixelWidth(16),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                 GestureDetector(
-                                   onTap:(){
-                                    // Navigator.pop(context);
-                                   BaseViewModel().changeMainScreenPage( AppNavigationBarType.typePair);
-                                   },
-                                     child: Container(
-                                         width: UIDefine.getPixelWidth(24),
-                                         height: UIDefine.getPixelWidth(24),
-                                         child: Image.asset(AppImagePath.arrowLeft,fit: BoxFit.fill,))),
-                                  Expanded(child: Container()),
-                                  Text(
-                                    'Rebecca',
-                                    style: AppTextStyle.getBaseStyle(
-                                        fontSize: UIDefine.fontSize16,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                  Expanded(child: Container()),
-                                  GestureDetector(
-                                    onTap: () {},
-                                    child: Container(
-                                      width: UIDefine.getPixelWidth(30),
-                                        height: UIDefine.getPixelWidth(30),
-                                        child: Image.asset(AppImagePath.hotIcon,fit: BoxFit.fill,)),
-                                  )
-                                ],
-                              )),
-                          Positioned(
-                            bottom:UIDefine.getPixelWidth(1),
-                              left: 0,
-                              right: 0,
-                              child: _buildSwiperCards())
-                        ],
-                      ),
-                    ),
-                    Container(
-                      width: UIDefine.getWidth(),
-                      decoration:const BoxDecoration(
-                          image: DecorationImage(image: AssetImage(AppImagePath.gradientBg),fit: BoxFit.fill)
-                      ),
-                      child: Container(
+              child: NotificationListener<ScrollUpdateNotification>(
+                onNotification: (scrollUpdate) {
+                  final metrics = scrollUpdate.metrics;
+                  final scrollDelta = scrollUpdate.scrollDelta;
+                  if ( metrics.pixels == 0) {
+                    setState(() {
+                      isScrollDown = true;
+                    });
+                  } else if (metrics.axis == Axis.vertical && scrollDelta! < 0) {
+                    setState(() {
+                      isScrollDown = true;
+                    });
+                  } else if (metrics.axis == Axis.vertical &&scrollDelta! > 0) {
+                    setState(() {
+                      isScrollDown = false;
+                    });
+                  }
+                  return true;
+                },
+                child: SingleChildScrollView(
+                  // padding: EdgeInsets.only(bottom: UIDefine.getNavigationBarHeight()),
+                  child: Column(
+                    children: [
+                      SizedBox(
                         width: UIDefine.getWidth(),
-                        padding: EdgeInsets.symmetric(horizontal:UIDefine.getPixelWidth(20)),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
+                        height: UIDefine.getViewHeight() - UIDefine.getPixelWidth(140),
+                        child: Stack(
                           children: [
-                            _buildButton(),
-                            _buildTabBar(),
-                            SizedBox(height: UIDefine.getPixelWidth(32)),
-                            _buildTabView()
+                            SizedBox(
+                              width: UIDefine.getWidth(),
+                              height: UIDefine.getHeight(),
+                            ),
+                            // CommonNetworkImage(
+                            //   fit: BoxFit.cover,
+                            //   imageUrl: data.posts[selectedCardIndex].images[0],
+                            //   width: UIDefine.getWidth(),
+                            //   height: UIDefine.getViewHeight() - UIDefine.getPixelWidth(120),
+                            // ),
+                            AnimatedSwitcher(
+                              duration: const Duration(milliseconds: 300),
+                              child: SizedBox(
+                                key: ValueKey(selectedCardIndex),
+                                width: UIDefine.getWidth(),
+                                height: UIDefine.getViewHeight() - UIDefine.getPixelWidth(120),
+                                child: preImages[selectedCardIndex],
+                              ),
+                            ),
+                            Positioned(
+                                left:0,
+                                right: 0,
+                                bottom: 0,
+                                child: Container(
+                                  height:UIDefine.getPixelWidth(40),
+                                  color: AppColors.textBlack.getColor(),
+                                )),
+                            Positioned(
+                              bottom:UIDefine.getPixelWidth(1),
+                                left: 0,
+                                right: 0,
+                                child: _buildSwiperCards())
                           ],
                         ),
                       ),
-                    ),
-                  ],
+                      Container(
+                        width: UIDefine.getWidth(),
+                        decoration:const BoxDecoration(
+                            image: DecorationImage(image: AssetImage(AppImagePath.gradientBg),fit: BoxFit.fill)
+                        ),
+                        child: Container(
+                          width: UIDefine.getWidth(),
+                          padding: EdgeInsets.symmetric(horizontal:UIDefine.getPixelWidth(20)),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              _buildButton(),
+                              _buildTabBar(),
+                              SizedBox(height: UIDefine.getPixelWidth(32)),
+                              _buildTabView()
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ));
   }
 
-  Widget _buildSwiperCards(){
+  Widget _buildSwiperCards() {
     return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.center,
-          end: Alignment.topCenter,
-          colors: [AppColors.textBlack.getColor().withOpacity(0.8),Colors.transparent]
-        )
-      ),
-      height: UIDefine.getPixelWidth(150),alignment: Alignment.bottomCenter,
-      // color: Colors.blue,
+      height: UIDefine.getPixelWidth(150),
+      alignment: Alignment.bottomCenter,
       child: Swiper(
         itemCount: data.posts.length,
         index: selectedCardIndex,
@@ -240,92 +236,79 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
         },
         itemBuilder: (BuildContext context, int index) {
           bool isCenter = selectedCardIndex == index;
-          // double horizontalPadding = isCenter?0:UIDefine.getPixelWidth(2.5);
-          double horizontalPadding = 0;
-          double topPadding = isCenter?0:UIDefine.getPixelWidth(20);
+          double imageWidth = isCenter ? UIDefine.getPixelWidth(96) : UIDefine.getPixelWidth(81);
+          double imageHeight = isCenter ? UIDefine.getPixelWidth(128) : UIDefine.getPixelWidth(108);
+          AlignmentGeometry alignment = Alignment.bottomCenter;
+          double margin = 0;
 
-          double imageWidth = isCenter?UIDefine.getPixelWidth(200):UIDefine.getPixelWidth(160);
-          double imageHeight = isCenter?UIDefine.getPixelWidth(130):UIDefine.getPixelWidth(110);
+          /// 判斷是左邊還是右邊
+          int offsetRightIndex = (selectedCardIndex + 1) % data.posts.length;
+          int offsetLeftIndex = (selectedCardIndex - 1 + data.posts.length) % data.posts.length;
+          int offsetRightIndex2 = (selectedCardIndex + 2) % data.posts.length;
+          int offsetLeftIndex2 = (selectedCardIndex - 2 + data.posts.length) % data.posts.length;
+          if (index == offsetRightIndex) {
+            alignment = Alignment.bottomRight;
+            margin = UIDefine.getPixelWidth(1);
+          }
+          if (index == offsetLeftIndex) {
+            alignment = Alignment.bottomLeft;
+            margin = UIDefine.getPixelWidth(1);
+          }
+          if (index == offsetRightIndex2) {
+            alignment = Alignment.bottomLeft;
+            margin = UIDefine.getPixelWidth(2);
+          }
+          if (index == offsetLeftIndex2) {
+            alignment = Alignment.bottomRight;
+            margin = UIDefine.getPixelWidth(2);
+          }
+
           return GestureDetector(
-            onTap: (){
-              if(isCenter){
+            onTap: () {
+              if (isCenter) {
                 ref.read(isRebeccaProvider.notifier).update((state) => true);
-                BaseViewModel().changeMainScreenPage( AppNavigationBarType.typeDynamic,isRebecca: true,index: index);
+                BaseViewModel().changeMainScreenPage(AppNavigationBarType.typeDynamic, isRebecca: true, index: index);
               }
             },
             child: Align(
-              alignment: Alignment.bottomCenter,
+              alignment: alignment,
               child: Container(
-                margin: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(2)),
+                margin: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(margin)),
                 child: Stack(
-                  alignment: Alignment.center,
                   children: [
-                    SizedBox(
-                      width: UIDefine.getPixelWidth(200),
-                      height: UIDefine.getPixelWidth(130),
-                    ),
-                    Positioned(
-                      left: horizontalPadding,
-                      right: horizontalPadding,
-                      top: topPadding,
-                      bottom: 0,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
+                    AnimatedContainer(
+                      width: imageWidth,
+                      height: imageHeight,
+                      duration: const Duration(milliseconds: 300),
+                      child: Container(
+                        decoration: AppStyle().styleShadowBorderBackground(
+                            borderBgColor: Colors.transparent, shadowColor: AppColors.textBlack.getColor().withOpacity(0.7), radius: 0, offsetX: 0, offsetY: 0, blurRadius: 10),
                         child: Container(
-                          width: imageWidth,
-                          height: imageHeight,
-                          decoration: BoxDecoration(
+                          decoration: isCenter
+                              ? BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(color: AppColors.mainThemeButton.getColor(), width: 2, strokeAlign: BorderSide.strokeAlignCenter))
+                              : null,
+                          child: ClipRRect(
                             borderRadius: BorderRadius.circular(10),
-                          ),
-                          child:
-                          preImages[index],
-                          // CommonNetworkImage(
-                          //   fit: BoxFit.cover,
-                          //   imageUrl: data.posts[index].images[0],
-                          // ),
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      left: horizontalPadding,
-                      right: horizontalPadding,
-                      top: topPadding,
-                      bottom: 0,
-                      child: Visibility(
-                        visible: isCenter,
-                        child: Container(
-                          width: imageWidth,
-                          height: imageHeight,
-                          clipBehavior: Clip.antiAlias,
-                          // margin: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(1)),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border:Border.all(
-                                  color: AppColors.mainThemeButton.getColor(),width: 2,strokeAlign: BorderSide.strokeAlignCenter)
+                            child: preImages[index],
+                            // CommonNetworkImage(
+                            //   fit: BoxFit.cover,
+                            //   imageUrl: data.posts[index].images[0],
+                            // ),
                           ),
                         ),
                       ),
                     ),
-                    Positioned(
-                      left: horizontalPadding,
-                      right: horizontalPadding,
-                      top: topPadding,
-                      bottom: 0,
+                    Positioned.fill(
                       child: Visibility(
                         visible: !isCenter,
                         child: Container(
-                          width: imageWidth,
-                          height: imageHeight,
                           clipBehavior: Clip.antiAlias,
-                          // margin: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(1)),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.black.withOpacity(0.3)
-                          ),
+                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.black.withOpacity(0.3)),
                         ),
                       ),
                     ),
-                    // Positioned(child: Center(child: Text("$index"),)),
                   ],
                 ),
               ),
@@ -424,7 +407,7 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
               color: AppColors.textWhiteOpacity5),
           tabs: [
             Tab(
-              height: UIDefine.getPixelWidth(38),
+              height: UIDefine.getPixelWidth(28),
               child: Container(
                 alignment: Alignment.topCenter,
                 //height: 40,
@@ -432,7 +415,7 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
               ),
             ),
             Tab(
-              height: UIDefine.getPixelWidth(38),
+              height: UIDefine.getPixelWidth(28),
               child: Container(
                 alignment: Alignment.topCenter,
                // height: 40,

@@ -51,9 +51,16 @@ class UserInfoNotifier extends StateNotifier<UserInfoData?> {
 
   /// 預載創建資料
   Future<void> _initCreateProvider(WidgetRef ref) async {
-    await ref.read(createTagProvider.notifier).init();
+    await ref.read(createTagProvider.notifier).readSharedPreferencesValue();
+    if(ref.read(createTagProvider).isEmpty){
+      await ref.read(createTagProvider.notifier).update();
+    }
     for (var element in ref.read(createTagProvider)) {
-      ref.read(createTagDetailProvider(element).notifier).init();
+      ref.read(createTagDetailProvider(element).notifier).readSharedPreferencesValue().then((value){
+        if(ref.read(createTagDetailProvider(element)).isEmpty){
+          ref.read(createTagDetailProvider(element).notifier).update();
+        }
+      });
     }
   }
 
