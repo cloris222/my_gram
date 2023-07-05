@@ -86,7 +86,6 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
 
   List<Image> preImages = [];
   bool isScrollDown = true;
-  bool isTop = true;
 
   @override
   void initState() {
@@ -143,21 +142,15 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
                         final scrollDelta = scrollUpdate.scrollDelta;
                         if ( metrics.pixels == 0) {
                           setState(() {
-                            isTop = true;
                             isScrollDown = true;
-                            print('isTop');
                           });
                         } else if (metrics.axis == Axis.vertical && scrollDelta! < 0) {
                           setState(() {
-                            isTop = false;
                             isScrollDown = true;
-                            print('isScrollDown = true;');
                           });
                         } else if (metrics.axis == Axis.vertical &&scrollDelta! > 0) {
                           setState(() {
-                            isTop = false;
                             isScrollDown = false;
-                            print('isScrollDown = false;');
                           });
                         }
                         return true;
