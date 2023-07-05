@@ -105,7 +105,7 @@ class CustomAppBar {
       elevation: 0,
       automaticallyImplyLeading: false,
       backgroundColor: Colors.transparent,
-      flexibleSpace:Expanded(child: Container(
+      flexibleSpace:Container(
           height:height,
           width: UIDefine.getWidth(),
           decoration: AppStyle().styleShadowBorderBackground(
@@ -153,7 +153,7 @@ class CustomAppBar {
             ),
           ],
         ),
-      )),
+      ),
       toolbarHeight:height,
     );
   }

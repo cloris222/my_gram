@@ -131,97 +131,91 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
             context,
           height:isScrollDown == true?UIDefine.getPixelWidth(91):0,
             ),
-        body: (isDark) => Column(
-          children: [
-            Expanded(
-              child: Container(
-                    width: UIDefine.getWidth(),
-                    child: NotificationListener<ScrollUpdateNotification>(
-                      onNotification: (scrollUpdate) {
-                        final metrics = scrollUpdate.metrics;
-                        final scrollDelta = scrollUpdate.scrollDelta;
-                        if ( metrics.pixels == 0) {
-                          setState(() {
-                            isScrollDown = true;
-                          });
-                        } else if (metrics.axis == Axis.vertical && scrollDelta! < 0) {
-                          setState(() {
-                            isScrollDown = true;
-                          });
-                        } else if (metrics.axis == Axis.vertical &&scrollDelta! > 0) {
-                          setState(() {
-                            isScrollDown = false;
-                          });
-                        }
-                        return true;
-                      },
-                      child: SingleChildScrollView(
-                        // padding: EdgeInsets.only(bottom: UIDefine.getNavigationBarHeight()),
-                        child: Column(
+        body: (isDark) => Container(
+              width: UIDefine.getWidth(),
+              child: NotificationListener<ScrollUpdateNotification>(
+                onNotification: (scrollUpdate) {
+                  final metrics = scrollUpdate.metrics;
+                  final scrollDelta = scrollUpdate.scrollDelta;
+                  if ( metrics.pixels == 0) {
+                    setState(() {
+                      isScrollDown = true;
+                    });
+                  } else if (metrics.axis == Axis.vertical && scrollDelta! < 0) {
+                    setState(() {
+                      isScrollDown = true;
+                    });
+                  } else if (metrics.axis == Axis.vertical &&scrollDelta! > 0) {
+                    setState(() {
+                      isScrollDown = false;
+                    });
+                  }
+                  return true;
+                },
+                child: SingleChildScrollView(
+                  // padding: EdgeInsets.only(bottom: UIDefine.getNavigationBarHeight()),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        width: UIDefine.getWidth(),
+                        height: UIDefine.getViewHeight() - UIDefine.getPixelWidth(140),
+                        child: Stack(
                           children: [
                             SizedBox(
                               width: UIDefine.getWidth(),
-                              height: UIDefine.getViewHeight() - UIDefine.getPixelWidth(140),
-                              child: Stack(
-                                children: [
-                                  SizedBox(
-                                    width: UIDefine.getWidth(),
-                                    height: UIDefine.getHeight(),
-                                  ),
-                                  // CommonNetworkImage(
-                                  //   fit: BoxFit.cover,
-                                  //   imageUrl: data.posts[selectedCardIndex].images[0],
-                                  //   width: UIDefine.getWidth(),
-                                  //   height: UIDefine.getViewHeight() - UIDefine.getPixelWidth(120),
-                                  // ),
-                                  SizedBox(
-                                    width: UIDefine.getWidth(),
-                                    height: UIDefine.getViewHeight() - UIDefine.getPixelWidth(120),
-                                    child: preImages[selectedCardIndex],
-                                  ),
-                                  Positioned(
-                                      left:0,
-                                      right: 0,
-                                      bottom: 0,
-                                      child: Container(
-                                        height:UIDefine.getPixelWidth(40),
-                                        color: AppColors.textBlack.getColor(),
-                                      )),
-                                  Positioned(
-                                    bottom:UIDefine.getPixelWidth(1),
-                                      left: 0,
-                                      right: 0,
-                                      child: _buildSwiperCards())
-                                ],
-                              ),
+                              height: UIDefine.getHeight(),
                             ),
-                            Container(
+                            // CommonNetworkImage(
+                            //   fit: BoxFit.cover,
+                            //   imageUrl: data.posts[selectedCardIndex].images[0],
+                            //   width: UIDefine.getWidth(),
+                            //   height: UIDefine.getViewHeight() - UIDefine.getPixelWidth(120),
+                            // ),
+                            SizedBox(
                               width: UIDefine.getWidth(),
-                              decoration:const BoxDecoration(
-                                  image: DecorationImage(image: AssetImage(AppImagePath.gradientBg),fit: BoxFit.fill)
-                              ),
-                              child: Container(
-                                width: UIDefine.getWidth(),
-                                padding: EdgeInsets.symmetric(horizontal:UIDefine.getPixelWidth(20)),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    _buildButton(),
-                                    _buildTabBar(),
-                                    SizedBox(height: UIDefine.getPixelWidth(32)),
-                                    _buildTabView()
-                                  ],
-                                ),
-                              ),
+                              height: UIDefine.getViewHeight() - UIDefine.getPixelWidth(120),
+                              child: preImages[selectedCardIndex],
                             ),
+                            Positioned(
+                                left:0,
+                                right: 0,
+                                bottom: 0,
+                                child: Container(
+                                  height:UIDefine.getPixelWidth(40),
+                                  color: AppColors.textBlack.getColor(),
+                                )),
+                            Positioned(
+                              bottom:UIDefine.getPixelWidth(1),
+                                left: 0,
+                                right: 0,
+                                child: _buildSwiperCards())
                           ],
                         ),
                       ),
-                    ),
+                      Container(
+                        width: UIDefine.getWidth(),
+                        decoration:const BoxDecoration(
+                            image: DecorationImage(image: AssetImage(AppImagePath.gradientBg),fit: BoxFit.fill)
+                        ),
+                        child: Container(
+                          width: UIDefine.getWidth(),
+                          padding: EdgeInsets.symmetric(horizontal:UIDefine.getPixelWidth(20)),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              _buildButton(),
+                              _buildTabBar(),
+                              SizedBox(height: UIDefine.getPixelWidth(32)),
+                              _buildTabView()
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-            ),
-          ],
-        ));
+                ),
+              ),
+            ));
   }
 
   Widget _buildSwiperCards(){
