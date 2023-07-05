@@ -648,10 +648,10 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
   Widget _getOthersTalkBubble() {
     return Container(
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(12),
-            topRight: Radius.circular(12),
-            bottomRight: Radius.circular(12),
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(15),
+            topRight: Radius.circular(15),
+            bottomRight: Radius.circular(15),
           ),
           gradient: LinearGradient(colors: AppGradientColors.gradientOtherMessage.getColors())),
       child: Padding(
