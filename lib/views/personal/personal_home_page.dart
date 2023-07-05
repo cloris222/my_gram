@@ -129,7 +129,7 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
         extendBody: true,
         appBar: CustomAppBar.personalAppBar(
             context,
-          height:isScrollDown == true?UIDefine.getPixelWidth(91):0,
+          height:isScrollDown == true?UIDefine.getPixelWidth(96):0,
             ),
         body: (isDark) => Container(
               width: UIDefine.getWidth(),
