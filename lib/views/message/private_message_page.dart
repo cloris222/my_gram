@@ -26,6 +26,7 @@ import 'package:photo_manager/photo_manager.dart';
 import 'package:rect_getter/rect_getter.dart';
 import '../../constant/theme/ui_define.dart';
 import '../../view_models/message/chat_room_provider.dart';
+import '../../widgets/label/loading_widget.dart';
 import '../../widgets/play_audio_bubble.dart';
 import '../common_scaffold.dart';
 import 'package:base_project/constant/theme/global_data.dart';
@@ -463,51 +464,55 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
           itemBuilder: (context, index) {
             if(readList.isNotEmpty){
               if(index==0){
-                return Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(top: UIDefine.getPixelHeight(5)),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(100),
-                        child: Image.asset(
-                          "assets/icon/pitch/pair/01.Rebecca_01_01.png",
-                          width: UIDefine.getPixelWidth(30),
-                          height: UIDefine.getPixelHeight(30),
-                          fit: BoxFit.cover,
+                return Padding(
+                  padding: EdgeInsets.fromLTRB(UIDefine.getScreenWidth(1), UIDefine.getScreenWidth(0.5),
+                      UIDefine.getScreenWidth(1), UIDefine.getScreenWidth(0.5)),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(top: UIDefine.getPixelHeight(5)),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(100),
+                          child: Image.asset(
+                            "assets/icon/pitch/pair/01.Rebecca_01_01.png",
+                            width: UIDefine.getPixelWidth(30),
+                            height: UIDefine.getPixelHeight(30),
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(UIDefine.getScreenWidth(1)),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          SizedBox(
-                            width: UIDefine.getPixelWidth(8),
-                          ),
-                          Container(
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(15), topRight: Radius.circular(15), bottomRight: Radius.circular(15)),
-                                gradient: LinearGradient(colors: AppGradientColors.gradientOtherMessage.getColors())),
-                            child: _getOthersTalkBubble(),
-                          ),
-                          SizedBox(width: 4),
-                          Text(
-                            tr('typing'),
-                            style: TextStyle(color: AppColors.commentUnlike.light, fontSize: UIDefine.fontSize8),
-                          ),
-                        ],
+                      Padding(
+                        padding: EdgeInsets.all(UIDefine.getScreenWidth(1)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            SizedBox(
+                              width: UIDefine.getPixelWidth(8),
+                            ),
+                            Container(
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(15), topRight: Radius.circular(15), bottomRight: Radius.circular(15)),
+                                  gradient: LinearGradient(colors: AppGradientColors.gradientOtherMessage.getColors())),
+                              child: _getOthersTalkBubble(),
+                            ),
+                            SizedBox(width: UIDefine.getPixelWidth(8)),
+                            Text(
+                              tr('typing'),
+                              style: TextStyle(color: AppColors.commentUnlike.light, fontSize: UIDefine.fontSize10,fontWeight: FontWeight.w400,letterSpacing: 0.4),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 );
               }
             }
-            var key = showingList[index == readList.isNotEmpty?index-1 :index].contentId;
+            var key = showingList[ readList.isNotEmpty?index-1 :index].contentId;
             _keys[key] = _keys[key]??RectGetter.createGlobalKey();
             return RectGetter(
               key: _keys[key],
@@ -517,7 +522,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                         UIDefine.getScreenWidth(1), UIDefine.getScreenWidth(0.5))
                     : EdgeInsets.fromLTRB(UIDefine.getScreenWidth(1), UIDefine.getScreenWidth(0.5),
                         UIDefine.getScreenWidth(1), UIDefine.getScreenWidth(0.5)),
-                child: _getTalkView(index == readList.isNotEmpty?index-1:index),
+                child: _getTalkView( readList.isNotEmpty?index-1:index),
               ),
             );
           }),
@@ -642,7 +647,6 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
 
   Widget _getOthersTalkBubble() {
     return Container(
-      // alignment: Alignment.centerLeft,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(12),
@@ -651,20 +655,11 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
           ),
           gradient: LinearGradient(colors: AppGradientColors.gradientOtherMessage.getColors())),
       child: Padding(
-        padding: EdgeInsets.fromLTRB(
-          UIDefine.getPixelWidth(10),
-          UIDefine.getPixelHeight(8),
-          UIDefine.getPixelWidth(10),
-          UIDefine.getPixelHeight(8),),
+        padding: EdgeInsets.symmetric(horizontal:UIDefine.getPixelWidth(10),vertical: UIDefine.getPixelWidth(8)),
         child: ConstrainedBox(
           constraints: BoxConstraints(maxWidth: UIDefine.getScreenWidth(50)),
           child:
-          Text(
-            '...',
-            style: TextStyle(
-                height: 1.5,
-                color: AppColors.textWhite.light, fontSize: UIDefine.fontSize15),
-          )
+          const LoadingWidget()
         ),
       ),
     );

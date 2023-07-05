@@ -147,7 +147,7 @@ class _MyAppState extends ConsumerState<MyApp> {
       WsAckSendMessageData data = WebSocketUtil().getACKData(message);
       if (data.message == 'SUCCESS') {
         if (data.action == 'MSG') {
-          bool isSelfACK = data.chatData.receiverAvatarId == GlobalData.selfAvatar;
+          bool isSelfACK = (data.chatData.receiverAvatarId != GlobalData.selfAvatar.toString());
           if (ref.read(readListProvider).isNotEmpty && !isSelfACK) {
             ref.read(readListProvider.notifier).update((state) {
               state.removeWhere((el) => el == state[0]);
