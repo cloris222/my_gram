@@ -123,7 +123,7 @@ class _CreateLoadingPageState extends State<CreateLoadingPage>
       feature: [],
       prompt: '',
       type: 'USER_CREATE',
-      imgUrl: 'app/avatar/SD3O72023062917481719212K.png',
+      imgUrl: 'admin/sd/feature/SD324202306211535150808SW.png',
     );
     _checkFinish();
   }

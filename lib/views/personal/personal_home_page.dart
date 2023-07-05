@@ -247,7 +247,7 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
           bool isCenter = selectedCardIndex == index;
           // double horizontalPadding = isCenter?0:UIDefine.getPixelWidth(2.5);
           double horizontalPadding = 0;
-          double topPadding = isCenter?0:UIDefine.getPixelWidth(20);
+          double? topPadding = isCenter?null:UIDefine.getPixelWidth(20);
 
           double imageWidth = isCenter?UIDefine.getPixelWidth(200):UIDefine.getPixelWidth(160);
           double imageHeight = isCenter?UIDefine.getPixelWidth(130):UIDefine.getPixelWidth(110);
@@ -274,24 +274,25 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
                       right: horizontalPadding,
                       top: topPadding,
                       bottom: 0,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Container(
-                          width: imageWidth,
-                          height: imageHeight,
-                          decoration: AppStyle().styleShadowBorderBackground(
-                              borderBgColor: Colors.transparent,
-                              shadowColor: AppColors.textBlack.getColor(),
-                              radius: 10,
-                              offsetX: -10,
-                              offsetY: -10,
-                              blurRadius: 50),
-                          child:
-                          preImages[index],
-                          // CommonNetworkImage(
-                          //   fit: BoxFit.cover,
-                          //   imageUrl: data.posts[index].images[0],
-                          // ),
+                      child: Container(
+                        decoration: AppStyle().styleShadowBorderBackground(
+                            borderBgColor: Colors.transparent,
+                            shadowColor: AppColors.textBlack.getColor().withOpacity(0.7),
+                            radius: 0,
+                            offsetX: 0,
+                            offsetY: 0,
+                            blurRadius: 10),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: SizedBox(
+                            width: imageWidth,
+                            height: imageHeight,
+                            child: preImages[index],
+                            // CommonNetworkImage(
+                            //   fit: BoxFit.cover,
+                            //   imageUrl: data.posts[index].images[0],
+                            // ),
+                          ),
                         ),
                       ),
                     ),
@@ -441,7 +442,7 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
               ),
             ),
             Tab(
-              height: UIDefine.getPixelWidth(38),
+              height: UIDefine.getPixelWidth(28),
               child: Container(
                 alignment: Alignment.topCenter,
                // height: 40,
