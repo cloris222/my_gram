@@ -86,6 +86,7 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
 
   List<Image> preImages = [];
   bool isScrollDown = true;
+  bool isTop = true;
 
   @override
   void initState() {
@@ -125,137 +126,109 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
   Widget build(BuildContext context) {
     return CommonScaffold(
         backgroundColor: Colors.transparent,
+        extendBodyBehindAppBar: true,
         extendBody: true,
         appBar: CustomAppBar.personalAppBar(
             context,
           height:isScrollDown == true?UIDefine.getPixelWidth(91):0,
             ),
-        body: (isDark) => Container(
-              width: UIDefine.getWidth(),
-              child: NotificationListener<ScrollEndNotification>(
-                onNotification: (scrollUpdate) {
-                  final metrics = scrollUpdate.metrics;
-                  bool isTop = metrics.pixels == 0;
-                  if (isTop) {
-                    setState(() {
-                      isScrollDown = true;
-                      print('isTop');
-                    });
-                  } else if (metrics.axis == Axis.vertical && metrics.pixels < UIDefine.getViewHeight() / 2) {
-                    setState(() {
-                      isScrollDown = true;
-                      print('isScrollDown = true;');
-                    });
-                  } else if (metrics.axis == Axis.vertical && metrics.pixels >  UIDefine.getViewHeight() / 2) {
-                    setState(() {
-                      isScrollDown = false;
-                      print('isScrollDown = false;');
-                    });
-                  }
-                  return true;
-                },
-                child: SingleChildScrollView(
-                  // padding: EdgeInsets.only(bottom: UIDefine.getNavigationBarHeight()),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        width: UIDefine.getWidth(),
-                        height: UIDefine.getViewHeight() - UIDefine.getPixelWidth(140),
-                        child: Stack(
+        body: (isDark) => Column(
+          children: [
+            Expanded(
+              child: Container(
+                    width: UIDefine.getWidth(),
+                    child: NotificationListener<ScrollUpdateNotification>(
+                      onNotification: (scrollUpdate) {
+                        final metrics = scrollUpdate.metrics;
+                        final scrollDelta = scrollUpdate.scrollDelta;
+                        if ( metrics.pixels == 0) {
+                          setState(() {
+                            isTop = true;
+                            isScrollDown = true;
+                            print('isTop');
+                          });
+                        } else if (metrics.axis == Axis.vertical && scrollDelta! < 0) {
+                          setState(() {
+                            isTop = false;
+                            isScrollDown = true;
+                            print('isScrollDown = true;');
+                          });
+                        } else if (metrics.axis == Axis.vertical &&scrollDelta! > 0) {
+                          setState(() {
+                            isTop = false;
+                            isScrollDown = false;
+                            print('isScrollDown = false;');
+                          });
+                        }
+                        return true;
+                      },
+                      child: SingleChildScrollView(
+                        // padding: EdgeInsets.only(bottom: UIDefine.getNavigationBarHeight()),
+                        child: Column(
                           children: [
                             SizedBox(
                               width: UIDefine.getWidth(),
-                              height: UIDefine.getHeight(),
+                              height: UIDefine.getViewHeight() - UIDefine.getPixelWidth(140),
+                              child: Stack(
+                                children: [
+                                  SizedBox(
+                                    width: UIDefine.getWidth(),
+                                    height: UIDefine.getHeight(),
+                                  ),
+                                  // CommonNetworkImage(
+                                  //   fit: BoxFit.cover,
+                                  //   imageUrl: data.posts[selectedCardIndex].images[0],
+                                  //   width: UIDefine.getWidth(),
+                                  //   height: UIDefine.getViewHeight() - UIDefine.getPixelWidth(120),
+                                  // ),
+                                  SizedBox(
+                                    width: UIDefine.getWidth(),
+                                    height: UIDefine.getViewHeight() - UIDefine.getPixelWidth(120),
+                                    child: preImages[selectedCardIndex],
+                                  ),
+                                  Positioned(
+                                      left:0,
+                                      right: 0,
+                                      bottom: 0,
+                                      child: Container(
+                                        height:UIDefine.getPixelWidth(40),
+                                        color: AppColors.textBlack.getColor(),
+                                      )),
+                                  Positioned(
+                                    bottom:UIDefine.getPixelWidth(1),
+                                      left: 0,
+                                      right: 0,
+                                      child: _buildSwiperCards())
+                                ],
+                              ),
                             ),
-                            // CommonNetworkImage(
-                            //   fit: BoxFit.cover,
-                            //   imageUrl: data.posts[selectedCardIndex].images[0],
-                            //   width: UIDefine.getWidth(),
-                            //   height: UIDefine.getViewHeight() - UIDefine.getPixelWidth(120),
-                            // ),
-                            SizedBox(
+                            Container(
                               width: UIDefine.getWidth(),
-                              height: UIDefine.getViewHeight() - UIDefine.getPixelWidth(120),
-                              child: preImages[selectedCardIndex],
+                              decoration:const BoxDecoration(
+                                  image: DecorationImage(image: AssetImage(AppImagePath.gradientBg),fit: BoxFit.fill)
+                              ),
+                              child: Container(
+                                width: UIDefine.getWidth(),
+                                padding: EdgeInsets.symmetric(horizontal:UIDefine.getPixelWidth(20)),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    _buildButton(),
+                                    _buildTabBar(),
+                                    SizedBox(height: UIDefine.getPixelWidth(32)),
+                                    _buildTabView()
+                                  ],
+                                ),
+                              ),
                             ),
-                            Positioned(
-                                left:0,
-                                right: 0,
-                                bottom: 0,
-                                child: Container(
-                                  height:UIDefine.getPixelWidth(40),
-                                  color: AppColors.textBlack.getColor(),
-                                )),
-                            Positioned(
-                                top: 0,
-                                left:0,
-                                right: 0,
-                                child: BarShadow(height:isScrollDown == true?UIDefine.getPixelWidth(91):0,)),
-                            // Positioned(
-                            //     top: UIDefine.getStatusBarHeight() + UIDefine.getPixelWidth(10),
-                            //     left: UIDefine.getPixelWidth(16),
-                            //     right: UIDefine.getPixelWidth(16),
-                            //     child: Row(
-                            //       mainAxisAlignment: MainAxisAlignment.center,
-                            //       children: [
-                            //        GestureDetector(
-                            //          onTap:(){
-                            //           // Navigator.pop(context);
-                            //          BaseViewModel().changeMainScreenPage( AppNavigationBarType.typePair);
-                            //          },
-                            //            child: Container(
-                            //                width: UIDefine.getPixelWidth(24),
-                            //                height: UIDefine.getPixelWidth(24),
-                            //                child: Image.asset(AppImagePath.arrowLeft,fit: BoxFit.fill,))),
-                            //         Expanded(child: Container()),
-                            //         Text(
-                            //           'Rebecca',
-                            //           style: AppTextStyle.getBaseStyle(
-                            //               fontSize: UIDefine.fontSize16,
-                            //               fontWeight: FontWeight.w600),
-                            //         ),
-                            //         Expanded(child: Container()),
-                            //         GestureDetector(
-                            //           onTap: () {},
-                            //           child: Container(
-                            //             width: UIDefine.getPixelWidth(30),
-                            //               height: UIDefine.getPixelWidth(30),
-                            //               child: Image.asset(AppImagePath.hotIcon,fit: BoxFit.fill,)),
-                            //         )
-                            //       ],
-                            //     )),
-                            Positioned(
-                              bottom:UIDefine.getPixelWidth(1),
-                                left: 0,
-                                right: 0,
-                                child: _buildSwiperCards())
                           ],
                         ),
                       ),
-                      Container(
-                        width: UIDefine.getWidth(),
-                        decoration:const BoxDecoration(
-                            image: DecorationImage(image: AssetImage(AppImagePath.gradientBg),fit: BoxFit.fill)
-                        ),
-                        child: Container(
-                          width: UIDefine.getWidth(),
-                          padding: EdgeInsets.symmetric(horizontal:UIDefine.getPixelWidth(20)),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              _buildButton(),
-                              _buildTabBar(),
-                              SizedBox(height: UIDefine.getPixelWidth(32)),
-                              _buildTabView()
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
-            ));
+            ),
+          ],
+        ));
   }
 
   Widget _buildSwiperCards(){
