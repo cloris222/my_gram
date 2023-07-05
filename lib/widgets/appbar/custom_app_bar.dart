@@ -117,7 +117,7 @@ class CustomAppBar {
               blurRadius: 70),
         child: Column(
           children: [
-            SizedBox(height: UIDefine.getStatusBarHeight()),
+            SizedBox(height: UIDefine.getStatusBarHeight() + UIDefine.getPixelWidth(15)),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(16)),
               child: Row(
