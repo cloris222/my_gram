@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:base_project/view_models/global_theme_provider.dart';
+import 'package:base_project/view_models/message/message_private_message_view_model.dart';
 import 'package:base_project/view_models/message/websocket/web_socket_util.dart';
 import 'package:base_project/views/message/notifier/userToken_notifier.dart';
 import 'package:base_project/views/message/sqlite/chat_history_db.dart';
@@ -147,8 +148,16 @@ class _MyAppState extends ConsumerState<MyApp> {
       if (data.message == 'SUCCESS') {
         if (data.action == 'MSG') {
           bool isSelfACK = data.chatData.receiverAvatarId == GlobalData.selfAvatar;
+          if (ref.read(readListProvider).isNotEmpty && !isSelfACK) {
+            ref.read(readListProvider.notifier).update((state) {
+              state.removeWhere((el) => el == state[0]);
+              return state;
+            });
+          }
           // await viewModel.updateChatroomData(data, isSelfACK); // 存進列表DB
           viewModel.addHistoryToDb(data, isSelfACK); // 單則訊息 存進聊天記錄DB
+        }else if(data.action == 'READ'){
+          ref.read(readListProvider.notifier).update((state) => [...state,data.timestamp]);
         }
       }
     });
