@@ -90,6 +90,7 @@ class MyApp extends ConsumerStatefulWidget {
 class _MyAppState extends ConsumerState<MyApp> {
   late StreamSubscription _streamSubscription;
   late UserTokenNotifier _userTokenNotifier;
+  Timer? timer;
 
   @override
   void initState() {
@@ -104,6 +105,14 @@ class _MyAppState extends ConsumerState<MyApp> {
     /// 對Token監聽: 登入登出Flag
     _addUserTokenNotifier();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    try {
+      if(timer != null) timer!.cancel();
+    } catch (error) {}
   }
 
   @override
@@ -157,7 +166,13 @@ class _MyAppState extends ConsumerState<MyApp> {
           // await viewModel.updateChatroomData(data, isSelfACK); // 存進列表DB
           viewModel.addHistoryToDb(data, isSelfACK); // 單則訊息 存進聊天記錄DB
         }else if(data.action == 'READ'){
+          timer?.cancel();
           ref.read(readListProvider.notifier).update((state) => [...state,data.timestamp]);
+          timer = Timer(const Duration(seconds: 10),(){
+            print('timer=${timer?.tick}');
+            ref.read(readListProvider.notifier).update((state) => []);
+            timer = null;
+          });
         }
       }
     });

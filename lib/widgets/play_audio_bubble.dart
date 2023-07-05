@@ -148,9 +148,9 @@ class _PlayAudioBubbleState extends ConsumerState<PlayAudioBubble> {
             isCentered: true,
             borderWidth: 0,
           ),
-          SizedBox(
-            width: UIDefine.getPixelWidth(10),
-          ),
+          // SizedBox(
+          //   width: UIDefine.getPixelWidth(10),
+          // ),
           // _buildWaveform()
         ],
       ),
