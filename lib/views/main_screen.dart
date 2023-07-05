@@ -1,5 +1,4 @@
 import 'package:base_project/constant/theme/global_data.dart';
-import 'package:base_project/view_models/base_view_model.dart';
 import 'package:base_project/widgets/app_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -89,7 +88,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
 
   void _changePage(AppNavigationBarType type, {bool needRecover = true}) {
     if (type == AppNavigationBarType.typeCreate) {
-      GlobalData.preBottomType = type;
+      GlobalData.preBottomType = GlobalData.mainBottomType;
     }
 
     setState(() {
