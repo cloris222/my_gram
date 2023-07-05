@@ -174,7 +174,7 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
                             AnimatedSwitcher(
                               duration: const Duration(milliseconds: 300),
                               child: SizedBox(
-                                key: UniqueKey(),
+                                key: ValueKey(selectedCardIndex),
                                 width: UIDefine.getWidth(),
                                 height: UIDefine.getViewHeight() - UIDefine.getPixelWidth(120),
                                 child: preImages[selectedCardIndex],
