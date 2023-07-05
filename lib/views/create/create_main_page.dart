@@ -177,8 +177,11 @@ class _CreateMainPageState extends ConsumerState<CreateMainPage> with TickerProv
       children: [
         TextButtonWidget(
             btnText: tr("createUseRandom"),
+            fontWeight: FontWeight.w500,
+            fontSize: UIDefine.fontSize13,
             setMainColor: AppColors.randomButton,
-            backgroundHorizontal: UIDefine.getPixelWidth(12),
+            radius: UIDefine.getPixelWidth(10),
+            backgroundHorizontal: UIDefine.getPixelWidth(17),
             backgroundVertical: UIDefine.getPixelWidth(12),
             isFillWidth: false,
             onPressed: () {}),
