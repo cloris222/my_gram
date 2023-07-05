@@ -86,7 +86,7 @@ class _MessageViewForSelf extends ConsumerState<MessageViewForSelf> with TickerP
       alignment: Alignment.centerRight,
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(12), topRight: Radius.circular(12), bottomLeft: Radius.circular(12)),
+          topLeft: Radius.circular(15), topRight: Radius.circular(15), bottomLeft: Radius.circular(15)),
           gradient: LinearGradient(colors: AppGradientColors.gradientBaseColorBg.getColors())
       ),
       child: Padding(
@@ -97,7 +97,7 @@ class _MessageViewForSelf extends ConsumerState<MessageViewForSelf> with TickerP
           UIDefine.getPixelHeight(8),
         ),
         child: ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: UIDefine.getScreenWidth(50)),
+          constraints: BoxConstraints(maxWidth: UIDefine.getPixelWidth(160)),
           child: data.msgType == "TEXT"?
           Text(
             data.content,
