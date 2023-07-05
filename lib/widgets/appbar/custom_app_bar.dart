@@ -12,7 +12,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../constant/theme/app_style.dart';
 import '../label/avatar_icon_widget.dart';
+import '../label/bar_shadow.dart';
 
 class CustomAppBar {
   const CustomAppBar._();
@@ -98,29 +100,61 @@ class CustomAppBar {
     );
   }
 
-  static AppBar personalAppBar(BuildContext context, {required String title, onClickFunction? onPressBack}) {
+  static AppBar personalAppBar(BuildContext context, {required double height}) {
     return AppBar(
       elevation: 0,
       automaticallyImplyLeading: false,
       backgroundColor: Colors.transparent,
-      centerTitle: true,
-      leading: GestureDetector(
-        onTap: () {
-          if (onPressBack == null) {
-            Navigator.pop(context);
-          } else {
-            onPressBack();
-          }
-        },
-        child: Image.asset(AppImagePath.arrowLeft),
+      flexibleSpace:Container(
+          height:height,
+          width: UIDefine.getWidth(),
+          decoration: AppStyle().styleShadowBorderBackground(
+              borderBgColor: Colors.transparent,
+              shadowColor: AppColors.textBlack.getColor().withOpacity(0.4),
+              radius: 5,
+              offsetX: 0,
+              offsetY: 0.5,
+              blurRadius: 70),
+        child: Column(
+          children: [
+            SizedBox(height: UIDefine.getStatusBarHeight() + UIDefine.getPixelWidth(15)),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(16)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  GestureDetector(
+                      onTap:(){
+                        // Navigator.pop(context);
+                        BaseViewModel().changeMainScreenPage( AppNavigationBarType.typePair);
+                      },
+                      child: Container(
+                          width: UIDefine.getPixelWidth(24),
+                          height: UIDefine.getPixelWidth(24),
+                          child: Image.asset(AppImagePath.arrowLeft,fit: BoxFit.fill,))),
+                  Expanded(child: Container()),
+                  Text(
+                    'Rebecca',
+                    style: AppTextStyle.getBaseStyle(
+                        fontSize: UIDefine.fontSize16,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  Expanded(child: Container()),
+                  GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                        width: UIDefine.getPixelWidth(30),
+                        height: UIDefine.getPixelWidth(30),
+                        child: Image.asset(AppImagePath.hotIcon,fit: BoxFit.fill,)),
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
-      title: Text(title, style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize16, fontWeight: FontWeight.w600)),
-      actions: [
-        GestureDetector(
-          onTap: () {},
-          child: Image.asset(AppImagePath.hotIcon),
-        )
-      ],
+      toolbarHeight:height,
     );
   }
 
