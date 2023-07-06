@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:base_project/constant/theme/app_style.dart';
 import 'package:base_project/constant/theme/global_data.dart';
 import 'package:base_project/view_models/global_theme_provider.dart';
+import 'package:base_project/view_models/gobal_provider/user_info_provider.dart';
 import 'package:base_project/views/login/login_main_page.dart';
 import 'package:base_project/views/main_screen.dart';
 import 'package:base_project/views/pair/pair_main_page.dart';
@@ -21,14 +22,16 @@ import '../widgets/button/text_button_widget.dart';
 import 'common_scaffold.dart';
 import 'main_screen.dart';
 
-class AppFirstPage extends StatefulWidget {
-  const AppFirstPage({Key? key}) : super(key: key);
+class AppFirstPage extends ConsumerStatefulWidget {
+  const AppFirstPage({
+    Key? key,
+  }) : super(key: key);
 
   @override
-  State<AppFirstPage> createState() => _AppFirstPageState();
+  ConsumerState createState() => _AppFirstPageState();
 }
 
-class _AppFirstPageState extends State<AppFirstPage> {
+class _AppFirstPageState extends ConsumerState<AppFirstPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -213,6 +216,15 @@ class _AppFirstPageState extends State<AppFirstPage> {
   }
 
   void _onPress() {
+    /// 綁定帳號 自動登入
+    // ref
+    //     .read(userInfoProvider.notifier)
+    //     .loginWithMail(
+    //     email: "mygram001@gmail.com", password: "123456")
+    //     .then((value) async {
+    //   BaseViewModel().pushAndRemoveUntil(context, const MainScreen());
+    // });
+    // return ;
     if (GlobalData.userToken.isNotEmpty) {
       BaseViewModel().pushPage(context, const MainScreen());
     } else {

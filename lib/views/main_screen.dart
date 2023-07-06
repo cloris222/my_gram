@@ -26,7 +26,7 @@ class MainScreen extends ConsumerStatefulWidget {
 class _MainScreenState extends ConsumerState<MainScreen> {
   late PageController controller;
   late MainScreenObserver observer;
-  bool visibilityNav = false;
+  bool visibilityNav = true;
 
   @override
   void didChangeDependencies() {
