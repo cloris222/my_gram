@@ -39,6 +39,7 @@ class _LoadingWidgetState extends State<LoadingWidget> {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
       children: List<Widget>.generate(3, (index) => _buildCircle(index)),
     );
   }
