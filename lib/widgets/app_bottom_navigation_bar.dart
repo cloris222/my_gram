@@ -14,12 +14,7 @@ import '../view_models/base_view_model.dart';
 typedef AppBottomFunction = Function(AppNavigationBarType type);
 
 class AppBottomNavigationBar extends StatefulWidget {
-  const AppBottomNavigationBar(
-      {Key? key,
-      required this.initType,
-      this.bottomFunction,
-      this.bStartTimer = false})
-      : super(key: key);
+  const AppBottomNavigationBar({Key? key, required this.initType, this.bottomFunction, this.bStartTimer = false}) : super(key: key);
 
   final bool bStartTimer;
   final AppNavigationBarType initType;
@@ -29,9 +24,9 @@ class AppBottomNavigationBar extends StatefulWidget {
   State<AppBottomNavigationBar> createState() => _AppBottomNavigationBarState();
 }
 
-class _AppBottomNavigationBarState extends State<AppBottomNavigationBar>
-    with WidgetsBindingObserver {
+class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> with WidgetsBindingObserver {
   BaseViewModel viewModel = BaseViewModel();
+  Map<String, Image> preImages = {};
 
   @override
   void didUpdateWidget(covariant AppBottomNavigationBar oldWidget) {
@@ -42,8 +37,16 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar>
   @override
   void initState() {
     super.initState();
+    for (var element in AppNavigationBarType.values) {
+      preImages["${element.name}_off"] = Image.asset(element.icon, fit: BoxFit.contain);
+      preImages["${element.name}_on"] = Image.asset(element.onIcon, fit: BoxFit.contain);
+    }
+    Future.delayed(Duration.zero).then((value) {
+      setState(() {
+        preImages.forEach((key, value) => precacheImage(value.image, context));
+      });
+    });
 
-    /// 生命週期
     WidgetsBinding.instance.addObserver(this);
     GlobalData.mainBottomType = widget.initType;
   }
@@ -83,15 +86,16 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar>
       blur: 8,
       radius: 0,
       linearGradient: LinearGradient(
-          colors: [AppColors.mainBackground.getColor().withOpacity(0.8),AppColors.mainBackground.getColor().withOpacity(0.8)]
+        colors: [AppColors.mainBackground.getColor().withOpacity(0.8), AppColors.mainBackground.getColor().withOpacity(0.8)],
       ),
       child: Container(
           // color: AppColors.mainBackground.getColor().withOpacity(0.8),
           height: UIDefine.getNavigationBarHeight(),
           padding: EdgeInsets.only(
-              right: UIDefine.getPixelWidth(6),
-              left: UIDefine.getPixelWidth(6),
-              bottom: UIDefine.getPixelWidth(Platform.isIOS ? 10 : 0)),
+            right: UIDefine.getPixelWidth(6),
+            left: UIDefine.getPixelWidth(6),
+            bottom: UIDefine.getPixelWidth(Platform.isIOS ? 10 : 0),
+          ),
           child: Row(
             children: [
               buildButton(AppNavigationBarType.typeDynamic),
@@ -107,8 +111,7 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar>
   Widget buildButton(AppNavigationBarType type) {
     return Expanded(
         child: GestureDetector(
-            onTap: () => _navigationTapped(
-                AppNavigationBarType.values.indexOf(type), setState),
+            onTap: () => _navigationTapped(AppNavigationBarType.values.indexOf(type), setState),
             behavior: HitTestBehavior.translucent,
             child: Container(
               alignment: Alignment.center,
@@ -119,16 +122,11 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar>
 
   Widget getIcon(AppNavigationBarType type) {
     bool isSelect = (GlobalData.mainBottomType == type);
-    String asset = format("${AppImagePath.btnPath}/btn_{name}_{status}.png",
-        {"name": type.name, "status": isSelect ? "02" : "01"});
-
-    // 暫時先拔掉
-    // return Image.asset(asset,
-    //     height: UIDefine.getPixelWidth(25), fit: BoxFit.fitHeight);
     return Container(
-        alignment: Alignment.center,
-        color: Colors.transparent,
-        child: Image.asset(isSelect ? type.onIcon : type.icon,fit: BoxFit.contain));
+      alignment: Alignment.center,
+      color: Colors.transparent,
+      child: isSelect ? preImages["${type.name}_on"] : preImages["${type.name}_off"],
+    );
   }
 
   _navigationTapped(int index, void Function(VoidCallback fn) setState) {
@@ -144,8 +142,7 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar>
       //清除所有頁面並回到首頁
       Navigator.pushAndRemoveUntil<void>(
         context,
-        MaterialPageRoute<void>(
-            builder: (BuildContext context) => MainScreen(type: type)),
+        MaterialPageRoute<void>(builder: (BuildContext context) => MainScreen(type: type)),
         ModalRoute.withName('/'),
       );
     }
