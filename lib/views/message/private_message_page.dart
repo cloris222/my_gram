@@ -211,20 +211,32 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
               ],
             ),
             Positioned(
-                bottom: UIDefine.getNavigationBarHeight() - 0.1,
-                child: Column(
-                  children: [
-                    _getBottomTextField(),
-                    Visibility(
-                      visible: ref.watch(showRecordProvider),
-                      child: SizedBox(
-                        height: UIDefine.getPixelWidth(270),
-                        width: UIDefine.getWidth(),
-                        child:  const RecorderView(),
-                      ),
-                    ),
-                  ],
-                )),
+                bottom: UIDefine.getNavigationBarHeight(),
+              // bottom: UIDefine.getNavigationBarHeight() - 0.1,
+              child: Column(
+                children: [
+                  _getBottomTextField(),
+
+              AnimatedContainer(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                    height: ref.watch(showRecordProvider)?UIDefine.getPixelWidth(270):0.0,
+                    width: UIDefine.getWidth(),
+                    child: const RecorderView(),
+                  ),
+                  // Visibility(
+                  //   visible: ref.watch(showRecordProvider),
+                  //   child: AnimatedContainer(
+                  //     duration: const Duration(milliseconds: 1000),
+                  //     curve: Curves.easeInOut,
+                  //     height: ref.watch(showRecordProvider)?UIDefine.getPixelWidth(270):0.0,
+                  //     width: UIDefine.getWidth(),
+                  //     child:  const RecorderView(),
+                  //   ),
+                  // ),
+                ],
+              ),
+            ),
             ref.watch(showImageWallProvider)
                 ? Positioned(
                     top: UIDefine.getPixelHeight(118),
