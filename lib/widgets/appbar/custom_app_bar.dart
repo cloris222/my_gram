@@ -185,10 +185,7 @@ class CustomAppBar {
               onPressBack();
             }
           },
-          icon: Icon(
-            Icons.arrow_back_ios,
-            size: 24,
-          ),
+          icon:Image.asset(AppImagePath.arrowLeft),
         ),
       ),
       title: Container(
@@ -245,6 +242,7 @@ class CustomAppBar {
           child: GestureDetector(
             child: Image.asset(AppImagePath.arrowLeft),
             onTap: () {
+              FocusManager.instance.primaryFocus?.unfocus();
               if (onPressBack == null) {
                 BaseViewModel().changeMainScreenPage(AppNavigationBarType.typePersonal);
               } else {

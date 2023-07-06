@@ -125,8 +125,8 @@ class _OtherCreatePageState extends ConsumerState<OtherCreatePage> with TickerPr
       return GridView.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
-            mainAxisExtent: UIDefine.getPixelHeight(203),
-            mainAxisSpacing: UIDefine.getPixelHeight(13),
+            mainAxisExtent: UIDefine.getPixelWidth(203),
+            mainAxisSpacing: UIDefine.getPixelWidth(8),
             crossAxisSpacing: UIDefine.getPixelWidth(8),
           ),
           itemCount: popularCreateDataList.length,
@@ -149,19 +149,19 @@ class _OtherCreatePageState extends ConsumerState<OtherCreatePage> with TickerPr
                 alignment: Alignment.topRight,
                 decoration: BoxDecoration(
                     image: DecorationImage(
-                  image: CachedNetworkImageProvider("${GlobalData.urlPrefix}${item.imgUrl}"),
+                  image: CachedNetworkImageProvider("${GlobalData.urlPrefix}${item.imgUrl}"),fit: BoxFit.cover,
                 )),
                 child: Padding(
-                  padding: EdgeInsets.only(top: UIDefine.getPixelHeight(9), right: UIDefine.getPixelWidth(9)),
+                  padding: EdgeInsets.only(top: UIDefine.getPixelWidth(4), right: UIDefine.getPixelWidth(4)),
                   child: Container(
                     // color: Colors.red,
-                    // height: UIDefine.getPixelWidth(21),
-                    // width: UIDefine.getPixelWidth(21),
+                    height: UIDefine.getPixelWidth(32),
+                    width: UIDefine.getPixelWidth(32),
                     child: ref.watch(popularSelectIdProvider.notifier).state == item.id
                         ? Image.asset(
-                            AppImagePath.choose,
+                            AppImagePath.choose,fit: BoxFit.contain,
                           )
-                        : Image.asset(AppImagePath.unChoose),
+                        : Image.asset(AppImagePath.unChoose,fit: BoxFit.contain,),
                   ),
                 ),
               ),
@@ -198,18 +198,18 @@ class _OtherCreatePageState extends ConsumerState<OtherCreatePage> with TickerPr
                 alignment: Alignment.topRight,
                 decoration: BoxDecoration(
                     image: DecorationImage(
-                  image: CachedNetworkImageProvider("${GlobalData.urlPrefix}${item.imgUrl}"),
+                  image: CachedNetworkImageProvider("${GlobalData.urlPrefix}${item.imgUrl}",),fit: BoxFit.cover,
                 )),
                 child: Padding(
-                  padding: EdgeInsets.only(top: UIDefine.getPixelHeight(9), right: UIDefine.getPixelWidth(9)),
+                  padding: EdgeInsets.only(top: UIDefine.getPixelWidth(4), right: UIDefine.getPixelWidth(4)),
                   child: Container(
-                    // height: UIDefine.getPixelWidth(21),
-                    // width: UIDefine.getPixelWidth(21),
+                    height: UIDefine.getPixelWidth(32),
+                    width: UIDefine.getPixelWidth(32),
                     child: ref.watch(hotSelectIdProvider.notifier).state == item.id
                         ? Image.asset(
-                            AppImagePath.choose,
+                            AppImagePath.choose,fit: BoxFit.contain,
                           )
-                        : Image.asset(AppImagePath.unChoose),
+                        : Image.asset(AppImagePath.unChoose,fit: BoxFit.contain,),
                   ),
                 ),
               ),
