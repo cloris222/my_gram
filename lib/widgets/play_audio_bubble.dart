@@ -105,9 +105,10 @@ class _PlayAudioBubbleState extends ConsumerState<PlayAudioBubble> {
   Widget build(BuildContext context) {
     ref.watch(playingContentIdProvider);
     return Container(
-      width: UIDefine.getPixelWidth(155),
+      // width: UIDefine.getPixelWidth(155),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisSize: MainAxisSize.min,
         children: [
           _buildActionButton(),
           SizedBox(

@@ -92,11 +92,11 @@ class _MessageViewForSelf extends ConsumerState<MessageViewForSelf> with TickerP
           gradient: LinearGradient(colors: AppGradientColors.gradientBaseColorBg.getColors())
       ),
       child: Padding(
-        padding: EdgeInsets.all(UIDefine.getPixelWidth(8)),
-          // UIDefine.getPixelWidth(10),
-          // UIDefine.getPixelHeight(8),
-          // UIDefine.getPixelWidth(10),
-          // UIDefine.getPixelHeight(8),
+        padding: EdgeInsets.fromLTRB(
+          UIDefine.getPixelWidth(10),
+          UIDefine.getPixelHeight(7),
+          UIDefine.getPixelWidth(10),
+          UIDefine.getPixelHeight(7)),
         // ),
         child: ConstrainedBox(
           constraints: BoxConstraints(maxWidth: UIDefine.getPixelWidth(160)),

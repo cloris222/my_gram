@@ -92,9 +92,9 @@ class CreateMainViewModel extends BaseViewModel {
     });
   }
 
-  void applyAi() {
-    print("first data: $selectData");
-    
+  void applyAi(BuildContext context) {
+    bool isPopular = true;
+    onPressCreate(context, isPopular);
   }
 
   ///
@@ -108,14 +108,21 @@ class CreateMainViewModel extends BaseViewModel {
     });
   }
 
-  void onPressCreate(BuildContext context) {
+  void onPressCreate(BuildContext context, bool popular) {
     List<String> feature = [];
-    for (var tag in tags) {
-      var list = ref.read(createTagDetailProvider(tag));
-      int index = ref.read(createChooseProvider(tag));
-      if (index != -1) {
-        feature.add(list[index].prompt);
+    if (!popular) {
+      print("is");
+      for (var tag in tags) {
+        var list = ref.read(createTagDetailProvider(tag));
+        int index = ref.read(createChooseProvider(tag));
+        if (index != -1) {
+          feature.add(list[index].prompt);
+        }
       }
+    } else {
+      print("else");
+      feature = selectData;
+      Navigator.of(context).pop();
     }
     pushPage(context, CreateLoadingPage(features: feature));
   }

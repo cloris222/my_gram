@@ -25,13 +25,14 @@ class OtherCreatePage extends ConsumerStatefulWidget {
 class _OtherCreatePageState extends ConsumerState<OtherCreatePage> with TickerProviderStateMixin {
   late TabController _tabController;
   late CreateMainViewModel viewModel;
-  
+
   List list = [];
 
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
     viewModel = CreateMainViewModel(ref);
+    viewModel.selectData.clear();
     Future.delayed(
       Duration(milliseconds: 100),
     ).then((value) {
@@ -47,7 +48,7 @@ class _OtherCreatePageState extends ConsumerState<OtherCreatePage> with TickerPr
     return CommonScaffold(
       appBar: CustomAppBar.popularCreateAppBar(ref, context, title: "tryOtherCreate".tr(), actionWord: "apply".tr(),
           pressApply: () {
-        viewModel.applyAi();
+        viewModel.applyAi(context);
       }),
       body: (isDark) => Container(
         child: Padding(
@@ -55,7 +56,7 @@ class _OtherCreatePageState extends ConsumerState<OtherCreatePage> with TickerPr
           child: Column(
             children: [
               Padding(
-                padding: EdgeInsets.only(top: UIDefine.getPixelHeight(13),bottom: UIDefine.getPixelHeight(8)),
+                padding: EdgeInsets.only(top: UIDefine.getPixelHeight(13), bottom: UIDefine.getPixelHeight(8)),
                 child: Container(
                   alignment: Alignment.center,
                   child: Text(
@@ -156,9 +157,11 @@ class _OtherCreatePageState extends ConsumerState<OtherCreatePage> with TickerPr
                     // color: Colors.red,
                     // height: UIDefine.getPixelWidth(21),
                     // width: UIDefine.getPixelWidth(21),
-                    child: ref.watch(popularSelectIdProvider.notifier).state == item.id?
-                    Image.asset(AppImagePath.choose,):
-                    Image.asset(AppImagePath.unChoose),
+                    child: ref.watch(popularSelectIdProvider.notifier).state == item.id
+                        ? Image.asset(
+                            AppImagePath.choose,
+                          )
+                        : Image.asset(AppImagePath.unChoose),
                   ),
                 ),
               ),
@@ -202,9 +205,11 @@ class _OtherCreatePageState extends ConsumerState<OtherCreatePage> with TickerPr
                   child: Container(
                     // height: UIDefine.getPixelWidth(21),
                     // width: UIDefine.getPixelWidth(21),
-                    child: ref.watch(hotSelectIdProvider.notifier).state == item.id?
-                    Image.asset(AppImagePath.choose,):
-                    Image.asset(AppImagePath.unChoose),
+                    child: ref.watch(hotSelectIdProvider.notifier).state == item.id
+                        ? Image.asset(
+                            AppImagePath.choose,
+                          )
+                        : Image.asset(AppImagePath.unChoose),
                   ),
                 ),
               ),

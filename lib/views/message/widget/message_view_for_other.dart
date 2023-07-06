@@ -62,13 +62,13 @@ class _MessageViewForOthers extends ConsumerState<MessageViewForOther> with Tick
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: EdgeInsets.only(top: UIDefine.getPixelHeight(5),left: UIDefine.getPixelWidth(4),right: UIDefine.getPixelWidth(8)),
+            padding: EdgeInsets.only(top: UIDefine.getPixelHeight(5),left: UIDefine.getPixelWidth(0),right: UIDefine.getPixelWidth(6)),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(100),
               child: Image.asset(
                 "assets/icon/pitch/pair/01.Rebecca_01_01.png",
-                width: UIDefine.getPixelWidth(30),
-                height: UIDefine.getPixelHeight(30),
+                width: UIDefine.getPixelWidth(32),
+                height: UIDefine.getPixelWidth(32),
                 fit: BoxFit.cover,
               ),
               // child: CachedNetworkImage(
@@ -120,11 +120,11 @@ class _MessageViewForOthers extends ConsumerState<MessageViewForOther> with Tick
           ),
           gradient: LinearGradient(colors: AppGradientColors.gradientOtherMessage.getColors())),
       child: Container(
-        padding: EdgeInsets.all(UIDefine.getPixelWidth(8)),
-          // UIDefine.getPixelWidth(10),
-          // UIDefine.getPixelHeight(8),
-          // UIDefine.getPixelWidth(10),
-          // UIDefine.getPixelHeight(8),),
+        padding: EdgeInsets.fromLTRB(
+          UIDefine.getPixelWidth(10),
+          UIDefine.getPixelHeight(7),
+          UIDefine.getPixelWidth(10),
+          UIDefine.getPixelHeight(7),),
         child: ConstrainedBox(
           constraints: BoxConstraints(maxWidth: UIDefine.getPixelWidth(160)),
           child: data.msgType == "TEXT"?
