@@ -217,15 +217,15 @@ class _AppFirstPageState extends ConsumerState<AppFirstPage> {
 
   void _onPress() {
     /// 綁定帳號 自動登入
-    ref
-        .read(userInfoProvider.notifier)
-        .loginWithMail(
-        email: "mygram001@gmail.com", password: "123456")
-        // email: "lily@locas.com.tw", password: "0")
-        .then((value) async {
-      BaseViewModel().pushAndRemoveUntil(context, const MainScreen());
-    });
-    return ;
+    // ref
+    //     .read(userInfoProvider.notifier)
+    //     .loginWithMail(
+    //     email: "mygram001@gmail.com", password: "123456")
+    //     // email: "lily@locas.com.tw", password: "0")
+    //     .then((value) async {
+    //   BaseViewModel().pushAndRemoveUntil(context, const MainScreen());
+    // });
+    // return ;
     if (GlobalData.userToken.isNotEmpty) {
       BaseViewModel().pushPage(context, const MainScreen());
     } else {
