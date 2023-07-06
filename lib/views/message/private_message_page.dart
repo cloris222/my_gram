@@ -16,6 +16,7 @@ import 'package:base_project/view_models/message/websocketdata/ws_send_message_d
 import 'package:base_project/views/message/sqlite/chat_history_db.dart';
 import 'package:base_project/views/message/widget/message_view_for_other.dart';
 import 'package:base_project/widgets/label/avatar_icon_widget.dart';
+import 'package:glassmorphism_widgets/glassmorphism_widgets.dart';
 import '../../constant/theme/app_style.dart';
 import '../../views/message/sqlite/data/chat_history_sqlite.dart';
 import 'package:base_project/widgets/appbar/custom_app_bar.dart';
@@ -140,7 +141,6 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
       body: (isDark) => Container(
         width: UIDefine.getWidth(),
         decoration: BoxDecoration(image: DecorationImage(image: AssetImage(AppImagePath.gradientBg), fit: BoxFit.fill)),
-        padding: EdgeInsets.only(bottom: UIDefine.getNavigationBarHeight()),
         child: Stack(
           alignment: Alignment.topCenter,
           children: [
@@ -206,9 +206,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                     );
                   },
                 ),
-                Container(
-                  child: _getBottomTextField(),
-                ),
+
                 showGallery
                     ? Flexible(
                         child: Visibility(
@@ -250,6 +248,8 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                           )
               ],
             ),
+            Positioned(bottom:UIDefine.getNavigationBarHeight()-0.1,
+                child: _getBottomTextField()),
             ref.watch(showImageWallProvider)
                 ? Positioned(
                     top: UIDefine.getPixelHeight(118),
@@ -270,150 +270,150 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
   }
 
   _getBottomTextField() {
-    return Container(
-      padding: EdgeInsets.fromLTRB(5, 5, 0, 5),
-      decoration: BoxDecoration(color: Color(0xFF18100C), boxShadow: [
-        BoxShadow(
-          color: Colors.black12,
-          blurRadius: 1,
-          spreadRadius: 0,
-          offset: Offset(0, 0),
-        )
-      ]),
-      child: Row(
-        children: [
-          Expanded(
-            child: Container(
-              // alignment: Alignment.center,
-              padding: EdgeInsets.fromLTRB(
-                  viewModel.isFocus ? UIDefine.getPixelWidth(15) : UIDefine.getPixelWidth(3),
-                  viewModel.isFocus ? UIDefine.getPixelWidth(5) : UIDefine.getPixelWidth(2),
-                  viewModel.isFocus ? UIDefine.getPixelWidth(12) : UIDefine.getPixelWidth(3),
-                  viewModel.isFocus ? UIDefine.getPixelWidth(5) : UIDefine.getPixelWidth(2)),
-              decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(20)), color: Color(0xFF292322)),
-              child: Row(
-                crossAxisAlignment: viewModel.isFocus ? CrossAxisAlignment.end : CrossAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(right: UIDefine.getPixelWidth(viewModel.isFocus ? 0 : 8)),
-                    child: viewModel.isFocus
-                        ? Container()
-                        : Container(
-                            height: UIDefine.getPixelWidth(36),
-                            width: UIDefine.getPixelWidth(36),
-                            padding: EdgeInsets.all(UIDefine.getPixelWidth(4)),
-                            decoration: BoxDecoration(
-                                color: AppColors.buttonCameraBg.light,
-                                borderRadius: BorderRadius.all(Radius.circular(30)),
-                                border: Border.all(color: AppColors.buttonCameraBg.dark, width: 0.5)),
-                            child: InkWell(onTap: () {}, child: Image.asset(AppImagePath.icCamera)),
+    return GlassContainer(
+        width: UIDefine.getWidth(),
+        border: 0.0,
+        blur: 8,
+        radius: 0,
+        linearGradient: LinearGradient(
+            colors: [AppColors.mainBackground.getColor().withOpacity(0.8),AppColors.mainBackground.getColor().withOpacity(0.8)]),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(5, 5, 0, 5.1),
+        child: Row(
+          children: [
+            Expanded(
+              child: Container(
+                // alignment: Alignment.center,
+                padding: EdgeInsets.fromLTRB(
+                    viewModel.isFocus ? UIDefine.getPixelWidth(15) : UIDefine.getPixelWidth(3),
+                    viewModel.isFocus ? UIDefine.getPixelWidth(5) : UIDefine.getPixelWidth(2),
+                    viewModel.isFocus ? UIDefine.getPixelWidth(12) : UIDefine.getPixelWidth(3),
+                    viewModel.isFocus ? UIDefine.getPixelWidth(5) : UIDefine.getPixelWidth(2)),
+                decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(20)), color: Color(0xFF292322)),
+                child: Row(
+                  crossAxisAlignment: viewModel.isFocus ? CrossAxisAlignment.end : CrossAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(right: UIDefine.getPixelWidth(viewModel.isFocus ? 0 : 8)),
+                      child: viewModel.isFocus
+                          ? Container()
+                          : Container(
+                              height: UIDefine.getPixelWidth(36),
+                              width: UIDefine.getPixelWidth(36),
+                              padding: EdgeInsets.all(UIDefine.getPixelWidth(4)),
+                              decoration: BoxDecoration(
+                                  color: AppColors.buttonCameraBg.light,
+                                  borderRadius: BorderRadius.all(Radius.circular(30)),
+                                  border: Border.all(color: AppColors.buttonCameraBg.dark, width: 0.5)),
+                              child: InkWell(onTap: () {}, child: Image.asset(AppImagePath.icCamera)),
+                            ),
+                    ),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          if (ref.read(showRecordProvider)) {
+                            ref.read(showRecordProvider.notifier).update((state) => false);
+                            Future.delayed(const Duration(milliseconds: 100)).then((value) {
+                              FocusScope.of(context).requestFocus(viewModel.textFocusNode);
+                            });
+                          }
+                        },
+                        child: TextField(
+                          textAlign: TextAlign.start,
+                          focusNode: viewModel.textFocusNode,
+                          controller: viewModel.textController,
+                          style: AppTextStyle.getBaseStyle(
+                              color: AppColors.textWhite, fontSize: UIDefine.fontSize15, overflow: TextOverflow.ellipsis),
+                          maxLines: viewModel.isFocus ? 5 : 1,
+                          minLines: 1,
+                          enabled: !ref.watch(showRecordProvider),
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.only(bottom: viewModel.isFocus ? UIDefine.getPixelWidth(8) : 0),
+                            // contentPadding: EdgeInsets.zero,
+                            isDense: true,
+                            // isCollapsed: true,
+                            border: InputBorder.none,
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.transparent),
+                                borderRadius: BorderRadius.circular(40)),
+                            hintText: 'writeAMessage'.tr(),
+                            hintStyle:
+                                AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize15, color: AppColors.textHintColor),
+                            fillColor: Colors.transparent,
+                            filled: true,
                           ),
-                  ),
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () {
-                        if (ref.read(showRecordProvider)) {
-                          ref.read(showRecordProvider.notifier).update((state) => false);
-                          Future.delayed(const Duration(milliseconds: 100)).then((value) {
-                            FocusScope.of(context).requestFocus(viewModel.textFocusNode);
-                          });
-                        }
-                      },
-                      child: TextField(
-                        textAlign: TextAlign.start,
-                        focusNode: viewModel.textFocusNode,
-                        controller: viewModel.textController,
-                        style: AppTextStyle.getBaseStyle(
-                            color: AppColors.textWhite, fontSize: UIDefine.fontSize15, overflow: TextOverflow.ellipsis),
-                        maxLines: viewModel.isFocus ? 5 : 1,
-                        minLines: 1,
-                        enabled: !ref.watch(showRecordProvider),
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.only(bottom: viewModel.isFocus ? UIDefine.getPixelWidth(8) : 0),
-                          // contentPadding: EdgeInsets.zero,
-                          isDense: true,
-                          // isCollapsed: true,
-                          border: InputBorder.none,
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.transparent),
-                              borderRadius: BorderRadius.circular(40)),
-                          hintText: 'writeAMessage'.tr(),
-                          hintStyle:
-                              AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize15, color: AppColors.textHintColor),
-                          fillColor: Colors.transparent,
-                          filled: true,
                         ),
                       ),
                     ),
-                  ),
-                  viewModel.isFocus
-                      ? Padding(
-                          padding: EdgeInsets.fromLTRB(UIDefine.getPixelWidth(10), UIDefine.getPixelHeight(0),
-                              UIDefine.getPixelWidth(0), UIDefine.getPixelHeight(0)),
-                          child: Container(
-                            // color: Colors.red,
-                            // height: UIDefine.getPixelWidth(24),
-                            // width: UIDefine.getPixelWidth(24),
-                            child: GestureDetector(
-                                onTap: () {
-                                  viewModel.onSendMessage(viewModel.textController.text, false, "TEXT");
-                                },
-                                child: Image.asset(AppImagePath.sendIcon)),
-                          ),
-                        )
-                      : viewModel.textController.text.isNotEmpty
-                          ? Padding(
-                              padding: EdgeInsets.fromLTRB(UIDefine.getPixelWidth(13), UIDefine.getPixelHeight(2),
-                                  UIDefine.getPixelWidth(8), UIDefine.getPixelHeight(2)),
-                              child: Container(
-                                // height: UIDefine.getPixelWidth(24),
-                                // width: UIDefine.getPixelWidth(24),
-                                child: GestureDetector(
-                                    onTap: () {
-                                      viewModel.onSendMessage(viewModel.textController.text, false, "TEXT");
-                                    },
-                                    child: Image.asset(AppImagePath.sendIcon)),
-                              ),
-                            )
-                          : Padding(
-                              padding: EdgeInsets.fromLTRB(UIDefine.getPixelWidth(3), UIDefine.getPixelHeight(2),
-                                  UIDefine.getPixelWidth(3), UIDefine.getPixelHeight(2)),
-                              child: Container(
-                                width: UIDefine.getPixelWidth(24),
-                                child: GestureDetector(
+                    viewModel.isFocus
+                        ? Padding(
+                            padding: EdgeInsets.fromLTRB(UIDefine.getPixelWidth(10), UIDefine.getPixelHeight(0),
+                                UIDefine.getPixelWidth(0), UIDefine.getPixelHeight(0)),
+                            child: Container(
+                              // color: Colors.red,
+                              // height: UIDefine.getPixelWidth(24),
+                              // width: UIDefine.getPixelWidth(24),
+                              child: GestureDetector(
                                   onTap: () {
-                                    viewModel.onTapMicrophone(false);
-                                    // _onTapMicrophone();
+                                    viewModel.onSendMessage(viewModel.textController.text, false, "TEXT");
                                   },
-                                  child: Image.asset(
-                                    AppImagePath.microphoneIcon,
-                                    color: ref.watch(showRecordProvider) ? Colors.blue : AppColors.textWhite.getColor(),
+                                  child: Image.asset(AppImagePath.sendIcon)),
+                            ),
+                          )
+                        : viewModel.textController.text.isNotEmpty
+                            ? Padding(
+                                padding: EdgeInsets.fromLTRB(UIDefine.getPixelWidth(13), UIDefine.getPixelHeight(2),
+                                    UIDefine.getPixelWidth(8), UIDefine.getPixelHeight(2)),
+                                child: Container(
+                                  // height: UIDefine.getPixelWidth(24),
+                                  // width: UIDefine.getPixelWidth(24),
+                                  child: GestureDetector(
+                                      onTap: () {
+                                        viewModel.onSendMessage(viewModel.textController.text, false, "TEXT");
+                                      },
+                                      child: Image.asset(AppImagePath.sendIcon)),
+                                ),
+                              )
+                            : Padding(
+                                padding: EdgeInsets.fromLTRB(UIDefine.getPixelWidth(3), UIDefine.getPixelHeight(2),
+                                    UIDefine.getPixelWidth(3), UIDefine.getPixelHeight(2)),
+                                child: Container(
+                                  width: UIDefine.getPixelWidth(24),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      viewModel.onTapMicrophone(false);
+                                      // _onTapMicrophone();
+                                    },
+                                    child: Image.asset(
+                                      AppImagePath.microphoneIcon,
+                                      color: ref.watch(showRecordProvider) ? Colors.blue : AppColors.textWhite.getColor(),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-          SizedBox(
-            width: viewModel.isFocus ? 0 : UIDefine.getPixelWidth(16),
-          ),
-          viewModel.isFocus
-              ? Container()
-              : InkWell(
-                  onTap: () {
-                    // _openGallery();
-                  },
-                  child: Image.asset(AppImagePath.photoIcon)),
-          viewModel.isFocus ? Container() : SizedBox(width: UIDefine.getPixelWidth(16)),
-          viewModel.isFocus
-              ? Container()
-              : Padding(
-                  padding: EdgeInsets.only(right: UIDefine.getPixelWidth(16)),
-                  child: InkWell(onTap: () {}, child: Image.asset(AppImagePath.addIcon)),
-                ),
-        ],
+            SizedBox(
+              width: viewModel.isFocus ? 0 : UIDefine.getPixelWidth(16),
+            ),
+            viewModel.isFocus
+                ? Container()
+                : InkWell(
+                    onTap: () {
+                      // _openGallery();
+                    },
+                    child: Image.asset(AppImagePath.photoIcon)),
+            viewModel.isFocus ? Container() : SizedBox(width: UIDefine.getPixelWidth(16)),
+            viewModel.isFocus
+                ? Container()
+                : Padding(
+                    padding: EdgeInsets.only(right: UIDefine.getPixelWidth(16)),
+                    child: InkWell(onTap: () {}, child: Image.asset(AppImagePath.addIcon)),
+                  ),
+          ],
+        ),
       ),
     );
   }
@@ -440,7 +440,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
     return RectGetter(
       key: listViewKey,
       child: ListView.builder(
-        padding: EdgeInsets.only(bottom: UIDefine.getPixelWidth(20)),
+          padding: EdgeInsets.only(bottom: UIDefine.getPixelWidth(20) + UIDefine.getNavigationBarHeight() + UIDefine.getPixelWidth(viewModel.isFocus ? 56 : 52)),
           reverse: true, // 倒序
           itemCount: readList.isNotEmpty?showingList.length+1:showingList.length,
           itemBuilder: (context, index) {
