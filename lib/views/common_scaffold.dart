@@ -17,6 +17,7 @@ class CommonScaffold extends ConsumerWidget {
     this.backgroundColor,
     this.canPop = true,
     this.onTap,
+    this.onPop,
   }) : super(key: key);
   final Widget Function(bool isDark) body;
   final PreferredSizeWidget? appBar;
@@ -27,6 +28,7 @@ class CommonScaffold extends ConsumerWidget {
   final Color? backgroundColor;
   final bool canPop;
   final Function()? onTap;
+  final Function()? onPop;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -34,6 +36,9 @@ class CommonScaffold extends ConsumerWidget {
     return Scaffold(
       body: WillPopScope(
         onWillPop: () async {
+          if (onPop != null) {
+            onPop!();
+          }
           return canPop;
         },
         child: GestureDetector(
