@@ -406,7 +406,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
     return RectGetter(
       key: listViewKey,
       child: ListView.builder(
-          padding: EdgeInsets.only(bottom: UIDefine.getNavigationBarHeight() + UIDefine.getPixelWidth(viewModel.isFocus ? 56 : 52)),
+          padding: EdgeInsets.only(bottom: UIDefine.getNavigationBarHeight() + UIDefine.getPixelWidth(viewModel.isFocus ? 56 : 52)+UIDefine.getPixelWidth(ref.watch(showRecordProvider)?270:0)),
           reverse: true, // 倒序
           itemCount: readList.isNotEmpty ? showingList.length + 1 : showingList.length,
           itemBuilder: (context, index) {
@@ -458,20 +458,29 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                 );
               }
             }
-            var key = showingList[readList.isNotEmpty ? index - 1 : index].contentId;
+
+            int realIndex=index-(readList.isNotEmpty?1:0);
+            var key = showingList[realIndex].contentId;
             _keys[key] = _keys[key] ?? RectGetter.createGlobalKey();
             return RectGetter(
               key: _keys[key],
               child: Padding(
-                /// 第一筆
-                padding: index == showingList.length - 1
-                    ? EdgeInsets.fromLTRB(UIDefine.getPixelWidth(8), UIDefine.getPixelWidth(1), UIDefine.getPixelWidth(8), UIDefine.getPixelWidth(0.5))
-
-                    /// 前一筆是否為自己
-                    : showingList[index].receiverAvatarId != showingList[index + 1].receiverAvatarId
-                        ? EdgeInsets.fromLTRB(UIDefine.getPixelWidth(6), UIDefine.getPixelWidth(24), UIDefine.getPixelWidth(6), UIDefine.getPixelWidth(0.5))
-                        : EdgeInsets.fromLTRB(UIDefine.getPixelWidth(6), UIDefine.getPixelWidth(0), UIDefine.getPixelWidth(6), UIDefine.getPixelWidth(0)),
-                child: _getTalkView(readList.isNotEmpty ? index - 1 : index),
+                padding: realIndex == showingList.length - 1 ? EdgeInsets.fromLTRB(
+                  UIDefine.getPixelWidth(8),
+                UIDefine.getPixelWidth(1),
+                UIDefine.getPixelWidth(8),
+                UIDefine.getPixelWidth(0.5))
+                : showingList[realIndex].receiverAvatarId != showingList[realIndex+1].receiverAvatarId ? EdgeInsets.fromLTRB(
+            UIDefine.getPixelWidth(6),
+            UIDefine.getPixelWidth(24),
+            UIDefine.getPixelWidth(6),
+            UIDefine.getPixelWidth(0.5))
+                : EdgeInsets.fromLTRB(
+            UIDefine.getPixelWidth(6),
+            UIDefine.getPixelWidth(0),
+            UIDefine.getPixelWidth(6),
+            UIDefine.getPixelWidth(0)),
+                child: _getTalkView(realIndex),
               ),
             );
           }),
