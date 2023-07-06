@@ -120,7 +120,7 @@ class _CreateMainPageState extends ConsumerState<CreateMainPage> with TickerProv
           fontSize: UIDefine.fontSize14,
           fontWeight: FontWeight.w500,
           textColor: AppColors.textBlack,
-          onPressed: () => viewModel.onPressCreate(context),
+          onPressed: () => viewModel.onPressCreate(context, false),
         ),
       ],
     );

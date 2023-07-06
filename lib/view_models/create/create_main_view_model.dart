@@ -8,6 +8,7 @@ import 'package:base_project/view_models/create/create_tag_detail_provider.dart'
 import 'package:base_project/view_models/create/create_tag_provider.dart';
 import 'package:base_project/view_models/gobal_provider/global_tag_controller_provider.dart';
 import 'package:base_project/views/create/other_create_page.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -18,14 +19,39 @@ final createChooseProvider = StateProvider.family.autoDispose<int, String>((ref,
   return -1;
 });
 
+/// 熱門創建
+final hotCreateDataProvider = StateNotifierProvider<HotCreateDataNotifier, List<PopularCreateData>>(
+  (ref) => HotCreateDataNotifier(),
+);
+
+final hotSelectIdProvider = StateProvider<String>((ref) => "");
+
+class HotCreateDataNotifier extends StateNotifier<List<PopularCreateData>> {
+  HotCreateDataNotifier() : super([]);
+  void addPopularCreateData(PopularCreateData data) {
+    state = [...state, data];
+  }
+
+  void cleanPopularCreateData() {
+    state = [];
+  }
+}
+
+/// 近期創建
 final popularCreateDataProvider = StateNotifierProvider<PopularCreateDataNotifier, List<PopularCreateData>>(
   (ref) => PopularCreateDataNotifier(),
 );
+
+final popularSelectIdProvider = StateProvider<String>((ref) => "");
 
 class PopularCreateDataNotifier extends StateNotifier<List<PopularCreateData>> {
   PopularCreateDataNotifier() : super([]);
   void addPopularCreateData(PopularCreateData data) {
     state = [...state, data];
+  }
+
+  void cleanPopularCreateData() {
+    state = [];
   }
 }
 
@@ -33,8 +59,10 @@ class CreateMainViewModel extends BaseViewModel {
   CreateMainViewModel(this.ref);
 
   /// otherCreate
+  List tabs = ["recent".tr(), "popular".tr()];
   List<PopularCreateData> recentData = [];
   List<PopularCreateData> hotData = [];
+  List<String> selectData = [];
 
   ///
 
@@ -45,29 +73,28 @@ class CreateMainViewModel extends BaseViewModel {
   List<String> get tags => ref.read(createTagProvider);
 
   /// otherCreateFunction
-  Future<void> getPrompt(Function() updateUi) async {
+  Future<void> getPrompt() async {
     String theType = "RECENT";
     await CreateAiAPI().popularFeature(theType).then((value) {
-      print("return data: ${value}");
+      ref.read(popularCreateDataProvider.notifier).cleanPopularCreateData();
       final List<PopularCreateData> pageList = value;
       for (var item in pageList) {
         ref.read(popularCreateDataProvider.notifier).addPopularCreateData(item);
       }
-      // recentData.clear();
-      // recentData = value;
-      // List<dynamic> valueList = value.data["pageList"];
-      // valueList.map((e) {
-      //   recentData.add(PopularCreateData(id: e["id"].toString(), imgUrl: e["imgUrl"]));
-      // }).toList();
     });
-    // recentDat
-    // GlobalData.printLog("isRencent: ${recentData}");
     theType = "HOT";
     await CreateAiAPI().popularFeature(theType).then((value) {
-      hotData.clear();
-      hotData = value;
+      ref.read(hotCreateDataProvider.notifier).cleanPopularCreateData();
+      final List<PopularCreateData> pageList = value;
+      for (var item in pageList) {
+        ref.read(hotCreateDataProvider.notifier).addPopularCreateData(item);
+      }
     });
-    updateUi;
+  }
+
+  void applyAi(BuildContext context) {
+    bool isPopular = true;
+    onPressCreate(context, isPopular);
   }
 
   ///
@@ -81,14 +108,21 @@ class CreateMainViewModel extends BaseViewModel {
     });
   }
 
-  void onPressCreate(BuildContext context) {
+  void onPressCreate(BuildContext context, bool popular) {
     List<String> feature = [];
-    for (var tag in tags) {
-      var list = ref.read(createTagDetailProvider(tag));
-      int index = ref.read(createChooseProvider(tag));
-      if (index != -1) {
-        feature.add(list[index].prompt);
+    if (!popular) {
+      print("is");
+      for (var tag in tags) {
+        var list = ref.read(createTagDetailProvider(tag));
+        int index = ref.read(createChooseProvider(tag));
+        if (index != -1) {
+          feature.add(list[index].prompt);
+        }
       }
+    } else {
+      print("else");
+      feature = selectData;
+      Navigator.of(context).pop();
     }
     pushPage(context, CreateLoadingPage(features: feature));
   }

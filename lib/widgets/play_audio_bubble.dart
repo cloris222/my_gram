@@ -63,6 +63,7 @@ class _PlayAudioBubbleState extends ConsumerState<PlayAudioBubble> {
   @override
   void initState() {
     GlobalData.printLog('widget.path${widget.path}');
+    print('totalDurationText=$totalDurationText');
     Future.delayed(Duration.zero, () async {
       await player!.setSourceUrl(widget.path);
       duration = await player!.getDuration();
@@ -103,48 +104,53 @@ class _PlayAudioBubbleState extends ConsumerState<PlayAudioBubble> {
   @override
   Widget build(BuildContext context) {
     ref.watch(playingContentIdProvider);
-    return Row(
-      children: [
-        _buildActionButton(),
-        SizedBox(
-          width: UIDefine.getPixelWidth(10),
-        ),
-        playerState == audio.PlayerState.playing || playerState == audio.PlayerState.paused
-            ? Text(
-                playerText,
-                style: AppTextStyle.getBaseStyle(
-                    color: widget.bSelf ? AppColors.textBlack : AppColors.textWhite,
-                    fontSize: UIDefine.fontSize14,
-                    fontWeight: FontWeight.w400),
-              )
-            : Text(
-                totalDurationText!,
-                style: AppTextStyle.getBaseStyle(
-                    color: widget.bSelf ? AppColors.textBlack : AppColors.textWhite,
-                    fontSize: UIDefine.fontSize14,
-                    fontWeight: FontWeight.w400),
-              ),
-        SizedBox(
-          width: UIDefine.getPixelWidth(10),
-        ),
-        RectangleWaveform(
-          maxDuration: duration ?? Duration(seconds: 1),
-          elapsedDuration: currentPosition ?? Duration.zero,
-          samples: [0, -2, 3, 10, 4, 10, 6, 3, 10, 0, 4, 14, 4, 10, 6, 3, 10, 0, 4, 6, 4, 10, 6, 3, 10, 8, 5, 3],
-          height: UIDefine.getPixelWidth(30),
-          width: UIDefine.getPixelWidth(65),
-          inactiveColor:
-              widget.bSelf ? AppColors.buttonAudio.getColor().withOpacity(0.3) : Colors.white.withOpacity(0.5),
-          activeColor: widget.bSelf ? AppColors.textBlack.getColor() : AppColors.textWhite.getColor(),
-          activeBorderColor: Colors.transparent,
-          inactiveBorderColor: Colors.transparent,
-          showActiveWaveform: true,
-          isRoundedRectangle: true,
-          isCentered: true,
-          borderWidth: 0,
-        ),
-        // _buildWaveform()
-      ],
+    return Container(
+      // width: UIDefine.getPixelWidth(155),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _buildActionButton(),
+          SizedBox(
+            width: UIDefine.getPixelWidth(10),
+          ),
+          playerState == audio.PlayerState.playing || playerState == audio.PlayerState.paused
+              ? Text(
+                  playerText,
+                  style: AppTextStyle.getBaseStyle(
+                      color: widget.bSelf ? AppColors.textBlack : AppColors.textWhite,
+                      fontSize: UIDefine.fontSize14,
+                      fontWeight: FontWeight.w400),
+                )
+              : Text(
+                  totalDurationText!,
+                  style: AppTextStyle.getBaseStyle(
+                      color: widget.bSelf ? AppColors.textBlack : AppColors.textWhite,
+                      fontSize: UIDefine.fontSize14,
+                      fontWeight: FontWeight.w400),
+                ),
+          SizedBox(
+            width: UIDefine.getPixelWidth(10),
+          ),
+          RectangleWaveform(
+            maxDuration: duration ?? Duration(seconds: 1),
+            elapsedDuration: currentPosition ?? Duration.zero,
+            samples: [0, -2, 3, 10, 4, 10, 6, 3, 10, 0, 4, 14, 4, 10, 6, 3, 10, 0, 4, 6, 4, 10, 6, 3, 10, 8, 5, 3],
+            height: UIDefine.getPixelWidth(30),
+            width: UIDefine.getPixelWidth(65),
+            inactiveColor:
+                widget.bSelf ? AppColors.buttonAudio.getColor().withOpacity(0.3) : Colors.white.withOpacity(0.5),
+            activeColor: widget.bSelf ? AppColors.textBlack.getColor() : AppColors.textWhite.getColor(),
+            activeBorderColor: Colors.transparent,
+            inactiveBorderColor: Colors.transparent,
+            showActiveWaveform: true,
+            isRoundedRectangle: true,
+            isCentered: true,
+            borderWidth: 0,
+          ),
+          // _buildWaveform()
+        ],
+      ),
     );
   }
 
@@ -246,10 +252,10 @@ class _PlayAudioBubbleState extends ConsumerState<PlayAudioBubble> {
           });
         },
         child: Container(
-          width: UIDefine.getPixelWidth(30),
-          height: UIDefine.getPixelWidth(30),
+          width: UIDefine.getPixelWidth(24),
+          height: UIDefine.getPixelWidth(24),
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(15)),
+              borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(30)),
               color: AppColors.buttonAudio.getColor().withOpacity(0.2)),
           child: Image.asset(widget.bSelf ? AppImagePath.blackPlayIcon : AppImagePath.whitePlayIcon),
         ),

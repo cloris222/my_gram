@@ -23,7 +23,6 @@ class AppImagePath {
   ///漸層背景圖
   static const String gradientBg = '$assetPath/img_bg.png';
 
-
   ///login頁面icon&image
 
   static const String loginBgImage = '$imgPath/img_login_bg.png';
@@ -76,6 +75,9 @@ class AppImagePath {
   static const String closeWallButton = '$assetPath/ic_extent.png';
   static const String otherIcon = '$assetPath/ic_others-1.png';
   static const String searchIcon = '$assetPath/ic_search.png';
+  static const String icCamera = '$assetPath/ic_camera.png';
+  static const String photoIcon = '$assetPath/ic_photo.png';
+  static const String addIcon = '$assetPath/ic_add.png';
 
   /// 創建
   static const String unChoose = "$assetPath/default.png";

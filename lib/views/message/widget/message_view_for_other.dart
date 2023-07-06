@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../constant/theme/app_colors.dart';
 import 'package:base_project/constant/theme/global_data.dart';
+import '../../../constant/theme/app_text_style.dart';
 import '../../../constant/theme/ui_define.dart';
 import '../../../widgets/play_audio_bubble.dart';
 import '../sqlite/data/chat_history_sqlite.dart';
@@ -55,37 +56,37 @@ class _MessageViewForOthers extends ConsumerState<MessageViewForOther> with Tick
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: EdgeInsets.only(top: UIDefine.getPixelHeight(5)),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(100),
-            child: Image.asset(
-              "assets/icon/pitch/pair/01.Rebecca_01_01.png",
-              width: UIDefine.getPixelWidth(30),
-              height: UIDefine.getPixelHeight(30),
-              fit: BoxFit.cover,
+    return Padding(
+      padding:  EdgeInsets.only(top: UIDefine.getPixelHeight(3)),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: EdgeInsets.only(top: UIDefine.getPixelHeight(5),left: UIDefine.getPixelWidth(0),right: UIDefine.getPixelWidth(6)),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(100),
+              child: Image.asset(
+                "assets/icon/pitch/pair/01.Rebecca_01_01.png",
+                width: UIDefine.getPixelWidth(32),
+                height: UIDefine.getPixelWidth(32),
+                fit: BoxFit.cover,
+              ),
+              // child: CachedNetworkImage(
+              //   imageUrl: GlobalData.urlPrefix + data.replyByAvatar,
+              // width: UIDefine.getScreenWidth(7.5),
+              // height: UIDefine.getScreenWidth(7.5),
+              //   fit: BoxFit.cover,
+              //   memCacheWidth: (UIDefine.getWidth() * 0.5).toInt(),
+              // )
             ),
-            // child: CachedNetworkImage(
-            //   imageUrl: GlobalData.urlPrefix + data.replyByAvatar,
-            // width: UIDefine.getScreenWidth(7.5),
-            // height: UIDefine.getScreenWidth(7.5),
-            //   fit: BoxFit.cover,
-            //   memCacheWidth: (UIDefine.getWidth() * 0.5).toInt(),
-            // )
           ),
-        ),
-        Padding(
-          padding: EdgeInsets.all(UIDefine.getScreenWidth(1)),
-          child: Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              SizedBox(
-                width: UIDefine.getPixelWidth(8),
-              ),
+              // SizedBox(
+              //   width: UIDefine.getPixelWidth(8),
+              // ),
               Container(
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
@@ -97,12 +98,13 @@ class _MessageViewForOthers extends ConsumerState<MessageViewForOther> with Tick
               SizedBox(width: 4),
               Text(
                 DateFormatUtil().timeStamptoDate(data.timestamp),
-                style: TextStyle(color: AppColors.commentUnlike.light, fontSize: UIDefine.fontSize8),
+                style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize10,
+                color: AppColors.commentUnlike),
               ),
             ],
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -117,20 +119,25 @@ class _MessageViewForOthers extends ConsumerState<MessageViewForOther> with Tick
             bottomRight: Radius.circular(15),
           ),
           gradient: LinearGradient(colors: AppGradientColors.gradientOtherMessage.getColors())),
-      child: Padding(
+      child: Container(
         padding: EdgeInsets.fromLTRB(
           UIDefine.getPixelWidth(10),
-          UIDefine.getPixelHeight(8),
+          UIDefine.getPixelHeight(7),
           UIDefine.getPixelWidth(10),
-          UIDefine.getPixelHeight(8),),
+          UIDefine.getPixelHeight(7),),
         child: ConstrainedBox(
           constraints: BoxConstraints(maxWidth: UIDefine.getPixelWidth(160)),
           child: data.msgType == "TEXT"?
-          Text(
-            data.content,
-            style: TextStyle(
-              height: 1.5,
-              color: AppColors.textWhite.light, fontSize: UIDefine.fontSize15),
+          Container(
+            child: Text(
+              data.content.replaceAll(' ', ''),
+              style: AppTextStyle.getBaseStyle(
+                color: AppColors.textWhite,
+                fontSize: UIDefine.fontSize15)
+              // TextStyle(
+              //   height: 1.5,
+              //   color: AppColors.textWhite.light, fontSize: UIDefine.fontSize15),
+            ),
           )
           : PlayAudioBubble(
             path: "${GlobalData.urlPrefix}${data.content}",

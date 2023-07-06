@@ -163,8 +163,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                                         itemBuilder: (context, index) {
                                           // final item = imgList[index];
                                           return GestureDetector(
-                                            onTap: ()
-                                            =>  viewModel.onShowSelfDynamic(context,index),
+                                            onTap: () => viewModel.onShowSelfDynamic(context, index),
                                             behavior: HitTestBehavior.translucent,
                                             child: Container(
                                               color: Colors.blue,
@@ -210,7 +209,6 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                 Container(
                   child: _getBottomTextField(),
                 ),
-                
                 showGallery
                     ? Flexible(
                         child: Visibility(
@@ -257,9 +255,6 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                     top: UIDefine.getPixelHeight(118),
                     child: GestureDetector(
                       child: Container(
-                          height: UIDefine.getPixelHeight(8),
-                          width: UIDefine.getWidth(),
-                          color: Colors.transparent,
                           child: Image.asset(AppImagePath.closeWallButton)),
                       onTap: () {
                         bool open = false;
@@ -276,8 +271,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
 
   _getBottomTextField() {
     return Container(
-      // height: showGallery || ref.watch(showRecordProvider) ?  : null,
-      padding: EdgeInsets.all(5),
+      padding: EdgeInsets.fromLTRB(5, 5, 0, 5),
       decoration: BoxDecoration(color: Color(0xFF18100C), boxShadow: [
         BoxShadow(
           color: Colors.black12,
@@ -291,65 +285,61 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
           Expanded(
             child: Container(
               // alignment: Alignment.center,
-              padding: EdgeInsets.fromLTRB(UIDefine.getPixelWidth(3), UIDefine.getPixelHeight(2),
-                  UIDefine.getPixelWidth(3), UIDefine.getPixelHeight(2)),
+              padding: EdgeInsets.fromLTRB(
+                  viewModel.isFocus ? UIDefine.getPixelWidth(15) : UIDefine.getPixelWidth(3),
+                  viewModel.isFocus ? UIDefine.getPixelWidth(5) : UIDefine.getPixelWidth(2),
+                  viewModel.isFocus ? UIDefine.getPixelWidth(12) : UIDefine.getPixelWidth(3),
+                  viewModel.isFocus ? UIDefine.getPixelWidth(5) : UIDefine.getPixelWidth(2)),
               decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(20)), color: Color(0xFF292322)),
               child: Row(
-                crossAxisAlignment: viewModel.isFocus? CrossAxisAlignment.end: CrossAxisAlignment.center,
+                crossAxisAlignment: viewModel.isFocus ? CrossAxisAlignment.end : CrossAxisAlignment.center,
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(right: UIDefine.getPixelWidth(10)),
+                    padding: EdgeInsets.only(right: UIDefine.getPixelWidth(viewModel.isFocus ? 0 : 8)),
                     child: viewModel.isFocus
-                        ? Container():
-                        Container(
-                            padding: EdgeInsets.all(UIDefine.getPixelWidth(5)),
+                        ? Container()
+                        : Container(
+                            height: UIDefine.getPixelWidth(36),
+                            width: UIDefine.getPixelWidth(36),
+                            padding: EdgeInsets.all(UIDefine.getPixelWidth(4)),
                             decoration: BoxDecoration(
                                 color: AppColors.buttonCameraBg.light,
                                 borderRadius: BorderRadius.all(Radius.circular(30)),
-                                border: Border.all(color: AppColors.buttonCameraBg.dark, width: 1)),
-                            child: InkWell(
-                              onTap: () {},
-                              child: Icon(
-                                Icons.photo_camera,
-                                color: AppColors.textWhite.light,
-                              ),
-                            ),
+                                border: Border.all(color: AppColors.buttonCameraBg.dark, width: 0.5)),
+                            child: InkWell(onTap: () {}, child: Image.asset(AppImagePath.icCamera)),
                           ),
                   ),
                   Expanded(
                     child: GestureDetector(
-                      onTap: (){
-                        if(ref.read(showRecordProvider)){
+                      onTap: () {
+                        if (ref.read(showRecordProvider)) {
                           ref.read(showRecordProvider.notifier).update((state) => false);
-                        Future.delayed(const Duration(milliseconds: 100)).then((value) {
-                          FocusScope.of(context).requestFocus(
-                              viewModel.textFocusNode);
-                        });
+                          Future.delayed(const Duration(milliseconds: 100)).then((value) {
+                            FocusScope.of(context).requestFocus(viewModel.textFocusNode);
+                          });
                         }
                       },
                       child: TextField(
                         textAlign: TextAlign.start,
                         focusNode: viewModel.textFocusNode,
                         controller: viewModel.textController,
-                        style: AppTextStyle.getBaseStyle(color: AppColors.textWhite, fontSize: UIDefine.fontSize15),
+                        style: AppTextStyle.getBaseStyle(
+                            color: AppColors.textWhite, fontSize: UIDefine.fontSize15, overflow: TextOverflow.ellipsis),
                         maxLines: viewModel.isFocus ? 5 : 1,
                         minLines: 1,
                         enabled: !ref.watch(showRecordProvider),
                         decoration: InputDecoration(
-                          contentPadding: EdgeInsets.only(bottom: UIDefine.getPixelHeight(3)),
+                          contentPadding: EdgeInsets.only(bottom: viewModel.isFocus ? UIDefine.getPixelWidth(8) : 0),
+                          // contentPadding: EdgeInsets.zero,
                           isDense: true,
+                          // isCollapsed: true,
                           border: InputBorder.none,
-                          // contentPadding: EdgeInsets.only(left: 20,bottom: UIDefine.getPixelHeight(10),right: 20),
-                          // border: OutlineInputBorder(
-                          //     borderSide: BorderSide(color: Colors.transparent), borderRadius: BorderRadius.circular(40)),
                           focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(color: Colors.transparent),
                               borderRadius: BorderRadius.circular(40)),
-                          counterText: '',
-                          counterStyle: TextStyle(overflow: TextOverflow.ellipsis),
                           hintText: 'writeAMessage'.tr(),
                           hintStyle:
-                              AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize12, color: AppColors.textHintColor),
+                              AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize15, color: AppColors.textHintColor),
                           fillColor: Colors.transparent,
                           filled: true,
                         ),
@@ -357,24 +347,13 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                     ),
                   ),
                   viewModel.isFocus
-                  ? Padding(
-                      padding: EdgeInsets.fromLTRB(UIDefine.getPixelWidth(3), UIDefine.getPixelHeight(2),
-                          UIDefine.getPixelWidth(3), UIDefine.getPixelHeight(2)),
-                      child: Container(
-                        width: UIDefine.getPixelWidth(24),
-                        child: GestureDetector(
-                            onTap: () {
-                              viewModel.onSendMessage(viewModel.textController.text, false, "TEXT");
-                            },
-                            child: Image.asset(AppImagePath.sendIcon)),
-                      ),
-                    )
-                  : viewModel.textController.text.isNotEmpty
                       ? Padding(
-                          padding: EdgeInsets.fromLTRB(UIDefine.getPixelWidth(3), UIDefine.getPixelHeight(2),
-                              UIDefine.getPixelWidth(3), UIDefine.getPixelHeight(2)),
+                          padding: EdgeInsets.fromLTRB(UIDefine.getPixelWidth(10), UIDefine.getPixelHeight(0),
+                              UIDefine.getPixelWidth(0), UIDefine.getPixelHeight(0)),
                           child: Container(
-                            width: UIDefine.getPixelWidth(24),
+                            // color: Colors.red,
+                            // height: UIDefine.getPixelWidth(24),
+                            // width: UIDefine.getPixelWidth(24),
                             child: GestureDetector(
                                 onTap: () {
                                   viewModel.onSendMessage(viewModel.textController.text, false, "TEXT");
@@ -382,29 +361,43 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                                 child: Image.asset(AppImagePath.sendIcon)),
                           ),
                         )
-                      : Padding(
-                        padding: EdgeInsets.fromLTRB(UIDefine.getPixelWidth(3), UIDefine.getPixelHeight(2),
-                          UIDefine.getPixelWidth(3), UIDefine.getPixelHeight(2)),
-                        child: Container(
-                          width: UIDefine.getPixelWidth(24),
-                          child: GestureDetector(
-                            onTap: () {
-                              viewModel.onTapMicrophone(false);
-                              // _onTapMicrophone();
-                            },
-                            child: Image.asset(
-                              AppImagePath.microphoneIcon,
-                              color: ref.watch(showRecordProvider) ? Colors.blue : AppColors.textWhite.getColor(),
+                      : viewModel.textController.text.isNotEmpty
+                          ? Padding(
+                              padding: EdgeInsets.fromLTRB(UIDefine.getPixelWidth(13), UIDefine.getPixelHeight(2),
+                                  UIDefine.getPixelWidth(8), UIDefine.getPixelHeight(2)),
+                              child: Container(
+                                // height: UIDefine.getPixelWidth(24),
+                                // width: UIDefine.getPixelWidth(24),
+                                child: GestureDetector(
+                                    onTap: () {
+                                      viewModel.onSendMessage(viewModel.textController.text, false, "TEXT");
+                                    },
+                                    child: Image.asset(AppImagePath.sendIcon)),
+                              ),
+                            )
+                          : Padding(
+                              padding: EdgeInsets.fromLTRB(UIDefine.getPixelWidth(3), UIDefine.getPixelHeight(2),
+                                  UIDefine.getPixelWidth(3), UIDefine.getPixelHeight(2)),
+                              child: Container(
+                                width: UIDefine.getPixelWidth(24),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    viewModel.onTapMicrophone(false);
+                                    // _onTapMicrophone();
+                                  },
+                                  child: Image.asset(
+                                    AppImagePath.microphoneIcon,
+                                    color: ref.watch(showRecordProvider) ? Colors.blue : AppColors.textWhite.getColor(),
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                      ),
                 ],
               ),
             ),
           ),
           SizedBox(
-            width: viewModel.isFocus ? 0 : UIDefine.getPixelWidth(19),
+            width: viewModel.isFocus ? 0 : UIDefine.getPixelWidth(16),
           ),
           viewModel.isFocus
               ? Container()
@@ -412,25 +405,13 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                   onTap: () {
                     // _openGallery();
                   },
-                  child: Icon(
-                    Icons.photo,
-                    color: AppColors.textWhite.light,
-                    size: 24,
-                  ),
-                ),
-          viewModel.isFocus ? Container() : SizedBox(width: UIDefine.getPixelWidth(10)),
+                  child: Image.asset(AppImagePath.photoIcon)),
+          viewModel.isFocus ? Container() : SizedBox(width: UIDefine.getPixelWidth(16)),
           viewModel.isFocus
               ? Container()
               : Padding(
-                  padding: EdgeInsets.only(right: UIDefine.getPixelWidth(10)),
-                  child: InkWell(
-                    onTap: () {},
-                    child: Icon(
-                      Icons.add_rounded,
-                      color: AppColors.textWhite.light,
-                      size: 24,
-                    ),
-                  ),
+                  padding: EdgeInsets.only(right: UIDefine.getPixelWidth(16)),
+                  child: InkWell(onTap: () {}, child: Image.asset(AppImagePath.addIcon)),
                 ),
         ],
       ),
@@ -459,6 +440,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
     return RectGetter(
       key: listViewKey,
       child: ListView.builder(
+        padding: EdgeInsets.only(bottom: UIDefine.getPixelWidth(20)),
           reverse: true, // 倒序
           itemCount: readList.isNotEmpty?showingList.length+1:showingList.length,
           itemBuilder: (context, index) {
@@ -517,12 +499,22 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
             return RectGetter(
               key: _keys[key],
               child: Padding(
-                padding:index == showingList.length - 1
-                    ? EdgeInsets.fromLTRB(UIDefine.getScreenWidth(5), UIDefine.getScreenWidth(1),
-                        UIDefine.getScreenWidth(1), UIDefine.getScreenWidth(0.5))
-                    : EdgeInsets.fromLTRB(UIDefine.getScreenWidth(1), UIDefine.getScreenWidth(0.5),
-                        UIDefine.getScreenWidth(1), UIDefine.getScreenWidth(0.5)),
-                child: _getTalkView( readList.isNotEmpty?index-1:index),
+                padding: index == showingList.length - 1 ? EdgeInsets.fromLTRB(
+                  UIDefine.getPixelWidth(8),
+                  UIDefine.getPixelWidth(1),
+                  UIDefine.getPixelWidth(8),
+                  UIDefine.getPixelWidth(0.5))
+                : showingList[index].receiverAvatarId != showingList[index+1].receiverAvatarId ? EdgeInsets.fromLTRB(
+                  UIDefine.getPixelWidth(6),
+                  UIDefine.getPixelWidth(24),
+                  UIDefine.getPixelWidth(6),
+                  UIDefine.getPixelWidth(0.5))
+                : EdgeInsets.fromLTRB(
+                  UIDefine.getPixelWidth(6),
+                  UIDefine.getPixelWidth(0),
+                  UIDefine.getPixelWidth(6),
+                  UIDefine.getPixelWidth(0)),
+                child: _getTalkView(readList.isNotEmpty?index-1:index),
               ),
             );
           }),
@@ -533,7 +525,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
     if (showingList[index].timestamp.isEmpty) {
       // 空值為顯示日期的View
       return Container(
-        padding: const EdgeInsets.all(5),
+        padding: EdgeInsets.all(5),
         margin: EdgeInsets.only(right: UIDefine.getScreenWidth(28), left: UIDefine.getScreenWidth(28)),
         alignment: Alignment.center,
         decoration: BoxDecoration(borderRadius: const BorderRadius.all(Radius.circular(10)), color: Colors.blue),
