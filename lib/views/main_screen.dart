@@ -26,6 +26,7 @@ class MainScreen extends ConsumerStatefulWidget {
 class _MainScreenState extends ConsumerState<MainScreen> {
   late PageController controller;
   late MainScreenObserver observer;
+  bool visibilityNav = false;
 
   @override
   void didChangeDependencies() {
@@ -36,9 +37,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
   @override
   void initState() {
     controller = PageController(initialPage: widget.type.index);
-    observer = MainScreenObserver("main",
-        changeMainPage: (AppNavigationBarType type, bool isRebecca) =>
-            _changePage(type, needRecover: !isRebecca));
+    observer = MainScreenObserver("main", changeMainPage: (AppNavigationBarType type, bool isRebecca) => _changePage(type, needRecover: !isRebecca));
     GlobalData.mainScreenSubject.registerObserver(observer);
 
     /// 更新資料
@@ -65,6 +64,11 @@ class _MainScreenState extends ConsumerState<MainScreen> {
     });
     return CommonScaffold(
         canPop: false,
+        onPop: () {
+          if (GlobalData.mainBottomType == AppNavigationBarType.typeMessage) {
+            _changePage(AppNavigationBarType.typePersonal);
+          }
+        },
         // appBar: CustomAppBar.mainAppBar(context),
         // bottomNavigationBar: ,
         body: (isDark) => Stack(
@@ -72,24 +76,33 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                 PageView(
                   controller: controller,
                   physics: const NeverScrollableScrollPhysics(),
-                  children: List<Widget>.generate(
-                      AppNavigationBarType.values.length,
-                      (index) => AppNavigationBarType.values[index].typePage),
+                  children: List<Widget>.generate(AppNavigationBarType.values.length, (index) => AppNavigationBarType.values[index].typePage),
                 ),
                 Positioned(
                     bottom: 0,
-                    child: AppBottomNavigationBar(
-                      initType: widget.type,
-                      bottomFunction: _changePage,
+                    child: Visibility(
+                      visible: visibilityNav,
+                      child: AppBottomNavigationBar(
+                        initType: widget.type,
+                        bottomFunction: _changePage,
+                      ),
                     ))
               ],
             ));
   }
 
   void _changePage(AppNavigationBarType type, {bool needRecover = true}) {
-    if (type == AppNavigationBarType.typeCreate) {
+    if (type == AppNavigationBarType.typeCreate && GlobalData.mainBottomType != AppNavigationBarType.typeCreate) {
       GlobalData.preBottomType = GlobalData.mainBottomType;
     }
+
+    setState(() {
+      if (type == AppNavigationBarType.typeMessage) {
+        visibilityNav = true;
+      } else {
+        visibilityNav = true;
+      }
+    });
 
     setState(() {
       if (needRecover) {
@@ -97,8 +110,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
       }
 
       /// 判斷是否在同一頁切換
-      if (type == AppNavigationBarType.typeDynamic &&
-          GlobalData.mainBottomType == AppNavigationBarType.typeDynamic) {
+      if (type == AppNavigationBarType.typeDynamic && GlobalData.mainBottomType == AppNavigationBarType.typeDynamic) {
         GlobalData.dynamicSubject.scrollTop();
       }
       GlobalData.mainBottomType = type;
