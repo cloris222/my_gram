@@ -19,6 +19,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:circle_progress_bar/circle_progress_bar.dart';
 import '../../constant/theme/global_data.dart';
 import '../../view_models/message/message_private_message_view_model.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 
 class RecorderView extends ConsumerStatefulWidget {
   const RecorderView({Key? key}) : super(key: key);
@@ -79,160 +80,10 @@ class _RecorderViewState extends ConsumerState<RecorderView> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           _getUpText(),
-          // (isRecording || isPlayAudio && isPlayingSound == false)
-          //     ? Text(_recorderText,
-          //         style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize14, fontWeight: FontWeight.w500))
-          //     : isPlayingSound
-          //         ? Text(_playerText,
-          //             style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize14, fontWeight: FontWeight.w500))
-          //         : Text(tr('clickToRecording'),
-          //             style: AppTextStyle.getBaseStyle(
-          //                 fontSize: UIDefine.fontSize14,
-          //                 fontWeight: FontWeight.w500,
-          //                 color: AppColors.textWhiteOpacity5)),
           SizedBox(
             height: UIDefine.getPixelWidth(15),
           ),
-
           _getMainButton(),
-
-          // ///正在錄音
-          // isRecording
-          //     ? GestureDetector(
-          //         onTap: () {
-          //           stopRecording();
-          //         },
-          //         child: Container(
-          //           alignment: Alignment.center,
-          //           width: UIDefine.getPixelWidth(100),
-          //           height: UIDefine.getPixelWidth(100),
-          //           decoration: BoxDecoration(
-          //               color: AppColors.textWhiteOpacity5.getColor(),
-          //               borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(50)),
-          //               border: Border.all(color: AppColors.recorderRed.getColor(), width: UIDefine.getPixelWidth(4))),
-          //           child: Container(
-          //             width: UIDefine.getPixelWidth(18),
-          //             height: UIDefine.getPixelWidth(18),
-          //             decoration: BoxDecoration(
-          //                 color: AppColors.recorderRed.getColor(), borderRadius: BorderRadius.circular(3)),
-          //           ),
-          //         ),
-          //       )
-          //     :
-          //     ///預覽畫面
-          //     isPlayAudio
-          //         ? Row(
-          //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          //             children: [
-          //               GestureDetector(
-          //                   onTap: () {
-          //                     _deleteRecording();
-          //                   },
-          //                   child: Image.asset(AppImagePath.delIcon)),
-          //               isPlayingSound
-          //                   ? Container(
-          //                       width: UIDefine.getPixelWidth(100),
-          //                       height: UIDefine.getPixelWidth(100),
-          //                       child: CircleProgressBar(
-          //                         animationDuration: recordDuration,
-          //                         foregroundColor: AppColors.mainThemeButton.getColor(),
-          //                         backgroundColor: AppColors.recordBackground.getColor(),
-          //                         strokeWidth: 3.0,
-          //                         value: 1.0,
-          //                         child: GestureDetector(
-          //                           onTap: () {
-          //                             setState(() {
-          //                               isPlayingSound = false;
-          //                             });
-          //                           },
-          //                           child: Container(
-          //                             alignment: Alignment.center,
-          //                             width: UIDefine.getPixelWidth(100),
-          //                             height: UIDefine.getPixelWidth(100),
-          //                             decoration: BoxDecoration(
-          //                               color: AppColors.buttonCommon.getColor().withOpacity(0.3),
-          //                               borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(50)),
-          //                             ),
-          //                             child: Container(
-          //                               alignment: Alignment.center,
-          //                               width: UIDefine.getPixelWidth(18),
-          //                               height: UIDefine.getPixelWidth(18),
-          //                               decoration: BoxDecoration(
-          //                                   color: AppColors.textWhite.getColor(),
-          //                                   borderRadius: BorderRadius.circular(3)),
-          //                             ),
-          //                           ),
-          //                         ),
-          //                       ),
-          //                     )
-          //                   : GestureDetector(
-          //                       onTap: () {
-          //                         setState(() {
-          //                           isPlayingSound = true;
-          //                           playAudio();
-          //                         });
-          //                       },
-          //                       child: Container(
-          //                         width: UIDefine.getPixelWidth(100),
-          //                         height: UIDefine.getPixelWidth(100),
-          //                         decoration: BoxDecoration(
-          //                             color: AppColors.buttonCommon.getColor().withOpacity(0.3),
-          //                             borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(50)),
-          //                             border: Border.all(
-          //                                 color: AppColors.mainThemeButton.getColor(),
-          //                                 width: UIDefine.getPixelWidth(3))),
-          //                         child: Container(
-          //                           alignment: Alignment.center,
-          //                           width: UIDefine.getPixelWidth(50),
-          //                           height: UIDefine.getPixelWidth(50),
-          //                           child: Image.asset(
-          //                             AppImagePath.whitePlayIcon,
-          //                             fit: BoxFit.cover,
-          //                             width: UIDefine.getPixelWidth(32),
-          //                             height: UIDefine.getPixelWidth(32),
-          //                           ),
-          //                         ),
-          //                       ),
-          //                     ),
-          //               GestureDetector(
-          //                   onTap: () {
-          //                     // GlobalData.audioPath = '${tempDir.path}/$timeStamp.mp4';
-          //                     _onSend();
-          //                   },
-          //                   child: Image.asset(
-          //                     AppImagePath.sendIcon,
-          //                   )),
-          //             ],
-          //           )
-          //         :
-          //
-          //         ///預設畫面
-          //         GestureDetector(
-          //             onTap: () {
-          //               _onTap();
-          //             },
-          //             child: Container(
-          //               width: UIDefine.getPixelWidth(100),
-          //               height: UIDefine.getPixelWidth(100),
-          //               decoration: BoxDecoration(
-          //                   color: AppColors.textWhite.getColor().withOpacity(0.15),
-          //                   borderRadius: BorderRadius.circular(UIDefine.getPixelWidth(50)),
-          //                   border: Border.all(
-          //                       color: AppColors.buttonCommon.getColor().withOpacity(0.3),
-          //                       width: UIDefine.getPixelWidth(2))),
-          //               child: Container(
-          //                 alignment: Alignment.center,
-          //                 width: UIDefine.getPixelWidth(32),
-          //                 height: UIDefine.getPixelWidth(32),
-          //                 child: Image.asset(
-          //                   AppImagePath.goldenMicrophoneIcon,
-          //                   fit: BoxFit.fill,
-          //                   width: UIDefine.getPixelWidth(32),
-          //                   height: UIDefine.getPixelWidth(32),
-          //                 ),
-          //               ),
-          //             ),
-          //           ),
           SizedBox(
             height: UIDefine.getPixelWidth(15),
           ),
@@ -249,24 +100,23 @@ class _RecorderViewState extends ConsumerState<RecorderView> {
     );
   }
 
-  Future<int?> checkAndroidVersion() async {
-    try {
-      final int? currentSdkVersion = await const MethodChannel('flutter/platform')
-          .invokeMethod<int>('android_getSdkVersion');
-      return currentSdkVersion;
-    } on PlatformException {
-      // 處理平台異常
-      print('無法獲取 Android 版本信息...');
-    }
+  Future<AndroidDeviceInfo> getDeviceInfo() async {
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+    print('Running on ${androidInfo.version}');
+    return androidInfo;
   }
+
 
   Future<void> _onTap() async {
     _initialize();
-    final currentSdkVersion = await checkAndroidVersion();
-    if(currentSdkVersion != null){
-      print('aaa');
-      if(currentSdkVersion >= 13){
-        print('bbb');
+    if(Platform.isAndroid) {
+      AndroidDeviceInfo info = await getDeviceInfo();
+      final AndroidBuildVersion version = info.version;
+      final String release = version.release;
+      final int sdkInt = version.sdkInt;
+      // print('version=${version.release},sdkInt=$sdkInt');
+      if(int.parse(release)>=13 && sdkInt >=33){
         final micRes = await getPermissionStatus(Permission.microphone);
         if (micRes == true) {
           setState(() {
@@ -274,9 +124,18 @@ class _RecorderViewState extends ConsumerState<RecorderView> {
             _startRecording();
           });
         }
+      }else{
+        final micRes = await getPermissionStatus(Permission.microphone);
+        final stRes = await getPermissionStatus(Permission.storage);
+
+        if (micRes == true && stRes == true) {
+          setState(() {
+            isRecording = true;
+            _startRecording();
+          });
+        }
       }
     }else{
-      print('ccc');
       final micRes = await getPermissionStatus(Permission.microphone);
       final stRes = await getPermissionStatus(Permission.storage);
 
