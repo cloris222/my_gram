@@ -90,7 +90,7 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
   bool isScrollDown = true;
   double opacity = 1;
   Timer? timer;
-  int nextIndex = 0;
+  int topIndex = 0;
   @override
   void initState() {
     data.posts=PitchDataUtil().buildSelfPostData();
@@ -182,7 +182,7 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
                               child: AnimatedOpacity(
                                 duration: const Duration(milliseconds: 300),
                                 opacity: opacity,
-                                child: preImages[selectedCardIndex],
+                                child: preImages[topIndex],
                               ),
                             ),
                             Positioned(
@@ -231,7 +231,7 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
     timer?.cancel();
     timer = Timer(const Duration(milliseconds: 100), (){
       setState(() {
-        selectedCardIndex = index;
+        topIndex = index;
         opacity = 1;
       });
     });
@@ -242,10 +242,11 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
       alignment: Alignment.bottomCenter,
       child: Swiper(
         itemCount: data.posts.length,
-        // index: selectedCardIndex,
         onIndexChanged: (index) {
           setState(() {
             opacity = 0.1;
+            topIndex = selectedCardIndex;
+            selectedCardIndex = index;
           });
           _updateIndex(index);
         },
