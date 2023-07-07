@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:base_project/constant/enum/app_param_enum.dart';
 import 'package:base_project/constant/theme/app_colors.dart';
 import 'package:base_project/constant/theme/app_image_path.dart';
@@ -86,13 +88,14 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
 
   List<Image> preImages = [];
   bool isScrollDown = true;
-
+  double opacity = 1;
+  Timer? timer;
+  int nextIndex = 0;
   @override
   void initState() {
     data.posts=PitchDataUtil().buildSelfPostData();
     data.avatar=PitchDataUtil().getAvatar(MyGramAI.Rebecca);
     _tabController = TabController(length: 2, vsync: this, initialIndex: 0);
-
     /// 預載圖片
     for (var element in data.posts) {
       preImages.add(Image.asset(element.images.first,fit: BoxFit.cover));
@@ -118,6 +121,7 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
   @override
   void dispose() {
     _tabController.dispose();
+    timer?.cancel();
     super.dispose();
   }
 
@@ -171,12 +175,13 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
                             //   width: UIDefine.getWidth(),
                             //   height: UIDefine.getViewHeight() - UIDefine.getPixelWidth(120),
                             // ),
-                            AnimatedSwitcher(
-                              duration: const Duration(milliseconds: 300),
-                              child: SizedBox(
-                                key: ValueKey(selectedCardIndex),
-                                width: UIDefine.getWidth(),
-                                height: UIDefine.getViewHeight() - UIDefine.getPixelWidth(120),
+
+                            SizedBox(
+                              width: UIDefine.getWidth(),
+                              height: UIDefine.getViewHeight() - UIDefine.getPixelWidth(120),
+                              child: AnimatedOpacity(
+                                duration: const Duration(milliseconds: 300),
+                                opacity: opacity,
                                 child: preImages[selectedCardIndex],
                               ),
                             ),
@@ -222,17 +227,27 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
             ));
   }
 
+  void _updateIndex(int index) {
+    timer?.cancel();
+    timer = Timer(const Duration(milliseconds: 100), (){
+      setState(() {
+        selectedCardIndex = index;
+        opacity = 1;
+      });
+    });
+  }
   Widget _buildSwiperCards() {
     return Container(
       height: UIDefine.getPixelWidth(150),
       alignment: Alignment.bottomCenter,
       child: Swiper(
         itemCount: data.posts.length,
-        index: selectedCardIndex,
+        // index: selectedCardIndex,
         onIndexChanged: (index) {
           setState(() {
-            selectedCardIndex = index;
+            opacity = 0.1;
           });
+          _updateIndex(index);
         },
         itemBuilder: (BuildContext context, int index) {
           bool isCenter = selectedCardIndex == index;
@@ -532,5 +547,6 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
       ),
     );
   }
+
 
 }
