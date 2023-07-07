@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 
 import 'package:base_project/constant/theme/app_colors.dart';
 import 'package:base_project/constant/theme/app_gradient_colors.dart';
@@ -51,7 +49,7 @@ class PrivateMessagePage extends ConsumerStatefulWidget {
   ConsumerState createState() => _PrivateMessagePageState();
 }
 
-class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
+class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> with TickerProviderStateMixin{
   late MessagePrivateGroupMessageViewModel viewModel;
   bool showGallery = false;
   bool sendImage = false;
@@ -217,7 +215,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                 children: [
                   _getBottomTextField(),
 
-              AnimatedContainer(
+                  AnimatedContainer(
                     duration: const Duration(milliseconds: 300),
                     curve: Curves.easeInOut,
                     height: ref.watch(showRecordProvider)?UIDefine.getPixelWidth(270):0.0,
