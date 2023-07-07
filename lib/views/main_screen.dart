@@ -6,7 +6,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../constant/enum/app_param_enum.dart';
 import '../constant/theme/ui_define.dart';
 import '../utils/observer_pattern/main_screen/main_screen_observer.dart';
-import '../view_models/gobal_provider/main_bottom_bar_provider.dart';
 import '../view_models/dynmaic/is_rebecca_provider.dart';
 import '../view_models/gobal_provider/user_info_provider.dart';
 import 'common_scaffold.dart';
@@ -59,9 +58,6 @@ class _MainScreenState extends ConsumerState<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    ref.listen(mainBottomBarProvider, (previous, next) {
-      _changePage(AppNavigationBarType.values[next]);
-    });
     return CommonScaffold(
         canPop: false,
         onPop: () {
