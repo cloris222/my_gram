@@ -14,6 +14,9 @@ import '../../constant/theme/app_colors.dart';
 import '../../models/http/data/feature_detail_data.dart';
 import '../../view_models/create/create_main_view_model.dart';
 import '../../view_models/gobal_provider/global_tag_controller_provider.dart';
+import 'package:shimmer/shimmer.dart';
+
+import '../../widgets/custom_loading_widget.dart';
 
 class CreateTagsView extends ConsumerStatefulWidget {
   const CreateTagsView({
@@ -30,6 +33,8 @@ class _CreateTagsViewState extends ConsumerState<CreateTagsView>
 
   List<String> get tags => ref.read(createTagProvider);
   late TabController _tabController;
+
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -148,11 +153,17 @@ class _CreateTagsViewState extends ConsumerState<CreateTagsView>
       child: Stack(
         children: [
           CommonNetworkImage(
-            background: Colors.white,
+            // background: Colors.white,
+            background: Colors.transparent,
             imageUrl: "${GlobalData.urlPrefix}${data.imgUrl}",
             width: UIDefine.getWidth(),
             height: UIDefine.getPixelWidth(120),
             cacheWidth: 480,
+            loadWidget:CustomLoadingWidget(
+              width: UIDefine.getWidth(),
+              height: UIDefine.getPixelWidth(120),
+            ),
+            errorWidget: Container(),
             fit: BoxFit.fitHeight,
           ),
 

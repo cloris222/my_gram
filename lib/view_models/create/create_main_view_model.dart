@@ -14,6 +14,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../views/create/create_loading_page.dart';
 
+
 /// 對應特徵值 已選擇的選項
 final createChooseProvider = StateProvider.family.autoDispose<int, String>((ref, tag) {
   return -1;

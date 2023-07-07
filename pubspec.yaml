@@ -66,6 +66,7 @@ dependencies:
   flutter_audio_waveforms: ^1.2.1+8
   lottie: ^1.4.3
   glassmorphism_widgets: ^0.2.2
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_test:
