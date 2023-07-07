@@ -15,6 +15,7 @@ import 'package:base_project/views/message/recorder_view.dart';
 import 'package:base_project/view_models/message/websocketdata/ws_send_message_data.dart';
 import 'package:base_project/views/message/sqlite/chat_history_db.dart';
 import 'package:base_project/views/message/widget/message_view_for_other.dart';
+import 'package:base_project/widgets/button/text_button_widget.dart';
 import 'package:base_project/widgets/label/avatar_icon_widget.dart';
 import 'package:glassmorphism_widgets/glassmorphism_widgets.dart';
 import '../../constant/theme/app_style.dart';
@@ -38,6 +39,7 @@ import '../../utils/date_format_util.dart';
 import '../../views/message/data/message_view_for_updating.dart';
 import '../../views/message/widget/message_view_for_self.dart';
 import 'notifier/chat_msg_notifier.dart';
+import 'package:inview_notifier_list/inview_notifier_list.dart';
 
 class PrivateMessagePage extends ConsumerStatefulWidget {
   // final ChatRoomData data;
@@ -74,6 +76,8 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
   List<AssetEntity> showImageList = [];
 
   List<String> get readList => ref.watch(readListProvider);
+
+  bool isValid = false;
 
   // bool showRecorder = false;
 
@@ -236,7 +240,21 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                       },
                     ),
                   )
-                : Container()
+                : Container(),
+            isValid?
+            Positioned(
+              top: UIDefine.getPixelWidth(10),
+                left: 0,
+                right: 0,
+                child: TextButtonWidget(
+                  btnText: 'aaa',
+                  onPressed: () {  },
+                  isFillWidth: false,
+                  isGradient: true,
+                  setWidth: UIDefine.getPixelWidth(100),
+                  setHeight: UIDefine.getPixelWidth(50),
+                  radius: UIDefine.getPixelWidth(15),
+            )):Container()
           ],
         ),
       ),
@@ -402,88 +420,185 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
     });
   }
 
+  // Widget _buildListView() {
+  //   return RectGetter(
+  //     key: listViewKey,
+  //     child: ListView.builder(
+  //         padding: EdgeInsets.only(bottom: UIDefine.getNavigationBarHeight() + UIDefine.getPixelWidth(viewModel.isFocus ? 56 : 52)+UIDefine.getPixelWidth(ref.watch(showRecordProvider)?270:0)),
+  //         reverse: true, // 倒序
+  //         itemCount: readList.isNotEmpty ? showingList.length + 1 : showingList.length,
+  //         itemBuilder: (context, index) {
+  //           if (readList.isNotEmpty) {
+  //             if (index == 0) {
+  //               return Padding(
+  //                 padding: EdgeInsets.fromLTRB(UIDefine.getScreenWidth(1), UIDefine.getScreenWidth(0.5), UIDefine.getScreenWidth(1), UIDefine.getScreenWidth(0.5)),
+  //                 child: Row(
+  //                   crossAxisAlignment: CrossAxisAlignment.start,
+  //                   children: [
+  //                     Padding(
+  //                       padding: EdgeInsets.only(top: UIDefine.getPixelHeight(5)),
+  //                       child: ClipRRect(
+  //                         borderRadius: BorderRadius.circular(100),
+  //                         child: Image.asset(
+  //                           "assets/icon/pitch/pair/01.Rebecca_01_01.png",
+  //                           width: UIDefine.getPixelWidth(30),
+  //                           height: UIDefine.getPixelHeight(30),
+  //                           fit: BoxFit.cover,
+  //                         ),
+  //                       ),
+  //                     ),
+  //                     Padding(
+  //                       padding: EdgeInsets.all(UIDefine.getScreenWidth(1)),
+  //                       child: Row(
+  //                         mainAxisAlignment: MainAxisAlignment.start,
+  //                         crossAxisAlignment: CrossAxisAlignment.end,
+  //                         children: [
+  //                           SizedBox(
+  //                             width: UIDefine.getPixelWidth(8),
+  //                           ),
+  //                           Container(
+  //                             alignment: Alignment.center,
+  //                             decoration: BoxDecoration(
+  //                                 borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15), bottomRight: Radius.circular(15)),
+  //                                 gradient: LinearGradient(colors: AppGradientColors.gradientOtherMessage.getColors())),
+  //                             child: _getOthersTalkBubble(),
+  //                           ),
+  //                           SizedBox(width: UIDefine.getPixelWidth(8)),
+  //                           Text(
+  //                             tr('typing'),
+  //                             style: TextStyle(color: AppColors.commentUnlike.light, fontSize: UIDefine.fontSize10, fontWeight: FontWeight.w400, letterSpacing: 0.4),
+  //                           ),
+  //                         ],
+  //                       ),
+  //                     ),
+  //                   ],
+  //                 ),
+  //               );
+  //             }
+  //           }
+  //
+  //           int realIndex=index-(readList.isNotEmpty?1:0);
+  //           var key = showingList[realIndex].contentId;
+  //           _keys[key] = _keys[key] ?? RectGetter.createGlobalKey();
+  //           return RectGetter(
+  //             key: _keys[key],
+  //             child: Padding(
+  //               padding: realIndex == showingList.length - 1 ? EdgeInsets.fromLTRB(
+  //                 UIDefine.getPixelWidth(8),
+  //               UIDefine.getPixelWidth(1),
+  //               UIDefine.getPixelWidth(8),
+  //               UIDefine.getPixelWidth(0.5))
+  //               : showingList[realIndex].receiverAvatarId != showingList[realIndex+1].receiverAvatarId ? EdgeInsets.fromLTRB(
+  //           UIDefine.getPixelWidth(6),
+  //           UIDefine.getPixelWidth(24),
+  //           UIDefine.getPixelWidth(6),
+  //           UIDefine.getPixelWidth(0.5))
+  //               : EdgeInsets.fromLTRB(
+  //           UIDefine.getPixelWidth(6),
+  //           UIDefine.getPixelWidth(0),
+  //           UIDefine.getPixelWidth(6),
+  //           UIDefine.getPixelWidth(0)),
+  //               child: _getTalkView(realIndex),
+  //             ),
+  //           );
+  //         }),
+  //   );
+  // }
+
   Widget _buildListView() {
     return RectGetter(
       key: listViewKey,
-      child: ListView.builder(
-          padding: EdgeInsets.only(bottom: UIDefine.getNavigationBarHeight() + UIDefine.getPixelWidth(viewModel.isFocus ? 56 : 52)+UIDefine.getPixelWidth(ref.watch(showRecordProvider)?270:0)),
-          reverse: true, // 倒序
-          itemCount: readList.isNotEmpty ? showingList.length + 1 : showingList.length,
-          itemBuilder: (context, index) {
-            if (readList.isNotEmpty) {
-              if (index == 0) {
-                return Padding(
-                  padding: EdgeInsets.fromLTRB(UIDefine.getScreenWidth(1), UIDefine.getScreenWidth(0.5), UIDefine.getScreenWidth(1), UIDefine.getScreenWidth(0.5)),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(top: UIDefine.getPixelHeight(5)),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(100),
-                          child: Image.asset(
-                            "assets/icon/pitch/pair/01.Rebecca_01_01.png",
-                            width: UIDefine.getPixelWidth(30),
-                            height: UIDefine.getPixelHeight(30),
-                            fit: BoxFit.cover,
+      child:InViewNotifierList(
+        key: ValueKey('MsgList'),
+        isInViewPortCondition:
+            (double deltaTop, double deltaBottom, double viewPortDimension) {
+          setState(() {
+            isValid = deltaTop < (0.1 * viewPortDimension) &&
+                deltaBottom > (0.1 * viewPortDimension);
+          });
+          return deltaTop < (0.1 * viewPortDimension) &&
+              deltaBottom > (0.1 * viewPortDimension);
+        },
+        padding: EdgeInsets.only(bottom: UIDefine.getNavigationBarHeight() + UIDefine.getPixelWidth(viewModel.isFocus ? 56 : 52)+UIDefine.getPixelWidth(ref.watch(showRecordProvider)?270:0)),
+        reverse: true,
+        itemCount: readList.isNotEmpty ? showingList.length + 1 : showingList.length,
+        builder: (context, index) {
+          if (readList.isNotEmpty) {
+            if (index == 0) {
+              return Padding(
+                padding: EdgeInsets.fromLTRB(UIDefine.getScreenWidth(1), UIDefine.getScreenWidth(0.5), UIDefine.getScreenWidth(1), UIDefine.getScreenWidth(0.5)),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(top: UIDefine.getPixelHeight(5)),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(100),
+                        child: Image.asset(
+                          "assets/icon/pitch/pair/01.Rebecca_01_01.png",
+                          width: UIDefine.getPixelWidth(30),
+                          height: UIDefine.getPixelHeight(30),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(UIDefine.getScreenWidth(1)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          SizedBox(
+                            width: UIDefine.getPixelWidth(8),
                           ),
-                        ),
+                          Container(
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15), bottomRight: Radius.circular(15)),
+                                gradient: LinearGradient(colors: AppGradientColors.gradientOtherMessage.getColors())),
+                            child: _getOthersTalkBubble(),
+                          ),
+                          SizedBox(width: UIDefine.getPixelWidth(8)),
+                          Text(
+                            tr('typing'),
+                            style: TextStyle(color: AppColors.commentUnlike.light, fontSize: UIDefine.fontSize10, fontWeight: FontWeight.w400, letterSpacing: 0.4),
+                          ),
+                        ],
                       ),
-                      Padding(
-                        padding: EdgeInsets.all(UIDefine.getScreenWidth(1)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            SizedBox(
-                              width: UIDefine.getPixelWidth(8),
-                            ),
-                            Container(
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15), bottomRight: Radius.circular(15)),
-                                  gradient: LinearGradient(colors: AppGradientColors.gradientOtherMessage.getColors())),
-                              child: _getOthersTalkBubble(),
-                            ),
-                            SizedBox(width: UIDefine.getPixelWidth(8)),
-                            Text(
-                              tr('typing'),
-                              style: TextStyle(color: AppColors.commentUnlike.light, fontSize: UIDefine.fontSize10, fontWeight: FontWeight.w400, letterSpacing: 0.4),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              }
+                    ),
+                  ],
+                ),
+              );
             }
+          }
 
-            int realIndex=index-(readList.isNotEmpty?1:0);
-            var key = showingList[realIndex].contentId;
-            _keys[key] = _keys[key] ?? RectGetter.createGlobalKey();
-            return RectGetter(
-              key: _keys[key],
-              child: Padding(
-                padding: realIndex == showingList.length - 1 ? EdgeInsets.fromLTRB(
+          int realIndex=index-(readList.isNotEmpty?1:0);
+          var key = showingList[realIndex].contentId;
+          _keys[key] = _keys[key] ?? RectGetter.createGlobalKey();
+          return RectGetter(
+            key: _keys[key],
+            child: Padding(
+              padding: realIndex == showingList.length - 1 ? EdgeInsets.fromLTRB(
                   UIDefine.getPixelWidth(8),
-                UIDefine.getPixelWidth(1),
-                UIDefine.getPixelWidth(8),
-                UIDefine.getPixelWidth(0.5))
-                : showingList[realIndex].receiverAvatarId != showingList[realIndex+1].receiverAvatarId ? EdgeInsets.fromLTRB(
-            UIDefine.getPixelWidth(6),
-            UIDefine.getPixelWidth(24),
-            UIDefine.getPixelWidth(6),
-            UIDefine.getPixelWidth(0.5))
-                : EdgeInsets.fromLTRB(
-            UIDefine.getPixelWidth(6),
-            UIDefine.getPixelWidth(0),
-            UIDefine.getPixelWidth(6),
-            UIDefine.getPixelWidth(0)),
-                child: _getTalkView(realIndex),
-              ),
-            );
-          }),
+                  UIDefine.getPixelWidth(1),
+                  UIDefine.getPixelWidth(8),
+                  UIDefine.getPixelWidth(0.5))
+                  : showingList[realIndex].receiverAvatarId != showingList[realIndex+1].receiverAvatarId ? EdgeInsets.fromLTRB(
+                  UIDefine.getPixelWidth(6),
+                  UIDefine.getPixelWidth(24),
+                  UIDefine.getPixelWidth(6),
+                  UIDefine.getPixelWidth(0.5))
+                  : EdgeInsets.fromLTRB(
+                  UIDefine.getPixelWidth(6),
+                  UIDefine.getPixelWidth(0),
+                  UIDefine.getPixelWidth(6),
+                  UIDefine.getPixelWidth(0)),
+              child: _getTalkView(realIndex),
+            ),
+          );
+        },
+        initialInViewIds: ['0'],
+      )
     );
   }
 
