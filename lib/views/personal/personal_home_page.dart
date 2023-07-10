@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:base_project/constant/enum/app_param_enum.dart';
 import 'package:base_project/constant/theme/app_colors.dart';
@@ -17,7 +18,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../constant/theme/app_style.dart';
 import '../../view_models/dynmaic/is_rebecca_provider.dart';
 import '../../widgets/button/text_button_widget.dart';
-import '../../widgets/label/bar_shadow.dart';
 import '../../widgets/label/common_network_image.dart';
 import '../common_scaffold.dart';
 import 'package:card_swiper/card_swiper.dart';
@@ -132,9 +132,9 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
         extendBodyBehindAppBar: true,
         extendBody: true,
         appBar: CustomAppBar.personalAppBar(
-            context,
-          height:isScrollDown == true?UIDefine.getPixelWidth(96):0,
-            ),
+          context,
+          height: isScrollDown == true ? UIDefine.getPixelWidth(Platform.isIOS ? 102 : 96) : 0,
+        ),
         body: (isDark) => Container(
               width: UIDefine.getWidth(),
               child: NotificationListener<ScrollUpdateNotification>(
