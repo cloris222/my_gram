@@ -78,6 +78,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
   List<String> get readList => ref.watch(readListProvider);
 
   bool isValid = false;
+  Timer? _timer;
 
   // bool showRecorder = false;
 
@@ -107,6 +108,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
 
   @override
   void dispose() {
+    _timer?.cancel();
     viewModel.textFocusNode.dispose();
     super.dispose();
   }
@@ -193,6 +195,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                         onNotification: (notification) {
                           _updateDateViewByIndex();
                           if (notification is ScrollStartNotification) {
+                            _timer?.cancel();
                             if(dateViewSetState != null){
                               dateViewSetState!(() {
                                 bScrolling = true;
@@ -201,11 +204,14 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
                             }
 
                           if (notification is ScrollEndNotification) {
-                            if(dateViewSetState != null){
-                              dateViewSetState!(() {
-                                bScrolling = false;
-                              });
-                            }
+                            _timer?.cancel();
+                            _timer = Timer(const Duration(milliseconds: 500) , (){
+                              if(dateViewSetState != null){
+                                dateViewSetState!(() {
+                                  bScrolling = false;
+                                });
+                              }
+                            });
                           }
                           return true;
                         },
@@ -608,8 +614,10 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> {
     return StatefulBuilder( // 獨立單一元件刷新,防閃屏
         builder: (BuildContext context, StateSetter setState) {
           dateViewSetState = setState;
-          return Visibility(
-              visible: bScrolling,
+          return AnimatedOpacity(
+            duration: const Duration(milliseconds: 300),
+              opacity: bScrolling?1.0:0.0,
+              // visible: bScrolling,
               child: Container(
                 height: UIDefine.getScreenWidth(7),
                 padding: const EdgeInsets.all(5),
