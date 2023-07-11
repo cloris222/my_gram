@@ -1,21 +1,13 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:base_project/constant/theme/global_data.dart';
-import 'package:flutter/foundation.dart';
 import 'package:base_project/constant/theme/app_text_style.dart';
 import 'package:base_project/constant/theme/ui_define.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_audio_waveforms/flutter_audio_waveforms.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'dart:io';
 import '../constant/theme/app_colors.dart';
-import '../constant/theme/app_gradient_colors.dart';
 import 'package:audioplayers/audioplayers.dart' as audio;
-import 'dart:math' as math;
-import 'package:flutter_audio_waveforms/flutter_audio_waveforms.dart' as flutterAudio;
 
 import '../constant/theme/app_image_path.dart';
 import '../view_models/message/message_private_message_view_model.dart';

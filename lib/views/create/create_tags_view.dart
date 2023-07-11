@@ -27,8 +27,7 @@ class CreateTagsView extends ConsumerStatefulWidget {
   ConsumerState createState() => _CreateTagsViewState();
 }
 
-class _CreateTagsViewState extends ConsumerState<CreateTagsView>
-    with TickerProviderStateMixin {
+class _CreateTagsViewState extends ConsumerState<CreateTagsView> with TickerProviderStateMixin {
   final pageTag = "createView";
 
   List<String> get tags => ref.read(createTagProvider);
@@ -38,8 +37,7 @@ class _CreateTagsViewState extends ConsumerState<CreateTagsView>
 
   @override
   void initState() {
-    _tabController =
-        TabController(length: tags.length, vsync: this, initialIndex: 0);
+    _tabController = TabController(length: tags.length, vsync: this, initialIndex: 0);
 
     super.initState();
   }
@@ -60,11 +58,12 @@ class _CreateTagsViewState extends ConsumerState<CreateTagsView>
 
     return Container(
       decoration: AppStyle().styleColorBorderBackground(
-          color: AppColors.mainBackground.getColor(),
-          backgroundColor: AppColors.mainBackground.getColor(),
-          radius: 20,
-          hasBottomRight: false,
-          hasBottomLef: false),
+        color: AppColors.mainBackground.getColor(),
+        backgroundColor: AppColors.mainBackground.getColor(),
+        radius: 20,
+        hasBottomRight: false,
+        hasBottomLef: false,
+      ),
       padding: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(10)),
       child: Column(
         children: [
@@ -72,8 +71,7 @@ class _CreateTagsViewState extends ConsumerState<CreateTagsView>
           Expanded(
               child: TabBarView(
             controller: _tabController,
-            children: List<Widget>.generate(
-                tags.length, (index) => _buildView(tags[index])),
+            children: List<Widget>.generate(tags.length, (index) => _buildView(tags[index])),
           )),
         ],
       ),
@@ -83,27 +81,20 @@ class _CreateTagsViewState extends ConsumerState<CreateTagsView>
   Widget _buildTags() {
     return Container(
       height: UIDefine.getPixelWidth(58),
-      padding: EdgeInsets.symmetric(
-          vertical: UIDefine.getPixelWidth(16),
-          horizontal: UIDefine.getPixelWidth(8)),
+      padding: EdgeInsets.symmetric(vertical: UIDefine.getPixelWidth(16), horizontal: UIDefine.getPixelWidth(8)),
       child: TabBar(
         isScrollable: true,
-        labelPadding: EdgeInsets.symmetric(
-            horizontal: UIDefine.getPixelWidth(12),
-            vertical: UIDefine.getPixelWidth(2)),
+        labelPadding: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(12), vertical: UIDefine.getPixelWidth(2)),
         controller: _tabController,
         indicator: AppStyle().styleColorsRadiusBackground(
-            border: Border.all(
-                color: AppColors.buttonCommon.getColor().withOpacity(0.3)),
-            color: AppColors.buttonUnable.getColor()),
+          border: Border.all(color: AppColors.buttonCommon.getColor().withOpacity(0.3)),
+          color: AppColors.buttonUnable.getColor(),
+        ),
         labelStyle: AppTextStyle.getBaseStyle(),
         tabs: List<Widget>.generate(
-            _tabController.length,
-            (index) => Tab(
-                height: UIDefine.getPixelWidth(40),
-                child: Center(
-                  child: Text(tr(tags[index])),
-                ))),
+          _tabController.length,
+          (index) => Tab(height: UIDefine.getPixelWidth(40), child: Center(child: Text(tr(tags[index])))),
+        ),
       ),
     );
   }
@@ -120,14 +111,13 @@ class _CreateTagsViewState extends ConsumerState<CreateTagsView>
           children: List<Widget>.generate(
               row,
               (itemIndex) => Expanded(
-                  child: Container(
-                      margin: EdgeInsets.symmetric(
-                          horizontal: UIDefine.getPixelWidth(2.5)),
-                      child: _buildItem(list, tag, index * 4 + itemIndex)))),
+                      child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: UIDefine.getPixelWidth(2.5)),
+                    child: _buildItem(list, tag, index * 4 + itemIndex),
+                  ))),
         );
       },
-      separatorBuilder: (context, index) =>
-          SizedBox(height: UIDefine.getPixelWidth(5)),
+      separatorBuilder: (context, index) => SizedBox(height: UIDefine.getPixelWidth(5)),
     );
   }
 
@@ -144,9 +134,7 @@ class _CreateTagsViewState extends ConsumerState<CreateTagsView>
         if (ref.read(createChooseProvider(tag)) == itemIndex) {
           ref.read(createChooseProvider(tag).notifier).update((state) => -1);
         } else {
-          ref
-              .read(createChooseProvider(tag).notifier)
-              .update((state) => itemIndex);
+          ref.read(createChooseProvider(tag).notifier).update((state) => itemIndex);
         }
       },
       behavior: HitTestBehavior.translucent,
@@ -178,22 +166,15 @@ class _CreateTagsViewState extends ConsumerState<CreateTagsView>
                 child: Container(
                   decoration: BoxDecoration(
                       gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                        Colors.black.withOpacity(0.4),
-                        Colors.black.withOpacity(0.8)
-                      ])),
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [Colors.black.withOpacity(0.4), Colors.black.withOpacity(0.8)],
+                  )),
                 ),
               )),
 
           /// 選中遮罩
-          Positioned(
-              top: 0,
-              right: 0,
-              child: Visibility(
-                  visible: isSelected,
-                  child: Image.asset(AppImagePath.choose))),
+          Positioned(top: 0, right: 0, child: Visibility(visible: isSelected, child: Image.asset(AppImagePath.choose))),
 
           /// 底部遮罩
           Positioned(
@@ -201,21 +182,15 @@ class _CreateTagsViewState extends ConsumerState<CreateTagsView>
               right: -UIDefine.getPixelWidth(1),
               left: -UIDefine.getPixelWidth(1),
               child: Container(
-                padding:
-                    EdgeInsets.symmetric(vertical: UIDefine.getPixelWidth(5)),
+                padding: EdgeInsets.symmetric(vertical: UIDefine.getPixelWidth(5)),
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                     gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                      Colors.transparent,
-                      Colors.black.withOpacity(0.8)
-                    ])),
-                child: Text(tr(data.prompt),
-                    style: AppTextStyle.getBaseStyle(
-                        fontSize: UIDefine.fontSize12,
-                        fontWeight: FontWeight.w500)),
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Colors.transparent, Colors.black.withOpacity(0.8)],
+                )),
+                child: Text(tr(data.prompt), style: AppTextStyle.getBaseStyle(fontSize: UIDefine.fontSize12, fontWeight: FontWeight.w500)),
               )),
         ],
       ),

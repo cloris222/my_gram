@@ -23,11 +23,7 @@ class _PairMainPageState extends State<PairMainPage> {
   @override
   void initState() {
     list.addAll(GlobalData.generatePairImageData(8));
-    Future.delayed(Duration.zero, () {
-      setState(() {
-        showList.addAll(list);
-      });
-    });
+    showList.addAll(list);
 
     super.initState();
   }
@@ -49,14 +45,10 @@ class _PairMainPageState extends State<PairMainPage> {
 
     /// MARK: 加入避免重複觸碰
     if (widgetList.isNotEmpty) {
-      widgetList.insert(
-          widgetList.length - 1,
-          Container(
-              color: Colors.transparent,
-              width: UIDefine.getWidth(),
-              height: UIDefine.getViewHeight()));
+      widgetList.insert(widgetList.length - 1, Container(color: Colors.transparent, width: UIDefine.getWidth(), height: UIDefine.getViewHeight()));
     }
     return Container(
+        height: UIDefine.getHeight(),
         padding: EdgeInsets.only(bottom: UIDefine.getNavigationBarHeight()),
         color: AppColors.textBlack.getColor(),
         child: Stack(children: widgetList));

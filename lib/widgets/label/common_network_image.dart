@@ -7,23 +7,22 @@ import '../../constant/theme/app_colors.dart';
 
 ///MARK: 漸進式讀取圖片
 class CommonNetworkImage extends StatelessWidget {
-  const CommonNetworkImage(
-      {Key? key,
-      required this.imageUrl,
-      this.cacheWidth,
-      this.width,
-      this.height,
-      this.fit,
-      this.errorWidget,
-      this.loadWidget,
-      this.child,
-      this.childAlignment,
-      this.childPadding,
-      this.imageWidgetBuilder,
-      this.radius = 8,
-      this.background = Colors.black,
-      })
-      : super(key: key);
+  const CommonNetworkImage({
+    Key? key,
+    required this.imageUrl,
+    this.cacheWidth,
+    this.width,
+    this.height,
+    this.fit,
+    this.errorWidget,
+    this.loadWidget,
+    this.child,
+    this.childAlignment,
+    this.childPadding,
+    this.imageWidgetBuilder,
+    this.radius = 8,
+    this.background = Colors.black,
+  }) : super(key: key);
   final String imageUrl;
   final double? width;
   final double? height;
@@ -49,10 +48,7 @@ class CommonNetworkImage extends StatelessWidget {
   }
 
   Widget _buildLoadingIcon() {
-    return Center(
-        child: loadWidget ??
-            LoadingAnimationWidget.hexagonDots(
-                color: AppColors.textPrimary.getColor(), size: 20));
+    return Center(child: loadWidget ?? LoadingAnimationWidget.hexagonDots(color: AppColors.textPrimary.getColor(), size: 20));
   }
 
   Widget _buildErrorIcon() {
@@ -73,22 +69,23 @@ class CommonNetworkImage extends StatelessWidget {
     //   lowUrl = imageUrl;
     // }
 
-    return Container(
-      decoration: BoxDecoration(
-          color: background,
-          borderRadius: BorderRadius.all(Radius.circular(radius))),
-      child: CachedNetworkImage(
-        width: width,
-        height: height,
-        fit: fit,
-        imageUrl: imageUrl,
-        memCacheWidth: cacheWidth ?? 480,
-        cacheManager: CacheManager(
-          Config("flutterCampus", stalePeriod: const Duration(minutes: 5)),
+    return ClipRRect(
+      borderRadius: BorderRadius.all(Radius.circular(radius)),
+      child: Container(
+        color: background,
+        child: CachedNetworkImage(
+          width: width,
+          height: height,
+          fit: fit,
+          imageUrl: imageUrl,
+          memCacheWidth: cacheWidth ?? 480,
+          cacheManager: CacheManager(
+            Config("flutterCampus", stalePeriod: const Duration(minutes: 5)),
+          ),
+          imageBuilder: _buildImageBuilder(),
+          placeholder: (context, url) => _buildLoadingIcon(),
+          errorWidget: (context, url, error) => _buildErrorIcon(),
         ),
-        imageBuilder: _buildImageBuilder(),
-        placeholder: (context, url) => _buildLoadingIcon(),
-        errorWidget: (context, url, error) => _buildErrorIcon(),
       ),
     );
   }
@@ -99,6 +96,7 @@ class CommonNetworkImage extends StatelessWidget {
             alignment: childAlignment,
             padding: childPadding,
             decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(radius)),
               image: DecorationImage(image: imageProvider, fit: fit),
             ),
             child: child)
@@ -128,18 +126,19 @@ class CommonNetworkImage extends StatelessWidget {
                 borderRadius: BorderRadius.all(Radius.circular(radius)))),
       );
     }
-    return Container(
-      alignment: childAlignment,
-      padding: childPadding,
-      width: width,
-      height: height,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(radius))),
-      child: FadeInImage(
-        placeholder: MemoryImage(kTransparentImage),
-        fit: fit,
-        image: AssetImage(
-          imageUrl,
+    return ClipRRect(
+      borderRadius: BorderRadius.all(Radius.circular(radius)),
+      child: Container(
+        alignment: childAlignment,
+        padding: childPadding,
+        width: width,
+        height: height,
+        child: FadeInImage(
+          placeholder: MemoryImage(kTransparentImage),
+          fit: fit,
+          image: AssetImage(
+            imageUrl,
+          ),
         ),
       ),
     );

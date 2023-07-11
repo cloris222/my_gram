@@ -3,7 +3,6 @@ import 'package:base_project/constant/theme/app_colors.dart';
 import 'package:base_project/constant/theme/app_image_path.dart';
 import 'package:base_project/constant/theme/app_text_style.dart';
 import 'package:base_project/constant/theme/ui_define.dart';
-import 'package:base_project/main.dart';
 import 'package:base_project/view_models/base_view_model.dart';
 import 'package:base_project/view_models/call_back_function.dart';
 import 'package:base_project/view_models/create/create_main_view_model.dart';
@@ -15,7 +14,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../constant/theme/app_style.dart';
 import '../label/avatar_icon_widget.dart';
-import '../label/bar_shadow.dart';
 
 class CustomAppBar {
   const CustomAppBar._();
@@ -106,6 +104,7 @@ class CustomAppBar {
       elevation: 0,
       automaticallyImplyLeading: false,
       backgroundColor: Colors.transparent,
+
       flexibleSpace:Container(
           height:height,
           width: UIDefine.getWidth(),

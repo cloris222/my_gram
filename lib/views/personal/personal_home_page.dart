@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:base_project/constant/enum/app_param_enum.dart';
 import 'package:base_project/constant/theme/app_colors.dart';
 import 'package:base_project/constant/theme/app_image_path.dart';
@@ -15,7 +18,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../constant/theme/app_style.dart';
 import '../../view_models/dynmaic/is_rebecca_provider.dart';
 import '../../widgets/button/text_button_widget.dart';
-import '../../widgets/label/bar_shadow.dart';
 import '../../widgets/label/common_network_image.dart';
 import '../common_scaffold.dart';
 import 'package:card_swiper/card_swiper.dart';
@@ -86,13 +88,14 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
 
   List<Image> preImages = [];
   bool isScrollDown = true;
-
+  double opacity = 1;
+  Timer? timer;
+  int topIndex = 0;
   @override
   void initState() {
     data.posts=PitchDataUtil().buildSelfPostData();
     data.avatar=PitchDataUtil().getAvatar(MyGramAI.Rebecca);
     _tabController = TabController(length: 2, vsync: this, initialIndex: 0);
-
     /// 預載圖片
     for (var element in data.posts) {
       preImages.add(Image.asset(element.images.first,fit: BoxFit.cover));
@@ -118,6 +121,7 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
   @override
   void dispose() {
     _tabController.dispose();
+    timer?.cancel();
     super.dispose();
   }
 
@@ -128,9 +132,9 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
         extendBodyBehindAppBar: true,
         extendBody: true,
         appBar: CustomAppBar.personalAppBar(
-            context,
-          height:isScrollDown == true?UIDefine.getPixelWidth(96):0,
-            ),
+          context,
+          height: isScrollDown == true ? UIDefine.getPixelWidth(Platform.isIOS ? 102 : 96) : 0,
+        ),
         body: (isDark) => Container(
               width: UIDefine.getWidth(),
               child: NotificationListener<ScrollUpdateNotification>(
@@ -171,13 +175,14 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
                             //   width: UIDefine.getWidth(),
                             //   height: UIDefine.getViewHeight() - UIDefine.getPixelWidth(120),
                             // ),
-                            AnimatedSwitcher(
-                              duration: const Duration(milliseconds: 300),
-                              child: SizedBox(
-                                key: ValueKey(selectedCardIndex),
-                                width: UIDefine.getWidth(),
-                                height: UIDefine.getViewHeight() - UIDefine.getPixelWidth(120),
-                                child: preImages[selectedCardIndex],
+
+                            SizedBox(
+                              width: UIDefine.getWidth(),
+                              height: UIDefine.getViewHeight() - UIDefine.getPixelWidth(120),
+                              child: AnimatedOpacity(
+                                duration: const Duration(milliseconds: 300),
+                                opacity: opacity,
+                                child: preImages[topIndex],
                               ),
                             ),
                             Positioned(
@@ -222,17 +227,28 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
             ));
   }
 
+  void _updateIndex(int index) {
+    timer?.cancel();
+    timer = Timer(const Duration(milliseconds: 100), (){
+      setState(() {
+        topIndex = index;
+        opacity = 1;
+      });
+    });
+  }
   Widget _buildSwiperCards() {
     return Container(
       height: UIDefine.getPixelWidth(150),
       alignment: Alignment.bottomCenter,
       child: Swiper(
         itemCount: data.posts.length,
-        index: selectedCardIndex,
         onIndexChanged: (index) {
           setState(() {
+            opacity = 0.1;
+            topIndex = selectedCardIndex;
             selectedCardIndex = index;
           });
+          _updateIndex(index);
         },
         itemBuilder: (BuildContext context, int index) {
           bool isCenter = selectedCardIndex == index;
@@ -532,5 +548,6 @@ class _PersonalHomePageState extends ConsumerState<PersonalHomePage>
       ),
     );
   }
+
 
 }

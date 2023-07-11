@@ -14,12 +14,7 @@ import '../../models/http/data/dynamic_info_data.dart';
 import '../../utils/number_format_util.dart';
 import '../../view_models/call_back_function.dart';
 import '../../widgets/circlie_avatar_widget.dart';
-import '../../widgets/custom_paint_text.dart';
 import '../../widgets/label/bar_shadow.dart';
-import '../../widgets/label/common_network_image.dart';
-import '../../widgets/label/custom_gradient_icon.dart';
-import '../personal/personal_home_page.dart';
-import 'package:flutter/rendering.dart';
 import 'package:glassmorphism_widgets/glassmorphism_widgets.dart';
 
 class DynamicInfoView extends StatefulWidget {
@@ -64,16 +59,22 @@ class _DynamicInfoViewState extends State<DynamicInfoView> {
 
   @override
   void initState() {
+    lineCount = getLineCount(widget.data.context, textStyle, maxWidth);
+
     /// 預載
     for (var element in widget.data.images) {
       preImages.add(Image.asset(element, width: UIDefine.getWidth(),
         // height: UIDefine.getHeight() * 0.6,
         fit: BoxFit.fitWidth));
+
+      // image network preload
+      // preImages.add(Image(image: CachedNetworkImageProvider(element),
+      //     // height: UIDefine.getHeight() * 0.6,
+      //     fit: BoxFit.fitWidth));
     }
 
     Future.delayed(Duration.zero, () {
       setState(() {
-        lineCount = getLineCount(widget.data.context, textStyle, maxWidth);
         for(var element in preImages){
           precacheImage(element.image, context);
         }
