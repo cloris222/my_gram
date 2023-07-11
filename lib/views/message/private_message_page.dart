@@ -77,6 +77,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> with Ti
 
   bool isValid = false;
   Timer? _timer;
+  final ScrollController _controller = ScrollController();
 
   // bool showRecorder = false;
 
@@ -106,6 +107,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> with Ti
 
   @override
   void dispose() {
+    _controller.dispose();
     _timer?.cancel();
     viewModel.textFocusNode.dispose();
     super.dispose();
@@ -355,6 +357,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> with Ti
                               child: GestureDetector(
                                   onTap: () {
                                     viewModel.onSendMessage(viewModel.textController.text, false, "TEXT");
+                                    _controller.animateTo(_controller.position.minScrollExtent, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
                                   },
                                   child: Image.asset(AppImagePath.sendIcon)),
                             ),
@@ -437,6 +440,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> with Ti
     return RectGetter(
       key: listViewKey,
       child: ListView.separated(
+        controller: _controller,
           padding: EdgeInsets.only(bottom: UIDefine.getNavigationBarHeight() + UIDefine.getPixelWidth(viewModel.isFocus ? 56 : 52)+UIDefine.getPixelWidth(ref.watch(showRecordProvider)?270:0)),
           reverse: true, // 倒序
           itemCount: readList.isNotEmpty ? showingList.length + 1 : showingList.length,
