@@ -43,7 +43,7 @@ class _DynamicMainPageState extends ConsumerState<DynamicMainPage> {
   late ScrollController scrollController;
 
   late DynamicObserver observer;
-  bool isLoading = true;
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -52,24 +52,24 @@ class _DynamicMainPageState extends ConsumerState<DynamicMainPage> {
     scrollController.addListener(_setScrollerListener);
 
 
-    Future.delayed(const Duration(seconds: 3),(){
-      setState(() {
-        isLoading = false;
-        if(isRebecca == true){
-          list.addAll(isRebeccaList);
-        }else{
-          list.addAll(notRebeccaList);
-        }
-      });
-    });
+    // Future.delayed(const Duration(seconds: 3),(){
+    //   setState(() {
+    //     isLoading = false;
+    //     if(isRebecca == true){
+    //       list.addAll(isRebeccaList);
+    //     }else{
+    //       list.addAll(notRebeccaList);
+    //     }
+    //   });
+    // });
 
     /// 暫時先直接加入
-    //
-    // if (isRebecca == true) {
-    //   list.addAll(isRebeccaList);
-    // } else {
-    //   list.addAll(notRebeccaList);
-    // }
+
+    if (isRebecca == true) {
+      list.addAll(isRebeccaList);
+    } else {
+      list.addAll(notRebeccaList);
+    }
     observer = DynamicObserver("AA",
         scrollTop: () => scrollController.animateTo(0,
             duration: Duration(milliseconds: 200),
