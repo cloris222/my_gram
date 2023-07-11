@@ -6,6 +6,7 @@ import 'package:base_project/constant/theme/ui_define.dart';
 import 'package:base_project/models/http/data/dynamic_info_data.dart';
 import 'package:base_project/view_models/base_view_model.dart';
 import 'package:base_project/views/common_scaffold.dart';
+import 'package:base_project/widgets/custom_loading_widget.dart';
 import 'package:base_project/widgets/label/common_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -42,14 +43,18 @@ class _DynamicMainPageState extends ConsumerState<DynamicMainPage> {
   late ScrollController scrollController;
 
   late DynamicObserver observer;
+  bool isLoading = false;
 
   @override
   void initState() {
     scrollController = ScrollController(
         initialScrollOffset: isRebecca ? GlobalData.dynamicRebeccaOffset : GlobalData.dynamicOffset);
     scrollController.addListener(_setScrollerListener);
-    // Future.delayed(Duration.zero,(){
+
+
+    // Future.delayed(const Duration(seconds: 3),(){
     //   setState(() {
+    //     isLoading = false;
     //     if(isRebecca == true){
     //       list.addAll(isRebeccaList);
     //     }else{
@@ -57,6 +62,7 @@ class _DynamicMainPageState extends ConsumerState<DynamicMainPage> {
     //     }
     //   });
     // });
+
     /// 暫時先直接加入
 
     if (isRebecca == true) {
@@ -82,6 +88,7 @@ class _DynamicMainPageState extends ConsumerState<DynamicMainPage> {
 
   @override
   Widget build(BuildContext context) {
+
     ref.listen(isRebeccaProvider,( previous,  next){
       setState(() {
         if (next == true) {
@@ -162,37 +169,42 @@ class _DynamicMainPageState extends ConsumerState<DynamicMainPage> {
                    child: ListView.builder(
                        shrinkWrap: true,
                        physics: const NeverScrollableScrollPhysics(),
-                       itemCount: list.length,
+                       itemCount: isLoading?8:list.length,
                        padding: EdgeInsets.only(bottom: UIDefine.getNavigationBarHeight()),
                        itemBuilder: (context,index){
-                         if(index == list.length-1){
-                           bDownloading = false;
+                         if(isLoading == true) {
+                           return
+                             _buildLoadingView();}
+                         else{
+                           if(index == list.length-1){
+                             bDownloading = false;
+                           }
+                           return DynamicInfoView(
+                             data: list[index],
+                             index:index,
+                             onComment: (index){
+                               _onComment(index);
+                             },
+                             onFollowing: (index){
+                               _onFollowing(index);
+                             },
+                             onLike: (index){
+                               _onlike(index);
+                             },
+                             onStore: (index){
+                               _showCustomModalBottomSheet(context,stores);
+                             },
+                             onShare: (index){
+                               _onShare().then((value) => setState((){}));
+                             },
+                             showFullContext: (index){
+                               _showMore(index);
+                             },
+                             showLessContext: (index){
+                               _showLess(index);
+                             },
+                           );
                          }
-                         return DynamicInfoView(
-                           data: list[index],
-                           index:index,
-                           onComment: (index){
-                             _onComment(index);
-                           },
-                           onFollowing: (index){
-                             _onFollowing(index);
-                           },
-                           onLike: (index){
-                             _onlike(index);
-                           },
-                           onStore: (index){
-                             _showCustomModalBottomSheet(context,stores);
-                           },
-                           onShare: (index){
-                             _onShare().then((value) => setState((){}));
-                           },
-                           showFullContext: (index){
-                             _showMore(index);
-                           },
-                           showLessContext: (index){
-                             _showLess(index);
-                           },
-                         );
                        }),
                  )
                ],
@@ -452,5 +464,36 @@ class _DynamicMainPageState extends ConsumerState<DynamicMainPage> {
     if (!isRebecca) {
       GlobalData.dynamicOffset = scrollController.offset;
     }
+  }
+
+  Widget _buildLoadingView(){
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: UIDefine.getPixelWidth(15),horizontal:UIDefine.getPixelWidth(15) ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(height: UIDefine.getPixelWidth(10),),
+          CustomLoadingWidget(
+            baseColor: Colors.grey.shade300,
+              width: UIDefine.getWidth(),
+              height: UIDefine.getViewHeight()*0.3),
+          SizedBox(height: UIDefine.getPixelWidth(10),),
+          CustomLoadingWidget(
+              baseColor: Colors.grey.shade300,
+              width: UIDefine.getWidth()*0.8,
+              height: UIDefine.getPixelWidth(20)),
+          SizedBox(height: UIDefine.getPixelWidth(10),),
+          CustomLoadingWidget(
+              baseColor: Colors.grey.shade300,
+              width: UIDefine.getWidth()*0.8,
+              height: UIDefine.getPixelWidth(20)),
+          SizedBox(height: UIDefine.getPixelWidth(10),),
+          CustomLoadingWidget(
+              baseColor: Colors.grey.shade300,
+              width: UIDefine.getWidth()*0.4,
+              height: UIDefine.getPixelWidth(20)),
+        ],
+      ),
+    );
   }
 }

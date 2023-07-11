@@ -13,6 +13,7 @@ import 'package:base_project/views/message/recorder_view.dart';
 import 'package:base_project/view_models/message/websocketdata/ws_send_message_data.dart';
 import 'package:base_project/views/message/sqlite/chat_history_db.dart';
 import 'package:base_project/views/message/widget/message_view_for_other.dart';
+import 'package:base_project/widgets/button/text_button_widget.dart';
 import 'package:base_project/widgets/label/avatar_icon_widget.dart';
 import 'package:glassmorphism_widgets/glassmorphism_widgets.dart';
 import '../../constant/theme/app_style.dart';
@@ -36,6 +37,7 @@ import '../../utils/date_format_util.dart';
 import '../../views/message/data/message_view_for_updating.dart';
 import '../../views/message/widget/message_view_for_self.dart';
 import 'notifier/chat_msg_notifier.dart';
+import 'package:inview_notifier_list/inview_notifier_list.dart';
 
 class PrivateMessagePage extends ConsumerStatefulWidget {
   // final ChatRoomData data;
@@ -73,6 +75,10 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> with Ti
 
   List<String> get readList => ref.watch(readListProvider);
 
+  bool isValid = false;
+  Timer? _timer;
+  final ScrollController _controller = ScrollController();
+
   // bool showRecorder = false;
 
   @override
@@ -101,6 +107,8 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> with Ti
 
   @override
   void dispose() {
+    _controller.dispose();
+    _timer?.cancel();
     viewModel.textFocusNode.dispose();
     super.dispose();
   }
@@ -181,29 +189,39 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> with Ti
                 Consumer(
                   builder: (context, ref, child) {
                     ref.watch(chatRoomProvider);
-                    return Expanded(
-                      // child: NotificationListener<ScrollNotification>(
-                      //   onNotification: (notification) {
-                      //     _updateDateViewByIndex();
-                      //     if (notification is ScrollStartNotification) {
-                      //       dateViewSetState!(() {
-                      //         bScrolling = true;
-                      //       });
-                      //     }
-                      //     if (notification is ScrollEndNotification) {
-                      //       dateViewSetState!(() {
-                      //         bScrolling = false;
-                      //       });
-                      //     }
-                      //     return true;
-                      //   },
+                    return
+                    Expanded(
+                      child: NotificationListener<ScrollNotification>(
+                        onNotification: (notification) {
+                          _updateDateViewByIndex();
+                          if (notification is ScrollStartNotification) {
+                            _timer?.cancel();
+                            if(dateViewSetState != null){
+                              dateViewSetState!(() {
+                                bScrolling = true;
+                              });
+                            }
+                            }
+
+                          if (notification is ScrollEndNotification) {
+                            _timer?.cancel();
+                            _timer = Timer(const Duration(milliseconds: 500) , (){
+                              if(dateViewSetState != null){
+                                dateViewSetState!(() {
+                                  bScrolling = false;
+                                });
+                              }
+                            });
+                          }
+                          return true;
+                        },
                       child: Row(
                         children: [
                           Expanded(child: _buildListView()),
                         ],
                       ),
                       // ),
-                    );
+                    ));
                   },
                 ),
               ],
@@ -246,7 +264,12 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> with Ti
                       },
                     ),
                   )
-                : Container()
+                : Container(),
+            Positioned(
+              top: UIDefine.getPixelWidth(10),
+                left: UIDefine.getPixelWidth(120),
+                right: UIDefine.getPixelWidth(120),
+                child: _buildFloatDateView())
           ],
         ),
       ),
@@ -334,6 +357,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> with Ti
                               child: GestureDetector(
                                   onTap: () {
                                     viewModel.onSendMessage(viewModel.textController.text, false, "TEXT");
+                                    _controller.animateTo(_controller.position.minScrollExtent, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
                                   },
                                   child: Image.asset(AppImagePath.sendIcon)),
                             ),
@@ -415,63 +439,103 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> with Ti
   Widget _buildListView() {
     return RectGetter(
       key: listViewKey,
-      child: ListView.builder(
+      child: ListView.separated(
+        controller: _controller,
           padding: EdgeInsets.only(bottom: UIDefine.getNavigationBarHeight() + UIDefine.getPixelWidth(viewModel.isFocus ? 56 : 52)+UIDefine.getPixelWidth(ref.watch(showRecordProvider)?270:0)),
           reverse: true, // 倒序
           itemCount: readList.isNotEmpty ? showingList.length + 1 : showingList.length,
           itemBuilder: (context, index) {
             if (readList.isNotEmpty) {
               if (index == 0) {
-                return Padding(
-                  padding: EdgeInsets.fromLTRB(UIDefine.getScreenWidth(1), UIDefine.getScreenWidth(0.5), UIDefine.getScreenWidth(1), UIDefine.getScreenWidth(0.5)),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(top: UIDefine.getPixelHeight(5)),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(100),
-                          child: Image.asset(
-                            "assets/icon/pitch/pair/01.Rebecca_01_01.png",
-                            width: UIDefine.getPixelWidth(30),
-                            height: UIDefine.getPixelHeight(30),
-                            fit: BoxFit.cover,
+                var key = 'inputBubble';
+                _keys[key] = _keys[key] ?? RectGetter.createGlobalKey();
+                return RectGetter(
+                  key: _keys[key],
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(UIDefine.getScreenWidth(1), UIDefine.getScreenWidth(0.5), UIDefine.getScreenWidth(1), UIDefine.getScreenWidth(0.5)),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(top: UIDefine.getPixelHeight(5)),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(100),
+                            child: Image.asset(
+                              "assets/icon/pitch/pair/01.Rebecca_01_01.png",
+                              width: UIDefine.getPixelWidth(30),
+                              height: UIDefine.getPixelHeight(30),
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(UIDefine.getScreenWidth(1)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            SizedBox(
-                              width: UIDefine.getPixelWidth(8),
-                            ),
-                            Container(
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15), bottomRight: Radius.circular(15)),
-                                  gradient: LinearGradient(colors: AppGradientColors.gradientOtherMessage.getColors())),
-                              child: _getOthersTalkBubble(),
-                            ),
-                            SizedBox(width: UIDefine.getPixelWidth(8)),
-                            Text(
-                              tr('typing'),
-                              style: TextStyle(color: AppColors.commentUnlike.light, fontSize: UIDefine.fontSize10, fontWeight: FontWeight.w400, letterSpacing: 0.4),
-                            ),
-                          ],
+                        Padding(
+                          padding: EdgeInsets.all(UIDefine.getScreenWidth(1)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              SizedBox(
+                                width: UIDefine.getPixelWidth(8),
+                              ),
+                              Container(
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15), bottomRight: Radius.circular(15)),
+                                    gradient: LinearGradient(colors: AppGradientColors.gradientOtherMessage.getColors())),
+                                child: _getOthersTalkBubble(),
+                              ),
+                              SizedBox(width: UIDefine.getPixelWidth(8)),
+                              Text(
+                                tr('typing'),
+                                style: TextStyle(color: AppColors.commentUnlike.light, fontSize: UIDefine.fontSize10, fontWeight: FontWeight.w400, letterSpacing: 0.4),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 );
               }
             }
-
             int realIndex=index-(readList.isNotEmpty?1:0);
             var key = showingList[realIndex].contentId;
             _keys[key] = _keys[key] ?? RectGetter.createGlobalKey();
+            if(realIndex == showingList.length - 1){
+              return Column(
+                children: [
+                  Container(
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.symmetric(vertical: UIDefine.getPixelWidth(10)),
+                    // height: UIDefine.getPixelWidth(20),
+                    child: Container(
+                        width: UIDefine.getPixelWidth(100),
+                        padding: EdgeInsets.symmetric(vertical: UIDefine.getPixelWidth(2)),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: AppColors.textBlack.getColor().withOpacity(0.3)
+                        ),
+                        alignment: Alignment.center,
+                        child: Text(DateFormat('yyyy-MM-dd').format(DateTime.fromMillisecondsSinceEpoch(int.parse(showingList.last.timestamp))),style: AppTextStyle.getBaseStyle(fontWeight: FontWeight.w400,color: AppColors.textWhite,fontSize: UIDefine.fontSize13),)),
+                  ),
+                  Padding(
+                      padding: showingList[realIndex].receiverAvatarId != showingList[realIndex - 1].receiverAvatarId ?
+                      EdgeInsets.fromLTRB(
+                          UIDefine.getPixelWidth(6),
+                          UIDefine.getPixelWidth(24),
+                          UIDefine.getPixelWidth(6),
+                          UIDefine.getPixelWidth(0.5)):
+                      EdgeInsets.fromLTRB(
+                          UIDefine.getPixelWidth(6),
+                          UIDefine.getPixelWidth(0),
+                          UIDefine.getPixelWidth(6),
+                          UIDefine.getPixelWidth(0)),
+                    child: _getTalkView(realIndex),
+                  )
+                ],
+              );
+
+            }
             return RectGetter(
               key: _keys[key],
               child: Padding(
@@ -493,9 +557,97 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> with Ti
                 child: _getTalkView(realIndex),
               ),
             );
-          }),
+          },
+        separatorBuilder: (BuildContext context, int index){
+            if(readList.isNotEmpty){
+
+              if(index != 0){
+                int realIndex=index-1;
+                DateTime prefDate = DateTime.fromMillisecondsSinceEpoch(int.parse(showingList[realIndex].timestamp));
+                if(realIndex == showingList.length - 1){
+                  String prefDateInText = DateFormat('yyyy-MM-dd').format(prefDate);
+                  return Container(
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.symmetric(vertical: UIDefine.getPixelWidth(10)),
+                    // height: UIDefine.getPixelWidth(20),
+                    child: Container(
+                        width: UIDefine.getPixelWidth(100),
+                        padding: EdgeInsets.symmetric(vertical: UIDefine.getPixelWidth(2)),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: AppColors.textBlack.getColor().withOpacity(0.3)
+                        ),
+                        alignment: Alignment.center,
+                        child: Text(prefDateInText,style: AppTextStyle.getBaseStyle(fontWeight: FontWeight.w400,color: AppColors.textWhite,fontSize: UIDefine.fontSize13),)),
+                  ) ;
+                }else if(showingList[realIndex + 1].timestamp != ''){
+                  DateTime nextDate = DateTime.fromMillisecondsSinceEpoch(int.parse(showingList[realIndex + 1].timestamp));
+                  String prefDateInText = DateFormat('yyyy-MM-dd').format(prefDate);
+                  String nextDateInText = DateFormat('yyyy-MM-dd').format(nextDate);
+                  if(prefDateInText != nextDateInText){
+                    return Container(
+                      alignment: Alignment.center,
+                      margin: EdgeInsets.symmetric(vertical: UIDefine.getPixelWidth(10)),
+                      // height: UIDefine.getPixelWidth(20),
+                      child: Container(
+                          width: UIDefine.getPixelWidth(100),
+                          padding: EdgeInsets.symmetric(vertical: UIDefine.getPixelWidth(2)),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: AppColors.textBlack.getColor().withOpacity(0.3)
+                          ),
+                          alignment: Alignment.center,
+                          child: Text(prefDateInText,style: AppTextStyle.getBaseStyle(fontWeight: FontWeight.w400,color: AppColors.textWhite,fontSize: UIDefine.fontSize13),)),
+                    );
+                  }
+                }
+              }
+            }else{
+              DateTime prefDate = DateTime.fromMillisecondsSinceEpoch(int.parse(showingList[index].timestamp));
+              if(index == showingList.length - 1){
+                String prefDateInText = DateFormat('yyyy-MM-dd').format(prefDate);
+                return Container(
+                  alignment: Alignment.center,
+                  margin: EdgeInsets.symmetric(vertical: UIDefine.getPixelWidth(10)),
+                  // height: UIDefine.getPixelWidth(20),
+                  child: Container(
+                      width: UIDefine.getPixelWidth(100),
+                      padding: EdgeInsets.symmetric(vertical: UIDefine.getPixelWidth(2)),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          color: AppColors.textBlack.getColor().withOpacity(0.3)
+                      ),
+                      alignment: Alignment.center,
+                      child: Text(prefDateInText,style: AppTextStyle.getBaseStyle(fontWeight: FontWeight.w400,color: AppColors.textWhite,fontSize: UIDefine.fontSize13),)),
+                ) ;
+              }else if(showingList[index + 1].timestamp != ''){
+                DateTime nextDate = DateTime.fromMillisecondsSinceEpoch(int.parse(showingList[index + 1].timestamp));
+                String prefDateInText = DateFormat('yyyy-MM-dd').format(prefDate);
+                String nextDateInText = DateFormat('yyyy-MM-dd').format(nextDate);
+                if(prefDateInText != nextDateInText){
+                  return Container(
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.symmetric(vertical: UIDefine.getPixelWidth(10)),
+                    // height: UIDefine.getPixelWidth(20),
+                    child: Container(
+                        width: UIDefine.getPixelWidth(100),
+                        padding: EdgeInsets.symmetric(vertical: UIDefine.getPixelWidth(2)),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: AppColors.textBlack.getColor().withOpacity(0.3)
+                        ),
+                        alignment: Alignment.center,
+                        child: Text(prefDateInText,style: AppTextStyle.getBaseStyle(fontWeight: FontWeight.w400,color: AppColors.textWhite,fontSize: UIDefine.fontSize13),)),
+                  );
+                }
+              }
+            }
+
+            return Container();
+          })
     );
   }
+
 
   Widget _getTalkView(int index) {
     if (showingList[index].timestamp.isEmpty) {
@@ -542,24 +694,7 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> with Ti
           );
   }
 
-  void _updateDateViewByIndex() {
-    var rect = RectGetter.getRectFromKey(listViewKey);
-    var items = <int>[];
-    _keys.forEach((index, key) {
-      var itemRect = RectGetter.getRectFromKey(key);
-      if (itemRect != null && !(itemRect.top > rect!.bottom || itemRect.bottom < rect.top)) {
-        items.add(index);
-      }
-    });
 
-    lastVisibleIndex = items.last;
-    if (currentShowingDate == _getDateFormat(lastVisibleIndex)) {
-      return;
-    } else {
-      currentShowingDate = _getDateFormat(lastVisibleIndex);
-      dateViewSetState!(() {});
-    }
-  }
 
   // onTapMicrophone() async{
   //   setState(() {
@@ -570,11 +705,11 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> with Ti
   /// 取時間為 西元年月日
   String _getDateFormat(int index) {
     if (showingList.isNotEmpty) {
-      String sTime = showingList[index].timestamp.toString();
-      if (sTime != '') {
-        DateTime dateTime = DateTime.parse(sTime);
-        sTime = DateFormat('yyyy-MM-dd').format(dateTime);
-        return sTime;
+      int sTime = int.parse(showingList[index].timestamp);
+      if (sTime != 0) {
+        DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(sTime);
+        String time = DateFormat('yyyy-MM-dd').format(dateTime);
+        return time;
       }
     }
     return '';
@@ -613,6 +748,66 @@ class _PrivateMessagePageState extends ConsumerState<PrivateMessagePage> with Ti
 
   //   setState(() {});
   // }
+
+  /// 懸浮上方的日期View (滑動時出現)
+  Widget _buildFloatDateView() {
+    return StatefulBuilder( // 獨立單一元件刷新,防閃屏
+        builder: (BuildContext context, StateSetter setState) {
+          dateViewSetState = setState;
+          return AnimatedOpacity(
+            duration: const Duration(milliseconds: 300),
+              opacity: bScrolling?1.0:0.0,
+              child: Container(
+                height: UIDefine.getScreenWidth(7),
+                padding: const EdgeInsets.all(5),
+                margin: EdgeInsets.only(
+                  top: UIDefine.getScreenWidth(2.8),
+                ),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    borderRadius:
+                    const BorderRadius.all(Radius.circular(10)),
+                    color: AppColors.buttonCommon.getColor().withOpacity(0.5)),
+                child: Text(
+                  _getDateFormat(lastVisibleIndex),
+                  style: TextStyle(
+                      color: AppColors.textWhite.getColor(),
+                      fontSize: UIDefine.fontSize12),
+                ),
+              )
+          );
+        }
+    );
+  }
+
+  ///更新日期
+  void _updateDateViewByIndex() {
+    var rect = RectGetter.getRectFromKey(listViewKey);
+    var items = <String>[];
+
+    _keys.forEach((key, value) {
+      var itemRect = RectGetter.getRectFromKey(value);
+      if (itemRect != null &&
+          !(itemRect.top > rect!.bottom || itemRect.bottom < rect.top)) {
+        if(key != 'inputBubble') {
+
+          items.add(key);
+        }
+
+      }
+    });
+
+    final lastIndex = showingList.indexWhere((el) => el.contentId == items.last);
+    print('lastIndex = $lastIndex');
+
+    lastVisibleIndex = lastIndex;
+    if (currentShowingDate == _getDateFormat(lastVisibleIndex)) {
+      return;
+    } else {
+      currentShowingDate = _getDateFormat(lastVisibleIndex);
+      if(dateViewSetState != null) dateViewSetState!(() {});
+    }
+  }
 
   Widget _getOthersTalkBubble() {
     return Container(

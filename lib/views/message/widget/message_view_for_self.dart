@@ -64,6 +64,7 @@ class _MessageViewForSelf extends ConsumerState<MessageViewForSelf> with TickerP
               Container(
               color: Colors.transparent,
                 child: Text(
+                    // DateFormat('yyyy-MM-dd').format(DateTime.fromMillisecondsSinceEpoch(int.parse(data.timestamp))),
                   DateFormatUtil().timeStamptoDate(data.timestamp),
                   style: AppTextStyle.getBaseStyle(
                     color: AppColors.commentUnlike,

@@ -65,6 +65,8 @@ dependencies:
   lottie: ^1.4.3
   glassmorphism_widgets: ^0.2.2
   device_info_plus: ^9.0.2
+  shimmer: ^3.0.0
+  inview_notifier_list: ^3.0.0
 
 dev_dependencies:
   flutter_test:
